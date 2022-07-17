@@ -12,22 +12,11 @@ import {
   Image,
   Alert,
 } from "react-native";
-// let accounts = {};
+import styles from "../styles/Styles.js";
 export default function Login({ navigation, route }) {
-  //   const [accounts, setAccounts] = React.useState({})
   const [addr, setAddr] = React.useState("");
   const [pass, setPass] = React.useState("");
   const [accounts, setAcc] = React.useState(route.params.paramKey);
-
-  //   if (typeof route.params) {
-  //     accounts = route.params.paramKey;
-  //   }
-  //   console.log(typeof route.param.paramKey);
-  //   const [accounts, setAcc] = React.useState(
-  //     typeof route.params.paramKey === "undefined" ? {} : route.param.paramKey
-  //   );
-
-  //   console.log(accounts.admin);
 
   return (
     <View style={styles.container}>
@@ -36,13 +25,18 @@ export default function Login({ navigation, route }) {
         resizeMode="cover"
         style={styles.image}
       >
-        <Image
-          source={require("../assets/hu_logo.png")}
-          style={styles.logo}
-        ></Image>
+        <View
+          style={{ justifyContent: "center", alignItems: "center", margin: 15 }}
+        >
+          <Image
+            source={require("../assets/hu_logo.png")}
+            style={styles.logo}
+          ></Image>
+        </View>
+
         <TextInput
           style={styles.inputbox}
-          placeholder="Email Address"
+          placeholder="Username"
           onChangeText={(text) => setAddr(text)}
         />
         <TextInput
@@ -89,63 +83,3 @@ const userExists = (userName, password, accounts, navigation) => {
     Alert.alert("Incorrect Credentials");
   }
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  logo: {
-    width: "40%",
-    height: "20%",
-    top: "10%",
-    left: "50%",
-    position: "absolute",
-  },
-  image: {
-    flex: 1,
-    justifyContent: "center",
-    padding: 50,
-  },
-  inputbox: {
-    height: 45,
-    backgroundColor: "white",
-    borderRadius: 15,
-    shadowColor: "black",
-    shadowRadius: 100,
-    marginBottom: 24,
-    paddingLeft: 10,
-  },
-  p_button: {
-    alignItems: "center",
-    justifyContent: "center",
-    paddingVertical: 12,
-    paddingHorizontal: 32,
-    borderRadius: 15,
-    elevation: 3,
-    backgroundColor: "#40e1d1",
-    marginBottom: 24,
-  },
-  p_button_text: {
-    fontSize: 21,
-    lineHeight: 21,
-    fontWeight: "bold",
-    letterSpacing: 0.25,
-    color: "white",
-  },
-
-  s_button: {
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "transparent",
-    marginBottom: 24,
-  },
-  s_button_text: {
-    fontSize: 17,
-    lineHeight: 22,
-    fontWeight: "bold",
-    letterSpacing: 0.25,
-    color: "white",
-    textShadowColor: "grey",
-    textShadowRadius: 10,
-  },
-});

@@ -12,6 +12,7 @@ import {
   Image,
   Alert,
 } from "react-native";
+import styles from "../styles/Styles.js";
 
 function Signup({ navigation, route }) {
   //   const [addr, setAddr] = React.useState("");
@@ -28,10 +29,15 @@ function Signup({ navigation, route }) {
         resizeMode="cover"
         style={styles.image}
       >
-        <Image
-          source={require("../assets/hu_logo.png")}
-          style={styles.logo}
-        ></Image>
+        <View
+          style={{ justifyContent: "center", alignItems: "center", margin: 15 }}
+        >
+          <Image
+            source={require("../assets/hu_logo.png")}
+            style={styles.logo}
+          ></Image>
+        </View>
+
         <TextInput style={styles.inputbox} placeholder="Full Name" />
         <TextInput
           style={styles.inputbox}
@@ -61,7 +67,14 @@ function Signup({ navigation, route }) {
         <Pressable
           style={styles.p_button}
           onPress={() => {
-            addUserAccount(userName, pass, confirmpass, accounts, emailAddr);
+            addUserAccount(
+              userName,
+              pass,
+              confirmpass,
+              accounts,
+              emailAddr,
+              navigation
+            );
           }}
         >
           <Text style={styles.p_button_text}>Sign Up</Text>
@@ -84,7 +97,8 @@ const addUserAccount = (
   password,
   confirmpass,
   accounts,
-  emailAddr
+  emailAddr,
+  navigation
 ) => {
   if (password !== confirmpass) {
     return Alert.alert("Password not matching.");
@@ -96,67 +110,14 @@ const addUserAccount = (
     return Alert.alert("User already exists.");
   }
   accounts[userName] = password;
-  return Alert.alert(userName + " has been added successfully.");
+
+  Alert.alert("Success", userName + " has been added successfully.", [
+    {
+      text: "OK",
+      onPress: () => navigation.navigate("Login", { paramKey: accounts }),
+    },
+  ]);
+  return;
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  image: {
-    flex: 1,
-    justifyContent: "flex-end",
-    padding: 50,
-  },
-  logo: {
-    width: "40%",
-    height: "20%",
-    top: "10%",
-    left: "50%",
-    position: "absolute",
-  },
-  inputbox: {
-    height: 45,
-    backgroundColor: "white",
-    borderRadius: 15,
-    shadowColor: "black",
-    shadowRadius: 100,
-    marginBottom: 24,
-    paddingLeft: 10,
-  },
-  p_button: {
-    alignItems: "center",
-    justifyContent: "center",
-    paddingVertical: 12,
-    paddingHorizontal: 32,
-    borderRadius: 15,
-    elevation: 3,
-    backgroundColor: "#40e1d1",
-    marginBottom: 24,
-  },
-  p_button_text: {
-    fontSize: 21,
-    lineHeight: 21,
-    fontWeight: "bold",
-    letterSpacing: 0.25,
-    color: "white",
-  },
-
-  s_button: {
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "transparent",
-    marginBottom: 24,
-  },
-  s_button_text: {
-    fontSize: 17,
-    lineHeight: 22,
-    fontWeight: "bold",
-    letterSpacing: 0.25,
-    color: "white",
-    textShadowColor: "grey",
-    textShadowRadius: 10,
-  },
-});
 
 export default Signup;
