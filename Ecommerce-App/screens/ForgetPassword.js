@@ -9,10 +9,13 @@ import {
   Button,
   ImageBackground,
   Pressable,
+  Image,
   Alert,
 } from "react-native";
 
-function Forgotpass({ navigation }) {
+function Forgotpass({ navigation, route }) {
+  const [addr, setAddr] = React.useState("");
+  const [accounts, setAcc] = React.useState(route.params.paramKey);
   return (
     <View style={styles.container}>
       <ImageBackground
@@ -20,15 +23,24 @@ function Forgotpass({ navigation }) {
         resizeMode="cover"
         style={styles.image}
       >
+        <Image
+          source={require("../assets/hu_logo.png")}
+          style={styles.logo}
+        ></Image>
         <TextInput
           style={styles.inputbox}
-          placeholder="Recovery Email Address"
+          placeholder="Recovery User Name"
+          onChangeText={(text) => setAddr(text)}
         />
 
         <Pressable
           style={styles.p_button}
           onPress={() => {
-            Alert.alert("Recover email have been sent.");
+            if (Object.keys(accounts).includes(addr)) {
+              Alert.alert("Recover email have been sent.");
+            } else {
+              Alert.alert("Error: User does not exist");
+            }
           }}
         >
           <Text style={styles.s_button_text}>Send Reset Link</Text>
@@ -53,6 +65,13 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     padding: 50,
+  },
+  logo: {
+    width: "40%",
+    height: "20%",
+    top: "10%",
+    left: "50%",
+    position: "absolute",
   },
   inputbox: {
     height: 45,

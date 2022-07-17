@@ -9,6 +9,7 @@ import {
   Button,
   ImageBackground,
   Pressable,
+  Image,
   Alert,
 } from "react-native";
 // let accounts = {};
@@ -35,6 +36,10 @@ export default function Login({ navigation, route }) {
         resizeMode="cover"
         style={styles.image}
       >
+        <Image
+          source={require("../assets/hu_logo.png")}
+          style={styles.logo}
+        ></Image>
         <TextInput
           style={styles.inputbox}
           placeholder="Email Address"
@@ -62,7 +67,9 @@ export default function Login({ navigation, route }) {
         </Pressable>
         <Pressable
           style={styles.s_button}
-          onPress={() => navigation.navigate("Forgotpass")}
+          onPress={() =>
+            navigation.navigate("Forgotpass", { paramKey: accounts })
+          }
         >
           <Text style={styles.s_button_text}>Forgot Password?</Text>
         </Pressable>
@@ -86,6 +93,13 @@ const userExists = (userName, password, accounts, navigation) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  logo: {
+    width: "40%",
+    height: "20%",
+    top: "10%",
+    left: "50%",
+    position: "absolute",
   },
   image: {
     flex: 1,

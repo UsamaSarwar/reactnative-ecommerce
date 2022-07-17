@@ -9,6 +9,7 @@ import {
   Button,
   ImageBackground,
   Pressable,
+  Image,
   Alert,
 } from "react-native";
 
@@ -20,6 +21,10 @@ export default function Homescreen({ navigation }) {
         resizeMode="cover"
         style={styles.image}
       >
+        <Image
+          source={require("../assets/hu_logo.png")}
+          style={styles.logo}
+        ></Image>
         <Text>This is Home Screen</Text>
       </ImageBackground>
     </View>
@@ -34,6 +39,13 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     padding: 50,
+  },
+  logo: {
+    width: "40%",
+    height: "20%",
+    top: "10%",
+    left: "50%",
+    position: "absolute",
   },
   inputbox: {
     height: 45,

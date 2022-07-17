@@ -9,6 +9,7 @@ import {
   Button,
   ImageBackground,
   Pressable,
+  Image,
   Alert,
 } from "react-native";
 
@@ -27,6 +28,10 @@ function Signup({ navigation, route }) {
         resizeMode="cover"
         style={styles.image}
       >
+        <Image
+          source={require("../assets/hu_logo.png")}
+          style={styles.logo}
+        ></Image>
         <TextInput style={styles.inputbox} placeholder="Full Name" />
         <TextInput
           style={styles.inputbox}
@@ -100,8 +105,15 @@ const styles = StyleSheet.create({
   },
   image: {
     flex: 1,
-    justifyContent: "center",
+    justifyContent: "flex-end",
     padding: 50,
+  },
+  logo: {
+    width: "40%",
+    height: "20%",
+    top: "10%",
+    left: "50%",
+    position: "absolute",
   },
   inputbox: {
     height: 45,
