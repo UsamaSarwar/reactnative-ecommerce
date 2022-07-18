@@ -6,6 +6,7 @@ import {
   TextInput,
   Alert,
 } from "react-native";
+import Realm from "realm";
 
 import AppNavigator from "./app.navigator";
 
