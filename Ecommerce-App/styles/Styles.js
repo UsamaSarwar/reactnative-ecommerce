@@ -13,6 +13,11 @@ export default styles = StyleSheet.create({
     width: 100,
     height: 100,
   },
+  random_text: {
+    fontSize: 24,
+    color: "blue",
+    margin: 36,
+  },
   inputbox: {
     height: 45,
     backgroundColor: "white",

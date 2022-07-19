@@ -12,11 +12,13 @@ import {
   Image,
   Alert,
 } from "react-native";
+import { useAuth } from "../providers/AuthProvider.js";
 import styles from "../styles/Styles";
 
 function Forgotpass({ navigation, route }) {
   const [addr, setAddr] = React.useState("");
-  const [accounts, setAcc] = React.useState(route.params.paramKey);
+  const { user } = useAuth();
+  // const [accounts, setAcc] = React.useState(route.params.paramKey);
   return (
     <View style={styles.container}>
       <ImageBackground

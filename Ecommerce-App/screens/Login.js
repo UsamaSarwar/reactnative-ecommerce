@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useAuth } from "../providers/AuthProvider.js";
+import app from "../realmApp";
 import {
   StyleSheet,
   Text,
@@ -13,11 +15,32 @@ import {
   Alert,
 } from "react-native";
 import styles from "../styles/Styles.js";
-export default function Login({ navigation, route }) {
-  const [addr, setAddr] = React.useState("");
-  const [pass, setPass] = React.useState("");
-  const [accounts, setAcc] = React.useState(route.params.paramKey);
 
+export default function Login({ navigation, route }) {
+  const [addr, setAddr] = useState("");
+  const [pass, setPass] = useState("");
+  // const [accounts, setAcc] = useState(route.params.paramKey);
+  const { user, signIn } = useAuth();
+  // console.log(app.currentUser.identities);
+  // console.log(app.currentUser);
+  useEffect(() => {
+    if (user) {
+      navigation.navigate("Homescreen");
+    }
+  }, [user]);
+
+  // The onPressSignIn method calls AuthProvider.signIn with the
+  // email/password in state.
+  const onPressLogIn = async () => {
+    console.log("Press sign in");
+    try {
+      await signIn(addr, pass);
+      await navigation.navigate("Homescreen");
+    } catch (error) {
+      Alert.alert(`Failed to sign in: ${error.message}`);
+    }
+  };
+  // console.log(user);
   return (
     <View style={styles.container}>
       <ImageBackground
@@ -36,7 +59,7 @@ export default function Login({ navigation, route }) {
 
         <TextInput
           style={styles.inputbox}
-          placeholder="Username"
+          placeholder="Email Address"
           onChangeText={(text) => setAddr(text)}
         />
         <TextInput
@@ -45,25 +68,18 @@ export default function Login({ navigation, route }) {
           secureTextEntry={true}
           onChangeText={(text) => setPass(text)}
         />
-        <Pressable
-          style={styles.p_button}
-          onPress={() => {
-            userExists(addr, pass, accounts, navigation);
-          }}
-        >
-          <Text style={styles.p_button_text}>Log In</Text>
+        <Pressable style={styles.p_button} onPress={onPressLogIn}>
+          <Text style={styles.p_button_text}>Sign In</Text>
         </Pressable>
         <Pressable
           style={styles.s_button}
-          onPress={() => navigation.navigate("Signup", { paramKey: accounts })}
+          onPress={() => navigation.navigate("Signup")}
         >
           <Text style={styles.s_button_text}>Sign Up</Text>
         </Pressable>
         <Pressable
           style={styles.s_button}
-          onPress={() =>
-            navigation.navigate("Forgotpass", { paramKey: accounts })
-          }
+          onPress={() => navigation.navigate("Forgotpass")}
         >
           <Text style={styles.s_button_text}>Forgot Password?</Text>
         </Pressable>
@@ -72,14 +88,14 @@ export default function Login({ navigation, route }) {
   );
 }
 
-const userExists = (userName, password, accounts, navigation) => {
-  let isUsername = Object.keys(accounts).includes(userName);
+// const userExists = (userName, password, accounts, navigation) => {
+//   let isUsername = Object.keys(accounts).includes(userName);
 
-  if (isUsername === true && accounts[userName] === password) {
-    console.log("User logged in");
-    navigation.navigate("Homescreen");
-  } else {
-    console.log("Incorrect Credentials");
-    Alert.alert("Incorrect Credentials");
-  }
-};
+//   if (isUsername === true && accounts[userName] === password) {
+//     console.log("User logged in");
+//     navigation.navigate("Homescreen");
+//   } else {
+//     console.log("Incorrect Credentials");
+//     Alert.alert("Incorrect Credentials");
+//   }
+// };

@@ -1,4 +1,6 @@
 import React from "react";
+// import app from "../realmApp";
+import { useAuth } from "../providers/AuthProvider.js";
 import {
   StyleSheet,
   Text,
@@ -16,6 +18,8 @@ import {
 import styles from "../styles/Styles.js";
 
 export default function Homescreen({ navigation }) {
+  // console.log(app.currentUser.identities);
+  const { signOut } = useAuth();
   return (
     <View style={styles.container}>
       <ImageBackground
@@ -31,8 +35,26 @@ export default function Homescreen({ navigation }) {
             style={styles.logo}
           ></Image>
         </View>
-
-        <Text>This is Home Screen</Text>
+        <Pressable
+          style={styles.p_button}
+          onPress={() =>
+            Alert.alert("Log Out", null, [
+              {
+                text: "Yes, Log Out",
+                style: "destructive",
+                onPress: () => {
+                  console.log("signing out");
+                  signOut();
+                  navigation.popToTop();
+                },
+              },
+              { text: "Cancel", style: "cancel" },
+            ])
+          }
+        >
+          <Text style={styles.p_button_text}>Sign Out</Text>
+        </Pressable>
+        <Text style={styles.random_text}>This is Home Screen</Text>
       </ImageBackground>
     </View>
   );

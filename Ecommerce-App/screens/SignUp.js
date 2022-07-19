@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useAuth } from "../providers/AuthProvider.js";
 import {
   StyleSheet,
   Text,
@@ -15,13 +16,52 @@ import {
 import styles from "../styles/Styles.js";
 
 function Signup({ navigation, route }) {
-  //   const [addr, setAddr] = React.useState("");
-  const [pass, setPass] = React.useState("");
-  const [confirmpass, setConfirmPass] = React.useState("");
-  const [emailAddr, setEmailAddr] = React.useState("");
-  const [accounts, setAcc] = React.useState(route.params.paramKey);
-  const [userName, setUserName] = React.useState("");
+  const [pass, setPass] = useState("");
+  const [confirmpass, setConfirmPass] = useState("");
+  const [addr, setAddr] = useState("");
+  // const [accounts, setAcc] = useState(route.params.paramKey);
+  const [userName, setUserName] = useState("");
+  const { user, signUp, signIn } = useAuth();
   //   console.log("Hello", accounts.admin);
+  // The onPressSignUp method calls AuthProvider.signUp with the
+  // email/password in state and then signs in.
+  useEffect(() => {
+    if (user) {
+      navigation.navigate("Homescreen");
+    }
+  }, [user]);
+
+  const onPressSignUp = async () => {
+    if (pass !== confirmpass) {
+      return Alert.alert("Password not matching.");
+    }
+    if (!(addr.includes("@") || addr.includes(".com"))) {
+      return Alert.alert("Invalid email address entered.");
+    }
+
+    try {
+      await signUp(addr, pass);
+      // signIn(addr, pass);
+      await Alert.alert("Success", userName + " has been added successfully.", [
+        {
+          text: "OK",
+          onPress: () => navigation.navigate("Login"),
+        },
+      ]);
+      // navigation.navigate("Loginscreen");
+    } catch (error) {
+      Alert.alert(`Failed to sign up: ${error.message}`);
+    }
+
+    // accounts[userName] = password;
+    // Alert.alert("Success", userName + " has been added successfully.", [
+    //   {
+    //     text: "OK",
+    //     onPress: () => navigation.navigate("Login", { paramKey: accounts }),
+    //   },
+    // ]);
+  };
+
   return (
     <View style={styles.container}>
       <ImageBackground
@@ -42,7 +82,7 @@ function Signup({ navigation, route }) {
         <TextInput
           style={styles.inputbox}
           placeholder="Email Address"
-          onChangeText={(text) => setEmailAddr(text)}
+          onChangeText={(text) => setAddr(text)}
         />
         <TextInput
           style={styles.inputbox}
@@ -64,25 +104,13 @@ function Signup({ navigation, route }) {
           onChangeText={(text) => setConfirmPass(text)}
         />
 
-        <Pressable
-          style={styles.p_button}
-          onPress={() => {
-            addUserAccount(
-              userName,
-              pass,
-              confirmpass,
-              accounts,
-              emailAddr,
-              navigation
-            );
-          }}
-        >
+        <Pressable style={styles.p_button} onPress={onPressSignUp}>
           <Text style={styles.p_button_text}>Sign Up</Text>
         </Pressable>
         <Pressable
           style={styles.s_button}
           onPress={() => {
-            navigation.navigate("Login", { paramKey: accounts });
+            navigation.navigate("Login");
           }}
         >
           <Text style={styles.s_button_text}>Log In</Text>
@@ -92,32 +120,32 @@ function Signup({ navigation, route }) {
   );
 }
 
-const addUserAccount = (
-  userName,
-  password,
-  confirmpass,
-  accounts,
-  emailAddr,
-  navigation
-) => {
-  if (password !== confirmpass) {
-    return Alert.alert("Password not matching.");
-  }
-  if (!(emailAddr.includes("@") || emailAddr.includes(".com"))) {
-    return Alert.alert("Invalid email address entered.");
-  }
-  if (Object.keys(accounts).includes(userName)) {
-    return Alert.alert("User already exists.");
-  }
-  accounts[userName] = password;
+// const addUserAccount = (
+//   userName,
+//   password,
+//   confirmpass,
+//   accounts,
+//   emailAddr,
+//   navigation
+// ) => {
+//   if (password !== confirmpass) {
+//     return Alert.alert("Password not matching.");
+//   }
+//   if (!(emailAddr.includes("@") || emailAddr.includes(".com"))) {
+//     return Alert.alert("Invalid email address entered.");
+//   }
+//   if (Object.keys(accounts).includes(userName)) {
+//     return Alert.alert("User already exists.");
+//   }
 
-  Alert.alert("Success", userName + " has been added successfully.", [
-    {
-      text: "OK",
-      onPress: () => navigation.navigate("Login", { paramKey: accounts }),
-    },
-  ]);
-  return;
-};
+//   // accounts[userName] = password;
+//   Alert.alert("Success", userName + " has been added successfully.", [
+//     {
+//       text: "OK",
+//       onPress: () => navigation.navigate("Login", { paramKey: accounts }),
+//     },
+//   ]);
+//   return;
+// };
 
 export default Signup;
