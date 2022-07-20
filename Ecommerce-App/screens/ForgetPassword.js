@@ -17,8 +17,8 @@ import styles from "../styles/Styles";
 
 function Forgotpass({ navigation, route }) {
   const [addr, setAddr] = React.useState("");
-  const { user } = useAuth();
-  // const [accounts, setAcc] = React.useState(route.params.paramKey);
+  const { passResetEmail } = useAuth();
+  console.log(addr);
   return (
     <View style={styles.container}>
       <ImageBackground
@@ -44,11 +44,8 @@ function Forgotpass({ navigation, route }) {
         <Pressable
           style={styles.p_button}
           onPress={() => {
-            if (Object.keys(accounts).includes(addr)) {
-              Alert.alert("Recover email have been sent.");
-            } else {
-              Alert.alert("Error: User does not exist");
-            }
+            // console.log("inside func" + addr);
+            passResetEmail(temp);
           }}
         >
           <Text style={styles.s_button_text}>Send Reset Link</Text>

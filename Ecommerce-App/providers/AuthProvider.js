@@ -11,6 +11,11 @@ const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(app.currentUser);
   const realmRef = useRef(null);
   const [projectData, setProjectData] = useState([]);
+  // setUser(app.currentUser);
+  // console.log(String(app.emailPasswordAuth.resetPassword()));
+  // console.log(app.currentUser.customData["name"]);
+  // console.log(projectData);
+  // console.log(app.currentUser.id);
   useEffect(() => {
     if (!user) {
       return;
@@ -32,18 +37,20 @@ const AuthProvider = ({ children }) => {
     Realm.open(config).then((userRealm) => {
       realmRef.current = userRealm;
       const users = userRealm.objects("User");
-      users.addListener(() => {
-        // The user custom data object may not have been loaded on
-        // the server side yet when a user is first registered.
-        if (users.length === 0) {
-          setProjectData([myProject]);
-        } else {
-          const { memberOf } = users[0];
-          setProjectData([...memberOf]);
-        }
-      });
+      // users.addListener(() => {
+      //   // The user custom data object may not have been loaded on
+      //   // the server side yet when a user is first registered.
+      //   if (users.length === 0) {
+      //     setProjectData([myProject]);
+      //   } else {
+      //     // console.log("hello");
+      //     const { memberOf } = users[0];
+      //     setProjectData([...memberOf]);
+      //   }
+      // });
     });
     // TODO: Return a cleanup function that closes the user realm.
+    // console.log("Is this the error?");
     return () => {
       // cleanup function
       const userRealm = realmRef.current;
@@ -59,6 +66,7 @@ const AuthProvider = ({ children }) => {
   const signIn = async (email, password) => {
     const creds = Realm.Credentials.emailPassword(email, password);
     const newUser = await app.logIn(creds);
+    // console.log(newUser.id);
     setUser(newUser);
   };
   // The signUp function takes an email and password and uses the
@@ -66,11 +74,21 @@ const AuthProvider = ({ children }) => {
   const signUp = async (email, password) => {
     await app.emailPasswordAuth.registerUser({ email, password });
   };
+
+  const resetPass = async (email, password) => {
+    await app.emailPasswordAuth.callResetPasswordFunction({ email, password });
+  };
+  const deleteUser = async (email) => {
+    await app.deleteUser(email);
+  };
+  const passResetEmail = async (emailAddress) => {
+    await app.emailPasswordAuth.sendResetPasswordEmail({ emailAddress });
+  };
   // The signOut function calls the logOut function on the currently
   // logged in user
   const signOut = () => {
     if (user == null) {
-      console.warn("Not logged in, can't log out!");
+      // console.warn("Not logged in, can't log out!");
       return;
     }
     user.logOut();
@@ -82,6 +100,9 @@ const AuthProvider = ({ children }) => {
         signUp,
         signIn,
         signOut,
+        resetPass,
+        deleteUser,
+        passResetEmail,
         user,
         projectData, // list of projects the user is a memberOf
       }}

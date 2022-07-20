@@ -19,17 +19,15 @@ function Signup({ navigation, route }) {
   const [pass, setPass] = useState("");
   const [confirmpass, setConfirmPass] = useState("");
   const [addr, setAddr] = useState("");
-  // const [accounts, setAcc] = useState(route.params.paramKey);
   const [userName, setUserName] = useState("");
-  const { user, signUp, signIn } = useAuth();
-  //   console.log("Hello", accounts.admin);
+  const { user, signUp } = useAuth();
   // The onPressSignUp method calls AuthProvider.signUp with the
   // email/password in state and then signs in.
-  useEffect(() => {
-    if (user) {
-      navigation.navigate("Homescreen");
-    }
-  }, [user]);
+  // useEffect(() => {
+  //   if (user) {
+  //     navigation.navigate("Homescreen");
+  //   }
+  // }, [user]);
 
   const onPressSignUp = async () => {
     if (pass !== confirmpass) {
@@ -41,7 +39,6 @@ function Signup({ navigation, route }) {
 
     try {
       await signUp(addr, pass);
-      // signIn(addr, pass);
       await Alert.alert("Success", userName + " has been added successfully.", [
         {
           text: "OK",
@@ -52,14 +49,6 @@ function Signup({ navigation, route }) {
     } catch (error) {
       Alert.alert(`Failed to sign up: ${error.message}`);
     }
-
-    // accounts[userName] = password;
-    // Alert.alert("Success", userName + " has been added successfully.", [
-    //   {
-    //     text: "OK",
-    //     onPress: () => navigation.navigate("Login", { paramKey: accounts }),
-    //   },
-    // ]);
   };
 
   return (
@@ -113,7 +102,7 @@ function Signup({ navigation, route }) {
             navigation.navigate("Login");
           }}
         >
-          <Text style={styles.s_button_text}>Log In</Text>
+          <Text style={styles.s_button_text}>Go Back</Text>
         </Pressable>
       </ImageBackground>
     </View>

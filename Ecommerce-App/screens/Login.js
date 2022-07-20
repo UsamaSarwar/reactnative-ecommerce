@@ -19,10 +19,7 @@ import styles from "../styles/Styles.js";
 export default function Login({ navigation, route }) {
   const [addr, setAddr] = useState("");
   const [pass, setPass] = useState("");
-  // const [accounts, setAcc] = useState(route.params.paramKey);
   const { user, signIn } = useAuth();
-  // console.log(app.currentUser.identities);
-  // console.log(app.currentUser);
   useEffect(() => {
     if (user) {
       navigation.navigate("Homescreen");
@@ -35,7 +32,7 @@ export default function Login({ navigation, route }) {
     console.log("Press sign in");
     try {
       await signIn(addr, pass);
-      await navigation.navigate("Homescreen");
+      navigation.navigate("Homescreen");
     } catch (error) {
       Alert.alert(`Failed to sign in: ${error.message}`);
     }
@@ -87,15 +84,3 @@ export default function Login({ navigation, route }) {
     </View>
   );
 }
-
-// const userExists = (userName, password, accounts, navigation) => {
-//   let isUsername = Object.keys(accounts).includes(userName);
-
-//   if (isUsername === true && accounts[userName] === password) {
-//     console.log("User logged in");
-//     navigation.navigate("Homescreen");
-//   } else {
-//     console.log("Incorrect Credentials");
-//     Alert.alert("Incorrect Credentials");
-//   }
-// };

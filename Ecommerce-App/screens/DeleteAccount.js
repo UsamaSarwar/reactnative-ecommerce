@@ -16,12 +16,9 @@ import {
 } from "react-native";
 
 import styles from "../styles/Styles.js";
-import Updatepassword from "./UpdatePassword.js";
-import Deleteaccount from "./DeleteAccount.js";
 
-export default function Homescreen({ navigation }) {
-  // console.log(app.currentUser.identities);
-  const { user, signOut } = useAuth();
+export default function Deleteaccount({ navigation }) {
+  const { signOut, user, deleteUser } = useAuth();
   return (
     <View style={styles.container}>
       <ImageBackground
@@ -37,41 +34,26 @@ export default function Homescreen({ navigation }) {
             style={styles.logo}
           ></Image>
         </View>
-
-        <Pressable
-          style={styles.p_button}
-          onPress={() => navigation.navigate(Updatepassword)}
-        >
-          <Text style={styles.p_button_text}>Update Password</Text>
-        </Pressable>
-
-        <Pressable
-          style={styles.p_button}
-          onPress={() => navigation.navigate(Deleteaccount)}
-        >
-          <Text style={styles.p_button_text}>Delete Account</Text>
-        </Pressable>
-
         <Pressable
           style={styles.p_button}
           onPress={() =>
-            Alert.alert("Are you sure?", null, [
+            Alert.alert("Are you sure you want to delete this account?", null, [
               {
-                text: "Yes, Log Out",
+                text: "Yes, Delete Account",
                 style: "destructive",
                 onPress: () => {
-                  console.log("signing out");
-                  signOut();
-                  navigation.popToTop();
+                  console.log("Deleting Account");
+                  deleteUser(user);
+                  signOut(); //To locally signout the user
+                  navigation.navigate("Login");
                 },
               },
               { text: "Cancel", style: "cancel" },
             ])
           }
         >
-          <Text style={styles.p_button_text}>Sign Out</Text>
+          <Text style={styles.p_button_text}>Delete Account</Text>
         </Pressable>
-        <Text style={styles.random_text}>This is Home Screen</Text>
       </ImageBackground>
     </View>
   );
