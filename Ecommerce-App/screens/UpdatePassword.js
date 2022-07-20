@@ -31,65 +31,59 @@ export default function Updatepassword({ navigation }) {
         resizeMode="cover"
         style={styles.image}
       >
-        <View
-          style={{ justifyContent: "center", alignItems: "center", margin: 15 }}
-        >
+        <View style={styles.logoView}>
           <Image
             source={require("../assets/hu_logo.png")}
             style={styles.logo}
           ></Image>
         </View>
-        {/* <TextInput
-          style={styles.inputbox}
-          placeholder="Current Password"
-          secureTextEntry={true}
-          onChangeText={(text) => setCurrPass(text)}
-        /> */}
-        <TextInput
-          style={styles.inputbox}
-          placeholder="New Password"
-          secureTextEntry={true}
-          onChangeText={(text) => setNewPass(text)}
-        />
-        <TextInput
-          style={styles.inputbox}
-          placeholder="Confirm New Password"
-          secureTextEntry={true}
-          onChangeText={(text) => setConfirmNewPass(text)}
-        />
-        <Pressable
-          style={styles.p_button}
-          onPress={() =>
-            Alert.alert("Your password will be changed", null, [
-              {
-                text: "Confirm",
-                style: "destructive",
-                onPress: () => {
-                  console.log("Updating Password");
-                  if (confirmNewPass !== newPass) {
-                    Alert.alert("New passwords does not match.");
-                  } else if (newPass.length < 6 || newPass.length > 128) {
-                    Alert.alert(
-                      "password must be between 6 and 128 characters"
-                    );
-                  } else {
-                    resetPass(user.customData["name"], newPass);
-                    signOut();
-                    navigation.navigate("Login");
-                    Alert.alert(
-                      "Password changed successfully. Please login to your account again.",
-                      null,
-                      [{ text: "Ok, great!" }]
-                    );
-                  }
+        <View style={styles.fields}>
+          <TextInput
+            style={styles.inputbox}
+            placeholder="New Password"
+            secureTextEntry={true}
+            onChangeText={(text) => setNewPass(text)}
+          />
+          <TextInput
+            style={styles.inputbox}
+            placeholder="Confirm New Password"
+            secureTextEntry={true}
+            onChangeText={(text) => setConfirmNewPass(text)}
+          />
+          <Pressable
+            style={styles.p_button}
+            onPress={() =>
+              Alert.alert("Your password will be changed", null, [
+                {
+                  text: "Confirm",
+                  style: "destructive",
+                  onPress: () => {
+                    console.log("Updating Password");
+                    if (confirmNewPass !== newPass) {
+                      Alert.alert("New passwords does not match.");
+                    } else if (newPass.length < 6 || newPass.length > 128) {
+                      Alert.alert(
+                        "password must be between 6 and 128 characters"
+                      );
+                    } else {
+                      resetPass(user.customData["name"], newPass);
+                      signOut();
+                      navigation.navigate("Login");
+                      Alert.alert(
+                        "Password changed successfully. Please login to your account again.",
+                        null,
+                        [{ text: "Ok, great!" }]
+                      );
+                    }
+                  },
                 },
-              },
-              { text: "Cancel", style: "cancel" },
-            ])
-          }
-        >
-          <Text style={styles.p_button_text}>Update Password</Text>
-        </Pressable>
+                { text: "Cancel", style: "cancel" },
+              ])
+            }
+          >
+            <Text style={styles.p_button_text}>Update Password</Text>
+          </Pressable>
+        </View>
       </ImageBackground>
     </View>
   );

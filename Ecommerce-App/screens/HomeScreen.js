@@ -29,9 +29,7 @@ export default function Homescreen({ navigation }) {
         resizeMode="cover"
         style={styles.image}
       >
-        <View
-          style={{ justifyContent: "center", alignItems: "center", margin: 15 }}
-        >
+        <View style={styles.logoView}>
           <Image
             source={require("../assets/hu_logo.png")}
             style={styles.logo}

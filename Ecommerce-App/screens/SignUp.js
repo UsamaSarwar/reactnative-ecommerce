@@ -58,52 +58,51 @@ function Signup({ navigation, route }) {
         resizeMode="cover"
         style={styles.image}
       >
-        <View
-          style={{ justifyContent: "center", alignItems: "center", margin: 15 }}
-        >
+        <View style={styles.logoView}>
           <Image
             source={require("../assets/hu_logo.png")}
             style={styles.logo}
           ></Image>
         </View>
+        <View style={styles.fields}>
+          <TextInput style={styles.inputbox} placeholder="Full Name" />
+          <TextInput
+            style={styles.inputbox}
+            placeholder="Email Address"
+            onChangeText={(text) => setAddr(text)}
+          />
+          <TextInput
+            style={styles.inputbox}
+            placeholder="Username"
+            onChangeText={(text) => setUserName(text)}
+          />
 
-        <TextInput style={styles.inputbox} placeholder="Full Name" />
-        <TextInput
-          style={styles.inputbox}
-          placeholder="Email Address"
-          onChangeText={(text) => setAddr(text)}
-        />
-        <TextInput
-          style={styles.inputbox}
-          placeholder="Username"
-          onChangeText={(text) => setUserName(text)}
-        />
+          <TextInput
+            style={styles.inputbox}
+            placeholder="Password"
+            secureTextEntry={true}
+            onChangeText={(text) => setPass(text)}
+          />
 
-        <TextInput
-          style={styles.inputbox}
-          placeholder="Password"
-          secureTextEntry={true}
-          onChangeText={(text) => setPass(text)}
-        />
+          <TextInput
+            style={styles.inputbox}
+            placeholder="Confirm Password"
+            secureTextEntry={true}
+            onChangeText={(text) => setConfirmPass(text)}
+          />
 
-        <TextInput
-          style={styles.inputbox}
-          placeholder="Confirm Password"
-          secureTextEntry={true}
-          onChangeText={(text) => setConfirmPass(text)}
-        />
-
-        <Pressable style={styles.p_button} onPress={onPressSignUp}>
-          <Text style={styles.p_button_text}>Sign Up</Text>
-        </Pressable>
-        <Pressable
-          style={styles.s_button}
-          onPress={() => {
-            navigation.navigate("Login");
-          }}
-        >
-          <Text style={styles.s_button_text}>Go Back</Text>
-        </Pressable>
+          <Pressable style={styles.p_button} onPress={onPressSignUp}>
+            <Text style={styles.p_button_text}>Sign Up</Text>
+          </Pressable>
+          <Pressable
+            style={styles.s_button}
+            onPress={() => {
+              navigation.navigate("Login");
+            }}
+          >
+            <Text style={styles.s_button_text}>Go Back</Text>
+          </Pressable>
+        </View>
       </ImageBackground>
     </View>
   );

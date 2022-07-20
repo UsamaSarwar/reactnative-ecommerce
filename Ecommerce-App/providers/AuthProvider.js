@@ -91,7 +91,7 @@ const AuthProvider = ({ children }) => {
     await app.deleteUser(email);
   };
   const passResetEmail = async (emailAddress) => {
-    await app.emailPasswordAuth.sendResetPasswordEmail({ emailAddress });
+    await app.emailPasswordAuth.sendResetPasswordEmail(emailAddress);
   };
   // The signOut function calls the logOut function on the currently
   // logged in user

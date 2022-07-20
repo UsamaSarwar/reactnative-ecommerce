@@ -18,7 +18,7 @@ import styles from "../styles/Styles";
 function Forgotpass({ navigation, route }) {
   const [addr, setAddr] = React.useState("");
   const { passResetEmail } = useAuth();
-  console.log(addr);
+  // console.log(addr);
   return (
     <View style={styles.container}>
       <ImageBackground
@@ -26,37 +26,37 @@ function Forgotpass({ navigation, route }) {
         resizeMode="cover"
         style={styles.image}
       >
-        <View
-          style={{ justifyContent: "center", alignItems: "center", margin: 15 }}
-        >
+        <View style={styles.logoView}>
           <Image
             source={require("../assets/hu_logo.png")}
             style={styles.logo}
           ></Image>
         </View>
 
-        <TextInput
-          style={styles.inputbox}
-          placeholder="Recovery User Name"
-          onChangeText={(text) => setAddr(text)}
-        />
+        <View style={styles.fields}>
+          <TextInput
+            style={styles.inputbox}
+            placeholder="Recovery User Name"
+            onChangeText={(text) => setAddr(text)}
+          />
 
-        <Pressable
-          style={styles.p_button}
-          onPress={() => {
-            // console.log("inside func" + addr);
-            passResetEmail(temp);
-          }}
-        >
-          <Text style={styles.s_button_text}>Send Reset Link</Text>
-        </Pressable>
+          <Pressable
+            style={styles.p_button}
+            onPress={() => {
+              // console.log("inside func" + addr);
+              passResetEmail(addr);
+            }}
+          >
+            <Text style={styles.p_button_text}>Send Reset Link</Text>
+          </Pressable>
 
-        <Pressable
-          style={styles.s_button}
-          onPress={() => navigation.navigate("Login")}
-        >
-          <Text style={styles.s_button_text}>Go Back</Text>
-        </Pressable>
+          <Pressable
+            style={styles.s_button}
+            onPress={() => navigation.navigate("Login")}
+          >
+            <Text style={styles.s_button_text}>Go Back</Text>
+          </Pressable>
+        </View>
       </ImageBackground>
     </View>
   );

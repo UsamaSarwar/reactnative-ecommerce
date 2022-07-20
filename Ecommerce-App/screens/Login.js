@@ -45,41 +45,41 @@ export default function Login({ navigation, route }) {
         resizeMode="cover"
         style={styles.image}
       >
-        <View
-          style={{ justifyContent: "center", alignItems: "center", margin: 15 }}
-        >
+        <View style={styles.logoView}>
           <Image
             source={require("../assets/hu_logo.png")}
             style={styles.logo}
           ></Image>
         </View>
 
-        <TextInput
-          style={styles.inputbox}
-          placeholder="Email Address"
-          onChangeText={(text) => setAddr(text)}
-        />
-        <TextInput
-          style={styles.inputbox}
-          placeholder="Password"
-          secureTextEntry={true}
-          onChangeText={(text) => setPass(text)}
-        />
-        <Pressable style={styles.p_button} onPress={onPressLogIn}>
-          <Text style={styles.p_button_text}>Sign In</Text>
-        </Pressable>
-        <Pressable
-          style={styles.s_button}
-          onPress={() => navigation.navigate("Signup")}
-        >
-          <Text style={styles.s_button_text}>Sign Up</Text>
-        </Pressable>
-        <Pressable
-          style={styles.s_button}
-          onPress={() => navigation.navigate("Forgotpass")}
-        >
-          <Text style={styles.s_button_text}>Forgot Password?</Text>
-        </Pressable>
+        <View style={styles.fields}>
+          <TextInput
+            style={styles.inputbox}
+            placeholder="Email Address"
+            onChangeText={(text) => setAddr(text)}
+          />
+          <TextInput
+            style={styles.inputbox}
+            placeholder="Password"
+            secureTextEntry={true}
+            onChangeText={(text) => setPass(text)}
+          />
+          <Pressable style={styles.p_button} onPress={onPressLogIn}>
+            <Text style={styles.p_button_text}>Sign In</Text>
+          </Pressable>
+          <Pressable
+            style={styles.s_button}
+            onPress={() => navigation.navigate("Signup")}
+          >
+            <Text style={styles.s_button_text}>Sign Up</Text>
+          </Pressable>
+          <Pressable
+            style={styles.s_button}
+            onPress={() => navigation.navigate("Forgotpass")}
+          >
+            <Text style={styles.s_button_text}>Forgot Password?</Text>
+          </Pressable>
+        </View>
       </ImageBackground>
     </View>
   );

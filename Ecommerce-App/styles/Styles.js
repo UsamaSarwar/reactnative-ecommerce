@@ -3,19 +3,32 @@ import { StyleSheet } from "react-native";
 export default styles = StyleSheet.create({
   container: {
     flex: 1,
+    // justifyContent: "space-between",
   },
   image: {
     flex: 1,
     justifyContent: "center",
     padding: 50,
   },
+  fields: {
+    backgroundColor: "rgba(255, 255, 255, .5)",
+    padding: 20,
+    borderRadius: 20,
+    // flex: 1,
+    // justifyContent: "space-around",
+  },
+  logoView: {
+    alignItems: "center",
+    marginBottom: 50,
+  },
   logo: {
-    width: 100,
-    height: 100,
+    width: 125,
+    height: 125,
   },
   headText: {
     paddingHorizontal: "2%",
     color: "purple",
+    paddingBottom: "5%",
   },
   random_text: {
     fontSize: 15,
@@ -64,8 +77,6 @@ export default styles = StyleSheet.create({
     lineHeight: 22,
     fontWeight: "bold",
     letterSpacing: 0.25,
-    color: "white",
-    textShadowColor: "grey",
-    textShadowRadius: 10,
+    color: "#AAAAAA",
   },
 });
