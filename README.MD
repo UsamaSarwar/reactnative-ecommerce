@@ -4,9 +4,10 @@
 
 A MERN stack based E-commerce application in development phase.
 
+- [Setup development environment for this app](https://reactnative.dev/docs/environment-setup)
+
 ## 🏃 How to build and run locally
 
-- [Setup development Environment](https://reactnative.dev/docs/environment-setup)
 - Build/Run on iOS 🍎
 
 ```
