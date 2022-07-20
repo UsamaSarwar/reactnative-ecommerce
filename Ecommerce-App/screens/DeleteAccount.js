@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 // import app from "../realmApp";
 import { useAuth } from "../providers/AuthProvider.js";
 import {
@@ -19,6 +19,7 @@ import styles from "../styles/Styles.js";
 
 export default function Deleteaccount({ navigation }) {
   const { signOut, user, deleteUser } = useAuth();
+  const [text, setText] = useState("");
   return (
     <View style={styles.container}>
       <ImageBackground
@@ -34,6 +35,15 @@ export default function Deleteaccount({ navigation }) {
             style={styles.logo}
           ></Image>
         </View>
+        <Text style={styles.headText}>
+          Please write "DELETE ACCOUNT" below:
+        </Text>
+        <TextInput
+          style={styles.inputbox}
+          placeholder="Confirmation Text"
+          secureTextEntry={true}
+          onChangeText={(text) => setText(text)}
+        />
         <Pressable
           style={styles.p_button}
           onPress={() =>
@@ -43,9 +53,13 @@ export default function Deleteaccount({ navigation }) {
                 style: "destructive",
                 onPress: () => {
                   console.log("Deleting Account");
-                  deleteUser(user);
-                  signOut(); //To locally signout the user
-                  navigation.navigate("Login");
+                  if (text === "DELETE ACCOUNT") {
+                    deleteUser(user);
+                    signOut(); //To locally signout the user
+                    navigation.navigate("Login");
+                  } else {
+                    Alert.alert("Confirmation text not valid");
+                  }
                 },
               },
               { text: "Cancel", style: "cancel" },

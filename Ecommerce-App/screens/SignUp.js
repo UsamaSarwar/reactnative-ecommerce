@@ -23,11 +23,11 @@ function Signup({ navigation, route }) {
   const { user, signUp } = useAuth();
   // The onPressSignUp method calls AuthProvider.signUp with the
   // email/password in state and then signs in.
-  // useEffect(() => {
-  //   if (user) {
-  //     navigation.navigate("Homescreen");
-  //   }
-  // }, [user]);
+  useEffect(() => {
+    if (user) {
+      navigation.navigate("Homescreen");
+    }
+  }, [user]);
 
   const onPressSignUp = async () => {
     if (pass !== confirmpass) {

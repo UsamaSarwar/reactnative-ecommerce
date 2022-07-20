@@ -22,7 +22,7 @@ export default function Updatepassword({ navigation }) {
   const [currPass, setCurrPass] = useState("");
   const [newPass, setNewPass] = useState("");
   const [confirmNewPass, setConfirmNewPass] = useState("");
-  const { user, resetPass } = useAuth();
+  const { user, resetPass, signOut } = useAuth();
 
   return (
     <View style={styles.container}>
@@ -68,18 +68,20 @@ export default function Updatepassword({ navigation }) {
                   console.log("Updating Password");
                   if (confirmNewPass !== newPass) {
                     Alert.alert("New passwords does not match.");
+                  } else if (newPass.length < 6 || newPass.length > 128) {
+                    Alert.alert(
+                      "password must be between 6 and 128 characters"
+                    );
                   } else {
                     resetPass(user.customData["name"], newPass);
+                    signOut();
+                    navigation.navigate("Login");
+                    Alert.alert(
+                      "Password changed successfully. Please login to your account again.",
+                      null,
+                      [{ text: "Ok, great!" }]
+                    );
                   }
-                  // UpdatePass(
-                  //   currPass,
-                  //   newPass,
-                  //   confirmNewPass,
-                  //   user,
-                  //   resetPass
-                  // );
-                  // signOut();
-                  // navigation.popToTop();
                 },
               },
               { text: "Cancel", style: "cancel" },

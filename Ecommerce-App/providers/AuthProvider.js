@@ -14,6 +14,7 @@ const AuthProvider = ({ children }) => {
   // setUser(app.currentUser);
   // console.log(String(app.emailPasswordAuth.resetPassword()));
   // console.log(app.currentUser.customData["name"]);
+  // console.log(user.id);
   // console.log(projectData);
   // console.log(app.currentUser.id);
   useEffect(() => {
@@ -76,7 +77,15 @@ const AuthProvider = ({ children }) => {
   };
 
   const resetPass = async (email, password) => {
-    await app.emailPasswordAuth.callResetPasswordFunction({ email, password });
+    try {
+      await app.emailPasswordAuth.callResetPasswordFunction({
+        email,
+        password,
+      });
+      // await app.emailPasswordAuth.resetPassword(token, tokenId);
+    } catch (err) {
+      console.log(err);
+    }
   };
   const deleteUser = async (email) => {
     await app.deleteUser(email);

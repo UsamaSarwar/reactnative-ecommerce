@@ -13,10 +13,18 @@ export default styles = StyleSheet.create({
     width: 100,
     height: 100,
   },
+  headText: {
+    paddingHorizontal: "2%",
+    color: "purple",
+  },
   random_text: {
-    fontSize: 24,
-    color: "blue",
-    margin: 36,
+    fontSize: 15,
+    color: "black",
+    paddingVertical: "1%",
+    paddingHorizontal: "19%",
+    // margin: 36,
+    borderWidth: 2,
+    borderRadius: 20,
   },
   inputbox: {
     height: 45,

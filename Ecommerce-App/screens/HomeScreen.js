@@ -71,7 +71,9 @@ export default function Homescreen({ navigation }) {
         >
           <Text style={styles.p_button_text}>Sign Out</Text>
         </Pressable>
-        <Text style={styles.random_text}>This is Home Screen</Text>
+        <Text style={styles.random_text}>
+          This is Home Screen for {user ? user.customData["name"] : ""}
+        </Text>
       </ImageBackground>
     </View>
   );
