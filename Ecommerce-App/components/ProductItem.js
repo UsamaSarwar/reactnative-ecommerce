@@ -22,20 +22,11 @@ import { Task } from "../schemas";
 import styles from "../styles/Styles";
 
 export default function ProductItem() {
+  const { tasks } = useTasks();
+  console.log(tasks);
   return (
     <FlatList
-      data={[
-        { key: "Devin" },
-        { key: "Dan" },
-        { key: "Dominic" },
-        { key: "Jackson" },
-        { key: "James" },
-        { key: "Joel" },
-        { key: "John" },
-        { key: "Jillian" },
-        { key: "Jimmy" },
-        { key: "Julie" },
-      ]}
+      data={tasks}
       renderItem={({ item }) => <Text style={styles.item}>{item.key}</Text>}
     />
   );
