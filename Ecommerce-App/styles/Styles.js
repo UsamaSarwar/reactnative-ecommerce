@@ -90,6 +90,7 @@ export default styles = StyleSheet.create({
     height: 60,
     alignItems: "center",
     opacity: 0.3,
+    flexDirection: "row-reverse",
   },
   userIcon: {
     width: 50,
