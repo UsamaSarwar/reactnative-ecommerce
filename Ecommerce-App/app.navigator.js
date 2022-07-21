@@ -9,28 +9,32 @@ import Homescreen from "./screens/HomeScreen";
 import Updatepassword from "./screens/UpdatePassword";
 import Deleteaccount from "./screens/DeleteAccount";
 import Setting from "./screens/Setting";
+import Addproduct from "./screens/AddProduct";
 
-import { AuthProvider } from "./providers/AuthProvider";
+import { useAuth } from "./providers/AuthProvider";
+import { TaskProvider } from "react-native";
 
 const Stack = createNativeStackNavigator();
 
 export default function AppNavigator() {
+  // const { user, projectData } = useAuth();
   return (
-    <AuthProvider>
-      <NavigationContainer>
-        <Stack.Navigator
-          screenOptions={{ headerShown: false }}
-          initialRouteName="Login"
-        >
-          <Stack.Screen name="Login" component={Login} />
-          <Stack.Screen name="Signup" component={Signup} />
-          <Stack.Screen name="Forgotpass" component={Forgotpass} />
-          <Stack.Screen name="Homescreen" component={Homescreen} />
-          <Stack.Screen name="Setting" component={Setting} />
-          <Stack.Screen name="Updatepassword" component={Updatepassword} />
-          <Stack.Screen name="Deleteaccount" component={Deleteaccount} />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </AuthProvider>
+    // <TaskProvider user={user} projectPartition={projectData[0].partition}>
+    <NavigationContainer>
+      <Stack.Navigator
+        screenOptions={{ headerShown: false }}
+        initialRouteName="Login"
+      >
+        <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="Signup" component={Signup} />
+        <Stack.Screen name="Forgotpass" component={Forgotpass} />
+        <Stack.Screen name="Homescreen" component={Homescreen} />
+        <Stack.Screen name="Addproduct" component={Addproduct} />
+        <Stack.Screen name="Setting" component={Setting} />
+        <Stack.Screen name="Updatepassword" component={Updatepassword} />
+        <Stack.Screen name="Deleteaccount" component={Deleteaccount} />
+      </Stack.Navigator>
+    </NavigationContainer>
+    // </TaskProvider>
   );
 }

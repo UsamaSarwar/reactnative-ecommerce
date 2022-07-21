@@ -20,50 +20,47 @@ import {
 import styles from "../styles/Styles.js";
 import ProductItem from "../components/ProductItem.js";
 import { TasksProvider } from "../providers/TasksProvider.js";
+import { ProductsProvider } from "../providers/ProductsProvider.js";
+import Footer from "../components/Footer.js";
+import TasksView from "../views/TasksView.js";
 
 export default function Homescreen({ navigation, route }) {
   const { user, signOut, projectData } = useAuth();
-  const { admin } = route.params;
+  // const { admin } = route.params;
+  const admin = user.customData["userType"] === "admin" ? true : false;
   console.log(projectData[0].partition);
-  // console.log(admin);
+
+  console.log(route.params);
   const AdminPanel = () => {
     return (
       <Icon
-        style={styles.userIcon}
-        name="user"
+        style={styles.plusIcon}
+        name="plus"
         size={30}
         color="#900"
-        onPress={() => {}}
+        onPress={() => {
+          navigation.navigate("Addproduct");
+        }}
       />
     );
   };
-  // const { admin } = route.params;
-  // const { navigation, route } = props;
-  // console.log(admin);
-  console.log(route.params);
+
   return (
-    <View style={styles.container}>
+    <View style={styles.main}>
       <ImageBackground
         source={require("../assets/home.jpeg")}
         resizeMode="cover"
         style={styles.image}
       >
         <TasksProvider user={user} projectPartition={projectData[0].partition}>
+          {/* <TasksView
+            navigation={navigation}
+            route={route}
+            name={projectData[0].name}
+          /> */}
           <ProductItem />
         </TasksProvider>
-        <View style={styles.footer}>
-          <Icon
-            style={styles.userIcon}
-            name="user"
-            size={30}
-            color="#900"
-            onPress={() => {
-              navigation.navigate("Setting");
-            }}
-          />
-          <Icon style={styles.logOutIcon} name="logout" />
-          {admin ? AdminPanel() : void 0}
-        </View>
+        <Footer />
       </ImageBackground>
     </View>
   );

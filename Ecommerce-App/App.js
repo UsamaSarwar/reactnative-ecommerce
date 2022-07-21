@@ -13,8 +13,8 @@ import { AuthProvider } from "./providers/AuthProvider";
 import { useState } from "react";
 export default function App() {
   return (
-    // <AuthProvider>
-    <AppNavigator />
-    // </AuthProvider>
+    <AuthProvider>
+      <AppNavigator />
+    </AuthProvider>
   );
 }

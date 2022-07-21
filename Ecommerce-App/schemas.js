@@ -1,6 +1,6 @@
 import { ObjectId } from "bson";
 
-class Task {
+export class Task {
   /**
    *
    * @param {string} name The name of the task
@@ -33,4 +33,24 @@ class Task {
   };
 }
 
-export { Task };
+export class Product {
+  /**
+   *
+   * @param {string} name The name of the task
+   * @param {ObjectId} id The ObjectId to create this task with
+   */
+  constructor({ name, partition, id = new ObjectId() }) {
+    this._partition = partition;
+    this._id = id;
+    this.name = name;
+  }
+
+  static schema = {
+    name: "Task",
+    properties: {
+      _id: "objectId",
+      name: "string",
+    },
+    primaryKey: "_id",
+  };
+}

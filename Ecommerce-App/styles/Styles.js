@@ -1,14 +1,18 @@
 import { StyleSheet } from "react-native";
+import { withSafeAreaInsets } from "react-native-safe-area-context";
 
 export default styles = StyleSheet.create({
+  main: {
+    flex: 1,
+  },
+
   container: {
     flex: 1,
     // justifyContent: "space-between",
   },
   image: {
     flex: 1,
-    justifyContent: "center",
-    padding: 50,
+    justifyContent: "space-between",
   },
   fields: {
     backgroundColor: "rgba(255, 255, 255, .5)",
@@ -79,30 +83,29 @@ export default styles = StyleSheet.create({
     letterSpacing: 0.25,
     color: "#AAAAAA",
   },
+
   footer: {
-    position: "absolute",
-    flex: 1,
-    left: 0,
-    right: 0,
-    bottom: -10,
-    backgroundColor: "cyan",
+    backgroundColor: "white",
     flexDirection: "row",
-    height: 60,
+    justifyContent: "space-between",
+    padding: 15,
+  },
+  icon: {
+    fontSize: 30,
+  },
+  plusIcon: {
+    fontSize: 100,
+    color: "white",
+    borderRadius: 100,
+    backgroundColor: "#1da099",
+    borderColor: "white",
+    opacity: 1,
+    width: 100,
+    height: 100,
+    borderWidth: 2,
+    // position: "absolute",
+    justifyContent: "center",
     alignItems: "center",
-    opacity: 0.3,
-    flexDirection: "row-reverse",
-  },
-  userIcon: {
-    width: 50,
-    height: 50,
-    borderRadius: 50 / 2,
-    marginTop: 7,
-  },
-  logOutIcon: {
-    // marginTop: 20,
-    fontSize: 20,
-    marginBottom: 13,
-    marginRight: 65,
   },
   inputContainer: {
     padding: 5,

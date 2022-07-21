@@ -25,9 +25,15 @@ export default function ProductItem() {
   const { tasks } = useTasks();
   console.log(tasks);
   return (
+    // <FlatList/>
     <FlatList
       data={tasks}
-      renderItem={({ item }) => <Text style={styles.item}>{item.key}</Text>}
+      renderItem={({ item }) => <Text>{item.name}</Text>}
     />
+    // <View>
+    //   {tasks.map((task) => (
+    //     <Text key={task.id}>{task.name}</Text>
+    //   ))}
+    // </View>
   );
 }

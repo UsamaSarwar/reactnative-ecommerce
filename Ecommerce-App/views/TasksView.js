@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-import { View, Button } from "react-native";
+import { View, Button, Text } from "react-native";
 import Styles from "../styles/Styles";
 
 // import { Overlay } from "react-native-elements";
@@ -8,45 +8,51 @@ import Styles from "../styles/Styles";
 
 import { useTasks } from "../providers/TasksProvider";
 import { TaskItem } from "../components/TaskItem";
-import { AddTask } from "../components/AddTask";
+// import { AddTask } from "../components/AddTask";
 
-export default function TasksView({ navigation, route }) {
-  const { name } = route.params;
+export default function TasksView({ navigation, route, name }) {
+  // const { name } = route.params;
 
-  const [overlayVisible, setOverlayVisible] = useState(false);
+  // const [overlayVisible, setOverlayVisible] = useState(false);
 
   const { tasks, createTask } = useTasks();
-  useEffect(() => {
-    navigation.setOptions({
-      headerRight: function Header() {
-        return <AddTask createTask={createTask} />;
-      },
-      title: `${name}'s Tasks`,
-    });
-  }, []);
-
+  // useEffect(() => {
+  //   navigation.setOptions({
+  //     headerRight: function Header() {
+  //       return <AddTask createTask={createTask} />;
+  //     },
+  //     title: `${name}'s Tasks`,
+  //   });
+  // }, []);
+  console.log(tasks);
+  // return <></>;
   return (
     <View>
-      {tasks.map((task) =>
-        task ? <TaskItem key={`${task._id}`} task={task} /> : null
-      )}
-
-      {name === "My Project" ? (
-        <>
-          <View style={styles.manageTeamButtonContainer}>
-            <Button
-              title="Manage Team"
-              onPress={() => setOverlayVisible(true)}
-            />
-          </View>
-          <Overlay
-            isVisible={overlayVisible}
-            onBackdropPress={() => setOverlayVisible(false)}
-          >
-            <ManageTeam />
-          </Overlay>
-        </>
-      ) : null}
+      {tasks.map((task) => (
+        <Text>{task.name}</Text>
+      ))}
     </View>
+    // <View>
+    //   {tasks.map((task) =>
+    //     task ? <TaskItem key={`${task._id}`} task={task} /> : null
+    //   )}
+    // {/*
+    // {name === "My Project" ? (
+    //   <>
+    //     <View style={styles.manageTeamButtonContainer}>
+    //       <Button
+    //         title="Manage Team"
+    //         onPress={() => setOverlayVisible(true)}
+    //       />
+    //     </View>
+    //     <Overlay
+    //       isVisible={overlayVisible}
+    //       onBackdropPress={() => setOverlayVisible(false)}
+    //     >
+    //       <ManageTeam />
+    //     </Overlay>
+    //   </>
+    // ) : null} */}
+    // </View>
   );
 }

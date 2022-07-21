@@ -33,11 +33,8 @@ export default function Login({ navigation, route }) {
   const onPressLogIn = async () => {
     console.log("Pressed sign in");
     try {
-      const newUser = await signIn(addr, pass);
-      // console.log(newUser.customData["userType"]);
-      navigation.navigate("Homescreen", {
-        admin: newUser.customData["userType"] === "admin" ? true : false,
-      });
+      await signIn(addr, pass);
+      navigation.navigate("Homescreen");
     } catch (error) {
       Alert.alert(`Failed to sign in: ${error.message}`);
     }
