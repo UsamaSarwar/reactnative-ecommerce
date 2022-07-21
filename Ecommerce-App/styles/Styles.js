@@ -96,8 +96,13 @@ export default styles = StyleSheet.create({
     width: 50,
     height: 50,
     borderRadius: 50 / 2,
-    marginLeft: 20,
     marginTop: 7,
+  },
+  logOutIcon: {
+    // marginTop: 20,
+    fontSize: 20,
+    marginBottom: 13,
+    marginRight: 65,
   },
   inputContainer: {
     padding: 5,

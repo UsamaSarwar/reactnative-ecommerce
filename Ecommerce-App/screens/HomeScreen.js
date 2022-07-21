@@ -1,5 +1,5 @@
 import React from "react";
-import Icon from "react-native-vector-icons/FontAwesome";
+import Icon from "react-native-vector-icons/AntDesign";
 
 import { useAuth } from "../providers/AuthProvider.js";
 import {
@@ -47,6 +47,7 @@ export default function Homescreen({ navigation, route }) {
               navigation.navigate("Setting");
             }}
           />
+          <Icon style={styles.logOutIcon} name="logout" />
         </View>
       </ImageBackground>
     </View>
