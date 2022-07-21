@@ -36,7 +36,7 @@ function Forgotpass({ navigation, route }) {
         <View style={styles.fields}>
           <TextInput
             style={styles.inputbox}
-            placeholder="Recovery User Name"
+            placeholder="Recovery Email Address"
             onChangeText={(text) => setAddr(text)}
           />
 

@@ -39,7 +39,7 @@ function Signup({ navigation, route }) {
 
     try {
       await signUp(addr, pass);
-      await Alert.alert("Success", userName + " has been added successfully.", [
+      await Alert.alert("Success", addr + " has been added successfully.", [
         {
           text: "OK",
           onPress: () => navigation.navigate("Login"),

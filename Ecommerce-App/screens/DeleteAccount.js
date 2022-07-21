@@ -40,7 +40,7 @@ export default function Deleteaccount({ navigation }) {
           <TextInput
             style={styles.inputbox}
             placeholder="Confirmation Text"
-            secureTextEntry={true}
+            // secureTextEntry={true}
             onChangeText={(text) => setText(text)}
           />
           <Pressable
@@ -59,6 +59,9 @@ export default function Deleteaccount({ navigation }) {
                         deleteUser(user);
                         signOut(); //To locally signout the user
                         navigation.navigate("Login");
+                        Alert.alert(
+                          "Your account has been successfully deleted"
+                        );
                       } else {
                         Alert.alert("Confirmation text not valid");
                       }
