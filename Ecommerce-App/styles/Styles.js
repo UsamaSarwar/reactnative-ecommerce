@@ -79,4 +79,60 @@ export default styles = StyleSheet.create({
     letterSpacing: 0.25,
     color: "#AAAAAA",
   },
+  footer: {
+    position: "absolute",
+    flex: 1,
+    left: 0,
+    right: 0,
+    bottom: -10,
+    backgroundColor: "cyan",
+    flexDirection: "row",
+    height: 60,
+    alignItems: "center",
+    opacity: 0.3,
+  },
+  userIcon: {
+    width: 50,
+    height: 50,
+    borderRadius: 50 / 2,
+    marginLeft: 20,
+    marginTop: 7,
+  },
+  inputContainer: {
+    padding: 5,
+  },
+  inputStyle: {
+    borderColor: "black",
+    borderWidth: 1,
+    padding: 10,
+    borderRadius: 2,
+  },
+  manageTeamWrapper: {
+    width: 350,
+  },
+  manageTeamTitle: {
+    marginBottom: 10,
+  },
+  addTeamMemberInput: {
+    borderBottomColor: "black",
+    borderBottomWidth: 1,
+    marginTop: 5,
+    fontSize: 18,
+  },
+  manageTeamButtonContainer: {
+    textAlign: "left",
+    borderTopColor: "grey",
+    borderTopWidth: 1,
+    borderBottomColor: "grey",
+    borderBottomWidth: 1,
+  },
+  plusButton: {
+    fontSize: 28,
+    fontWeight: "400",
+  },
+  item: {
+    padding: 10,
+    fontSize: 18,
+    height: 44,
+  },
 });

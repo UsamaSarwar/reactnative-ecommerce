@@ -1,5 +1,6 @@
 import React from "react";
-// import app from "../realmApp";
+import Icon from "react-native-vector-icons/FontAwesome";
+
 import { useAuth } from "../providers/AuthProvider.js";
 import {
   StyleSheet,
@@ -13,15 +14,19 @@ import {
   Pressable,
   Image,
   Alert,
+  FlatList,
 } from "react-native";
 
 import styles from "../styles/Styles.js";
-import Updatepassword from "./UpdatePassword.js";
-import Deleteaccount from "./DeleteAccount.js";
+import ProductItem from "../components/ProductItem.js";
+import { TasksProvider } from "../providers/TasksProvider.js";
 
-export default function Homescreen({ navigation }) {
-  // console.log(app.currentUser.identities);
+export default function Homescreen({ navigation, route }) {
   const { user, signOut } = useAuth();
+  console.log(route);
+  // const { admin } = route.params;
+  // const { navigation, route } = props;
+  // console.log(admin);
   return (
     <View style={styles.container}>
       <ImageBackground
@@ -29,49 +34,20 @@ export default function Homescreen({ navigation }) {
         resizeMode="cover"
         style={styles.image}
       >
-        <View style={styles.logoView}>
-          <Image
-            source={require("../assets/hu_logo.png")}
-            style={styles.logo}
-          ></Image>
+        {/* <TasksProvider user={user} projectPartition={user ? user.id : user}>
+          <ProductItem />
+        </TasksProvider> */}
+        <View style={styles.footer}>
+          <Icon
+            style={styles.userIcon}
+            name="user"
+            size={30}
+            color="#900"
+            onPress={() => {
+              navigation.navigate("Setting");
+            }}
+          />
         </View>
-
-        <Pressable
-          style={styles.p_button}
-          onPress={() => navigation.navigate(Updatepassword)}
-        >
-          <Text style={styles.p_button_text}>Update Password</Text>
-        </Pressable>
-
-        <Pressable
-          style={styles.p_button}
-          onPress={() => navigation.navigate(Deleteaccount)}
-        >
-          <Text style={styles.p_button_text}>Delete Account</Text>
-        </Pressable>
-
-        <Pressable
-          style={styles.p_button}
-          onPress={() =>
-            Alert.alert("Are you sure?", null, [
-              {
-                text: "Yes, Log Out",
-                style: "destructive",
-                onPress: () => {
-                  console.log("signing out");
-                  signOut();
-                  navigation.popToTop();
-                },
-              },
-              { text: "Cancel", style: "cancel" },
-            ])
-          }
-        >
-          <Text style={styles.p_button_text}>Sign Out</Text>
-        </Pressable>
-        <Text style={styles.random_text}>
-          This is Home Screen for {user ? user.customData["name"] : ""}
-        </Text>
       </ImageBackground>
     </View>
   );

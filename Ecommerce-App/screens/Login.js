@@ -22,17 +22,22 @@ export default function Login({ navigation, route }) {
   const { user, signIn } = useAuth();
   useEffect(() => {
     if (user) {
-      navigation.navigate("Homescreen");
+      navigation.navigate("Homescreen", {
+        admin: user.customData["userType"] === "admin" ? true : false,
+      });
     }
   }, [user]);
 
   // The onPressSignIn method calls AuthProvider.signIn with the
   // email/password in state.
   const onPressLogIn = async () => {
-    console.log("Press sign in");
+    console.log("Pressed sign in");
     try {
-      await signIn(addr, pass);
-      navigation.navigate("Homescreen");
+      const newUser = await signIn(addr, pass);
+      // console.log(newUser.customData["userType"]);
+      navigation.navigate("Homescreen", {
+        admin: newUser.customData["userType"] === "admin" ? true : false,
+      });
     } catch (error) {
       Alert.alert(`Failed to sign in: ${error.message}`);
     }

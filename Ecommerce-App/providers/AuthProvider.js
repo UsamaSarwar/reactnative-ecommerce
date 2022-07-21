@@ -11,6 +11,7 @@ const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(app.currentUser);
   const realmRef = useRef(null);
   const [projectData, setProjectData] = useState([]);
+
   // setUser(app.currentUser);
   // console.log(String(app.emailPasswordAuth.resetPassword()));
   // console.log(app.currentUser.customData["name"]);
@@ -69,6 +70,7 @@ const AuthProvider = ({ children }) => {
     const newUser = await app.logIn(creds);
     // console.log(newUser.id);
     setUser(newUser);
+    return newUser;
   };
   // The signUp function takes an email and password and uses the
   // emailPassword authentication provider to register the user.

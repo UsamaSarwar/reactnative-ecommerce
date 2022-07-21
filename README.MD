@@ -28,7 +28,7 @@ v20.07.22
 - [x] Added functionality of Deleting Account and Reset Password
 - [x] Fixed Logo position
 
-Demonstration of application at this version can be found [here](https://youtu.be/CpGDpmLg0pI)
+Demonstration of application at this version can be found [here](https://www.youtube.com/watch?v=DJoHO6Ya51E)
 
 v17.07.22
 
