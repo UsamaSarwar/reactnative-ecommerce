@@ -37,10 +37,7 @@ export default function Homescreen({ navigation, route }) {
           resizeMode="cover"
           style={styles.image}
         >
-          <TasksProvider user={user} projectPartition={`project=${user.id}`}>
-            <ProductItem></ProductItem>
-          </TasksProvider>
-          {/* {console.log(user.id)} */}
+          <ProductItem></ProductItem>
           <Footer navigation={navigation} />
         </ImageBackground>
       </View>

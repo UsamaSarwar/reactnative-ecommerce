@@ -12,29 +12,52 @@ import Setting from "./screens/Setting";
 import Addproduct from "./screens/AddProduct";
 
 import { useAuth } from "./providers/AuthProvider";
-import { TaskProvider } from "react-native";
+import { TasksProvider } from "./providers/TasksProvider";
 
 const Stack = createNativeStackNavigator();
 
 export default function AppNavigator() {
-  // const { user, projectData } = useAuth();
-  return (
-    // <TaskProvider user={user} projectPartition={projectData[0].partition}>
-    <NavigationContainer>
-      <Stack.Navigator
-        screenOptions={{ headerShown: false }}
-        initialRouteName="Login"
-      >
-        <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="Signup" component={Signup} />
-        <Stack.Screen name="Forgotpass" component={Forgotpass} />
-        <Stack.Screen name="Homescreen" component={Homescreen} />
-        <Stack.Screen name="Addproduct" component={Addproduct} />
-        <Stack.Screen name="Setting" component={Setting} />
-        <Stack.Screen name="Updatepassword" component={Updatepassword} />
-        <Stack.Screen name="Deleteaccount" component={Deleteaccount} />
-      </Stack.Navigator>
-    </NavigationContainer>
-    // </TaskProvider>
-  );
+  const { user, projectData } = useAuth();
+
+  if (user) {
+    return (
+      <TasksProvider user={user} projectPartition={`project=${user.id}`}>
+        <NavigationContainer>
+          <Stack.Navigator
+            screenOptions={{ headerShown: false }}
+            initialRouteName="Login"
+          >
+            <Stack.Screen name="Login" component={Login} />
+            <Stack.Screen name="Signup" component={Signup} />
+            <Stack.Screen name="Forgotpass" component={Forgotpass} />
+            <Stack.Screen name="Homescreen" component={Homescreen} />
+            <Stack.Screen name="Addproduct" component={Addproduct} />
+            <Stack.Screen name="Setting" component={Setting} />
+            <Stack.Screen name="Updatepassword" component={Updatepassword} />
+            <Stack.Screen name="Deleteaccount" component={Deleteaccount} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </TasksProvider>
+    );
+  } else {
+    return (
+      <NavigationContainer>
+        <Stack.Navigator
+          screenOptions={{ headerShown: false }}
+          initialRouteName="Login"
+        >
+          <Stack.Screen name="Login" component={Login} />
+          <Stack.Screen name="Signup" component={Signup} />
+          <Stack.Screen name="Forgotpass" component={Forgotpass} />
+          <Stack.Screen name="Homescreen" component={Homescreen} />
+          <Stack.Screen name="Addproduct" component={Addproduct} />
+          <Stack.Screen name="Setting" component={Setting} />
+          <Stack.Screen name="Updatepassword" component={Updatepassword} />
+          <Stack.Screen name="Deleteaccount" component={Deleteaccount} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    );
+  }
+  // <TaskProvider user={user} projectPartition={projectData[0].partition}>
+  // </TaskProvider>
 }

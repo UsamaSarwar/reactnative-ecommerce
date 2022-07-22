@@ -8,7 +8,7 @@ import { TasksProvider, useTasks } from "../providers/TasksProvider.js";
 
 export default function Footer({ navigation }) {
   const { user, signOut } = useAuth();
-  // const { createTask } = useTasks();
+  const { createTask } = useTasks();
   // const { createProduct } = useProducts();
   let admin = null;
   if (user) {

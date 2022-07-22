@@ -12,7 +12,7 @@ function Addproduct({ navigation, route }) {
   const [imageUri, setImageUri] = useState("");
   // const { createTask } = route.params.useTasks();
   const { user } = useAuth();
-  //   const { createTask } = useTasks();
+  const { createTask } = useTasks();
 
   // The onPressSignUp method calls AuthProvider.signUp with the
   // email/password in state and then signs in.
@@ -56,9 +56,21 @@ function Addproduct({ navigation, route }) {
         >
           <Text style={styles.p_button_text}>Upload Image</Text>
         </Pressable>
-        <Image source={{ uri: imageUri }} style={{ width: 200, height: 200 }} />
+        {imageUri ? (
+          <Image
+            source={{ uri: imageUri }}
+            style={{ width: 200, height: 200 }}
+          />
+        ) : (
+          void 0
+        )}
 
-        <Pressable style={styles.p_button}>
+        <Pressable
+          style={styles.p_button}
+          onPress={() => {
+            createTask(prodName);
+          }}
+        >
           <Text style={styles.p_button_text}>Add Item</Text>
         </Pressable>
       </View>
