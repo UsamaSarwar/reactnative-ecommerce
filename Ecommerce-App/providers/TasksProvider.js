@@ -49,6 +49,7 @@ const TasksProvider = ({ children, projectPartition }) => {
         realmRef.current = null;
         setTasks([]);
       }
+      // Realm.close();
     };
   }, [user, projectPartition]);
 

@@ -66,6 +66,7 @@ const AuthProvider = ({ children }) => {
         setProductData([]);
         setProjectData([]); // set project data to an empty array (this prevents the array from staying in state on logout)
       }
+      // Realm.close();
     };
   }, [user]);
 

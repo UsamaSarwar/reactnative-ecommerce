@@ -51,6 +51,7 @@ const ProductsProvider = ({ children, userPartition }) => {
         realmRef.current = null;
         setProducts([]);
       }
+      // Realm.close();
     };
   }, [user, userPartition]);
 

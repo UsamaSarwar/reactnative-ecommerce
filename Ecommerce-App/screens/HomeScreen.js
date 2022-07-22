@@ -26,8 +26,10 @@ import Footer from "../components/Footer.js";
 
 export default function Homescreen({ navigation, route }) {
   const { user, projectData } = useAuth();
+  // const id = user.id;
   // console.log(user.customData["name"]);
   if (user) {
+    const id = user.id;
     return (
       <View style={styles.main}>
         <ImageBackground
@@ -37,9 +39,9 @@ export default function Homescreen({ navigation, route }) {
         >
           <TasksProvider user={user} projectPartition={`project=${user.id}`}>
             <ProductItem></ProductItem>
-            <Footer navigation={navigation} />
-            {/* <Footer navigation={navigation} /> */}
           </TasksProvider>
+          {/* {console.log(user.id)} */}
+          <Footer navigation={navigation} />
         </ImageBackground>
       </View>
     );
