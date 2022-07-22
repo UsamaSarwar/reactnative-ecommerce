@@ -4,9 +4,11 @@ import { useAuth } from "../providers/AuthProvider.js";
 import { View, Alert } from "react-native";
 import styles from "../styles/Styles.js";
 import { useProducts } from "../providers/ProductsProvider.js";
+import { TasksProvider, useTasks } from "../providers/TasksProvider.js";
 
 export default function Footer({ navigation }) {
   const { user, signOut } = useAuth();
+  const { createTask } = useTasks();
   // const { createProduct } = useProducts();
   let admin = null;
   if (user) {

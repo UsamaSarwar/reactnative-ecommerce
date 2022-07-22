@@ -19,16 +19,16 @@ const ProductsProvider = ({ children, userPartition }) => {
   useEffect(() => {
     // Enables offline-first: opens a local realm immediately without waiting
     // for the download of a synchronized realm to be completed.
-    const OpenRealmBehaviorConfiguration = {
-      type: "openImmediately",
-    };
+    // const OpenRealmBehaviorConfiguration = {
+    //   type: "openImmediately",
+    // };
     const config = {
       schema: [Product.schema],
       sync: {
         user: user,
         partitionValue: userPartition,
-        newRealmFileBehavior: OpenRealmBehaviorConfiguration,
-        existingRealmFileBehavior: OpenRealmBehaviorConfiguration,
+        // newRealmFileBehavior: OpenRealmBehaviorConfiguration,
+        // existingRealmFileBehavior: OpenRealmBehaviorConfiguration,
       },
     };
     // open a realm for this particular project
@@ -118,7 +118,7 @@ const ProductsProvider = ({ children, userPartition }) => {
 const useProducts = () => {
   const product = useContext(ProductsContext);
   if (product == null) {
-    throw new Error("useTasks() called outside of a TasksProvider?"); // an alert is not placed because this is an error for the developer not the user
+    throw new Error("useTasks() called outside of a ProductProvider?"); // an alert is not placed because this is an error for the developer not the user
   }
   return product;
 };

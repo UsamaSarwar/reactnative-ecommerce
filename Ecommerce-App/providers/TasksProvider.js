@@ -8,50 +8,49 @@ const TasksContext = React.createContext(null);
 const TasksProvider = ({ children, projectPartition }) => {
   const [tasks, setTasks] = useState([]);
   const { user } = useAuth();
-  // console.log(user);
+
   // Use a Ref to store the realm rather than the state because it is not
   // directly rendered, so updating it should not trigger a re-render as using
   // state would.
   const realmRef = useRef(null);
-  if (user) {
-    useEffect(() => {
-      // Enables offline-first: opens a local realm immediately without waiting
-      // for the download of a synchronized realm to be completed.
-      const OpenRealmBehaviorConfiguration = {
-        type: "openImmediately",
-      };
-      const config = {
-        schema: [Task.schema],
-        sync: {
-          user: user,
-          partitionValue: projectPartition,
-          newRealmFileBehavior: OpenRealmBehaviorConfiguration,
-          existingRealmFileBehavior: OpenRealmBehaviorConfiguration,
-        },
-      };
-      // open a realm for this particular project
-      Realm.open(config).then((projectRealm) => {
-        realmRef.current = projectRealm;
 
-        const syncTasks = projectRealm.objects("Task");
-        let sortedTasks = syncTasks.sorted("name");
+  useEffect(() => {
+    // Enables offline-first: opens a local realm immediately without waiting
+    // for the download of a synchronized realm to be completed.
+    const OpenRealmBehaviorConfiguration = {
+      type: "openImmediately",
+    };
+    const config = {
+      schema: [Task.schema],
+      sync: {
+        user: user,
+        partitionValue: projectPartition,
+        newRealmFileBehavior: OpenRealmBehaviorConfiguration,
+        existingRealmFileBehavior: OpenRealmBehaviorConfiguration,
+      },
+    };
+    // open a realm for this particular project
+    Realm.open(config).then((projectRealm) => {
+      realmRef.current = projectRealm;
+
+      const syncTasks = projectRealm.objects("Task");
+      let sortedTasks = syncTasks.sorted("name");
+      setTasks([...sortedTasks]);
+      sortedTasks.addListener(() => {
         setTasks([...sortedTasks]);
-        sortedTasks.addListener(() => {
-          setTasks([...sortedTasks]);
-        });
       });
+    });
 
-      return () => {
-        // cleanup function
-        const projectRealm = realmRef.current;
-        if (projectRealm) {
-          projectRealm.close();
-          realmRef.current = null;
-          setTasks([]);
-        }
-      };
-    }, [user, projectPartition]);
-  }
+    return () => {
+      // cleanup function
+      const projectRealm = realmRef.current;
+      if (projectRealm) {
+        projectRealm.close();
+        realmRef.current = null;
+        setTasks([]);
+      }
+    };
+  }, [user, projectPartition]);
 
   const createTask = (newTaskName) => {
     const projectRealm = realmRef.current;

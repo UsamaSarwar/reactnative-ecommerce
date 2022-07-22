@@ -20,13 +20,13 @@ export default function Login({ navigation, route }) {
   const [addr, setAddr] = useState("");
   const [pass, setPass] = useState("");
   const { user, signIn } = useAuth();
-  useEffect(() => {
-    if (user) {
-      navigation.navigate("Homescreen", {
-        admin: user.customData["userType"] === "admin" ? true : false,
-      });
-    }
-  }, [user]);
+  // useEffect(() => {
+  //   if (user) {
+  //     navigation.navigate("Homescreen", {
+  //       admin: user.customData["userType"] === "admin" ? true : false,
+  //     });
+  //   }
+  // }, [user]);
 
   // The onPressSignIn method calls AuthProvider.signIn with the
   // email/password in state.

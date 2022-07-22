@@ -27,9 +27,9 @@ export default function ProductItem() {
   // const { tasks } = useTasks();
   // console.log(tasks);
 
-  const { products } = useProducts;
+  const { tasks } = useTasks();
 
-  console.log(products);
+  console.log(tasks);
   return (
     <FlatList
       data={tasks}

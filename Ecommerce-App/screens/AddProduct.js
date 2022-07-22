@@ -1,14 +1,17 @@
 import React, { useState } from "react";
-import { Text, View, TextInput, Pressable, Alert } from "react-native";
+import { Text, View, TextInput, Pressable, Alert, Image } from "react-native";
 import styles from "../styles/Styles.js";
 import ImagePicker from "react-native-image-crop-picker";
-
+import { TasksProvider, useTasks } from "../providers/TasksProvider.js";
+import { useAuth } from "../providers/AuthProvider.js";
 function Addproduct({ navigation, route }) {
   const [prodName, setProdName] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
   const [price, setPrice] = useState("");
-  const [image, setImage] = useState("");
+  const [imageUri, setImageUri] = useState("");
+  // const { createTask } = route.params.useTasks();
+  const { user } = useAuth();
   //   const { createTask } = useTasks();
 
   // The onPressSignUp method calls AuthProvider.signUp with the
@@ -39,35 +42,22 @@ function Addproduct({ navigation, route }) {
           secureTextEntry={true}
           onChangeText={(text) => setDescription(text)}
         />
-
-        {/* <Pressable
-          // style={styles.inputbox}
-          // placeholder="Insert Image File"
-          // secureTextEntry={true}
-          onChangeText={(text) =>
-            ImagePicker.openCamera({
-              width: 300,
-              height: 400,
-              cropping: true,
-            }).then((image) => {
-              console.log(image);
-            })
-          }
-        /> */}
         <Pressable
           style={styles.p_button}
           onPress={() => {
-            ImagePicker.openCamera({
-              width: 300,
-              height: 400,
+            ImagePicker.openPicker({
+              width: 1000,
+              height: 1000,
               cropping: true,
             }).then((image) => {
-              console.log(image);
+              setImageUri(image.path);
             });
           }}
         >
           <Text style={styles.p_button_text}>Upload Image</Text>
         </Pressable>
+        <Image source={{ uri: imageUri }} style={{ width: 200, height: 200 }} />
+
         <Pressable style={styles.p_button}>
           <Text style={styles.p_button_text}>Add Item</Text>
         </Pressable>

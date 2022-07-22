@@ -19,27 +19,31 @@ import {
 
 import styles from "../styles/Styles.js";
 import ProductItem from "../components/ProductItem.js";
-// import { TasksProvider } from "../providers/TasksProvider.js";
-// import { ProductsProvider } from "../providers/ProductsProvider.js";
+import { TasksProvider } from "../providers/TasksProvider.js";
+import { ProductsProvider } from "../providers/ProductsProvider.js";
 import { ImagePicker } from "react-native-image-crop-picker";
 import Footer from "../components/Footer.js";
 
 export default function Homescreen({ navigation, route }) {
   const { user, projectData } = useAuth();
-  console.log(user.customData["name"]);
-
-  return (
-    <View style={styles.main}>
-      <ImageBackground
-        source={require("../assets/home.jpeg")}
-        resizeMode="cover"
-        style={styles.image}
-      >
-        <Footer navigation={navigation} />
-        {/* <ProductsProvider user={user} userPartition={`user=${user.id}`}>
-          <Footer navigation={navigation} />
-        </ProductsProvider> */}
-      </ImageBackground>
-    </View>
-  );
+  // console.log(user.customData["name"]);
+  if (user) {
+    return (
+      <View style={styles.main}>
+        <ImageBackground
+          source={require("../assets/home.jpeg")}
+          resizeMode="cover"
+          style={styles.image}
+        >
+          <TasksProvider user={user} projectPartition={`project=${user.id}`}>
+            <ProductItem></ProductItem>
+            <Footer navigation={navigation} />
+            {/* <Footer navigation={navigation} /> */}
+          </TasksProvider>
+        </ImageBackground>
+      </View>
+    );
+  } else {
+    return null;
+  }
 }
