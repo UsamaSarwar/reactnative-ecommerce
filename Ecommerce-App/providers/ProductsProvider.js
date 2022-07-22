@@ -9,6 +9,8 @@ const ProductsProvider = ({ children, userPartition }) => {
   const [products, setProducts] = useState([]);
   const { user } = useAuth();
 
+  // console.log(user.customData["_id"]);
+
   // Use a Ref to store the realm rather than the state because it is not
   // directly rendered, so updating it should not trigger a re-render as using
   // state would.
@@ -33,7 +35,7 @@ const ProductsProvider = ({ children, userPartition }) => {
     Realm.open(config).then((projectRealm) => {
       realmRef.current = projectRealm;
 
-      const syncProducts = projectRealm.objects("Task");
+      const syncProducts = projectRealm.objects("Product");
       let sortedProducts = syncProducts.sorted("name");
       setProducts([...sortedProducts]);
       sortedProducts.addListener(() => {
@@ -53,13 +55,14 @@ const ProductsProvider = ({ children, userPartition }) => {
   }, [user, userPartition]);
 
   const createProduct = (newProductName) => {
+    // console.log(user);
     const projectRealm = realmRef.current;
     projectRealm.write(() => {
       // Create a new task in the same partition -- that is, in the same project.
       projectRealm.create(
         "Product",
         new Product({
-          name: newProductName || "New Task",
+          name: newProductName || "New Product",
           partition: userPartition,
         })
       );

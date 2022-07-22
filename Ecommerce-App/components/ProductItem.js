@@ -15,6 +15,8 @@ import {
 
 import React, { useState } from "react";
 
+import { useProducts } from "../providers/ProductsProvider";
+
 import { useTasks } from "../providers/TasksProvider";
 
 import { Task } from "../schemas";
@@ -22,18 +24,16 @@ import { Task } from "../schemas";
 import styles from "../styles/Styles";
 
 export default function ProductItem() {
-  const { tasks } = useTasks();
-  console.log(tasks);
+  // const { tasks } = useTasks();
+  // console.log(tasks);
+
+  const { products } = useProducts;
+
+  console.log(products);
   return (
-    // <FlatList/>
     <FlatList
       data={tasks}
       renderItem={({ item }) => <Text>{item.name}</Text>}
     />
-    // <View>
-    //   {tasks.map((task) => (
-    //     <Text key={task.id}>{task.name}</Text>
-    //   ))}
-    // </View>
   );
 }

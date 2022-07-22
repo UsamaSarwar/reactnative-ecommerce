@@ -1,22 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { useAuth } from "../providers/AuthProvider.js";
-// import { launchImageLibrary } from "react-native-image-picker";
-import { TasksProvider } from "../providers/TasksProvider.js";
-import {
-  StyleSheet,
-  Text,
-  View,
-  SafeAreaView,
-  TextInput,
-  StatusBar,
-  Button,
-  ImageBackground,
-  Pressable,
-  Image,
-  Alert,
-} from "react-native";
+import React, { useState } from "react";
+import { Text, View, TextInput, Pressable, Alert } from "react-native";
 import styles from "../styles/Styles.js";
-import { useTasks } from "../providers/TasksProvider.js";
+import ImagePicker from "react-native-image-crop-picker";
 
 function Addproduct({ navigation, route }) {
   const [prodName, setProdName] = useState("");
@@ -55,12 +40,34 @@ function Addproduct({ navigation, route }) {
           onChangeText={(text) => setDescription(text)}
         />
 
-        <TextInput
-          style={styles.inputbox}
-          placeholder="Insert Image File"
-          secureTextEntry={true}
-          onChangeText={(text) => setImage(text)}
-        />
+        {/* <Pressable
+          // style={styles.inputbox}
+          // placeholder="Insert Image File"
+          // secureTextEntry={true}
+          onChangeText={(text) =>
+            ImagePicker.openCamera({
+              width: 300,
+              height: 400,
+              cropping: true,
+            }).then((image) => {
+              console.log(image);
+            })
+          }
+        /> */}
+        <Pressable
+          style={styles.p_button}
+          onPress={() => {
+            ImagePicker.openCamera({
+              width: 300,
+              height: 400,
+              cropping: true,
+            }).then((image) => {
+              console.log(image);
+            });
+          }}
+        >
+          <Text style={styles.p_button_text}>Upload Image</Text>
+        </Pressable>
         <Pressable style={styles.p_button}>
           <Text style={styles.p_button_text}>Add Item</Text>
         </Pressable>
@@ -68,33 +75,5 @@ function Addproduct({ navigation, route }) {
     </View>
   );
 }
-
-// const addUserAccount = (
-//   userName,
-//   password,
-//   confirmpass,
-//   accounts,
-//   emailAddr,
-//   navigation
-// ) => {
-//   if (password !== confirmpass) {
-//     return Alert.alert("Password not matching.");
-//   }
-//   if (!(emailAddr.includes("@") || emailAddr.includes(".com"))) {
-//     return Alert.alert("Invalid email address entered.");
-//   }
-//   if (Object.keys(accounts).includes(userName)) {
-//     return Alert.alert("User already exists.");
-//   }
-
-//   // accounts[userName] = password;
-//   Alert.alert("Success", userName + " has been added successfully.", [
-//     {
-//       text: "OK",
-//       onPress: () => navigation.navigate("Login", { paramKey: accounts }),
-//     },
-//   ]);
-//   return;
-// };
 
 export default Addproduct;

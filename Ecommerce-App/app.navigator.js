@@ -18,6 +18,7 @@ const Stack = createNativeStackNavigator();
 
 export default function AppNavigator() {
   // const { user, projectData } = useAuth();
+  // console.log("Hello");
   return (
     // <TaskProvider user={user} projectPartition={projectData[0].partition}>
     <NavigationContainer>

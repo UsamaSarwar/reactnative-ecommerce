@@ -46,7 +46,7 @@ export class Product {
   }
 
   static schema = {
-    name: "Task",
+    name: "Product",
     properties: {
       _id: "objectId",
       name: "string",

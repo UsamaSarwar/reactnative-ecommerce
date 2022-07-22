@@ -1,25 +1,17 @@
 import React from "react";
 import Icon from "react-native-vector-icons/AntDesign";
 import { useAuth } from "../providers/AuthProvider.js";
-import {
-  StyleSheet,
-  Text,
-  View,
-  SafeAreaView,
-  TextInput,
-  StatusBar,
-  Button,
-  ImageBackground,
-  Pressable,
-  Image,
-  Alert,
-  FlatList,
-} from "react-native";
+import { View, Alert } from "react-native";
 import styles from "../styles/Styles.js";
+import { useProducts } from "../providers/ProductsProvider.js";
 
-export default function Footer({ navigation, route }) {
+export default function Footer({ navigation }) {
   const { user, signOut } = useAuth();
-  const admin = user.customData["userType"] === "admin" ? true : false;
+  // const { createProduct } = useProducts();
+  let admin = null;
+  if (user) {
+    admin = user.customData["userType"] === "admin" ? true : false;
+  }
   const AdminPanel = () => {
     return (
       <Icon
@@ -30,9 +22,12 @@ export default function Footer({ navigation, route }) {
         onPress={() => {
           navigation.navigate("Addproduct");
         }}
+        // onPress={createProduct("Dummy Productty")}
       />
     );
   };
+
+  console.log(user.name);
   return (
     <View>
       <View style={styles.footer}>

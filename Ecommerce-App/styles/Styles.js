@@ -85,7 +85,7 @@ export default styles = StyleSheet.create({
   },
 
   footer: {
-    backgroundColor: "white",
+    backgroundColor: "rgba(255, 255, 255, .5)",
     flexDirection: "row",
     justifyContent: "space-between",
     padding: 15,

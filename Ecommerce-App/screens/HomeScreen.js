@@ -19,31 +19,14 @@ import {
 
 import styles from "../styles/Styles.js";
 import ProductItem from "../components/ProductItem.js";
-import { TasksProvider } from "../providers/TasksProvider.js";
-import { ProductsProvider } from "../providers/ProductsProvider.js";
+// import { TasksProvider } from "../providers/TasksProvider.js";
+// import { ProductsProvider } from "../providers/ProductsProvider.js";
+import { ImagePicker } from "react-native-image-crop-picker";
 import Footer from "../components/Footer.js";
-import TasksView from "../views/TasksView.js";
 
 export default function Homescreen({ navigation, route }) {
-  const { user, signOut, projectData } = useAuth();
-  // const { admin } = route.params;
-  const admin = user.customData["userType"] === "admin" ? true : false;
-  console.log(projectData[0].partition);
-
-  console.log(route.params);
-  const AdminPanel = () => {
-    return (
-      <Icon
-        style={styles.plusIcon}
-        name="plus"
-        size={30}
-        color="#900"
-        onPress={() => {
-          navigation.navigate("Addproduct");
-        }}
-      />
-    );
-  };
+  const { user, projectData } = useAuth();
+  console.log(user.customData["name"]);
 
   return (
     <View style={styles.main}>
@@ -52,15 +35,10 @@ export default function Homescreen({ navigation, route }) {
         resizeMode="cover"
         style={styles.image}
       >
-        <TasksProvider user={user} projectPartition={projectData[0].partition}>
-          {/* <TasksView
-            navigation={navigation}
-            route={route}
-            name={projectData[0].name}
-          /> */}
-          <ProductItem />
-        </TasksProvider>
-        <Footer />
+        <Footer navigation={navigation} />
+        {/* <ProductsProvider user={user} userPartition={`user=${user.id}`}>
+          <Footer navigation={navigation} />
+        </ProductsProvider> */}
       </ImageBackground>
     </View>
   );
