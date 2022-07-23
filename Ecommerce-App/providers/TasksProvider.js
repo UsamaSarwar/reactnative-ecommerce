@@ -24,7 +24,7 @@ const TasksProvider = ({ children, projectPartition }) => {
       schema: [Task.schema],
       sync: {
         user: user,
-        partitionValue: projectPartition,
+        partitionValue: "project=62d9368379c1a7aeb844d2a2",
         newRealmFileBehavior: OpenRealmBehaviorConfiguration,
         existingRealmFileBehavior: OpenRealmBehaviorConfiguration,
       },
@@ -61,7 +61,7 @@ const TasksProvider = ({ children, projectPartition }) => {
         "Task",
         new Task({
           name: newTaskName || "New Task",
-          partition: projectPartition,
+          partition: "project=62d9368379c1a7aeb844d2a2", //Public Partition
         })
       );
     });

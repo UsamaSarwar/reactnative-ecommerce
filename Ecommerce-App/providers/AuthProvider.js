@@ -43,17 +43,17 @@ const AuthProvider = ({ children }) => {
     Realm.open(config).then((userRealm) => {
       realmRef.current = userRealm;
       const users = userRealm.objects("User");
-      // users.addListener(() => {
-      //   // The user custom data object may not have been loaded on
-      //   // the server side yet when a user is first registered.
-      //   if (users.length === 0) {
-      //     setProjectData([myProject]);
-      //   } else {
-      //     // console.log("hello");
-      //     const { memberOf } = users[0];
-      //     setProjectData([...memberOf]);
-      //   }
-      // });
+      users.addListener(() => {
+        // The user custom data object may not have been loaded on
+        // the server side yet when a user is first registered.
+        if (users.length === 0) {
+          setProjectData([myProject]);
+        } else {
+          // console.log("hello");
+          const { memberOf } = users[0];
+          setProjectData([...memberOf]);
+        }
+      });
     });
     // TODO: Return a cleanup function that closes the user realm.
     // console.log("Is this the error?");
