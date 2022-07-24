@@ -12,11 +12,19 @@ export class Task {
     partition,
     status = Task.STATUS_OPEN,
     id = new ObjectId(),
+    category,
+    price,
+    description,
+    image,
   }) {
     this._partition = partition;
     this._id = id;
     this.name = name;
     this.status = status;
+    this.category = category;
+    this.price = price;
+    this.description = description;
+    this.image = image;
   }
 
   static STATUS_OPEN = "Open";
@@ -28,6 +36,10 @@ export class Task {
       _id: "objectId",
       name: "string",
       status: "string",
+      category: "string",
+      price: "string",
+      description: "string",
+      image: "string",
     },
     primaryKey: "_id",
   };

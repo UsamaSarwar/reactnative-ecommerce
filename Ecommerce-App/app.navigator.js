@@ -58,6 +58,4 @@ export default function AppNavigator() {
       </NavigationContainer>
     );
   }
-  // <TaskProvider user={user} projectPartition={projectData[0].partition}>
-  // </TaskProvider>
 }

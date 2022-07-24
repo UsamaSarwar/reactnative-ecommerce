@@ -33,7 +33,7 @@ export default function ProductItem() {
   return (
     <FlatList
       data={tasks}
-      renderItem={({ item }) => <Text>{item.name}</Text>}
+      renderItem={({ item }) => <Text>{item.image}</Text>}
     />
   );
 }

@@ -29,7 +29,7 @@ export default function TasksView({ navigation, route, name }) {
   return (
     <View>
       {tasks.map((task) => (
-        <Text>{task.name}</Text>
+        <Text>{task["image"]}</Text>
       ))}
     </View>
     // <View>

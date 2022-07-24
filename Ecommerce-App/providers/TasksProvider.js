@@ -45,15 +45,15 @@ const TasksProvider = ({ children, projectPartition }) => {
       // cleanup function
       const projectRealm = realmRef.current;
       if (projectRealm) {
+        console.log("Realm Closed cleanup");
         projectRealm.close();
         realmRef.current = null;
         setTasks([]);
       }
-      // Realm.close();
     };
   }, [user, projectPartition]);
 
-  const createTask = (newTaskName) => {
+  const createTask = (newTaskName, category, price, description, image) => {
     const projectRealm = realmRef.current;
     projectRealm.write(() => {
       // Create a new task in the same partition -- that is, in the same project.
@@ -62,9 +62,14 @@ const TasksProvider = ({ children, projectPartition }) => {
         new Task({
           name: newTaskName || "New Task",
           partition: "project=62d9368379c1a7aeb844d2a2", //Public Partition
+          category: category,
+          price: price,
+          description: description,
+          image: image,
         })
       );
     });
+    console.log("Task Created");
   };
 
   const setTaskStatus = (task, status) => {

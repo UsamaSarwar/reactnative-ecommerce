@@ -50,6 +50,7 @@ function Addproduct({ navigation, route }) {
               height: 1000,
               cropping: true,
             }).then((image) => {
+              console.log(image.path);
               setImageUri(image.path);
             });
           }}
@@ -68,7 +69,7 @@ function Addproduct({ navigation, route }) {
         <Pressable
           style={styles.p_button}
           onPress={() => {
-            createTask(prodName);
+            createTask(prodName, category, price, description, imageUri);
           }}
         >
           <Text style={styles.p_button_text}>Add Item</Text>
