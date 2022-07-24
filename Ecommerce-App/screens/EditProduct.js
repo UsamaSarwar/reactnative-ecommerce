@@ -5,36 +5,58 @@ import ImagePicker from "react-native-image-crop-picker";
 import { TasksProvider, useTasks } from "../providers/TasksProvider.js";
 import { useAuth } from "../providers/AuthProvider.js";
 import { NativeBuffer } from "mongoose";
-function Addproduct({ navigation, route }) {
-  const [prodName, setProdName] = useState("");
-  const [description, setDescription] = useState("");
-  const [category, setCategory] = useState("");
-  const [price, setPrice] = useState("");
-  const [imageUri, setImageUri] = useState("");
-  const [imageForm, setImageForm] = useState("");
+function Editproduct({ navigation, route }) {
+  const { currItem } = route.params;
+  const [prodName, setProdName] = useState(currItem.name);
+  const [description, setDescription] = useState(currItem.description);
+  const [category, setCategory] = useState(currItem.category);
+  const [price, setPrice] = useState(currItem.price);
+  const [imageUri, setImageUri] = useState(currItem.image);
   // const { createTask } = route.params.useTasks();
   const { user } = useAuth();
-  const { createTask } = useTasks();
-
+  const { updateTask } = useTasks({ route });
+  const [imageForm, setImageForm] = useState("");
+  // console.log(currItem);
   // The onPressSignUp method calls AuthProvider.signUp with the
   // email/password in state and then signs in.
 
   return (
     <View style={styles.container}>
       <View style={styles.fields}>
+        <Pressable
+          style={styles.d_button}
+          onPress={() =>
+            Alert.alert("Are you sure you want to delete this product?", null, [
+              {
+                text: "Yes, Delete",
+                style: "destructive",
+                onPress: () => {
+                  console.log("deleting item");
+                },
+              },
+              { text: "Cancel", style: "cancel" },
+            ])
+          }
+        >
+          <Text style={styles.d_button_text}>Delete Item</Text>
+        </Pressable>
+
         <TextInput
           style={styles.inputbox}
           placeholder="Product Name"
+          defaultValue={prodName}
           onChangeText={(text) => setProdName(text)}
         />
         <TextInput
           style={styles.inputbox}
           placeholder="Category"
+          defaultValue={category}
           onChangeText={(text) => setCategory(text)}
         />
         <TextInput
           style={styles.inputbox}
           placeholder="Price"
+          defaultValue={price}
           onChangeText={(text) => setPrice(text)}
         />
 
@@ -42,6 +64,7 @@ function Addproduct({ navigation, route }) {
           style={styles.inputbox}
           placeholder="Product Description"
           multiline={true}
+          defaultValue={description}
           onChangeText={(text) => setDescription(text)}
         />
         <Pressable
@@ -53,6 +76,7 @@ function Addproduct({ navigation, route }) {
               cropping: true,
               includeBase64: true,
             }).then((image) => {
+              // console.log(image);
               setImageUri(image.data);
               setImageForm(image.mime);
             });
@@ -64,7 +88,8 @@ function Addproduct({ navigation, route }) {
         <Pressable
           style={styles.p_button}
           onPress={() => {
-            createTask(
+            updateTask(
+              currItem,
               prodName,
               category,
               price,
@@ -72,11 +97,11 @@ function Addproduct({ navigation, route }) {
               imageUri,
               imageForm
             );
-            Alert.alert(prodName + " added to the main inventory.");
+            Alert.alert(prodName + " is edited from main inventory.");
             navigation.navigate("Homescreen");
           }}
         >
-          <Text style={styles.p_button_text}>Add Item</Text>
+          <Text style={styles.p_button_text}>Edit Item</Text>
         </Pressable>
         {imageUri ? (
           <View style={{ marginBottom: 20, alignItems: "center" }}>
@@ -102,4 +127,4 @@ function Addproduct({ navigation, route }) {
   );
 }
 
-export default Addproduct;
+export default Editproduct;

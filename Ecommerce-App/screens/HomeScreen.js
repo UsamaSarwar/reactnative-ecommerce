@@ -24,12 +24,10 @@ import { ProductsProvider } from "../providers/ProductsProvider.js";
 import { ImagePicker } from "react-native-image-crop-picker";
 import Footer from "../components/Footer.js";
 
-export default function Homescreen({ navigation, route }) {
-  const { user, projectData } = useAuth();
-  // const id = user.id;
-  // console.log(user.customData["name"]);
+export default function Homescreen({ navigation }) {
+  const { user } = useAuth();
+
   if (user) {
-    const id = user.id;
     return (
       <View style={styles.main}>
         <ImageBackground
@@ -37,7 +35,7 @@ export default function Homescreen({ navigation, route }) {
           resizeMode="cover"
           style={styles.image}
         >
-          <ProductItem></ProductItem>
+          <ProductItem navigation={navigation} user={user} />
           <Footer navigation={navigation} />
         </ImageBackground>
       </View>

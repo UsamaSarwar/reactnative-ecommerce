@@ -53,7 +53,14 @@ const TasksProvider = ({ children, projectPartition }) => {
     };
   }, [user, projectPartition]);
 
-  const createTask = (newTaskName, category, price, description, image) => {
+  const createTask = (
+    newTaskName,
+    category,
+    price,
+    description,
+    image,
+    imageForm
+  ) => {
     const projectRealm = realmRef.current;
     projectRealm.write(() => {
       // Create a new task in the same partition -- that is, in the same project.
@@ -66,28 +73,33 @@ const TasksProvider = ({ children, projectPartition }) => {
           price: price,
           description: description,
           image: image,
+          imageForm: imageForm,
         })
       );
     });
     console.log("Task Created");
   };
 
-  const setTaskStatus = (task, status) => {
+  const updateTask = (
+    task,
+    prodName,
+    category,
+    price,
+    description,
+    image,
+    imageForm
+  ) => {
     // One advantage of centralizing the realm functionality in this provider is
     // that we can check to make sure a valid status was passed in here.
-    if (
-      ![
-        Task.STATUS_OPEN,
-        Task.STATUS_IN_PROGRESS,
-        Task.STATUS_COMPLETE,
-      ].includes(status)
-    ) {
-      throw new Error(`Invalid status: ${status}`);
-    }
     const projectRealm = realmRef.current;
 
     projectRealm.write(() => {
-      task.status = status;
+      task.name = prodName;
+      task.category = category;
+      task.price = price;
+      task.description = description;
+      task.image = image;
+      task.imageForm = imageForm;
     });
   };
 
@@ -108,7 +120,7 @@ const TasksProvider = ({ children, projectPartition }) => {
       value={{
         createTask,
         deleteTask,
-        setTaskStatus,
+        updateTask,
         tasks,
       }}
     >

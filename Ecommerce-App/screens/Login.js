@@ -22,9 +22,7 @@ export default function Login({ navigation, route }) {
   const { user, signIn } = useAuth();
   useEffect(() => {
     if (user) {
-      navigation.navigate("Homescreen", {
-        admin: user.customData["userType"] === "admin" ? true : false,
-      });
+      navigation.navigate("Homescreen");
     }
   }, [user]);
 
@@ -67,7 +65,7 @@ export default function Login({ navigation, route }) {
             onChangeText={(text) => setPass(text)}
           />
           <Pressable style={styles.p_button} onPress={onPressLogIn}>
-            <Text style={styles.p_button_text}>Sign In</Text>
+            <Text style={styles.p_button_text}>Log In</Text>
           </Pressable>
           <Pressable
             style={styles.s_button}

@@ -1,5 +1,4 @@
 import { StyleSheet } from "react-native";
-import { withSafeAreaInsets } from "react-native-safe-area-context";
 
 export default styles = StyleSheet.create({
   main: {
@@ -84,6 +83,24 @@ export default styles = StyleSheet.create({
     color: "#AAAAAA",
   },
 
+  d_button: {
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 12,
+    paddingHorizontal: 32,
+    borderRadius: 15,
+    elevation: 3,
+    backgroundColor: "red",
+    marginBottom: 24,
+  },
+  d_button_text: {
+    fontSize: 21,
+    lineHeight: 21,
+    fontWeight: "bold",
+    letterSpacing: 0.25,
+    color: "white",
+  },
+
   footer: {
     backgroundColor: "rgba(255, 255, 255, .5)",
     flexDirection: "row",
@@ -104,7 +121,6 @@ export default styles = StyleSheet.create({
     height: 100,
     borderWidth: 2,
     // position: "absolute",
-    justifyContent: "center",
     alignItems: "center",
   },
   inputContainer: {

@@ -24,7 +24,6 @@ export default function Footer({ navigation }) {
         onPress={() => {
           navigation.navigate("Addproduct");
         }}
-        // onPress={createProduct("Dummy Productty")}
       />
     );
   };
@@ -33,24 +32,24 @@ export default function Footer({ navigation }) {
   return (
     <View>
       <View style={styles.footer}>
-        <Icon
-          style={styles.icon}
-          name="logout"
-          onPress={() =>
-            Alert.alert("Are you sure you want to Log Out?", null, [
-              {
-                text: "Yes, Log Out",
-                style: "destructive",
-                onPress: () => {
-                  console.log("signing out");
-                  signOut();
-                  navigation.navigate("Login");
-                },
-              },
-              { text: "Cancel", style: "cancel" },
-            ])
-          }
-        />
+        <View
+          style={{
+            flexDirection: "row",
+            width: "30%",
+            justifyContent: "space-between",
+          }}
+        >
+          <Icon
+            style={styles.icon}
+            name="home"
+            onPress={() => navigation.navigate("Homescreen")}
+          />
+          <Icon
+            style={styles.icon}
+            name="shoppingcart"
+            onPress={() => navigation.navigate("Cart")}
+          />
+        </View>
         <Icon
           style={styles.icon}
           name="user"

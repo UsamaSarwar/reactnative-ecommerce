@@ -20,6 +20,18 @@ yarn ios
 yarn android
 ```
 
+v24.07.22
+
+- [x] Added user types and handling (admin and normal)
+- [x] Added Functionality to homescreen for admin
+- [x] Linked a database for products
+- [x] Gave admin the functionality of modifying and adding products
+- [x] Displayed products on homescreen of users and admins
+- [x] Added a footer for users navigations in homescreen
+- [ ] Add Shopping cart and checkout page
+
+Demonstration of application at this version can be found [here](https://www.youtube.com/watch?v=HoSN6B9WkpE)
+
 v20.07.22
 
 - [x] Integrated MongoDB for storing accounts

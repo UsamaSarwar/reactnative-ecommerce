@@ -10,6 +10,8 @@ import Updatepassword from "./screens/UpdatePassword";
 import Deleteaccount from "./screens/DeleteAccount";
 import Setting from "./screens/Setting";
 import Addproduct from "./screens/AddProduct";
+import Editproduct from "./screens/EditProduct";
+import Cart from "./screens/Cart";
 
 import { useAuth } from "./providers/AuthProvider";
 import { TasksProvider } from "./providers/TasksProvider";
@@ -17,7 +19,7 @@ import { TasksProvider } from "./providers/TasksProvider";
 const Stack = createNativeStackNavigator();
 
 export default function AppNavigator() {
-  const { user, projectData } = useAuth();
+  const { user } = useAuth();
 
   if (user) {
     return (
@@ -32,7 +34,9 @@ export default function AppNavigator() {
             <Stack.Screen name="Forgotpass" component={Forgotpass} />
             <Stack.Screen name="Homescreen" component={Homescreen} />
             <Stack.Screen name="Addproduct" component={Addproduct} />
+            <Stack.Screen name="Editproduct" component={Editproduct} />
             <Stack.Screen name="Setting" component={Setting} />
+            <Stack.Screen name="Cart" component={Cart} />
             <Stack.Screen name="Updatepassword" component={Updatepassword} />
             <Stack.Screen name="Deleteaccount" component={Deleteaccount} />
           </Stack.Navigator>
@@ -52,6 +56,7 @@ export default function AppNavigator() {
           <Stack.Screen name="Homescreen" component={Homescreen} />
           <Stack.Screen name="Addproduct" component={Addproduct} />
           <Stack.Screen name="Setting" component={Setting} />
+          <Stack.Screen name="Cart" component={Cart} />
           <Stack.Screen name="Updatepassword" component={Updatepassword} />
           <Stack.Screen name="Deleteaccount" component={Deleteaccount} />
         </Stack.Navigator>

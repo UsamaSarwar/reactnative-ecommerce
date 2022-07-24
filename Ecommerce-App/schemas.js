@@ -16,6 +16,7 @@ export class Task {
     price,
     description,
     image,
+    imageForm,
   }) {
     this._partition = partition;
     this._id = id;
@@ -25,6 +26,7 @@ export class Task {
     this.price = price;
     this.description = description;
     this.image = image;
+    this.imageForm = imageForm;
   }
 
   static STATUS_OPEN = "Open";
@@ -40,6 +42,7 @@ export class Task {
       price: "string",
       description: "string",
       image: "string",
+      imageForm: "string",
     },
     primaryKey: "_id",
   };
