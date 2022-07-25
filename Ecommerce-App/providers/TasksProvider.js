@@ -92,7 +92,12 @@ const TasksProvider = ({ children, projectPartition }) => {
   ) => {
     // One advantage of centralizing the realm functionality in this provider is
     // that we can check to make sure a valid status was passed in here.
+
+    console.log(task);
+
     const projectRealm = realmRef.current;
+    console.log(projectRealm);
+    // console.log(projectRealm);
 
     projectRealm.write(() => {
       task.name = prodName;

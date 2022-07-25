@@ -89,7 +89,7 @@ export default function ProductItem({
     childToParent(item);
     elementRef.current.show();
   };
-  // console.log(tasks);
+  // console.log(tasks[0]);
   return (
     <FlatList
       data={tasks}

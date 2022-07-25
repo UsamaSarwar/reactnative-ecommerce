@@ -35,7 +35,7 @@ export default function Homescreen({ navigation }) {
     console.log(childData.name);
     // return <h1>{childData.name}</h1>;
   };
-  // console.log(data);
+  // console.log("@Homescreen:", user.customData.memberOf[0]);
   if (user) {
     return (
       <View style={styles.main}>
@@ -140,9 +140,6 @@ export default function Homescreen({ navigation }) {
                   // }}
                   onPress={() => {
                     console.log("Add to cart pressed");
-                    // console.log(data["_id"]);
-                    // console.log(String(editCart));
-                    // console.log(user.customData["memberOf"]);
                     addToCart(data["_id"]);
                   }}
                 >

@@ -34,6 +34,7 @@ const AuthProvider = ({ children }) => {
       sync: {
         user,
         partitionValue: `user=${user.id}`,
+        // partitionValue: null,
         newRealmFileBehavior: OpenRealmBehaviorConfiguration,
         existingRealmFileBehavior: OpenRealmBehaviorConfiguration,
       },
@@ -44,6 +45,7 @@ const AuthProvider = ({ children }) => {
     Realm.open(config).then((userRealm) => {
       realmRef.current = userRealm;
       const users = userRealm.objects("User");
+      console.log(users);
       users.addListener(() => {
         // The user custom data object may not have been loaded on
         // the server side yet when a user is first registered.
@@ -116,32 +118,13 @@ const AuthProvider = ({ children }) => {
     setUser(null);
   };
 
-  const addToCart = async (user, productID) => {
-    const productToAdd = { productID: productID };
-    // const mongo = await user.mongoClient("mongodb-atlas");
-    // const collection = mongo.db("tracker").collection("User");
-    // await app.currentUser.refreshCustomData();
-    // setProjectData([...user.customData.memberOf, productToAdd]);
-    setProjectData([...user.memberOf, productToAdd]);
-
+  const addToCart = async (productID) => {
     const userRealm = realmRef.current;
-
-    console.log(userRealm);
+    const users = userRealm.objects("User");
 
     userRealm.write(() => {
-      user.memberOf = projectData;
+      users[0].memberOf = [...users[0].memberOf, String(productID)];
     });
-
-    // console.log(mongo);
-    // console.log(projectData);
-    // try {
-    //   await collection.updateOne(
-    //     { _id: user.id },
-    //     { $set: { memberOf: projectData } }
-    //   );
-    // } catch (e) {
-    //   console.log(e);
-    // }
   };
 
   return (
