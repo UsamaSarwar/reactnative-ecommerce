@@ -11,7 +11,7 @@ const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(app.currentUser);
   const realmRef = useRef(null);
   const [projectData, setProjectData] = useState([]);
-  const [productData, setProductData] = useState([]);
+  // const [productData, setProductData] = useState([]);
 
   useEffect(() => {
     if (!user) {
@@ -63,7 +63,7 @@ const AuthProvider = ({ children }) => {
       if (userRealm) {
         userRealm.close();
         realmRef.current = null;
-        setProductData([]);
+        // setProductData([]);
         setProjectData([]); // set project data to an empty array (this prevents the array from staying in state on logout)
       }
       // Realm.close();
@@ -111,6 +111,25 @@ const AuthProvider = ({ children }) => {
     user.logOut();
     setUser(null);
   };
+
+  const addToCart = async (productID) => {
+    const productToAdd = { productID: productID };
+    const mongo = await user.mongoClient("mongodb-atlas");
+    const collection = mongo.db("tracker").collection("User");
+    // await app.currentUser.refreshCustomData();
+    setProjectData([...user.customData.memberOf, productToAdd]);
+    // console.log(mongo);
+    console.log(projectData);
+    try {
+      await collection.updateOne(
+        { _id: user.id },
+        { $set: { memberOf: projectData } }
+      );
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -120,8 +139,8 @@ const AuthProvider = ({ children }) => {
         resetPass,
         deleteUser,
         passResetEmail,
+        addToCart,
         user,
-        productData,
         projectData, // list of projects the user is a memberOf
       }}
     >
