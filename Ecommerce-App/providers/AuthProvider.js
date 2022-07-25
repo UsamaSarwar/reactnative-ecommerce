@@ -17,6 +17,7 @@ const AuthProvider = ({ children }) => {
     if (!user) {
       return;
     }
+    console.log("User Realm Openned");
     // The current user always has their own project, so we don't need
     // to wait for the user object to load before displaying that project.
     // const myProduct = { name: "My Product", partition: `user=${user.id}` };
@@ -58,6 +59,7 @@ const AuthProvider = ({ children }) => {
     // TODO: Return a cleanup function that closes the user realm.
     // console.log("Is this the error?");
     return () => {
+      console.log("Closing User realm");
       // cleanup function
       const userRealm = realmRef.current;
       if (userRealm) {
@@ -65,6 +67,8 @@ const AuthProvider = ({ children }) => {
         realmRef.current = null;
         // setProductData([]);
         setProjectData([]); // set project data to an empty array (this prevents the array from staying in state on logout)
+
+        console.log("Closing User realm");
       }
       // Realm.close();
     };
@@ -112,22 +116,32 @@ const AuthProvider = ({ children }) => {
     setUser(null);
   };
 
-  const addToCart = async (productID) => {
+  const addToCart = async (user, productID) => {
     const productToAdd = { productID: productID };
-    const mongo = await user.mongoClient("mongodb-atlas");
-    const collection = mongo.db("tracker").collection("User");
+    // const mongo = await user.mongoClient("mongodb-atlas");
+    // const collection = mongo.db("tracker").collection("User");
     // await app.currentUser.refreshCustomData();
-    setProjectData([...user.customData.memberOf, productToAdd]);
+    // setProjectData([...user.customData.memberOf, productToAdd]);
+    setProjectData([...user.memberOf, productToAdd]);
+
+    const userRealm = realmRef.current;
+
+    console.log(userRealm);
+
+    userRealm.write(() => {
+      user.memberOf = projectData;
+    });
+
     // console.log(mongo);
-    console.log(projectData);
-    try {
-      await collection.updateOne(
-        { _id: user.id },
-        { $set: { memberOf: projectData } }
-      );
-    } catch (e) {
-      console.log(e);
-    }
+    // console.log(projectData);
+    // try {
+    //   await collection.updateOne(
+    //     { _id: user.id },
+    //     { $set: { memberOf: projectData } }
+    //   );
+    // } catch (e) {
+    //   console.log(e);
+    // }
   };
 
   return (

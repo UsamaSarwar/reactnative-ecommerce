@@ -15,6 +15,7 @@ const TasksProvider = ({ children, projectPartition }) => {
   const realmRef = useRef(null);
 
   useEffect(() => {
+    console.log("Task Realm Openned");
     // Enables offline-first: opens a local realm immediately without waiting
     // for the download of a synchronized realm to be completed.
     const OpenRealmBehaviorConfiguration = {
@@ -45,10 +46,10 @@ const TasksProvider = ({ children, projectPartition }) => {
       // cleanup function
       const projectRealm = realmRef.current;
       if (projectRealm) {
-        console.log("Realm Closed cleanup");
         projectRealm.close();
         realmRef.current = null;
         setTasks([]);
+        console.log("Closing task realm");
       }
     };
   }, [user, projectPartition]);
