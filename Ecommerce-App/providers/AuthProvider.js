@@ -128,6 +128,18 @@ const AuthProvider = ({ children }) => {
     // await user.refreshCustomData();
   };
 
+  const removeFromCart = async (productID) => {
+    const userRealm = realmRef.current;
+    const memberOf = userRealm.objects("User")[0].memberOf;
+    const elementIndex = memberOf.indexOf(String(productID));
+    await userRealm.write(() => {
+      if (elementIndex > -1) {
+        // only splice array when item is found
+        memberOf.splice(elementIndex, 1); // 2nd parameter means remove one item only
+      }
+    });
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -138,6 +150,7 @@ const AuthProvider = ({ children }) => {
         deleteUser,
         passResetEmail,
         addToCart,
+        removeFromCart,
         user,
         projectData, // list of projects the user is a memberOf
       }}
