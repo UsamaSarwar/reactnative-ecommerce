@@ -15,7 +15,7 @@ const TasksProvider = ({ children, projectPartition }) => {
   const realmRef = useRef(null);
 
   useEffect(() => {
-    console.log("Task Realm Openned");
+    console.log("Task Realm Opened");
     // Enables offline-first: opens a local realm immediately without waiting
     // for the download of a synchronized realm to be completed.
     const OpenRealmBehaviorConfiguration = {
@@ -118,6 +118,18 @@ const TasksProvider = ({ children, projectPartition }) => {
     });
   };
 
+  const getCart = (memberOf) => {
+    // console.log(typeof memberOf);
+    let cart = [];
+    for (let x = 0; x < tasks.length; x++) {
+      // if(tasks[0])
+      // console.log(memberOf.includes(String(tasks[x]["_id"])));
+      if (memberOf.includes(String(tasks[x]["_id"]))) {
+        cart.push(tasks[x]);
+      }
+    }
+    return cart;
+  };
   // Render the children within the TaskContext's provider. The value contains
   // everything that should be made available to descendants that use the
   // useTasks hook.
@@ -127,6 +139,7 @@ const TasksProvider = ({ children, projectPartition }) => {
         createTask,
         deleteTask,
         updateTask,
+        getCart,
         tasks,
       }}
     >

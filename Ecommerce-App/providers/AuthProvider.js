@@ -122,9 +122,10 @@ const AuthProvider = ({ children }) => {
     const userRealm = realmRef.current;
     const users = userRealm.objects("User");
 
-    userRealm.write(() => {
+    await userRealm.write(() => {
       users[0].memberOf = [...users[0].memberOf, String(productID)];
     });
+    // await user.refreshCustomData();
   };
 
   return (

@@ -47,7 +47,10 @@ export default function Footer({ navigation }) {
           <Icon
             style={styles.icon}
             name="shoppingcart"
-            onPress={() => navigation.navigate("Cart")}
+            onPress={async () => {
+              await user.refreshCustomData();
+              navigation.navigate("Cart");
+            }}
           />
         </View>
         <Icon

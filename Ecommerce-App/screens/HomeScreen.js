@@ -27,7 +27,7 @@ import Footer from "../components/Footer.js";
 export default function Homescreen({ navigation }) {
   const { user, addToCart } = useAuth();
   const elementRef = useRef();
-  // console.log(user.customData["name"]);
+  console.log(user.customData.memberOf.length);
   const [data, setData] = useState("");
   // setData("hello");
   const childToParent = (childData) => {
@@ -138,9 +138,14 @@ export default function Homescreen({ navigation }) {
                   //   editCart(data["_id"]);
                   //   // Alert.alert("Item added to Cart");
                   // }}
-                  onPress={() => {
+                  onPress={async () => {
                     console.log("Add to cart pressed");
-                    addToCart(data["_id"]);
+                    await addToCart(data["_id"]);
+                    await user.refreshCustomData();
+                    Alert.alert(
+                      data.name,
+                      "has been added to your shopping cart."
+                    );
                   }}
                 >
                   <Text style={styles.p_button_text}>Add to Cart</Text>
