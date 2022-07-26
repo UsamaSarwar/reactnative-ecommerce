@@ -13,8 +13,8 @@ function Editproduct({ navigation, route }) {
   const [price, setPrice] = useState(currItem.price);
   const [imageUri, setImageUri] = useState(currItem.image);
   // const { createTask } = route.params.useTasks();
-  const { user } = useAuth();
-  const { updateTask } = useTasks({ route });
+  // const { user } = useAuth();
+  const { deleteTask, updateTask } = useTasks({ route });
   const [imageForm, setImageForm] = useState("");
   // console.log(currItem);
   // The onPressSignUp method calls AuthProvider.signUp with the
@@ -32,6 +32,8 @@ function Editproduct({ navigation, route }) {
                 style: "destructive",
                 onPress: () => {
                   console.log("deleting item");
+                  deleteTask(currItem);
+                  navigation.navigate("Homescreen");
                 },
               },
               { text: "Cancel", style: "cancel" },

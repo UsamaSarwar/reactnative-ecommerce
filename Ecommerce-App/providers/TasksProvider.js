@@ -114,8 +114,8 @@ const TasksProvider = ({ children, projectPartition }) => {
     const projectRealm = realmRef.current;
     projectRealm.write(() => {
       projectRealm.delete(task);
-      setTasks([...projectRealm.objects("Task").sorted("name")]);
     });
+    // setTasks([...projectRealm.objects("Task").sorted("name")]);
   };
 
   const getCart = (memberOf) => {
