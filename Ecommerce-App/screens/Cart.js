@@ -37,8 +37,8 @@ export default function Cart({ navigation }) {
         }}
         onPress={async () => {
           // console.log(item.name, "Delete Item from cart");
-          await removeFromCart(item["_id"]);
-          await user.refreshCustomData();
+          removeFromCart(item["_id"]);
+          user.refreshCustomData();
           // setCart(getCart(user.customData.memberOf));
           // console.log(cart.length);
           setCart((prevState) => {

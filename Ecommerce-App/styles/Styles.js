@@ -4,7 +4,6 @@ export default styles = StyleSheet.create({
   main: {
     flex: 1,
   },
-
   container: {
     flex: 1,
     // justifyContent: "space-between",
@@ -159,5 +158,17 @@ export default styles = StyleSheet.create({
     padding: 10,
     fontSize: 18,
     height: 44,
+  },
+  cartButtons: {
+    // borderRadius: "50%",
+    height: 30,
+    width: 30,
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 2,
+    borderRadius: 15,
+  },
+  cartIcons: {
+    fontSize: 20,
   },
 });

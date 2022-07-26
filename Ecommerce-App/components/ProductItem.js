@@ -10,6 +10,7 @@ export default function ProductItem({
   user,
   elementRef,
   childToParent,
+  setQuantity,
 }) {
   // const { tasks } = useTasks();
   // console.log(tasks);
@@ -86,6 +87,7 @@ export default function ProductItem({
   // };
 
   const renderSlide = (item) => {
+    setQuantity("1");
     childToParent(item);
     elementRef.current.show();
   };

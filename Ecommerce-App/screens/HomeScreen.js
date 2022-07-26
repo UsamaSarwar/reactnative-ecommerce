@@ -19,15 +19,13 @@ import {
 
 import styles from "../styles/Styles.js";
 import ProductItem from "../components/ProductItem.js";
-import { TasksProvider } from "../providers/TasksProvider.js";
-import { ProductsProvider } from "../providers/ProductsProvider.js";
-import { ImagePicker } from "react-native-image-crop-picker";
 import Footer from "../components/Footer.js";
 
 export default function Homescreen({ navigation }) {
   const { user, addToCart } = useAuth();
   const elementRef = useRef();
-  console.log(user.customData.memberOf.length);
+  const [quantity, setQuantity] = useState("1");
+  // console.log(user.customData.memberOf.length);
   const [data, setData] = useState("");
   // setData("hello");
   const childToParent = (childData) => {
@@ -50,6 +48,7 @@ export default function Homescreen({ navigation }) {
             elementRef={elementRef}
             childToParent={childToParent}
             setData={setData}
+            setQuantity={setQuantity}
           />
           <Footer navigation={navigation} />
           <SlidingUpPanel
@@ -131,6 +130,59 @@ export default function Homescreen({ navigation }) {
                   }}
                 >
                   <Text>PKR {data.price}</Text>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      // margin: 10,
+                    }}
+                  >
+                    <View style={styles.cartButtons}>
+                      <Icon
+                        style={styles.cartIcons}
+                        name="plus"
+                        onPress={() => {
+                          setQuantity((prevState) => {
+                            return String(Number(prevState) + 1);
+                          });
+                        }}
+                      />
+                    </View>
+                    <View
+                      style={{
+                        borderWidth: 2,
+                        width: 60,
+                        height: 30,
+                        justifyContent: "center",
+                        alignItems: "center",
+                        borderRadius: 15,
+                        marginLeft: 15,
+                        marginRight: 15,
+                      }}
+                    >
+                      <TextInput
+                        style={{
+                          fontSize: 18,
+                        }}
+                        placeholder="0"
+                        defaultValue={quantity}
+                      />
+                    </View>
+                    <View style={styles.cartButtons}>
+                      <Icon
+                        style={styles.cartIcons}
+                        name="minus"
+                        onPress={() => {
+                          setQuantity((prevState) => {
+                            if (Number(prevState) > 1) {
+                              return String(Number(prevState) - 1);
+                            } else {
+                              return prevState;
+                            }
+                          });
+                        }}
+                      />
+                    </View>
+                  </View>
                 </View>
                 <Pressable
                   style={styles.p_button}
