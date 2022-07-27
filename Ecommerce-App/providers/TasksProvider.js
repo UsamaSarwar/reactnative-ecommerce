@@ -119,17 +119,23 @@ const TasksProvider = ({ children, projectPartition }) => {
   };
 
   const getCart = (memberOf) => {
-    // console.log(typeof memberOf);
     let cart = [];
-    for (let x = 0; x < tasks.length; x++) {
-      // if(tasks[0])
-      // console.log(memberOf.includes(String(tasks[x]["_id"])));
-      if (memberOf.includes(String(tasks[x]["_id"]))) {
-        cart.push(tasks[x]);
+    let productIDs = [];
+
+    for (let productInfo = 0; productInfo < memberOf.length; productInfo++) {
+      productIDs.push(memberOf[productInfo]["type"]); //Pushing all Id's
+    } // Done for small optimization
+
+    for (let productIndex = 0; productIndex < tasks.length; productIndex++) {
+      if (productIDs.includes(String(tasks[productIndex]["_id"]))) {
+        let taskIndex = productIDs.indexOf(String(tasks[productIndex]["_id"]));
+        cart.push([tasks[productIndex], memberOf[taskIndex]["value"]]);
       }
     }
+    // console.log("Here", cart[2][0]);
     return cart;
   };
+
   // Render the children within the TaskContext's provider. The value contains
   // everything that should be made available to descendants that use the
   // useTasks hook.

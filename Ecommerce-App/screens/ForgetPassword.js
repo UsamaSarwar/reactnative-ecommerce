@@ -13,48 +13,51 @@ import {
   Alert,
 } from "react-native";
 import { useAuth } from "../providers/AuthProvider.js";
-import styles from "../styles/Styles";
+
+import universalStyles from "../styles/UniversalStyles";
+import inputStyles from "../styles/InputStyles";
+import buttonStyles from "../styles/ButtonStyles";
 
 function Forgotpass({ navigation, route }) {
   const [addr, setAddr] = React.useState("");
   const { passResetEmail } = useAuth();
   // console.log(addr);
   return (
-    <View style={styles.container}>
+    <View style={universalStyles.container}>
       <ImageBackground
         source={require("../assets/home.jpeg")}
         resizeMode="cover"
-        style={styles.image}
+        style={universalStyles.image}
       >
-        <View style={styles.logoView}>
+        <View style={universalStyles.logoView}>
           <Image
             source={require("../assets/hu_logo.png")}
-            style={styles.logo}
+            style={universalStyles.logo}
           ></Image>
         </View>
 
-        <View style={styles.fields}>
+        <View style={universalStyles.fields}>
           <TextInput
-            style={styles.inputbox}
+            style={inputStyles.textInput}
             placeholder="Recovery Email Address"
             onChangeText={(text) => setAddr(text)}
           />
 
           <Pressable
-            style={styles.p_button}
+            style={buttonStyles.p_button}
             onPress={() => {
               // console.log("inside func" + addr);
               passResetEmail(addr);
             }}
           >
-            <Text style={styles.p_button_text}>Send Reset Link</Text>
+            <Text style={buttonStyles.p_button_text}>Send Reset Link</Text>
           </Pressable>
 
           <Pressable
-            style={styles.s_button}
+            style={buttonStyles.s_button}
             onPress={() => navigation.navigate("Login")}
           >
-            <Text style={styles.s_button_text}>Go Back</Text>
+            <Text style={buttonStyles.s_button_text}>Go Back</Text>
           </Pressable>
         </View>
       </ImageBackground>

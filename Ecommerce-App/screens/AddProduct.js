@@ -36,6 +36,7 @@ function Addproduct({ navigation, route }) {
           style={styles.inputbox}
           placeholder="Price"
           onChangeText={(text) => setPrice(text)}
+          keyboardType="numeric"
         />
 
         <TextInput

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { useAuth } from "../providers/AuthProvider.js";
 import {
   StyleSheet,
   Text,
@@ -13,7 +12,12 @@ import {
   Image,
   Alert,
 } from "react-native";
-import styles from "../styles/Styles.js";
+
+import { useAuth } from "../providers/AuthProvider.js";
+
+import universalStyles from "../styles/UniversalStyles";
+import inputStyles from "../styles/InputStyles";
+import buttonStyles from "../styles/ButtonStyles";
 
 function Signup({ navigation, route }) {
   const [pass, setPass] = useState("");
@@ -52,55 +56,50 @@ function Signup({ navigation, route }) {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={universalStyles.container}>
       <ImageBackground
         source={require("../assets/home.jpeg")}
         resizeMode="cover"
-        style={styles.image}
+        style={universalStyles.image}
       >
-        <View style={styles.logoView}>
+        <View style={universalStyles.logoView}>
           <Image
             source={require("../assets/hu_logo.png")}
-            style={styles.logo}
+            style={universalStyles.logo}
           ></Image>
         </View>
-        <View style={styles.fields}>
-          <TextInput style={styles.inputbox} placeholder="Full Name" />
+        <View style={universalStyles.fields}>
+          <TextInput style={inputStyles.textInput} placeholder="Full Name" />
           <TextInput
-            style={styles.inputbox}
+            style={inputStyles.textInput}
             placeholder="Email Address"
             onChangeText={(text) => setAddr(text)}
           />
-          <TextInput
-            style={styles.inputbox}
-            placeholder="Username"
-            onChangeText={(text) => setUserName(text)}
-          />
 
           <TextInput
-            style={styles.inputbox}
+            style={inputStyles.textInput}
             placeholder="Password"
             secureTextEntry={true}
             onChangeText={(text) => setPass(text)}
           />
 
           <TextInput
-            style={styles.inputbox}
+            style={inputStyles.textInput}
             placeholder="Confirm Password"
             secureTextEntry={true}
             onChangeText={(text) => setConfirmPass(text)}
           />
 
-          <Pressable style={styles.p_button} onPress={onPressSignUp}>
-            <Text style={styles.p_button_text}>Sign Up</Text>
+          <Pressable style={buttonStyles.p_button} onPress={onPressSignUp}>
+            <Text style={buttonStyles.p_button_text}>Sign Up</Text>
           </Pressable>
           <Pressable
-            style={styles.s_button}
+            style={buttonStyles.s_button}
             onPress={() => {
               navigation.navigate("Login");
             }}
           >
-            <Text style={styles.s_button_text}>Go Back</Text>
+            <Text style={buttonStyles.s_button_text}>Go Back</Text>
           </Pressable>
         </View>
       </ImageBackground>

@@ -60,6 +60,7 @@ function Editproduct({ navigation, route }) {
           placeholder="Price"
           defaultValue={price}
           onChangeText={(text) => setPrice(text)}
+          keyboardType="numeric"
         />
 
         <TextInput

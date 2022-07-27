@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { useAuth } from "../providers/AuthProvider.js";
-import app from "../realmApp";
 import {
   StyleSheet,
   Text,
@@ -14,12 +12,20 @@ import {
   Image,
   Alert,
 } from "react-native";
-import styles from "../styles/Styles.js";
+
+import app from "../realmApp";
+
+import { useAuth } from "../providers/AuthProvider.js";
+
+import universalStyles from "../styles/UniversalStyles";
+import inputStyles from "../styles/InputStyles";
+import buttonStyles from "../styles/ButtonStyles";
 
 export default function Login({ navigation, route }) {
   const [addr, setAddr] = useState("");
   const [pass, setPass] = useState("");
   const { user, signIn } = useAuth();
+
   useEffect(() => {
     if (user) {
       navigation.navigate("Homescreen");
@@ -37,47 +43,47 @@ export default function Login({ navigation, route }) {
       Alert.alert(`Failed to sign in: ${error.message}`);
     }
   };
-  // console.log(user);
+
   return (
-    <View style={styles.container}>
+    <View style={universalStyles.container}>
       <ImageBackground
         source={require("../assets/home.jpeg")}
         resizeMode="cover"
-        style={styles.image}
+        style={universalStyles.image}
       >
-        <View style={styles.logoView}>
+        <View style={universalStyles.logoView}>
           <Image
-            source={require("../assets/hu_logo.png")}
-            style={styles.logo}
+            source={require("../assets/logo.png")}
+            style={universalStyles.logo}
           ></Image>
         </View>
 
-        <View style={styles.fields}>
+        <View style={universalStyles.fields}>
           <TextInput
-            style={styles.inputbox}
+            style={inputStyles.textInput}
             placeholder="Email Address"
             onChangeText={(text) => setAddr(text)}
           />
           <TextInput
-            style={styles.inputbox}
+            style={inputStyles.textInput}
             placeholder="Password"
             secureTextEntry={true}
             onChangeText={(text) => setPass(text)}
           />
-          <Pressable style={styles.p_button} onPress={onPressLogIn}>
-            <Text style={styles.p_button_text}>Log In</Text>
+          <Pressable style={buttonStyles.p_button} onPress={onPressLogIn}>
+            <Text style={buttonStyles.p_button_text}>Log In</Text>
           </Pressable>
           <Pressable
-            style={styles.s_button}
+            style={buttonStyles.s_button}
             onPress={() => navigation.navigate("Signup")}
           >
-            <Text style={styles.s_button_text}>Sign Up</Text>
+            <Text style={buttonStyles.s_button_text}>Sign Up</Text>
           </Pressable>
           <Pressable
-            style={styles.s_button}
+            style={buttonStyles.s_button}
             onPress={() => navigation.navigate("Forgotpass")}
           >
-            <Text style={styles.s_button_text}>Forgot Password?</Text>
+            <Text style={buttonStyles.s_button_text}>Forgot Password?</Text>
           </Pressable>
         </View>
       </ImageBackground>

@@ -1,7 +1,10 @@
 import React, { useRef, useState } from "react";
 import Icon from "react-native-vector-icons/AntDesign";
+import { SearchBar } from "react-native-elements";
 import SlidingUpPanel from "rn-sliding-up-panel";
 import { useAuth } from "../providers/AuthProvider.js";
+import NumberFormat from "react-number-format";
+import Shimmer from "../Shimmer.js";
 import {
   StyleSheet,
   Text,
@@ -18,6 +21,10 @@ import {
 } from "react-native";
 
 import styles from "../styles/Styles.js";
+
+import universalStyles from "../styles/UniversalStyles.js";
+import buttonStyles from "../styles/ButtonStyles.js";
+
 import ProductItem from "../components/ProductItem.js";
 import Footer from "../components/Footer.js";
 
@@ -27,6 +34,7 @@ export default function Homescreen({ navigation }) {
   const [quantity, setQuantity] = useState("1");
   // console.log(user.customData.memberOf.length);
   const [data, setData] = useState("");
+  console.log(quantity);
   // setData("hello");
   const childToParent = (childData) => {
     setData(childData);
@@ -36,11 +44,11 @@ export default function Homescreen({ navigation }) {
   // console.log("@Homescreen:", user.customData.memberOf[0]);
   if (user) {
     return (
-      <View style={styles.main}>
+      <View style={universalStyles.main}>
         <ImageBackground
           source={require("../assets/home.jpeg")}
           resizeMode="cover"
-          style={styles.image}
+          style={universalStyles.image}
         >
           <ProductItem
             navigation={navigation}
@@ -129,7 +137,15 @@ export default function Homescreen({ navigation }) {
                     marginTop: 5,
                   }}
                 >
-                  <Text>PKR {data.price}</Text>
+                  {/* <Text>PKR {data.price}</Text> */}
+
+                  <NumberFormat
+                    value={parseInt(data.price)}
+                    displayType={"text"}
+                    thousandSeparator={true}
+                    prefix={"PKR "}
+                    renderText={(value) => <Text>{value}</Text>}
+                  />
                   <View
                     style={{
                       flexDirection: "row",
@@ -163,9 +179,12 @@ export default function Homescreen({ navigation }) {
                         style={{
                           fontSize: 18,
                         }}
-                        placeholder="0"
-                        defaultValue={quantity}
-                      />
+                        onChangeText={(text) => {
+                          setQuantity(text);
+                        }}
+                      >
+                        {quantity}
+                      </TextInput>
                     </View>
                     <View style={styles.cartButtons}>
                       <Icon
@@ -185,14 +204,14 @@ export default function Homescreen({ navigation }) {
                   </View>
                 </View>
                 <Pressable
-                  style={styles.p_button}
+                  style={buttonStyles.p_button}
                   // onPress={() => {
                   //   editCart(data["_id"]);
                   //   // Alert.alert("Item added to Cart");
                   // }}
                   onPress={async () => {
                     console.log("Add to cart pressed");
-                    await addToCart(data["_id"]);
+                    await addToCart(data["_id"], quantity);
                     await user.refreshCustomData();
                     Alert.alert(
                       data.name,
@@ -200,10 +219,10 @@ export default function Homescreen({ navigation }) {
                     );
                   }}
                 >
-                  <Text style={styles.p_button_text}>Add to Cart</Text>
+                  <Text style={buttonStyles.p_button_text}>Add to Cart</Text>
                 </Pressable>
-                <Pressable style={styles.s_button}>
-                  <Text style={styles.s_button_text}>Checkout Now</Text>
+                <Pressable style={buttonStyles.s_button}>
+                  <Text style={buttonStyles.s_button_text}>Checkout Now</Text>
                 </Pressable>
               </View>
             </View>

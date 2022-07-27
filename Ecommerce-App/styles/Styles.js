@@ -101,9 +101,10 @@ export default styles = StyleSheet.create({
   },
 
   footer: {
-    backgroundColor: "rgba(255, 255, 255, .5)",
+    backgroundColor: "white",
+    opacity: 0.8,
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "space-around",
     padding: 15,
   },
   icon: {
@@ -161,6 +162,16 @@ export default styles = StyleSheet.create({
   },
   cartButtons: {
     // borderRadius: "50%",
+    height: 30,
+    width: 30,
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 2,
+    borderRadius: 15,
+  },
+  cartButtonsDelete: {
+    // borderRadius: "50%",
+    backgroundColor: "#ff6c70",
     height: 30,
     width: 30,
     alignItems: "center",

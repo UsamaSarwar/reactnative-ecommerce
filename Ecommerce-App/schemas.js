@@ -40,6 +40,7 @@ export class Task {
       status: "string",
       category: "string",
       price: "string",
+      // price: "double",
       description: "string",
       image: "string",
       imageForm: "string",

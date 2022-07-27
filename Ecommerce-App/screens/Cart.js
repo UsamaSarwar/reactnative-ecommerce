@@ -1,65 +1,47 @@
 import React, { useEffect, useState, useCallback, useRef } from "react";
 import {
-  StyleSheet,
   Text,
-  View,
-  SafeAreaView,
   TextInput,
-  StatusBar,
-  Button,
+  View,
   ImageBackground,
   Pressable,
   Image,
   Alert,
   FlatList,
 } from "react-native";
+
 import Icon from "react-native-vector-icons/AntDesign";
+
 import { useAuth } from "../providers/AuthProvider.js";
 import { useTasks } from "../providers/TasksProvider.js";
+import NumberFormat from "react-number-format";
 import styles from "../styles/Styles.js";
 import Footer from "../components/Footer.js";
 
 export default function Cart({ navigation }) {
-  const { removeFromCart, user } = useAuth();
+  const { updateQuantityCart, removeFromCart, user } = useAuth();
   const { getCart } = useTasks();
   const [cart, setCart] = useState(getCart(user.customData.memberOf));
+  // console.log(cart);
   const makeRemoveButton = (item) => {
     return (
-      <Pressable
-        style={{
-          alignItems: "center",
-          justifyContent: "center",
-          paddingVertical: 5,
-          paddingHorizontal: 30,
-          borderRadius: 15,
-          elevation: 3,
-          backgroundColor: "red",
-        }}
-        onPress={async () => {
-          // console.log(item.name, "Delete Item from cart");
-          removeFromCart(item["_id"]);
-          user.refreshCustomData();
-          // setCart(getCart(user.customData.memberOf));
-          // console.log(cart.length);
-          setCart((prevState) => {
-            prevState.splice(prevState.indexOf(item), 1);
-            return [...prevState];
-          });
-          // console.log("Hello", cart.length);
-          Alert.alert(item.name, "removed from shopping cart");
-        }}
-      >
-        <Text
-          style={{
-            fontSize: 11,
-            fontWeight: "bold",
-            letterSpacing: 0.25,
-            color: "white",
+      <View style={styles.cartButtonsDelete}>
+        <Icon
+          style={styles.cartIcons}
+          name="delete"
+          onPress={async () => {
+            removeFromCart(String(item[0]["_id"]));
+            user.refreshCustomData();
+            setCart((prevState) => {
+              //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+              prevState.splice(prevState.indexOf(item), 1);
+              return [...prevState];
+            });
+            // console.log("Hello", cart.length);
+            Alert.alert(item.name, "removed from shopping cart");
           }}
-        >
-          Remove
-        </Text>
-      </Pressable>
+        />
+      </View>
     );
   };
 
@@ -97,7 +79,7 @@ export default function Cart({ navigation }) {
                   >
                     <Image
                       source={{
-                        uri: `data:${item.imageForm};base64,${item.image}`,
+                        uri: `data:${item[0].imageForm};base64,${item[0].image}`,
                       }}
                       style={{
                         height: 100,
@@ -117,11 +99,15 @@ export default function Cart({ navigation }) {
                       style={{
                         flex: 1,
                         marginBottom: 3,
+                        flexDirection: "row",
                       }}
                     >
-                      <Text style={{ fontWeight: "bold", fontSize: 15 }}>
-                        {item.name}
-                      </Text>
+                      <View style={{ flex: 1 }}>
+                        <Text style={{ fontWeight: "bold", fontSize: 18 }}>
+                          {item[0].name}
+                        </Text>
+                      </View>
+                      {makeRemoveButton(item)}
                     </View>
                     <View style={{ flex: 1, marginBottom: 5 }}>
                       <Text
@@ -130,30 +116,111 @@ export default function Cart({ navigation }) {
                           color: "grey",
                         }}
                       >
-                        {item.category}
+                        {item[0].category}
                       </Text>
                     </View>
-
-                    <Text
-                      numberOfLines={3}
-                      style={{ marginBottom: 10, fontSize: 15 }}
-                    >
-                      {item.description}
-                    </Text>
                     <View
                       style={{
                         flex: 1,
-                        flexDirection: "row",
+                        flexDirection: "row-reverse",
                         justifyContent: "space-between",
                         marginTop: 5,
                       }}
                     >
-                      <Text>PKR {item.price}</Text>
-                      {makeRemoveButton(item)}
+                      {/* ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */}
+                      <View style={{ flexDirection: "row-reverse" }}>
+                        <View style={styles.cartButtons}>
+                          <Icon
+                            style={styles.cartIcons}
+                            name="plus"
+                            onPress={async () => {
+                              await updateQuantityCart(item[0]["_id"], true);
+                              setCart((prevState) => {
+                                let index = prevState.indexOf(item);
+                                let newVal = [
+                                  prevState[index][0],
+                                  prevState[index][1] + 1,
+                                ];
+                                prevState.splice(index, 1, newVal);
+                                return [...prevState];
+                              });
+                            }}
+                          />
+                        </View>
+                        <View
+                          style={{
+                            borderWidth: 2,
+                            width: 50,
+                            height: 30,
+                            justifyContent: "center",
+                            alignItems: "center",
+                            borderRadius: 15,
+                            marginLeft: 5,
+                            marginRight: 5,
+                          }}
+                        >
+                          <Text
+                            style={{
+                              fontSize: 18,
+                            }}
+                            // placeholder={String(item[1])}
+                          >
+                            {item[1]}
+                          </Text>
+                        </View>
+                        <View style={styles.cartButtons}>
+                          <Icon
+                            style={styles.cartIcons}
+                            name="minus"
+                            onPress={async () => {
+                              await updateQuantityCart(item[0]["_id"], false);
+                              setCart((prevState) => {
+                                if (item[1] > 1) {
+                                  let index = prevState.indexOf(item);
+                                  let newVal = [
+                                    prevState[index][0],
+                                    prevState[index][1] - 1,
+                                  ];
+                                  prevState.splice(index, 1, newVal);
+                                  return [...prevState];
+                                }
+                              });
+                            }}
+                          />
+                        </View>
+                      </View>
+
+                      {/* <Text
+                        style={{
+                          fontSize: 16,
+                          color: "green",
+                          fontWeight: "bold",
+                        }}
+                      >
+                        PKR {item[0].price}
+                      </Text> */}
+                      <NumberFormat
+                        value={parseInt(item[0].price)}
+                        displayType={"text"}
+                        thousandSeparator={true}
+                        prefix={"PKR "}
+                        renderText={(value) => (
+                          <Text
+                            style={{
+                              fontSize: 16,
+                              color: "green",
+                              fontWeight: "bold",
+                            }}
+                          >
+                            {value}
+                          </Text>
+                        )}
+                      />
                     </View>
                   </View>
                 </View>
               </Pressable>
+              // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
             )}
           />
           <Footer navigation={navigation} />

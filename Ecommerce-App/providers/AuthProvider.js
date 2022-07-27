@@ -118,25 +118,66 @@ const AuthProvider = ({ children }) => {
     setUser(null);
   };
 
-  const addToCart = async (productID) => {
+  const addToCart = async (productID, quantity) => {
     const userRealm = realmRef.current;
     const users = userRealm.objects("User");
-
-    await userRealm.write(() => {
-      users[0].memberOf = [...users[0].memberOf, String(productID)];
-    });
-    // await user.refreshCustomData();
+    let indexOfItem = -1;
+    const productList = users[0].memberOf;
+    // console.log(users[0].memberOf[0]["type"]);
+    for (let x = 0; x < productList.length; x++) {
+      if (productList[x]["type"] === String(productID)) {
+        indexOfItem = x;
+      }
+    }
+    if (indexOfItem > -1) {
+      await userRealm.write(() => {
+        users[0].memberOf[indexOfItem]["value"] =
+          users[0].memberOf[indexOfItem]["value"] + parseInt(quantity);
+      });
+    } else {
+      await userRealm.write(() => {
+        users[0].memberOf.push({
+          type: String(productID),
+          value: parseInt(quantity),
+        });
+      });
+    }
+    // user.refreshCustomData();
   };
 
-  const removeFromCart = async (productID) => {
+  const removeFromCart = async (product) => {
     const userRealm = realmRef.current;
-    const memberOf = userRealm.objects("User")[0].memberOf;
-    const elementIndex = memberOf.indexOf(String(productID));
+    const user = userRealm.objects("User")[0];
     await userRealm.write(() => {
-      if (elementIndex > -1) {
-        // only splice array when item is found
-        memberOf.splice(elementIndex, 1); // 2nd parameter means remove one item only
+      for (let products = 0; products < user.memberOf.length; products++) {
+        if (user.memberOf[products]["type"] === product) {
+          user.memberOf.splice(products, 1);
+          break;
+        }
       }
+    });
+  };
+
+  const updateQuantityCart = async (productID, operation) => {
+    const userRealm = realmRef.current;
+    const user = userRealm.objects("User")[0];
+    let newQuantity = 0;
+    // console.log("Preseed");
+    for (var items = 0; items < user.memberOf.length; items++) {
+      if (user.memberOf[items]["type"] === String(productID)) {
+        newQuantity = operation
+          ? user.memberOf[items]["value"] + 1
+          : user.memberOf[items]["value"] - 1;
+        break;
+      }
+    }
+
+    await userRealm.write(() => {
+      user.memberOf.splice(items, 1);
+      user.memberOf.push({
+        type: String(productID),
+        value: parseInt(newQuantity),
+      });
     });
   };
 
@@ -151,6 +192,7 @@ const AuthProvider = ({ children }) => {
         passResetEmail,
         addToCart,
         removeFromCart,
+        updateQuantityCart,
         user,
         projectData, // list of projects the user is a memberOf
       }}

@@ -1,181 +1,103 @@
+import React, { useState, useEffect } from "react";
 import { Text, View, Pressable, Image, FlatList } from "react-native";
-
-import React, { useState } from "react";
+import Shimmer from "../Shimmer";
+import NumberFormat from "react-number-format";
 
 import { useTasks } from "../providers/TasksProvider";
 
-import Homescreen from "../screens/HomeScreen";
+import universalStyles from "../styles/UniversalStyles";
+import productCardStyles from "../styles/ProductCardStyle";
+
 export default function ProductItem({
-  navigation,
   user,
   elementRef,
   childToParent,
   setQuantity,
 }) {
-  // const { tasks } = useTasks();
-  // console.log(tasks);
-  // console.log(setData);
   let admin = user.customData["userType"] === "admin" ? true : false;
   const { tasks } = useTasks();
-  // console.log(String(setData));
-  // ------------------------------------Function for edit button
-  const makeEditButton = (item) => {
-    return (
-      <Pressable
-        style={{
-          alignItems: "center",
-          justifyContent: "center",
-          paddingVertical: 5,
-          paddingHorizontal: 30,
-          borderRadius: 15,
-          elevation: 3,
-          backgroundColor: "#40e1d1",
-        }}
-        onPress={() => {
-          navigation.navigate("Editproduct", { currItem: item });
-        }}
-      >
-        <Text
-          style={{
-            fontSize: 11,
-            fontWeight: "bold",
-            letterSpacing: 0.25,
-            color: "white",
-          }}
-        >
-          Edit
-        </Text>
-      </Pressable>
-    );
-  };
-  // ------------------------------------Function for Add to Cart Button
-  // const makeAddCartButton = (item) => {
-  //   return (
-  //     <View>
-  //       <Pressable
-  //         style={{
-  //           alignItems: "center",
-  //           justifyContent: "center",
-  //           paddingVertical: 5,
-  //           paddingHorizontal: 30,
-  //           borderRadius: 15,
-  //           elevation: 3,
-  //           backgroundColor: "#40e1d1",
-  //         }}
-  //         onPress={() => {
-  //           console.log("Pressed Add to Cart");
-
-  //           // this.pr
-  //           // setData(item);
-  //           childToParent(item);
-  //           elementRef.current.show();
-  //         }}
-  //       >
-  //         <Text
-  //           style={{
-  //             fontSize: 11,
-  //             fontWeight: "bold",
-  //             letterSpacing: 0.25,
-  //             color: "white",
-  //           }}
-  //         >
-  //           Buy Now
-  //         </Text>
-  //       </Pressable>
-  //     </View>
-  //   );
-  // };
-
+  const [shimmerState, setShimmerState] = useState(false);
+  const [initiate, setInitiate] = useState(true);
+  // console.log(shimmerState);
   const renderSlide = (item) => {
     setQuantity("1");
     childToParent(item);
     elementRef.current.show();
   };
-  // console.log(tasks[0]);
+  if (tasks && initiate) {
+    setShimmerState(true);
+    setInitiate(false);
+  }
+  // useEffect(() => {
+  //   if (tasks) {
+  //     setShimmerState(!shimmerState);
+  //   }
+  // }, [tasks]);
+
   return (
     <FlatList
       data={tasks}
       renderItem={({ item }) => (
-        // {of}
-        // <Pressable></Pressable>
         <Pressable
           onPress={() => {
             admin ? void 0 : renderSlide(item);
           }}
         >
-          <View
-            style={{
-              backgroundColor: "white",
-              opacity: 0.9,
-              padding: 10,
-              margin: 10,
-              borderRadius: 10,
-              flexDirection: "row",
-              flex: 1,
-            }}
-          >
-            <View
-              style={{
-                borderWidth: 1,
-                borderColor: "#f3f3f3",
-                justifyContent: "center",
-              }}
-            >
-              <Image
-                source={{ uri: `data:${item.imageForm};base64,${item.image}` }}
-                style={{
-                  height: 100,
-                  width: 100,
-                  borderRadius: 10,
-                }}
-              />
-            </View>
-            <View
-              style={{
-                flex: 1,
-                flexDirection: "column",
-                marginLeft: 10,
-              }}
-            >
-              <View
-                style={{
-                  flex: 1,
-                  marginBottom: 3,
-                }}
+          <View style={universalStyles.productCard}>
+            {/* <Shimmer autoRun={true} visible={shimmerState}> */}
+            <View style={productCardStyles.imageContainer}>
+              <Shimmer
+                autoRun={true}
+                visible={shimmerState}
+                style={productCardStyles.image}
               >
-                <Text style={{ fontWeight: "bold", fontSize: 15 }}>
-                  {item.name}
-                </Text>
-              </View>
-              <View style={{ flex: 1, marginBottom: 5 }}>
-                <Text
-                  style={{
-                    fontSize: 11,
-                    color: "grey",
+                <Image
+                  source={{
+                    uri: `data:${item.imageForm};base64,${item.image}`,
                   }}
-                >
-                  {item.category}
-                </Text>
-              </View>
-
-              <Text
-                numberOfLines={3}
-                style={{ marginBottom: 10, fontSize: 15 }}
-              >
-                {item.description}
-              </Text>
-              <View
-                style={{
-                  flex: 1,
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  marginTop: 5,
-                }}
-              >
-                <Text>PKR {item.price}</Text>
-                {admin ? makeEditButton(item) : void 0}
-              </View>
+                  style={productCardStyles.image}
+                />
+              </Shimmer>
             </View>
+            <View style={productCardStyles.textContainer}>
+              <View style={productCardStyles.name}>
+                <Shimmer
+                  autoRun={true}
+                  visible={shimmerState}
+                  style={productCardStyles.nameText}
+                >
+                  <Text style={productCardStyles.nameText}>{item.name}</Text>
+                </Shimmer>
+              </View>
+              <View style={productCardStyles.categoryContainer}>
+                <Shimmer autoRun={true} visible={shimmerState}>
+                  <Text style={productCardStyles.categoryText}>
+                    {item.category}
+                  </Text>
+                </Shimmer>
+              </View>
+              <Shimmer autoRun={true} visible={shimmerState}>
+                <Text
+                  numberOfLines={2}
+                  style={productCardStyles.descriptionText}
+                >
+                  {item.description}
+                </Text>
+              </Shimmer>
+              {/* <Text> */}
+              {/* PKR {item.price} */}
+              {/* </Text> */}
+              <Shimmer autoRun={true} visible={shimmerState}>
+                <NumberFormat
+                  value={parseInt(item.price)}
+                  displayType={"text"}
+                  thousandSeparator={true}
+                  prefix={"PKR "}
+                  renderText={(value) => <Text>{value}</Text>}
+                />
+              </Shimmer>
+            </View>
+            {/* </Shimmer> */}
           </View>
         </Pressable>
       )}
