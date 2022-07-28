@@ -194,12 +194,9 @@ export default function Homescreen({ navigation }) {
                   </View>
                   <TextInput
                     style={{
-                      // borderColor: "black",
-                      // borderWidth: 1,
                       marginLeft: 10,
                       marginRight: 10,
                       fontSize: 21,
-                      // fontSize:16
                     }}
                     onChangeText={(text) => setQuantity(text)}
                     value={quantity}

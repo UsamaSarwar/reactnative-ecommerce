@@ -102,7 +102,7 @@ export default function Cart({ navigation, route }) {
             >
               <Text style={{ fontSize: 23, fontWeight: "bold" }}>Total</Text>
               <NumberFormat
-                value={totalPrice}
+                value={totalPrice > 0 ? totalPrice : total}
                 displayType={"text"}
                 thousandSeparator={true}
                 prefix={"PKR "}

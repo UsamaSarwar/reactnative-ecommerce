@@ -6,7 +6,8 @@ export default styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    // justifyContent: "space-between",
+    justifyContent: "space-between",
+    backgroundColor: "rgba(107, 196, 146, 0.1)",
   },
   image: {
     flex: 1,
@@ -81,7 +82,13 @@ export default styles = StyleSheet.create({
     letterSpacing: 0.25,
     color: "#AAAAAA",
   },
-
+  checkout_button: {
+    fontSize: 14,
+    lineHeight: 22,
+    fontWeight: "bold",
+    letterSpacing: 0.25,
+    color: "#AAAAAA",
+  },
   d_button: {
     alignItems: "center",
     justifyContent: "center",
