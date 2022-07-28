@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
 import Icon from "react-native-vector-icons/AntDesign";
+import IonIcon from "react-native-vector-icons/Ionicons";
 import { SearchBar } from "react-native-elements";
 import SlidingUpPanel from "rn-sliding-up-panel";
 import { useAuth } from "../providers/AuthProvider.js";
@@ -49,8 +50,6 @@ export default function Homescreen({ navigation }) {
     }
   }, [user]);
 
-  // console.log("@Homescreen:", user.customData.memberOf[0]);
-  // if (user) {
   return (
     <View style={universalStyles.main}>
       <ImageBackground
@@ -58,6 +57,19 @@ export default function Homescreen({ navigation }) {
         resizeMode="cover"
         style={universalStyles.image}
       >
+        <View
+          style={{
+            flexDirection: "row",
+            backgroundColor: "white",
+            justifyContent: "space-between",
+            opacity: 0.9,
+            padding: 20,
+            alignItems: "center",
+          }}
+        >
+          <Text style={{ fontSize: 23 }}>Welcome, {user.customData.email}</Text>
+          <IonIcon name="search" size={32} />
+        </View>
         <ProductItem
           navigation={navigation}
           user={user}
@@ -68,7 +80,6 @@ export default function Homescreen({ navigation }) {
         />
         <Footer navigation={navigation} addition={added} setAdded={setAdded} />
         <SlidingUpPanel
-          onMomentumDragEnd={(value, gestureState) => {}}
           allowDragging={true}
           ref={(c) => (elementRef.current = c)}
         >
@@ -213,71 +224,9 @@ export default function Homescreen({ navigation }) {
                     />
                   </View>
                 </View>
-
-                {/* <View
-                  style={{
-                    flexDirection: "row",
-                    // margin: 10,
-                  }}
-                >
-                  <View style={styles.cartButtons}>
-                    <Icon
-                      style={styles.cartIcons}
-                      name="minus"
-                      onPress={() => {
-                        setQuantity((prevState) => {
-                          prevState =
-                            prevState === "1"
-                              ? prevState
-                              : String(Number(prevState) - 1);
-
-                          return prevState;
-                        });
-                      }}
-                    />
-                  </View>
-                  <View
-                    style={{
-                      borderWidth: 2,
-                      width: 60,
-                      height: 30,
-                      justifyContent: "center",
-                      alignItems: "center",
-                      borderRadius: 15,
-                      marginLeft: 15,
-                      marginRight: 15,
-                    }}
-                  >
-                    <TextInput
-                      style={{
-                        fontSize: 18,
-                      }}
-                      onChangeText={(text) => {
-                        setQuantity(text);
-                      }}
-                    >
-                      {quantity}
-                    </TextInput>
-                  </View>
-                  <View style={styles.cartButtons}>
-                    <Icon
-                      style={styles.cartIcons}
-                      name="plus"
-                      onPress={() => {
-                        setQuantity((prevState) => {
-                          return String(Number(prevState) + 1);
-                        });
-                      }}
-                    />
-                  </View>
-                </View>*/}
               </View>
               <Pressable
                 style={buttonStyles.p_button}
-                // onPress={() => {
-                //   editCart(data["_id"]);
-                //   // Alert.alert("Item added to Cart");
-                // }}
                 onPress={async () => {
                   console.log("Add to cart pressed");
                   await addToCart(data["_id"], quantity);

@@ -3,12 +3,10 @@ import { StyleSheet } from "react-native";
 export default universalStyles = StyleSheet.create({
   main: {
     flex: 1,
-    // alignItems: "center",
   },
   container: {
     flex: 1,
     backgroundColor: "rgba(108, 197, 147, .5)",
-    // alignItems: "center",
     justifyContent: "space-between",
   },
   image: {
@@ -19,8 +17,6 @@ export default universalStyles = StyleSheet.create({
     backgroundColor: "rgba(255, 255, 255, .5)",
     padding: 20,
     borderRadius: 20,
-    // flex: 1,
-    // justifyContent: "space-around",
   },
   logoView: {
     alignItems: "center",
@@ -64,6 +60,7 @@ export default universalStyles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-around",
     padding: 15,
+    marginTop: 10,
   },
 
   inputContainer: {

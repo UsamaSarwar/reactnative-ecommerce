@@ -17,7 +17,17 @@ export default function Footer({ navigation, addition, setAdded }) {
     admin = user.customData["userType"] === "admin" ? true : false;
   }
   const adminPanel = () => {
-    return <Icon style={iconStyles.icon} name="plus" />;
+    return (
+      <Icon
+        style={iconStyles.icon}
+        name="plus"
+        onPress={() => {
+          // await user.refreshCustomData();
+          navigation.navigate("Addproduct");
+          // setAdded(false);
+        }}
+      />
+    );
   };
   const userPanel = () => {
     return (
@@ -27,7 +37,7 @@ export default function Footer({ navigation, addition, setAdded }) {
         onPress={async () => {
           // await user.refreshCustomData();
           navigation.navigate("Cart", { addition: addition });
-          // setAdded(false);
+          setAdded(true);
         }}
       />
     );

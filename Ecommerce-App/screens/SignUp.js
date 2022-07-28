@@ -21,16 +21,10 @@ import buttonStyles from "../styles/ButtonStyles";
 
 function Signup({ navigation, route }) {
   const [pass, setPass] = useState("");
+  const [name, setName] = useState("");
   const [confirmpass, setConfirmPass] = useState("");
   const [addr, setAddr] = useState("");
-  const { user, signUp } = useAuth();
-  // The onPressSignUp method calls AuthProvider.signUp with the
-  // email/password in state and then signs in.
-  useEffect(() => {
-    if (user) {
-      navigation.navigate("Homescreen");
-    }
-  }, [user]);
+  const { user, signUp, setUsername } = useAuth();
 
   const onPressSignUp = async () => {
     if (pass !== confirmpass) {
@@ -42,15 +36,17 @@ function Signup({ navigation, route }) {
 
     try {
       await signUp(addr, pass);
-      await Alert.alert("Success", addr + " has been added successfully.", [
+      console.log("setting name");
+      await setUsername(name);
+      Alert.alert("Success", addr + " has been added successfully.", [
         {
           text: "OK",
           onPress: () => navigation.navigate("Login"),
         },
       ]);
-      // navigation.navigate("Loginscreen");
     } catch (error) {
       Alert.alert(`Failed to sign up: ${error.message}`);
+      console.log(error.message);
     }
   };
 
@@ -68,7 +64,11 @@ function Signup({ navigation, route }) {
           ></Image>
         </View>
         <View style={universalStyles.fields}>
-          <TextInput style={inputStyles.textInput} placeholder="Full Name" />
+          <TextInput
+            style={inputStyles.textInput}
+            placeholder="Full Name"
+            onChangeText={(text) => setName(text)}
+          />
           <TextInput
             style={inputStyles.textInput}
             placeholder="Email Address"

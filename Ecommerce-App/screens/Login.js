@@ -39,7 +39,6 @@ export default function Login({ navigation, route }) {
     console.log("Pressed sign in");
     try {
       await signIn(addr, pass);
-      navigation.navigate("Homescreen");
     } catch (error) {
       Alert.alert(`Failed to sign in: ${error.message}`);
     }

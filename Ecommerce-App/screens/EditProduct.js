@@ -104,7 +104,7 @@ function Editproduct({ navigation, route }) {
             navigation.navigate("Homescreen");
           }}
         >
-          <Text style={styles.p_button_text}>Edit Item</Text>
+          <Text style={styles.p_button_text}>Finish Editing</Text>
         </Pressable>
         {imageUri ? (
           <View style={{ marginBottom: 20, alignItems: "center" }}>

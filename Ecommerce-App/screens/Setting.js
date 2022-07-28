@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import Icon from "react-native-vector-icons/FontAwesome";
+import Icon from "react-native-vector-icons/AntDesign";
 // import app from "../realmApp";
 import { useAuth } from "../providers/AuthProvider.js";
 import {
@@ -39,13 +39,15 @@ export default function Setting({ navigation }) {
         resizeMode="cover"
         style={styles.image}
       >
-        <View style={styles.logoView}>
-          <Image
-            source={require("../assets/hu_logo.png")}
-            style={styles.logo}
-          ></Image>
-        </View>
+        <View style={styles.logoView}></View>
         <View style={styles.fields}>
+          <Pressable
+            style={styles.p_button}
+            // onPress={() => navigation.navigate("Updatedetails")}
+          >
+            <Text style={styles.p_button_text}>Update Personal Detail</Text>
+          </Pressable>
+
           <Pressable
             style={styles.p_button}
             onPress={() => navigation.navigate(Updatepassword)}

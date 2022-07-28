@@ -78,17 +78,6 @@ const AuthProvider = ({ children }) => {
 
   // The signIn function takes an email and password and uses the
   // emailPassword authentication provider to log in.
-  const signIn = async (email, password) => {
-    const creds = Realm.Credentials.emailPassword(email, password);
-    const newUser = await app.logIn(creds);
-    setUser(newUser);
-    return newUser;
-  };
-  // The signUp function takes an email and password and uses the
-  // emailPassword authentication provider to register the user.
-  const signUp = async (email, password) => {
-    await app.emailPasswordAuth.registerUser({ email, password });
-  };
 
   const resetPass = async (email, password) => {
     try {
@@ -116,6 +105,30 @@ const AuthProvider = ({ children }) => {
     }
     user.logOut();
     setUser(null);
+  };
+
+  const signIn = async (email, password) => {
+    const creds = Realm.Credentials.emailPassword(email, password);
+    const newUser = await app.logIn(creds);
+    setUser(newUser);
+    return newUser;
+  };
+  // The signUp function takes an email and password and uses the
+  // emailPassword authentication provider to register the user.
+  const signUp = async (email, password) => {
+    await app.emailPasswordAuth.registerUser({
+      email,
+      password,
+    });
+    console.log("user signed up");
+    // signIn(email, password);
+  };
+
+  const setUsername = async (name) => {
+    const userRealm = realmRef.current;
+    const user = userRealm.objects("User")[0];
+
+    await userRealm.write(() => (user.name = name));
   };
 
   const addToCart = async (productID, quantity) => {
@@ -193,6 +206,7 @@ const AuthProvider = ({ children }) => {
         addToCart,
         removeFromCart,
         updateQuantityCart,
+        setUsername,
         user,
         projectData, // list of projects the user is a memberOf
       }}

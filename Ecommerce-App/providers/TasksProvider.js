@@ -8,6 +8,7 @@ const TasksContext = React.createContext(null);
 const TasksProvider = ({ children, projectPartition }) => {
   const [tasks, setTasks] = useState([]);
   const { user } = useAuth();
+  const [total, setTotal] = useState(0);
 
   // Use a Ref to store the realm rather than the state because it is not
   // directly rendered, so updating it should not trigger a re-render as using
@@ -93,7 +94,7 @@ const TasksProvider = ({ children, projectPartition }) => {
     // One advantage of centralizing the realm functionality in this provider is
     // that we can check to make sure a valid status was passed in here.
 
-    console.log(task);
+    // console.log(task);
 
     const projectRealm = realmRef.current;
     console.log(projectRealm);
@@ -121,7 +122,7 @@ const TasksProvider = ({ children, projectPartition }) => {
   const getCart = (memberOf) => {
     let cart = [];
     let productIDs = [];
-
+    let newTotal = 0;
     for (let productInfo = 0; productInfo < memberOf.length; productInfo++) {
       productIDs.push(memberOf[productInfo]["type"]); //Pushing all Id's
     } // Done for small optimization
@@ -130,8 +131,11 @@ const TasksProvider = ({ children, projectPartition }) => {
       if (productIDs.includes(String(tasks[productIndex]["_id"]))) {
         let taskIndex = productIDs.indexOf(String(tasks[productIndex]["_id"]));
         cart.push([tasks[productIndex], memberOf[taskIndex]["value"]]);
+        newTotal +=
+          Number(tasks[productIndex].price) * memberOf[taskIndex]["value"];
       }
     }
+    setTotal(newTotal);
     // console.log("Here", cart[2][0]);
     return cart;
   };
@@ -147,6 +151,7 @@ const TasksProvider = ({ children, projectPartition }) => {
         updateTask,
         getCart,
         tasks,
+        total,
       }}
     >
       {children}
