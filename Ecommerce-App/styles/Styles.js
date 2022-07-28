@@ -182,4 +182,5 @@ export default styles = StyleSheet.create({
   cartIcons: {
     fontSize: 20,
   },
+  error_message: { fontSize: 20, color: "red", padding: 10 },
 });

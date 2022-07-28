@@ -25,6 +25,9 @@ export default function Login({ navigation, route }) {
   const [addr, setAddr] = useState("");
   const [pass, setPass] = useState("");
   const { user, signIn } = useAuth();
+  let [passError, setPassError] = useState(false);
+  let [addrError, setAddrError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     if (user) {
@@ -40,7 +43,7 @@ export default function Login({ navigation, route }) {
     try {
       await signIn(addr, pass);
     } catch (error) {
-      Alert.alert(`Failed to sign in: ${error.message}`);
+      setErrorMessage(error.message);
     }
   };
 
@@ -57,20 +60,57 @@ export default function Login({ navigation, route }) {
             style={universalStyles.logo}
           ></Image>
         </View>
-
+        <Text style={styles.error_message}>{errorMessage}</Text>
         <View style={universalStyles.fields}>
           <TextInput
-            style={inputStyles.textInput}
+            value={addr}
             placeholder="Email Address"
-            onChangeText={(text) => setAddr(text)}
+            onChangeText={(text) => {
+              setErrorMessage("");
+              setAddr(text);
+            }}
+            style={[
+              inputStyles.textInput,
+              { borderColor: addrError ? "red" : "transparent" },
+            ]}
           />
           <TextInput
-            style={inputStyles.textInput}
+            value={pass}
             placeholder="Password"
             secureTextEntry={true}
-            onChangeText={(text) => setPass(text)}
+            onChangeText={(text) => {
+              setErrorMessage("");
+              setPass(text);
+            }}
+            style={[
+              inputStyles.textInput,
+              { borderColor: passError ? "red" : "transparent" },
+            ]}
           />
-          <Pressable style={buttonStyles.p_button} onPress={onPressLogIn}>
+          <Pressable
+            style={buttonStyles.p_button}
+            onPress={() => {
+              setErrorMessage("");
+              if (pass.length === 0 || addr.length === 0) {
+                if (pass.length === 0) {
+                  setPassError(true);
+                  console.log("password length zero");
+                } else {
+                  setPassError(false);
+                }
+                if (addr.length === 0) {
+                  setAddrError(true);
+                  console.log("email address length zero");
+                } else {
+                  setAddrError(false);
+                }
+              } else {
+                setPassError(false);
+                setAddrError(false);
+                onPressLogIn();
+              }
+            }}
+          >
             <Text style={buttonStyles.p_button_text}>Log In</Text>
           </Pressable>
           <Pressable

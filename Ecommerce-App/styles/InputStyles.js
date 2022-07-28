@@ -9,5 +9,6 @@ export default inputStyles = StyleSheet.create({
     shadowRadius: 100,
     marginBottom: 24,
     paddingLeft: 10,
+    borderWidth: 3,
   },
 });
