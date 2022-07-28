@@ -47,8 +47,8 @@ function Signup({ navigation, route }) {
     if (!error) {
       try {
         await signUp(addr, pass);
-        console.log("setting name");
-        await setUsername(name);
+        // console.log("setting name");
+        // await setUsername(name);
         Alert.alert("Success", addr + " has been added successfully.", [
           {
             text: "OK",
@@ -72,7 +72,7 @@ function Signup({ navigation, route }) {
       >
         <View style={universalStyles.logoView}>
           <Image
-            source={require("../assets/hu_logo.png")}
+            source={require("../assets/logo.png")}
             style={universalStyles.logo}
           ></Image>
         </View>

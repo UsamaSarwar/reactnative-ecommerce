@@ -206,7 +206,7 @@ const AuthProvider = ({ children }) => {
         addToCart,
         removeFromCart,
         updateQuantityCart,
-        setUsername,
+        // setUsername,
         user,
         projectData, // list of projects the user is a memberOf
       }}

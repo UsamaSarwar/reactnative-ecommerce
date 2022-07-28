@@ -4,6 +4,7 @@ import IonIcon from "react-native-vector-icons/Ionicons";
 import { SearchBar } from "react-native-elements";
 import SlidingUpPanel from "rn-sliding-up-panel";
 import { useAuth } from "../providers/AuthProvider.js";
+import { useTasks } from "../providers/TasksProvider.js";
 import NumberFormat from "react-number-format";
 import Shimmer from "../Shimmer.js";
 import {
@@ -32,6 +33,7 @@ import Footer from "../components/Footer.js";
 export default function Homescreen({ navigation }) {
   const { user, addToCart } = useAuth();
   const elementRef = useRef();
+  const { total, setTotal } = useTasks();
   const [added, setAdded] = useState(false);
   const [quantity, setQuantity] = useState("1");
   // console.log(user.customData.memberOf.length);
@@ -228,6 +230,7 @@ export default function Homescreen({ navigation }) {
                   console.log("Add to cart pressed");
                   await addToCart(data["_id"], quantity);
                   await user.refreshCustomData();
+                  setTotal(total + data.price * quantity);
                   setAdded(true);
                   Alert.alert(
                     data.name,

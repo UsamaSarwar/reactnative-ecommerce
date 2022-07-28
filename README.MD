@@ -20,6 +20,17 @@ yarn ios
 yarn android
 ```
 
+v28.07.22
+
+- [x] Added Shopping cart with UI
+- [x] Added Checkout page with UI
+- [x] Added Shimmers
+- [x] Updated UI for admin and normal users
+- [ ] Add Search bar for products
+- [ ] Add shipping location at checkout page
+
+Demonstration of application at this version can be found [here](https://www.youtube.com/watch?v=-mDrMNghuMw)
+
 v24.07.22
 
 - [x] Added user types and handling (admin and normal)

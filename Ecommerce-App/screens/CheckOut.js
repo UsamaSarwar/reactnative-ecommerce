@@ -1,14 +1,9 @@
 import React, { useState } from "react";
-import LinearGradient from "react-native-linear-gradient";
-import { useAuth } from "../providers/AuthProvider.js";
 import {
   Text,
   View,
   ImageBackground,
   Pressable,
-  SafeAreaView,
-  Alert,
-  ScrollView,
   Image,
   FlatList,
   StyleSheet,
@@ -20,10 +15,9 @@ import NumberFormat from "react-number-format";
 import Footer from "../components/Footer.js";
 
 export default function Setting({ navigation, route }) {
-  const { user } = useAuth();
   const { cart, total } = route.params;
   const [payMethod, setPayMethod] = useState(true);
-  console.log(total);
+  // console.log(total);
   return (
     // <LinearGradient colors={["#ffffff", "#6bc594"]} style={styles.container}>
     <View style={styles.container}>
@@ -45,6 +39,7 @@ export default function Setting({ navigation, route }) {
           <Text style={{ fontSize: 23 }}>Checkout</Text>
         </View>
         {/* <ScrollView> */}
+
         <View style={styles.fields}>
           <Text style={{ fontSize: 20, marginTop: 10 }}>Payment Method</Text>
           <View
@@ -58,11 +53,12 @@ export default function Setting({ navigation, route }) {
               flexDirection: "row",
               justifyContent: "space-around",
               alignItems: "center",
+              marginBottom: 10,
             }}
           >
             <View
               style={{
-                margin: 10,
+                marginTop: 10,
                 width: 120,
                 height: 120,
                 borderWidth: !payMethod ? 1 : 0,
@@ -93,7 +89,7 @@ export default function Setting({ navigation, route }) {
             </View>
             <View
               style={{
-                margin: 10,
+                marginTop: 10,
                 width: 120,
                 height: 120,
                 borderWidth: payMethod ? 1 : 0,
@@ -119,9 +115,6 @@ export default function Setting({ navigation, route }) {
               </Pressable>
             </View>
           </View>
-        </View>
-
-        <View style={styles.fields}>
           <Text style={{ fontSize: 20, marginTop: 10 }}>Order Summary</Text>
           <View
             style={{
@@ -148,6 +141,19 @@ export default function Setting({ navigation, route }) {
               >
                 <View
                   style={{
+                    width: 25,
+                    height: 25,
+                    borderWidth: 1,
+                    borderRadius: 12.5,
+                    justifyContent: "center",
+                    alignItems: "center",
+                    marginRight: 10,
+                  }}
+                >
+                  <Text>{String(item[1])}</Text>
+                </View>
+                <View
+                  style={{
                     borderWidth: 1,
                     borderColor: "#f3f3f3",
                     justifyContent: "center",
@@ -158,15 +164,15 @@ export default function Setting({ navigation, route }) {
                       uri: `data:${item[0].imageForm};base64,${item[0].image}`,
                     }}
                     style={{
-                      height: 45,
-                      width: 45,
+                      height: 40,
+                      width: 40,
                       borderRadius: 10,
                     }}
                   />
                 </View>
 
                 <View style={{ flex: 1, marginLeft: 10, marginRight: 5 }}>
-                  <Text style={{ fontSize: 15 }}>{item[0].name}</Text>
+                  <Text style={{ fontSize: 13 }}>{item[0].name}</Text>
                 </View>
 
                 <NumberFormat
@@ -188,6 +194,38 @@ export default function Setting({ navigation, route }) {
               </View>
             )}
           />
+          <Text style={{ fontSize: 20, marginTop: 10 }}>Total</Text>
+          <View
+            style={{
+              borderBottomColor: "black",
+              borderBottomWidth: StyleSheet.hairlineWidth,
+            }}
+          />
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+              marginTop: 10,
+            }}
+          >
+            <NumberFormat
+              value={String(total)}
+              displayType={"text"}
+              thousandSeparator={true}
+              prefix={"PKR "}
+              renderText={(value) => (
+                <Text
+                  style={{
+                    fontWeight: "bold",
+                    fontSize: 25,
+                  }}
+                >
+                  {value}
+                </Text>
+              )}
+            />
+          </View>
         </View>
         {/* <View style={styles.fields}>
           <Text style={{ fontSize: 20, marginTop: 10 }}>Payment Method</Text>

@@ -150,6 +150,7 @@ const TasksProvider = ({ children, projectPartition }) => {
         deleteTask,
         updateTask,
         getCart,
+        setTotal,
         tasks,
         total,
       }}

@@ -62,6 +62,7 @@ export default function Cart({ navigation, route }) {
             onPress={async () => {
               await removeFromCart(String(item[0]["_id"]));
               await user.refreshCustomData();
+              setTotalPrice(totalPrice - item[0].price * item[1]);
               setCart((prevState) => {
                 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 prevState.splice(prevState.indexOf(item), 1);
