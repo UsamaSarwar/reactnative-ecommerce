@@ -9,7 +9,7 @@ import { TasksProvider, useTasks } from "../providers/TasksProvider.js";
 import universalStyles from "../styles/UniversalStyles.js";
 import iconStyles from "../styles/IconStyles.js";
 
-export default function Footer({ navigation }) {
+export default function Footer({ navigation, addition, setAdded }) {
   const { user, signOut } = useAuth();
   const { createTask } = useTasks();
   let admin = null;
@@ -25,8 +25,9 @@ export default function Footer({ navigation }) {
         style={iconStyles.icon}
         name="shoppingcart"
         onPress={async () => {
-          await user.refreshCustomData();
-          navigation.navigate("Cart");
+          // await user.refreshCustomData();
+          navigation.navigate("Cart", { addition: addition });
+          // setAdded(false);
         }}
       />
     );

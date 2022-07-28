@@ -28,6 +28,7 @@ export default function Login({ navigation, route }) {
 
   useEffect(() => {
     if (user) {
+      // console.log(user.customData.memberOf);
       navigation.navigate("Homescreen");
     }
   }, [user]);

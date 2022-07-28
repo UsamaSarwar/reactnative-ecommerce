@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Text, View, Pressable, Image, FlatList } from "react-native";
 import Shimmer from "../Shimmer";
 import NumberFormat from "react-number-format";
-
 import { useTasks } from "../providers/TasksProvider";
 
 import universalStyles from "../styles/UniversalStyles";
@@ -16,27 +15,21 @@ export default function ProductItem({
 }) {
   let admin = user.customData["userType"] === "admin" ? true : false;
   const { tasks } = useTasks();
-  const [shimmerState, setShimmerState] = useState(false);
-  const [initiate, setInitiate] = useState(true);
+  const [loading, setLoading] = useState(true);
   // console.log(shimmerState);
   const renderSlide = (item) => {
     setQuantity("1");
     childToParent(item);
     elementRef.current.show();
   };
-  if (tasks && initiate) {
-    setShimmerState(true);
-    setInitiate(false);
+  console.log(loading);
+  console.log(tasks.length);
+  if (tasks.length > 0 && loading) {
+    setLoading(false);
   }
-  // useEffect(() => {
-  //   if (tasks) {
-  //     setShimmerState(!shimmerState);
-  //   }
-  // }, [tasks]);
-
   return (
     <FlatList
-      data={tasks}
+      data={!loading ? tasks : [1, 2, 3, 4, 5]}
       renderItem={({ item }) => (
         <Pressable
           onPress={() => {
@@ -44,11 +37,10 @@ export default function ProductItem({
           }}
         >
           <View style={universalStyles.productCard}>
-            {/* <Shimmer autoRun={true} visible={shimmerState}> */}
             <View style={productCardStyles.imageContainer}>
               <Shimmer
                 autoRun={true}
-                visible={shimmerState}
+                visible={!loading}
                 style={productCardStyles.image}
               >
                 <Image
@@ -60,23 +52,31 @@ export default function ProductItem({
               </Shimmer>
             </View>
             <View style={productCardStyles.textContainer}>
-              <View style={productCardStyles.name}>
+              <View style={productCardStyles.nameText}>
                 <Shimmer
                   autoRun={true}
-                  visible={shimmerState}
-                  style={productCardStyles.nameText}
+                  visible={!loading}
+                  style={{ marginBottom: 5 }}
                 >
                   <Text style={productCardStyles.nameText}>{item.name}</Text>
                 </Shimmer>
               </View>
               <View style={productCardStyles.categoryContainer}>
-                <Shimmer autoRun={true} visible={shimmerState}>
+                <Shimmer
+                  autoRun={true}
+                  visible={!loading}
+                  style={productCardStyles.categoryText}
+                >
                   <Text style={productCardStyles.categoryText}>
                     {item.category}
                   </Text>
                 </Shimmer>
               </View>
-              <Shimmer autoRun={true} visible={shimmerState}>
+              <Shimmer
+                autoRun={true}
+                visible={!loading}
+                style={productCardStyles.descriptionText}
+              >
                 <Text
                   numberOfLines={2}
                   style={productCardStyles.descriptionText}
@@ -84,20 +84,23 @@ export default function ProductItem({
                   {item.description}
                 </Text>
               </Shimmer>
-              {/* <Text> */}
-              {/* PKR {item.price} */}
-              {/* </Text> */}
-              <Shimmer autoRun={true} visible={shimmerState}>
-                <NumberFormat
-                  value={parseInt(item.price)}
-                  displayType={"text"}
-                  thousandSeparator={true}
-                  prefix={"PKR "}
-                  renderText={(value) => <Text>{value}</Text>}
-                />
-              </Shimmer>
+
+              <NumberFormat
+                value={parseInt(item.price)}
+                displayType={"text"}
+                thousandSeparator={true}
+                prefix={"PKR "}
+                renderText={(value) => (
+                  <Shimmer
+                    autoRun={true}
+                    visible={!loading}
+                    style={{ marginTop: 5 }}
+                  >
+                    <Text>{value}</Text>
+                  </Shimmer>
+                )}
+              />
             </View>
-            {/* </Shimmer> */}
           </View>
         </Pressable>
       )}

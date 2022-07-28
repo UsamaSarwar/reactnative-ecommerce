@@ -23,7 +23,6 @@ function Signup({ navigation, route }) {
   const [pass, setPass] = useState("");
   const [confirmpass, setConfirmPass] = useState("");
   const [addr, setAddr] = useState("");
-  const [userName, setUserName] = useState("");
   const { user, signUp } = useAuth();
   // The onPressSignUp method calls AuthProvider.signUp with the
   // email/password in state and then signs in.
