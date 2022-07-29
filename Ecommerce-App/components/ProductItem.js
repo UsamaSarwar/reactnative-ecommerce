@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Text, View, Pressable, Image, FlatList, Alert } from "react-native";
-import Shimmer from "../Shimmer";
+import Shimmer from "./Shimmer";
 import NumberFormat from "react-number-format";
 import { useTasks } from "../providers/TasksProvider";
 import universalStyles from "../styles/UniversalStyles";

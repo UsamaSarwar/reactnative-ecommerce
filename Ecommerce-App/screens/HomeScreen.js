@@ -51,7 +51,7 @@ export default function Homescreen({ navigation }) {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={universalStyles.flex1}>
       <View style={universalStyles.main}>
         <ImageBackground
           source={require("../assets/home.jpeg")}

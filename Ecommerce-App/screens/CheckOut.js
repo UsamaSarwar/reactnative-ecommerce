@@ -19,7 +19,6 @@ export default function Setting({ navigation, route }) {
   const [payMethod, setPayMethod] = useState(true);
   // console.log(total);
   return (
-    // <LinearGradient colors={["#ffffff", "#6bc594"]} style={styles.container}>
     <View style={styles.container}>
       <ImageBackground
         source={require("../assets/home.jpeg")}
