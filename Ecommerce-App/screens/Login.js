@@ -1,37 +1,35 @@
+//React
 import React, { useEffect, useState } from "react";
 import {
-  StyleSheet,
   Text,
   View,
-  SafeAreaView,
   TextInput,
-  StatusBar,
-  Button,
   ImageBackground,
   Pressable,
   Image,
-  Alert,
 } from "react-native";
 
-import app from "../realmApp";
-
+//Providers
 import { useAuth } from "../providers/AuthProvider.js";
 
+//Styles
 import universalStyles from "../styles/UniversalStyles";
 import inputStyles from "../styles/InputStyles";
 import buttonStyles from "../styles/ButtonStyles";
 
-export default function Login({ navigation, route }) {
+export default function Login({ navigation }) {
+  const { user, signIn } = useAuth();
+
   const [addr, setAddr] = useState("");
   const [pass, setPass] = useState("");
-  const { user, signIn } = useAuth();
-  let [passError, setPassError] = useState(false);
-  let [addrError, setAddrError] = useState(false);
+
+  const [passError, setPassError] = useState(false);
+  const [addrError, setAddrError] = useState(false);
+
   const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     if (user) {
-      // console.log(user.customData.memberOf);
       navigation.navigate("Homescreen");
     }
   }, [user]);
@@ -39,16 +37,28 @@ export default function Login({ navigation, route }) {
   // The onPressSignIn method calls AuthProvider.signIn with the
   // email/password in state.
   const onPressLogIn = async () => {
-    console.log("Pressed sign in");
-    try {
-      await signIn(addr, pass);
-    } catch (error) {
-      setErrorMessage(error.message);
+    console.log("Pressed LogIn");
+
+    if (pass.length === 0 || addr.length === 0) {
+      if (pass.length === 0) {
+        setPassError(true);
+        console.log("password length zero");
+      }
+      if (addr.length === 0) {
+        setAddrError(true);
+        console.log("email address length zero");
+      }
+    } else {
+      try {
+        await signIn(addr, pass);
+      } catch (error) {
+        setErrorMessage(error.message);
+      }
     }
   };
 
   return (
-    <View style={universalStyles.container}>
+    <View style={universalStyles.main}>
       <ImageBackground
         source={require("../assets/home.jpeg")}
         resizeMode="cover"
@@ -60,11 +70,19 @@ export default function Login({ navigation, route }) {
             style={universalStyles.logo}
           ></Image>
         </View>
-        <Text style={styles.error_message}>{errorMessage}</Text>
+
+        <View style={universalStyles.center}>
+          <Text style={styles.error_message}>{errorMessage}</Text>
+        </View>
+
         <View style={universalStyles.fields}>
+          {addr === "" ? null : (
+            <Text style={{ marginBottom: 5 }}>Email Address</Text>
+          )}
           <TextInput
             value={addr}
             placeholder="Email Address"
+            autoCapitalize="none"
             onChangeText={(text) => {
               setErrorMessage("");
               setAddr(text);
@@ -74,9 +92,14 @@ export default function Login({ navigation, route }) {
               { borderColor: addrError ? "red" : "transparent" },
             ]}
           />
+
+          {pass === "" ? null : (
+            <Text style={{ marginBottom: 5 }}>Password</Text>
+          )}
           <TextInput
             value={pass}
             placeholder="Password"
+            autoCapitalize="none"
             secureTextEntry={true}
             onChangeText={(text) => {
               setErrorMessage("");
@@ -89,27 +112,7 @@ export default function Login({ navigation, route }) {
           />
           <Pressable
             style={buttonStyles.p_button}
-            onPress={() => {
-              setErrorMessage("");
-              if (pass.length === 0 || addr.length === 0) {
-                if (pass.length === 0) {
-                  setPassError(true);
-                  console.log("password length zero");
-                } else {
-                  setPassError(false);
-                }
-                if (addr.length === 0) {
-                  setAddrError(true);
-                  console.log("email address length zero");
-                } else {
-                  setAddrError(false);
-                }
-              } else {
-                setPassError(false);
-                setAddrError(false);
-                onPressLogIn();
-              }
-            }}
+            onPress={() => onPressLogIn()}
           >
             <Text style={buttonStyles.p_button_text}>Log In</Text>
           </Pressable>

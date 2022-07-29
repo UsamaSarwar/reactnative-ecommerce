@@ -4,22 +4,23 @@ export default universalStyles = StyleSheet.create({
   main: {
     flex: 1,
   },
+
+  center: { justifyContent: "center", alignItems: "center" },
   container: {
     flex: 1,
-    backgroundColor: "rgba(108, 197, 147, .5)",
-    justifyContent: "space-between",
   },
   image: {
     flex: 1,
     justifyContent: "space-between",
   },
   fields: {
-    backgroundColor: "rgba(255, 255, 255, .5)",
+    backgroundColor: "rgba(255, 255, 255, 0.7)",
     padding: 20,
     borderRadius: 20,
   },
   logoView: {
     alignItems: "center",
+    marginTop: 50,
     marginBottom: 50,
     padding: 10,
   },

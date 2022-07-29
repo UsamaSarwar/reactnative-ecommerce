@@ -53,6 +53,7 @@ export default function Homescreen({ navigation }) {
   }, [user]);
 
   return (
+    <SafeAreaView style={{flex:1}}>
     <View style={universalStyles.main}>
       <ImageBackground
         source={require("../assets/home.jpeg")}
@@ -248,8 +249,6 @@ export default function Homescreen({ navigation }) {
         </SlidingUpPanel>
       </ImageBackground>
     </View>
+    </SafeAreaView>
   );
-  // } else {
-  //   return null;
-  // }
-}
+              }

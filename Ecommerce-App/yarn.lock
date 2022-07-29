@@ -3505,9 +3505,9 @@ expo-updates@^0.13.3:
     resolve-from "^5.0.0"
     uuid "^3.4.0"
 
-expo@~45.0.0:
+expo@^45.0.6:
   version "45.0.6"
-  resolved "https://registry.npmjs.org/expo/-/expo-45.0.6.tgz"
+  resolved "https://registry.yarnpkg.com/expo/-/expo-45.0.6.tgz#9c336d2052022b0606b07d02e2bd0f41d39109ab"
   integrity sha512-QOemudowFuzgxmK/bNMdOngpBOf6yLkkA9zWBcMQYEDyaz16GLVm1IpzZ2nAFuUKuwUkzvB62QzQDIFS7jdN5g==
   dependencies:
     "@babel/runtime" "^7.14.0"

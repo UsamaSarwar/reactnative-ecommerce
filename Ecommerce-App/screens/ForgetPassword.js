@@ -1,29 +1,51 @@
-import React from "react";
+//React
+import React, { useState } from "react";
 import {
-  StyleSheet,
   Text,
   View,
-  SafeAreaView,
   TextInput,
-  StatusBar,
-  Button,
   ImageBackground,
   Pressable,
   Image,
-  Alert,
 } from "react-native";
+
+//Providers
 import { useAuth } from "../providers/AuthProvider.js";
 
+//Styles
 import universalStyles from "../styles/UniversalStyles";
 import inputStyles from "../styles/InputStyles";
 import buttonStyles from "../styles/ButtonStyles";
 
-function Forgotpass({ navigation, route }) {
-  const [addr, setAddr] = React.useState("");
+export default function Forgotpass({ navigation }) {
   const { passResetEmail } = useAuth();
-  // console.log(addr);
+
+  const [addr, setAddr] = useState("");
+
+  const [addrError, setAddrError] = useState(false);
+
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const onPressReset = async () => {
+    if (addr.length === 0) {
+      setAddrError(true);
+    } else {
+      try {
+        await passResetEmail(addr);
+        Alert.alert("Success reset email has been sent to " + add, [
+          {
+            text: "OK",
+            onPress: () => navigation.navigate("Login"),
+          },
+        ]);
+      } catch (error) {
+        setErrorMessage(error.message);
+      }
+    }
+  };
+
   return (
-    <View style={universalStyles.container}>
+    <View style={universalStyles.main}>
       <ImageBackground
         source={require("../assets/home.jpeg")}
         resizeMode="cover"
@@ -31,24 +53,28 @@ function Forgotpass({ navigation, route }) {
       >
         <View style={universalStyles.logoView}>
           <Image
-            source={require("../assets/hu_logo.png")}
+            source={require("../assets/logo.png")}
             style={universalStyles.logo}
           ></Image>
         </View>
 
+        <View style={universalStyles.center}>
+          <Text style={styles.error_message}>{errorMessage}</Text>
+        </View>
+
         <View style={universalStyles.fields}>
           <TextInput
-            style={inputStyles.textInput}
+            style={[
+              inputStyles.textInput,
+              { borderColor: addrError ? "red" : "transparent" },
+            ]}
             placeholder="Recovery Email Address"
             onChangeText={(text) => setAddr(text)}
           />
 
           <Pressable
             style={buttonStyles.p_button}
-            onPress={() => {
-              // console.log("inside func" + addr);
-              passResetEmail(addr);
-            }}
+            onPress={() => onPressReset()}
           >
             <Text style={buttonStyles.p_button_text}>Send Reset Link</Text>
           </Pressable>
@@ -64,5 +90,3 @@ function Forgotpass({ navigation, route }) {
     </View>
   );
 }
-
-export default Forgotpass;
