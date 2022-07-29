@@ -2,9 +2,9 @@
   "expo": {
     "name": "Ecommerce-App",
     "slug": "Ecommerce-App",
-    "version": "1.0.0",
+    "version": "22.7.29",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/logo.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
@@ -27,7 +27,7 @@
       "package": "com.maddante.EcommerceApp"
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/logo.png"
     }
   }
 }
