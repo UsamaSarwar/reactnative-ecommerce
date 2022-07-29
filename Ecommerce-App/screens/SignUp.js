@@ -132,10 +132,7 @@ export default function Signup({ navigation }) {
             ]}
           />
 
-          <Pressable
-            style={buttonStyles.p_button}
-            onPress={() => onPressSignUp()}
-          >
+          <Pressable style={buttonStyles.p_button} onPress={onPressSignUp}>
             <Text style={buttonStyles.p_button_text}>Sign Up</Text>
           </Pressable>
           <Pressable
@@ -151,31 +148,3 @@ export default function Signup({ navigation }) {
     </View>
   );
 }
-
-// const addUserAccount = (
-//   userName,
-//   password,
-//   confirmpass,
-//   accounts,
-//   emailAddr,
-//   navigation
-// ) => {
-//   if (password !== confirmpass) {
-//     return Alert.alert("Password not matching.");
-//   }
-//   if (!(emailAddr.includes("@") || emailAddr.includes(".com"))) {
-//     return Alert.alert("Invalid email address entered.");
-//   }
-//   if (Object.keys(accounts).includes(userName)) {
-//     return Alert.alert("User already exists.");
-//   }
-
-//   // accounts[userName] = password;
-//   Alert.alert("Success", userName + " has been added successfully.", [
-//     {
-//       text: "OK",
-//       onPress: () => navigation.navigate("Login", { paramKey: accounts }),
-//     },
-//   ]);
-//   return;
-// };

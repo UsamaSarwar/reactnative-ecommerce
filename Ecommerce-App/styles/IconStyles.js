@@ -10,6 +10,11 @@ export default iconStyles = StyleSheet.create({
     borderRadius: 100,
     padding: 3,
   },
+  background1: {
+    backgroundColor: "#f6f8f9",
+    borderRadius: 100,
+    padding: 3,
+  },
   background2: {
     backgroundColor: "#EEEEEE",
     borderRadius: 100,

@@ -5,7 +5,37 @@ export default universalStyles = StyleSheet.create({
     flex: 1,
   },
 
+  flex1: { flex: 1 },
+
+  col_f_e: {
+    flex: 1,
+    flexDirection: "column",
+    justifyContent: "flex-end",
+  },
+
+  col_wbg_p20: {
+    flexDirection: "column",
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 20,
+  },
+
+  row_f1_sb_c: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+
+  view_card_img_1: {
+    borderWidth: 1,
+    borderColor: "#f3f3f3",
+    justifyContent: "center",
+    height: "40%",
+    marginBottom: 20,
+  },
   center: { justifyContent: "center", alignItems: "center" },
+
   container: {
     flex: 1,
   },
@@ -55,6 +85,14 @@ export default universalStyles = StyleSheet.create({
     borderRadius: 20,
   },
 
+  header: {
+    flexDirection: "row",
+    backgroundColor: "white",
+    justifyContent: "space-between",
+    opacity: 0.9,
+    padding: 20,
+    alignItems: "center",
+  },
   footer: {
     backgroundColor: "white",
     opacity: 0.9,
