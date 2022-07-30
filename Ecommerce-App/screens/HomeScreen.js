@@ -35,11 +35,8 @@ export default function Homescreen({ navigation }) {
   const [quantity, setQuantity] = useState("1");
   const [edit, setEdit] = useState(true);
 
-  console.log(quantity);
-
   const childToParent = (childData) => {
     setData(childData);
-    console.log(childData.name);
   };
 
   const childToParent_edit = (childData) => {
@@ -74,6 +71,7 @@ export default function Homescreen({ navigation }) {
             navigation={navigation}
             addition={added}
             setAdded={setAdded}
+            childToParent={childToParent}
             childToParent_edit={childToParent_edit}
             elementRef={elementRef}
           />

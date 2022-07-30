@@ -2,11 +2,12 @@ import React, { useState } from "react";
 import { Text, View, TextInput, Pressable, Alert, Image } from "react-native";
 import Icon from "react-native-vector-icons/AntDesign";
 
-import styles from "../styles/Styles.js";
 import ImagePicker from "react-native-image-crop-picker";
+
 import { useTasks } from "../providers/TasksProvider.js";
 
 import UniversalStyles from "../styles/UniversalStyles.js";
+import ButtonStyles from "../styles/ButtonStyles.js";
 import InputStyles from "../styles/InputStyles.js";
 import IconStyles from "../styles/IconStyles.js";
 
@@ -24,6 +25,7 @@ export default function AdminSlideUpCard({ data, toEdit }) {
   const [categoryError, setCategoryError] = useState(false);
   const [priceError, setPriceError] = useState(false);
   const [descriptionError, setDescriptionError] = useState(false);
+  const [imageError, setImageError] = useState(false);
 
   console.log(data.name);
 
@@ -48,9 +50,21 @@ export default function AdminSlideUpCard({ data, toEdit }) {
     });
 
   const onPressAddItem = () => {
-    createTask(prodName, category, price, description, imageUri, imageForm);
-    Alert.alert(prodName + " added to the main inventory.");
-    navigation.navigate("Homescreen");
+    if (prodName === "") {
+      setNameError(true);
+    } else if (category === "") {
+      setCategoryError(true);
+    } else if (price === "") {
+      setPriceError(true);
+    } else if (description === "") {
+      setDescriptionError(true);
+    } else if (imageForm === "") {
+      setImageError(true);
+    } else {
+      createTask(prodName, category, price, description, imageUri, imageForm);
+      Alert.alert(prodName + " added to the main inventory.");
+      navigation.navigate("Homescreen");
+    }
   };
 
   const onPressEditItem = () => {
@@ -89,7 +103,7 @@ export default function AdminSlideUpCard({ data, toEdit }) {
           <Text style={{ marginBottom: 5 }}>Product Name</Text>
         )}
         <TextInput
-          value={prodName}
+          defaultValue={prodName}
           placeholder="Product Name"
           style={[
             InputStyles.textInput,
@@ -105,7 +119,7 @@ export default function AdminSlideUpCard({ data, toEdit }) {
           <Text style={{ marginBottom: 5 }}>Category</Text>
         )}
         <TextInput
-          value={category}
+          defaultValue={category}
           placeholder="Category"
           style={[
             InputStyles.textInput,
@@ -119,7 +133,7 @@ export default function AdminSlideUpCard({ data, toEdit }) {
 
         {price === "" ? null : <Text style={{ marginBottom: 5 }}>Price</Text>}
         <TextInput
-          value={price}
+          defaultValue={price}
           placeholder="Price"
           keyboardType="numeric"
           style={[
@@ -136,7 +150,7 @@ export default function AdminSlideUpCard({ data, toEdit }) {
           <Text style={{ marginBottom: 5 }}>Product Description</Text>
         )}
         <TextInput
-          value={description}
+          defaultValue={description}
           placeholder="Product Description"
           multiline={true}
           style={[
@@ -175,31 +189,37 @@ export default function AdminSlideUpCard({ data, toEdit }) {
             </View>
           </View>
         ) : (
-          <Pressable style={styles.p_button} onPress={() => openImagePicker()}>
-            <Text style={styles.p_button_text}>Upload Image</Text>
+          <Pressable
+            style={ButtonStyles.p_button}
+            onPress={() => openImagePicker()}
+          >
+            <Text style={ButtonStyles.p_button_text}>Upload Image</Text>
           </Pressable>
         )}
 
         {toEdit ? (
           <View>
             <Pressable
-              style={styles.p_button}
+              style={ButtonStyles.p_button}
               onPress={() => onPressEditItem()}
             >
-              <Text style={styles.p_button_text}>Edit Item</Text>
+              <Text style={ButtonStyles.p_button_text}>Edit Item</Text>
             </Pressable>
 
             <Pressable
-              style={styles.d_button}
+              style={ButtonStyles.d_button}
               onPress={() => onPressDeleteItem()}
             >
-              <Text style={styles.d_button_text}>Delete Item</Text>
+              <Text style={ButtonStyles.d_button_text}>Delete Item</Text>
             </Pressable>
           </View>
         ) : (
           <View>
-            <Pressable style={styles.p_button} onPress={() => onPressAddItem()}>
-              <Text style={styles.p_button_text}>Add Item</Text>
+            <Pressable
+              style={ButtonStyles.p_button}
+              onPress={() => onPressAddItem()}
+            >
+              <Text style={ButtonStyles.p_button_text}>Add Item</Text>
             </Pressable>
           </View>
         )}

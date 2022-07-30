@@ -196,7 +196,7 @@ export default function Cart({ navigation, route }) {
                             </Text>
                           </Shimmer>
                         </View>
-                        {makeRemoveButton(item)}
+                        {!added ? makeRemoveButton(item) : null}
                       </View>
                       <View style={{ flex: 1, marginBottom: 5 }}>
                         <Shimmer
@@ -220,26 +220,46 @@ export default function Cart({ navigation, route }) {
                       <View
                         style={{
                           flex: 1,
-                          flexDirection: "row-reverse",
+                          flexDirection: "row",
                           justifyContent: "space-between",
                           marginTop: 10,
                           alignItems: "center",
                         }}
                       >
                         {/* ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */}
-                        <View
-                          style={{ flexDirection: "row", alignItems: "center" }}
+
+                        <Shimmer
+                          autoRun={true}
+                          visible={!added}
+                          style={{ width: 80, height: 18 }}
                         >
-                          <View style={IconStyles.background2}>
-                            <Shimmer
-                              autoRun={true}
-                              visible={!added}
-                              style={{
-                                width: 30,
-                                height: 30,
-                                borderRadius: 15,
-                              }}
-                            >
+                          <NumberFormat
+                            value={parseInt(item[0].price)}
+                            displayType={"text"}
+                            thousandSeparator={true}
+                            prefix={"PKR "}
+                            renderText={(value) => (
+                              <Text
+                                style={{
+                                  fontSize: 16,
+                                  color: "green",
+                                  fontWeight: "bold",
+                                }}
+                              >
+                                {value}
+                              </Text>
+                            )}
+                          />
+                        </Shimmer>
+
+                        {!added ? (
+                          <View
+                            style={{
+                              flexDirection: "row",
+                              alignItems: "center",
+                            }}
+                          >
+                            <View style={IconStyles.background2}>
                               <Icon
                                 name="minus"
                                 size={21}
@@ -265,21 +285,8 @@ export default function Cart({ navigation, route }) {
                                   });
                                 }}
                               />
-                            </Shimmer>
-                          </View>
+                            </View>
 
-                          <Shimmer
-                            autoRun={true}
-                            visible={!added}
-                            style={{
-                              // borderWidth: 2,
-                              width: 50,
-                              height: 30,
-                              borderRadius: 15,
-                              marginLeft: 5,
-                              marginRight: 5,
-                            }}
-                          >
                             <Text
                               style={{
                                 marginLeft: 10,
@@ -289,18 +296,8 @@ export default function Cart({ navigation, route }) {
                             >
                               {item[1]}
                             </Text>
-                          </Shimmer>
 
-                          <View style={IconStyles.background2}>
-                            <Shimmer
-                              autoRun={true}
-                              visible={!added}
-                              style={{
-                                width: 30,
-                                height: 30,
-                                borderRadius: 15,
-                              }}
-                            >
+                            <View style={IconStyles.background2}>
                               <Icon
                                 name="plus"
                                 size={21}
@@ -324,33 +321,9 @@ export default function Cart({ navigation, route }) {
                                   });
                                 }}
                               />
-                            </Shimmer>
+                            </View>
                           </View>
-                        </View>
-
-                        <Shimmer
-                          autoRun={true}
-                          visible={!added}
-                          style={{ width: 80, height: 30, borderRadius: 15 }}
-                        >
-                          <NumberFormat
-                            value={parseInt(item[0].price)}
-                            displayType={"text"}
-                            thousandSeparator={true}
-                            prefix={"PKR "}
-                            renderText={(value) => (
-                              <Text
-                                style={{
-                                  fontSize: 16,
-                                  color: "green",
-                                  fontWeight: "bold",
-                                }}
-                              >
-                                {value}
-                              </Text>
-                            )}
-                          />
-                        </Shimmer>
+                        ) : null}
                       </View>
                     </View>
                   </View>

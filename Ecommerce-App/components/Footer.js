@@ -14,6 +14,7 @@ export default function Footer({
   navigation,
   addition,
   setAdded,
+  childToParent,
   childToParent_edit,
   elementRef,
 }) {
@@ -27,6 +28,7 @@ export default function Footer({
 
   const renderSlide = () => {
     console.log("Pressed add item");
+    childToParent("");
     childToParent_edit(false);
     elementRef.current.show();
   };
