@@ -37,7 +37,6 @@ export default function Cart({ navigation, route }) {
 
   const refreshCart = async () => {
     await user.refreshCustomData();
-    await user.refreshCustomData();
     await setCart(getCart(user.customData.memberOf));
 
     setAdded(false);

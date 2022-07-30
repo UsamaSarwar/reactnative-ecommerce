@@ -82,9 +82,9 @@ export default function Homescreen({ navigation }) {
             ref={(c) => (elementRef.current = c)}
           >
             {admin ? (
-              <AdminSlideUpCard data={data} setAdded={setAdded} toEdit={edit} />
+              <AdminSlideUpCard data={data} toEdit={edit} />
             ) : (
-              <UserSlideUpCard data={data} />
+              <UserSlideUpCard data={data} setAdded={setAdded} />
             )}
           </SlidingUpPanel>
         </ImageBackground>
