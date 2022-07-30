@@ -13,7 +13,7 @@ import Quantity from "./Quantity";
 //Styles
 import UniversalStyles from "../styles/UniversalStyles";
 
-export default function SlideUpCard({ data, setAdded }) {
+export default function UserSlideUpCard({ data, setAdded }) {
   const { user, addToCart } = useAuth();
   const { total, setTotal } = useTasks();
 

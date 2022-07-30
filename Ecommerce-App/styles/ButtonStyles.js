@@ -10,6 +10,7 @@ export default buttonStyles = StyleSheet.create({
     elevation: 3,
     backgroundColor: "#40e1d1",
     marginBottom: 24,
+    // height: 45,
   },
   p_button_text: {
     fontSize: 21,
@@ -42,6 +43,7 @@ export default buttonStyles = StyleSheet.create({
     elevation: 3,
     backgroundColor: "red",
     marginBottom: 24,
+    // height: 45,
   },
   d_button_text: {
     fontSize: 21,

@@ -23,8 +23,8 @@ export default function Login({ navigation }) {
   const [addr, setAddr] = useState("");
   const [pass, setPass] = useState("");
 
-  const [passError, setPassError] = useState(false);
   const [addrError, setAddrError] = useState(false);
+  const [passError, setPassError] = useState(false);
 
   const [errorMessage, setErrorMessage] = useState("");
 

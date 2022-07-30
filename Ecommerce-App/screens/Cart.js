@@ -224,8 +224,6 @@ export default function Cart({ navigation, route }) {
                           flexDirection: "row-reverse",
                           justifyContent: "space-between",
                           marginTop: 10,
-                          // borderColor: "black",
-                          // borderWidth: 1,
                           alignItems: "center",
                         }}
                       >

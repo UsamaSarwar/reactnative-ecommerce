@@ -10,7 +10,13 @@ import { useAuth } from "../providers/AuthProvider.js";
 import universalStyles from "../styles/UniversalStyles.js";
 import iconStyles from "../styles/IconStyles.js";
 
-export default function Footer({ navigation, addition, setAdded }) {
+export default function Footer({
+  navigation,
+  addition,
+  setAdded,
+  childToParent_edit,
+  elementRef,
+}) {
   const { user } = useAuth();
 
   let admin = null;
@@ -18,13 +24,16 @@ export default function Footer({ navigation, addition, setAdded }) {
   if (user) {
     admin = user.customData["userType"] === "admin" ? true : false;
   }
+
+  const renderSlide = () => {
+    console.log("Pressed add item");
+    childToParent_edit(false);
+    elementRef.current.show();
+  };
+
   const adminPanel = () => {
     return (
-      <Icon
-        style={iconStyles.icon}
-        name="plus"
-        onPress={() => navigation.navigate("Addproduct")}
-      />
+      <Icon style={iconStyles.icon} name="plus" onPress={() => renderSlide()} />
     );
   };
   const userPanel = () => {
