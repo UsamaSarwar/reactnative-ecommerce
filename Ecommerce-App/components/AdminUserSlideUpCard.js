@@ -11,7 +11,7 @@ import ButtonStyles from "../styles/ButtonStyles.js";
 import InputStyles from "../styles/InputStyles.js";
 import IconStyles from "../styles/IconStyles.js";
 
-export default function AdminSlideUpCard({ data, toEdit }) {
+export default function AdminSlideUpCard({ data, toEdit, isClosed }) {
   const { createTask, updateTask } = useTasks();
 
   const [prodName, setProdName] = useState("");
@@ -35,24 +35,21 @@ export default function AdminSlideUpCard({ data, toEdit }) {
       setPrice(data.price);
       setImageUri(data.image);
       setImageForm(data.imageForm);
-    } else {
+    }
+    if (isClosed) {
       setProdName("");
       setCategory("");
-      setDescription("");
       setPrice("");
+      setDescription("");
       setImageUri("");
       setImageForm("");
+
+      setNameError(false);
+      setCategoryError(false);
+      setDescriptionError(false);
+      setPriceError(false);
     }
   });
-
-  const onCancel = () => {
-    setProdName("");
-    setCategory("");
-    setPrice("");
-    setDescription("");
-    setImageUri("");
-    setImageForm("");
-  };
 
   const openImagePicker = () =>
     ImagePicker.openPicker({
@@ -68,13 +65,17 @@ export default function AdminSlideUpCard({ data, toEdit }) {
   const onPressAddItem = () => {
     if (prodName === "") {
       setNameError(true);
-    } else if (category === "") {
+    }
+    if (category === "") {
       setCategoryError(true);
-    } else if (price === "") {
+    }
+    if (price === "") {
       setPriceError(true);
-    } else if (description === "") {
+    }
+    if (description === "") {
       setDescriptionError(true);
-    } else if (imageForm === "") {
+    }
+    if (imageForm === "") {
       setImageError(true);
     } else {
       createTask(prodName, category, price, description, imageUri, imageForm);

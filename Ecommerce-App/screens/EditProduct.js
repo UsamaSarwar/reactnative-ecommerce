@@ -31,7 +31,7 @@ function Editproduct({ navigation, route }) {
                 text: "Yes, Delete",
                 style: "destructive",
                 onPress: () => {
-                  console.log("deleting item");
+                  console.log("deleting item");s
                   deleteTask(currItem);
                   navigation.navigate("Homescreen");
                 },

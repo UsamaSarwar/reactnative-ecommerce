@@ -34,9 +34,16 @@ export default function Homescreen({ navigation }) {
   const [added, setAdded] = useState(false);
   const [quantity, setQuantity] = useState("1");
   const [edit, setEdit] = useState(true);
+  const [isClosed, setIsClosed] = useState(false);
+
+  const onPanelClose = () => {
+    setData({ name: "", category: "", price: "", description: "" });
+    setIsClosed(true);
+  };
 
   const childToParent = (childData) => {
     setData(childData);
+    setIsClosed(false);
   };
 
   const childToParent_edit = (childData) => {
@@ -79,9 +86,10 @@ export default function Homescreen({ navigation }) {
             allowDragging={true}
             allowMomentum={true}
             ref={(c) => (elementRef.current = c)}
+            onBottomReached={() => onPanelClose()}
           >
             {admin ? (
-              <AdminSlideUpCard data={data} toEdit={edit} />
+              <AdminSlideUpCard data={data} toEdit={edit} isClosed={isClosed} />
             ) : (
               <UserSlideUpCard data={data} setAdded={setAdded} />
             )}
