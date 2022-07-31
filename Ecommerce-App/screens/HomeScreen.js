@@ -77,6 +77,7 @@ export default function Homescreen({ navigation }) {
           />
           <SlidingUpPanel
             allowDragging={true}
+            allowMomentum={true}
             ref={(c) => (elementRef.current = c)}
           >
             {admin ? (

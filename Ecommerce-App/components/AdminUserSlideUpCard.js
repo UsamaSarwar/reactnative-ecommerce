@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Text, View, TextInput, Pressable, Alert, Image } from "react-native";
 import Icon from "react-native-vector-icons/AntDesign";
 
@@ -14,11 +14,11 @@ import IconStyles from "../styles/IconStyles.js";
 export default function AdminSlideUpCard({ data, toEdit }) {
   const { createTask, updateTask } = useTasks();
 
-  const [prodName, setProdName] = useState(data.name);
-  const [category, setCategory] = useState(data.category);
-  const [description, setDescription] = useState(data.description);
-  const [price, setPrice] = useState(data.price);
-  const [imageUri, setImageUri] = useState(data.image);
+  const [prodName, setProdName] = useState("");
+  const [category, setCategory] = useState("");
+  const [description, setDescription] = useState("");
+  const [price, setPrice] = useState("");
+  const [imageUri, setImageUri] = useState("");
   const [imageForm, setImageForm] = useState("");
 
   const [nameError, setNameError] = useState(false);
@@ -27,7 +27,23 @@ export default function AdminSlideUpCard({ data, toEdit }) {
   const [descriptionError, setDescriptionError] = useState(false);
   const [imageError, setImageError] = useState(false);
 
-  console.log(data.name);
+  useEffect(() => {
+    if (toEdit) {
+      setProdName(data.name);
+      setCategory(data.category);
+      setDescription(data.description);
+      setPrice(data.price);
+      setImageUri(data.image);
+      setImageForm(data.imageForm);
+    } else {
+      setProdName("");
+      setCategory("");
+      setDescription("");
+      setPrice("");
+      setImageUri("");
+      setImageForm("");
+    }
+  });
 
   const onCancel = () => {
     setProdName("");
@@ -95,7 +111,7 @@ export default function AdminSlideUpCard({ data, toEdit }) {
       { text: "Cancel", style: "cancel" },
     ]);
   };
-
+  console.log(prodName);
   return (
     <View style={UniversalStyles.col_f_e}>
       <View style={UniversalStyles.col_wbg_p20}>
