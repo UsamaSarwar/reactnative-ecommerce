@@ -32,7 +32,6 @@ export default function Homescreen({ navigation }) {
 
   const [data, setData] = useState("");
   const [added, setAdded] = useState(false);
-  const [quantity, setQuantity] = useState("1");
   const [edit, setEdit] = useState(true);
   const [isClosed, setIsClosed] = useState(false);
 
@@ -72,7 +71,6 @@ export default function Homescreen({ navigation }) {
             childToParent={childToParent}
             childToParent_edit={childToParent_edit}
             setData={setData}
-            setQuantity={setQuantity}
           />
           <Footer
             navigation={navigation}

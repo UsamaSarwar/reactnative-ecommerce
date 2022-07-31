@@ -21,7 +21,6 @@ export default function ProductItem({
   childToParent,
   childToParent_edit,
   navigation,
-  setQuantity,
 }) {
   const { tasks } = useTasks();
   const { deleteTask } = useTasks();
@@ -35,7 +34,6 @@ export default function ProductItem({
   }
 
   const renderSlide = (item) => {
-    setQuantity("1");
     childToParent(item);
     childToParent_edit(true);
     elementRef.current.show();
