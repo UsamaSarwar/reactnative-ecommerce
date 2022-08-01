@@ -20,14 +20,21 @@ yarn ios
 yarn android
 ```
 
+v01.08.22
+
+- [x] UI updates
+- [x] Bug fixes related to cart screen
+- [ ] Add Search bar for products
+- [ ] Add shipping location at checkout page
+
+Demonstration of application at this version can be found [here](https://www.youtube.com/watch?v=7SA18gr2T_4)
+
 v28.07.22
 
 - [x] Added Shopping cart with UI
 - [x] Added Checkout page with UI
 - [x] Added Shimmers
 - [x] Updated UI for admin and normal users
-- [ ] Add Search bar for products
-- [ ] Add shipping location at checkout page
 
 Demonstration of application at this version can be found [here](https://www.youtube.com/watch?v=-mDrMNghuMw)
 
