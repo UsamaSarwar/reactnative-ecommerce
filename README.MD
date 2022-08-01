@@ -1,6 +1,6 @@
 # eCommerce App in React Native
 
-## Description
+## 📱 Description
 
 A MERN stack based E-commerce application in development phase.
 
@@ -19,6 +19,8 @@ yarn ios
 ```
 yarn android
 ```
+
+## 📝 Patch Notes Of Releases
 
 v01.08.22
 
