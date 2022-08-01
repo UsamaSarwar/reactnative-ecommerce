@@ -9,8 +9,6 @@ import Homescreen from "./screens/HomeScreen";
 import Updatepassword from "./screens/UpdatePassword";
 import Deleteaccount from "./screens/DeleteAccount";
 import Setting from "./screens/Setting";
-import Addproduct from "./screens/AddProduct";
-import Editproduct from "./screens/EditProduct";
 import Cart from "./screens/Cart";
 import Checkout from "./screens/CheckOut";
 
@@ -36,8 +34,6 @@ export default function AppNavigator() {
             <Stack.Screen name="Signup" component={Signup} />
             <Stack.Screen name="Forgotpass" component={Forgotpass} />
             <Stack.Screen name="Homescreen" component={Homescreen} />
-            <Stack.Screen name="Addproduct" component={Addproduct} />
-            <Stack.Screen name="Editproduct" component={Editproduct} />
             <Stack.Screen name="Setting" component={Setting} />
             <Stack.Screen name="Cart" component={Cart} />
             <Stack.Screen name="Updatepassword" component={Updatepassword} />
@@ -59,7 +55,7 @@ export default function AppNavigator() {
           <Stack.Screen name="Signup" component={Signup} />
           <Stack.Screen name="Forgotpass" component={Forgotpass} />
           <Stack.Screen name="Homescreen" component={Homescreen} />
-          <Stack.Screen name="Addproduct" component={Addproduct} />
+          {/* <Stack.Screen name="Addproduct" component={Addproduct} /> */}
           <Stack.Screen name="Setting" component={Setting} />
           <Stack.Screen name="Cart" component={Cart} />
           <Stack.Screen name="Updatepassword" component={Updatepassword} />

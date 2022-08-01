@@ -25,7 +25,6 @@ import Footer from "../components/Footer.js";
 export default function Setting({ navigation, route }) {
   // console.log(app.currentUser.identities);
   const { user, signOut } = useAuth();
-  console.log(route.params.setAdded);
   useEffect(() => {
     if (!user) {
       navigation.navigate("Login");
@@ -82,8 +81,6 @@ export default function Setting({ navigation, route }) {
         </View>
         <Footer
           navigation={navigation}
-          setAdded={route.params.setAdded}
-          added={route.params.added}
           childToParent={route.params.childToParent}
           childToParent_edit={route.params.childToParent_edit}
           elementRef={route.params.elementRef}

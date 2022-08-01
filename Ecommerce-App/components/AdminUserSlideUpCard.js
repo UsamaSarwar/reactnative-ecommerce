@@ -11,8 +11,13 @@ import ButtonStyles from "../styles/ButtonStyles.js";
 import InputStyles from "../styles/InputStyles.js";
 import IconStyles from "../styles/IconStyles.js";
 
-export default function AdminSlideUpCard({ data, toEdit, isClosed }) {
-  const { createTask, updateTask } = useTasks();
+export default function AdminSlideUpCard({
+  data,
+  toEdit,
+  isClosed,
+  elementRef,
+}) {
+  const { createTask, updateTask, deleteTask } = useTasks();
 
   const [prodName, setProdName] = useState("");
   const [category, setCategory] = useState("");
@@ -26,16 +31,19 @@ export default function AdminSlideUpCard({ data, toEdit, isClosed }) {
   const [priceError, setPriceError] = useState(false);
   const [descriptionError, setDescriptionError] = useState(false);
   const [imageError, setImageError] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (toEdit) {
+    if (data.name && !loading) {
       setProdName(data.name);
       setCategory(data.category);
       setDescription(data.description);
       setPrice(data.price);
       setImageUri(data.image);
       setImageForm(data.imageForm);
+      setLoading(true);
     }
+
     if (isClosed) {
       setProdName("");
       setCategory("");
@@ -48,6 +56,10 @@ export default function AdminSlideUpCard({ data, toEdit, isClosed }) {
       setCategoryError(false);
       setDescriptionError(false);
       setPriceError(false);
+
+      setLoading(false);
+
+      // elementRef.current.hide();
     }
   });
 
@@ -74,19 +86,19 @@ export default function AdminSlideUpCard({ data, toEdit, isClosed }) {
     }
     if (description === "") {
       setDescriptionError(true);
-    }
-    if (imageForm === "") {
-      setImageError(true);
     } else {
+      // if (imageForm === "") {
+      //   setImageError(true);
+      // }
       createTask(prodName, category, price, description, imageUri, imageForm);
       Alert.alert(prodName + " added to the main inventory.");
-      navigation.navigate("Homescreen");
+      elementRef.current.hide();
     }
   };
 
   const onPressEditItem = () => {
     updateTask(
-      currItem,
+      data,
       prodName,
       category,
       price,
@@ -94,25 +106,18 @@ export default function AdminSlideUpCard({ data, toEdit, isClosed }) {
       imageUri,
       imageForm
     );
-    Alert.alert(prodName + " is edited from main inventory.");
-    navigation.navigate("Homescreen");
-  };
 
-  const onPressDeleteItem = () => {
-    Alert.alert("Are you sure you want to delete this product?", null, [
+    Alert.alert(prodName + " is edited from main inventory.", null, [
       {
-        text: "Yes, Delete",
-        style: "destructive",
+        text: "Ok",
         onPress: () => {
-          console.log("deleting item");
-          deleteTask(currItem);
-          navigation.navigate("Homescreen");
+          setLoading(false);
         },
       },
       { text: "Cancel", style: "cancel" },
     ]);
   };
-  console.log(prodName);
+
   return (
     <View style={UniversalStyles.col_f_e}>
       <View style={UniversalStyles.col_wbg_p20}>
@@ -215,21 +220,12 @@ export default function AdminSlideUpCard({ data, toEdit, isClosed }) {
         )}
 
         {toEdit ? (
-          <View>
-            <Pressable
-              style={ButtonStyles.p_button}
-              onPress={() => onPressEditItem()}
-            >
-              <Text style={ButtonStyles.p_button_text}>Edit Item</Text>
-            </Pressable>
-
-            <Pressable
-              style={ButtonStyles.d_button}
-              onPress={() => onPressDeleteItem()}
-            >
-              <Text style={ButtonStyles.d_button_text}>Delete Item</Text>
-            </Pressable>
-          </View>
+          <Pressable
+            style={ButtonStyles.p_button}
+            onPress={() => onPressEditItem()}
+          >
+            <Text style={ButtonStyles.p_button_text}>Edit Item</Text>
+          </Pressable>
         ) : (
           <View>
             <Pressable

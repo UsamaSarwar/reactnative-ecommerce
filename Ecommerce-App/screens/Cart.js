@@ -1,5 +1,5 @@
 //React
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   SafeAreaView,
   Text,
@@ -27,26 +27,24 @@ import UniversalStyles from "../styles/UniversalStyles.js";
 import IconStyles from "../styles/IconStyles.js";
 
 export default function Cart({ navigation, route }) {
-  console.log(route.params.added, "Inside Cart");
   const { updateQuantityCart, removeFromCart, user } = useAuth();
-  const { getCart, getTotal } = useTasks();
-  const [added, setAdded] = useState(route.params.added);
+  const { getCart, getTotal, added, setAdded } = useTasks();
   const [render, setRender] = useState(false);
   const [totalPrice, setTotalPrice] = useState(getTotal());
   const [cart, setCart] = useState(getCart(user.customData.memberOf));
   const refreshCart = async () => {
     await user.refreshCustomData();
     await setCart(getCart(user.customData.memberOf));
-
-    route.params.setAdded(false);
     setAdded(false);
     setTotalPrice(getTotal());
   };
 
-  if (added && !render) {
-    setRender(true);
-    refreshCart();
-  }
+  // console.log(added, render);
+  useEffect(() => {
+    if (added) {
+      refreshCart();
+    }
+  });
 
   const makeRemoveButton = (item) => {
     return (
@@ -185,18 +183,27 @@ export default function Cart({ navigation, route }) {
                           flexDirection: "row",
                         }}
                       >
-                        <View style={{ flex: 1 }}>
-                          <Shimmer
-                            autoRun={true}
-                            visible={!added}
-                            style={{ fontWeight: "bold", fontSize: 18 }}
+                        <View style={UniversalStyles.row_f1_sb_c}>
+                          <View
+                            style={[
+                              UniversalStyles.row_f1_sb_c,
+                              { flexWrap: "wrap" },
+                            ]}
                           >
-                            <Text style={{ fontWeight: "bold", fontSize: 18 }}>
-                              {item[0].name}
-                            </Text>
-                          </Shimmer>
+                            <Shimmer
+                              autoRun={true}
+                              visible={!added}
+                              style={{ height: 20, width: 100 }}
+                            >
+                              <Text
+                                style={{ fontWeight: "bold", fontSize: 18 }}
+                              >
+                                {item[0].name}
+                              </Text>
+                            </Shimmer>
+                          </View>
+                          {!added ? makeRemoveButton(item) : null}
                         </View>
-                        {!added ? makeRemoveButton(item) : null}
                       </View>
                       <View style={{ flex: 1, marginBottom: 5 }}>
                         <Shimmer
@@ -364,8 +371,6 @@ export default function Cart({ navigation, route }) {
 
             <Footer
               navigation={navigation}
-              added={added}
-              setAdded={route.params.setAdded}
               childToParent={route.params.childToParent}
               childToParent_edit={route.params.childToParent_edit}
               elementRef={route.params.elementRef}

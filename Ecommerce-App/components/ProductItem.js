@@ -20,7 +20,6 @@ export default function ProductItem({
   elementRef,
   childToParent,
   childToParent_edit,
-  navigation,
 }) {
   const { tasks } = useTasks();
   const { deleteTask } = useTasks();
@@ -48,7 +47,6 @@ export default function ProductItem({
         onPress: () => {
           console.log("deleting item");
           deleteTask(item);
-          navigation.navigate("Homescreen");
         },
       },
       { text: "Cancel", style: "cancel" },
@@ -57,7 +55,7 @@ export default function ProductItem({
 
   const makeRemoveButton = (item) => {
     return (
-      <View style={IconStyles.background2}>
+      <View style={[IconStyles.background2, { justifyContent: "flex-end" }]}>
         <Icon
           name="delete"
           color={"#ff6c70"}
@@ -91,13 +89,17 @@ export default function ProductItem({
 
             <View style={productCardStyles.textContainer}>
               <View style={universalStyles.row_f1_sb_c}>
-                <Shimmer
-                  autoRun={true}
-                  visible={!loading}
-                  style={productCardStyles.nameText}
+                <View
+                  style={[universalStyles.row_f1_sb_c, { flexWrap: "wrap" }]}
                 >
-                  <Text style={productCardStyles.nameText}>{item.name}</Text>
-                </Shimmer>
+                  <Shimmer
+                    autoRun={true}
+                    visible={!loading}
+                    style={productCardStyles.nameText}
+                  >
+                    <Text style={productCardStyles.nameText}>{item.name}</Text>
+                  </Shimmer>
+                </View>
                 {admin && !loading ? makeRemoveButton(item) : void 0}
               </View>
 

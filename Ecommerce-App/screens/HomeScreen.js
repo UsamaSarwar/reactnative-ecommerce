@@ -38,10 +38,8 @@ export default function Homescreen({ navigation }) {
   const elementRef = useRef();
 
   const [data, setData] = useState("");
-  const [added, setAdded] = useState(true);
   const [edit, setEdit] = useState(true);
   const [isClosed, setIsClosed] = useState(false);
-  // console.log(setAdded);
   const onPanelClose = () => {
     setData({ name: "", category: "", price: "", description: "" });
     setIsClosed(true);
@@ -100,8 +98,6 @@ export default function Homescreen({ navigation }) {
           />
           <Footer
             navigation={navigation}
-            added={added}
-            setAdded={setAdded}
             childToParent={childToParent}
             childToParent_edit={childToParent_edit}
             elementRef={elementRef}
@@ -113,9 +109,14 @@ export default function Homescreen({ navigation }) {
             onBottomReached={() => onPanelClose()}
           >
             {admin ? (
-              <AdminSlideUpCard data={data} toEdit={edit} isClosed={isClosed} />
+              <AdminSlideUpCard
+                data={data}
+                toEdit={edit}
+                isClosed={isClosed}
+                elementRef={elementRef}
+              />
             ) : (
-              <UserSlideUpCard data={data} setAdded={setAdded} />
+              <UserSlideUpCard data={data} isClosed={isClosed} />
             )}
           </SlidingUpPanel>
         </ImageBackground>

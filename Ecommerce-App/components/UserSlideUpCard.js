@@ -1,5 +1,5 @@
 //React
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Alert, Text, View, Pressable, Image } from "react-native";
 import NumberFormat from "react-number-format";
 
@@ -13,11 +13,17 @@ import Quantity from "./Quantity";
 //Styles
 import UniversalStyles from "../styles/UniversalStyles";
 
-export default function UserSlideUpCard({ data, setAdded }) {
+export default function UserSlideUpCard({ data, isClosed }) {
   const { user, addToCart } = useAuth();
-  const { total, setTotal } = useTasks();
+  const { total, setTotal, setAdded } = useTasks();
 
   const [quantity, setQuantity] = useState("1");
+
+  useEffect(() => {
+    if (isClosed) {
+      setQuantity("1");
+    }
+  });
 
   const onPressAddtoCart = async () => {
     console.log("Add to cart pressed");

@@ -6,7 +6,7 @@ import styles from "../stylesheet";
 // overlay shows up to request user input for the new task name. When the
 // "Create" button on the overlay is pressed, the overlay closes and the new
 // task is created in the realm.
-export function AddTask({ createTask }) {
+export function AddTask({ navigation, createTask }) {
   const [overlayVisible, setOverlayVisible] = useState(false);
   const [newTaskName, setNewTaskName] = useState("");
 

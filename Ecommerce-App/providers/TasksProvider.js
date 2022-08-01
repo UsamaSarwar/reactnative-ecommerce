@@ -9,7 +9,7 @@ const TasksProvider = ({ children, projectPartition }) => {
   const [tasks, setTasks] = useState([]);
   const { user } = useAuth();
   const [total, setTotal] = useState(0);
-
+  const [added, setAdded] = useState(false);
   // Use a Ref to store the realm rather than the state because it is not
   // directly rendered, so updating it should not trigger a re-render as using
   // state would.
@@ -112,10 +112,15 @@ const TasksProvider = ({ children, projectPartition }) => {
 
   // Define the function for deleting a task.
   const deleteTask = (task) => {
-    const projectRealm = realmRef.current;
-    projectRealm.write(() => {
-      projectRealm.delete(task);
-    });
+    try {
+      console.log("here");
+      const projectRealm = realmRef.current;
+      projectRealm.write(() => {
+        projectRealm.delete(task);
+      });
+    } catch (e) {
+      console.error(e);
+    }
     // setTasks([...projectRealm.objects("Task").sorted("name")]);
   };
 
@@ -156,6 +161,8 @@ const TasksProvider = ({ children, projectPartition }) => {
         getCart,
         setTotal,
         getTotal,
+        setAdded,
+        added,
         tasks,
       }}
     >

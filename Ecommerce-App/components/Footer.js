@@ -5,21 +5,20 @@ import Icon from "react-native-vector-icons/AntDesign";
 
 //Providers
 import { useAuth } from "../providers/AuthProvider.js";
-
+import { useTasks } from "../providers/TasksProvider.js";
 //Styles
 import universalStyles from "../styles/UniversalStyles.js";
 import iconStyles from "../styles/IconStyles.js";
 
 export default function Footer({
   navigation,
-  added,
-  setAdded,
   childToParent,
   childToParent_edit,
   elementRef,
 }) {
   const { user } = useAuth();
-  console.log(setAdded, "HJello");
+  const { added, setAdded } = useTasks();
+  // console.log(setAdded, "HJello");
   let admin = null;
 
   if (user) {
@@ -43,15 +42,13 @@ export default function Footer({
       <Icon
         style={iconStyles.icon}
         name="shoppingcart"
-        onPress={async () => {
+        onPress={() => {
+          setAdded(true);
           navigation.navigate("Cart", {
-            added: added,
-            setAdded: setAdded,
             childToParent: childToParent,
             childToParent_edit: childToParent_edit,
             elementRef: elementRef,
           });
-          setAdded(true);
         }}
       />
     );
@@ -72,8 +69,6 @@ export default function Footer({
         name="user"
         onPress={() =>
           navigation.navigate("Setting", {
-            setAdded: setAdded,
-            added: added,
             childToParent: childToParent,
             childToParent_edit: childToParent_edit,
             elementRef: elementRef,

@@ -9,7 +9,12 @@ import {
   StyleSheet,
 } from "react-native";
 
+import Icon from "react-native-vector-icons/AntDesign";
+
 import styles from "../styles/Styles.js";
+import UniversalStyles from "../styles/UniversalStyles.js";
+import IconStyles from "../styles/IconStyles.js";
+
 import NumberFormat from "react-number-format";
 
 import Footer from "../components/Footer.js";
@@ -25,21 +30,11 @@ export default function Setting({ navigation, route }) {
         resizeMode="cover"
         style={styles.image}
       >
-        <View
-          style={{
-            flexDirection: "row",
-            backgroundColor: "white",
-            justifyContent: "space-between",
-            opacity: 0.9,
-            padding: 20,
-            alignItems: "center",
-          }}
-        >
+        <View style={UniversalStyles.header}>
           <Text style={{ fontSize: 23 }}>Checkout</Text>
         </View>
-        {/* <ScrollView> */}
 
-        <View style={styles.fields}>
+        <View style={UniversalStyles.fields}>
           <Text style={{ fontSize: 20, marginTop: 10 }}>Payment Method</Text>
           <View
             style={{
