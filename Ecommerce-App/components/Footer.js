@@ -12,14 +12,14 @@ import iconStyles from "../styles/IconStyles.js";
 
 export default function Footer({
   navigation,
-  addition,
+  added,
   setAdded,
   childToParent,
   childToParent_edit,
   elementRef,
 }) {
   const { user } = useAuth();
-
+  console.log(setAdded, "HJello");
   let admin = null;
 
   if (user) {
@@ -44,7 +44,13 @@ export default function Footer({
         style={iconStyles.icon}
         name="shoppingcart"
         onPress={async () => {
-          navigation.navigate("Cart", { addition: addition });
+          navigation.navigate("Cart", {
+            added: added,
+            setAdded: setAdded,
+            childToParent: childToParent,
+            childToParent_edit: childToParent_edit,
+            elementRef: elementRef,
+          });
           setAdded(true);
         }}
       />
@@ -67,7 +73,7 @@ export default function Footer({
         onPress={() =>
           navigation.navigate("Setting", {
             setAdded: setAdded,
-            addition: addition,
+            added: added,
             childToParent: childToParent,
             childToParent_edit: childToParent_edit,
             elementRef: elementRef,

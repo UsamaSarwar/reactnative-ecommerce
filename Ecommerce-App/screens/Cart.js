@@ -27,18 +27,18 @@ import UniversalStyles from "../styles/UniversalStyles.js";
 import IconStyles from "../styles/IconStyles.js";
 
 export default function Cart({ navigation, route }) {
+  console.log(route.params.added, "Inside Cart");
   const { updateQuantityCart, removeFromCart, user } = useAuth();
   const { getCart, getTotal } = useTasks();
-
-  const [added, setAdded] = useState(route.params.addition);
+  const [added, setAdded] = useState(route.params.added);
   const [render, setRender] = useState(false);
   const [totalPrice, setTotalPrice] = useState(getTotal());
   const [cart, setCart] = useState(getCart(user.customData.memberOf));
-
   const refreshCart = async () => {
     await user.refreshCustomData();
     await setCart(getCart(user.customData.memberOf));
 
+    route.params.setAdded(false);
     setAdded(false);
     setTotalPrice(getTotal());
   };
@@ -362,7 +362,14 @@ export default function Cart({ navigation, route }) {
               />
             </View>
 
-            <Footer navigation={navigation} />
+            <Footer
+              navigation={navigation}
+              added={added}
+              setAdded={route.params.setAdded}
+              childToParent={route.params.childToParent}
+              childToParent_edit={route.params.childToParent_edit}
+              elementRef={route.params.elementRef}
+            />
           </ImageBackground>
         </View>
       </SafeAreaView>

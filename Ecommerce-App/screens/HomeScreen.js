@@ -1,6 +1,13 @@
 //React
 import React, { useRef, useState, useEffect } from "react";
-import { Text, View, SafeAreaView, ImageBackground } from "react-native";
+import {
+  Text,
+  View,
+  SafeAreaView,
+  ImageBackground,
+  Alert,
+  BackHandler,
+} from "react-native";
 import IonIcon from "react-native-vector-icons/Ionicons";
 
 import SlidingUpPanel from "rn-sliding-up-panel";
@@ -20,7 +27,6 @@ import { trusted } from "mongoose";
 
 export default function Homescreen({ navigation }) {
   const { user } = useAuth();
-
   useEffect(() => {
     if (!user) {
       navigation.navigate("Login");
@@ -35,7 +41,7 @@ export default function Homescreen({ navigation }) {
   const [added, setAdded] = useState(true);
   const [edit, setEdit] = useState(true);
   const [isClosed, setIsClosed] = useState(false);
-
+  // console.log(setAdded);
   const onPanelClose = () => {
     setData({ name: "", category: "", price: "", description: "" });
     setIsClosed(true);
@@ -49,6 +55,25 @@ export default function Homescreen({ navigation }) {
   const childToParent_edit = (childData) => {
     setEdit(childData);
   };
+
+  const backAction = () => {
+    Alert.alert("Hold on!", "Are you sure you want to exit the app?", [
+      {
+        text: "Cancel",
+        onPress: () => null,
+        style: "cancel",
+      },
+      { text: "YES", onPress: () => BackHandler.exitApp() },
+    ]);
+    return true;
+  };
+
+  useEffect(() => {
+    BackHandler.addEventListener("hardwareBackPress", backAction);
+
+    return () =>
+      BackHandler.removeEventListener("hardwareBackPress", backAction);
+  }, []);
 
   return (
     <SafeAreaView style={universalStyles.flex1}>
@@ -75,7 +100,7 @@ export default function Homescreen({ navigation }) {
           />
           <Footer
             navigation={navigation}
-            addition={added}
+            added={added}
             setAdded={setAdded}
             childToParent={childToParent}
             childToParent_edit={childToParent_edit}
