@@ -119,6 +119,10 @@ const TasksProvider = ({ children, projectPartition }) => {
     // setTasks([...projectRealm.objects("Task").sorted("name")]);
   };
 
+  const getTotal = () => {
+    return total;
+  };
+
   const getCart = (memberOf) => {
     let cart = [];
     let productIDs = [];
@@ -151,8 +155,8 @@ const TasksProvider = ({ children, projectPartition }) => {
         updateTask,
         getCart,
         setTotal,
+        getTotal,
         tasks,
-        total,
       }}
     >
       {children}

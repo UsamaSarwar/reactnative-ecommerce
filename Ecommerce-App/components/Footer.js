@@ -64,7 +64,15 @@ export default function Footer({
       <Icon
         style={iconStyles.icon}
         name="user"
-        onPress={() => navigation.navigate("Setting")}
+        onPress={() =>
+          navigation.navigate("Setting", {
+            setAdded: setAdded,
+            addition: addition,
+            childToParent: childToParent,
+            childToParent_edit: childToParent_edit,
+            elementRef: elementRef,
+          })
+        }
       />
     </View>
   );

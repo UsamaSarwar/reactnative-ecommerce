@@ -28,11 +28,11 @@ import IconStyles from "../styles/IconStyles.js";
 
 export default function Cart({ navigation, route }) {
   const { updateQuantityCart, removeFromCart, user } = useAuth();
-  const { getCart, total } = useTasks();
+  const { getCart, getTotal } = useTasks();
 
   const [added, setAdded] = useState(route.params.addition);
   const [render, setRender] = useState(false);
-  const [totalPrice, setTotalPrice] = useState(total);
+  const [totalPrice, setTotalPrice] = useState(getTotal());
   const [cart, setCart] = useState(getCart(user.customData.memberOf));
 
   const refreshCart = async () => {
@@ -40,7 +40,7 @@ export default function Cart({ navigation, route }) {
     await setCart(getCart(user.customData.memberOf));
 
     setAdded(false);
-    setTotalPrice(total);
+    setTotalPrice(getTotal());
   };
 
   if (added && !render) {
@@ -91,7 +91,7 @@ export default function Cart({ navigation, route }) {
               >
                 <Text style={{ fontSize: 23, fontWeight: "bold" }}>Total</Text>
                 <NumberFormat
-                  value={totalPrice > 0 ? totalPrice : total}
+                  value={totalPrice > 0 ? totalPrice : getTotal()}
                   displayType={"text"}
                   thousandSeparator={true}
                   prefix={"PKR "}

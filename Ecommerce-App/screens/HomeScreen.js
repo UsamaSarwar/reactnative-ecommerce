@@ -16,6 +16,7 @@ import ProductItem from "../components/ProductItem.js";
 import Footer from "../components/Footer.js";
 import UserSlideUpCard from "../components/UserSlideUpCard.js";
 import AdminSlideUpCard from "../components/AdminUserSlideUpCard.js";
+import { trusted } from "mongoose";
 
 export default function Homescreen({ navigation }) {
   const { user } = useAuth();
@@ -31,7 +32,7 @@ export default function Homescreen({ navigation }) {
   const elementRef = useRef();
 
   const [data, setData] = useState("");
-  const [added, setAdded] = useState(false);
+  const [added, setAdded] = useState(true);
   const [edit, setEdit] = useState(true);
   const [isClosed, setIsClosed] = useState(false);
 

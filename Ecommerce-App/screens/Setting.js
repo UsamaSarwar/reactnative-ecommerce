@@ -22,7 +22,7 @@ import Deleteaccount from "./DeleteAccount.js";
 
 import Footer from "../components/Footer.js";
 
-export default function Setting({ navigation }) {
+export default function Setting({ navigation, route }) {
   // console.log(app.currentUser.identities);
   const { user, signOut } = useAuth();
 
@@ -80,7 +80,14 @@ export default function Setting({ navigation }) {
             <Text style={styles.s_button_text}>Log Out</Text>
           </Pressable>
         </View>
-        <Footer navigation={navigation} />
+        <Footer
+          navigation={navigation}
+          setAdded={route.params.setAdded}
+          addition={route.params.addition}
+          childToParent={route.params.childToParent}
+          childToParent_edit={route.params.childToParent_edit}
+          elementRef={route.params.elementRef}
+        />
       </ImageBackground>
     </View>
   );
