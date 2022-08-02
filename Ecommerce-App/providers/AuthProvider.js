@@ -180,7 +180,9 @@ const AuthProvider = ({ children }) => {
       if (user.memberOf[items]["type"] === String(productID)) {
         newQuantity = operation
           ? user.memberOf[items]["value"] + 1
-          : user.memberOf[items]["value"] - 1;
+          : user.memberOf[items]["value"] > 1
+          ? user.memberOf[items]["value"] - 1
+          : user.memberOf[items]["value"];
         break;
       }
     }

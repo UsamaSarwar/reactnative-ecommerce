@@ -24,7 +24,7 @@ import Footer from "../components/Footer.js";
 import UserSlideUpCard from "../components/UserSlideUpCard.js";
 import AdminSlideUpCard from "../components/AdminUserSlideUpCard.js";
 
-export default function Homescreen({ navigation }) {
+export default function Homescreen({ navigation, route }) {
   const { user } = useAuth();
   useEffect(() => {
     if (!user) {
@@ -33,9 +33,9 @@ export default function Homescreen({ navigation }) {
   }, [user]);
 
   const admin = user.customData["userType"] === "admin" ? true : false;
-
+  // console.log(navigation);
   const elementRef = useRef();
-
+  // navigation.navigate("Homescreen");
   const [data, setData] = useState("");
   const [edit, setEdit] = useState(true);
   const [isClosed, setIsClosed] = useState(false);
@@ -54,15 +54,18 @@ export default function Homescreen({ navigation }) {
   };
 
   const backAction = () => {
-    Alert.alert("Hold on!", "Are you sure you want to exit the app?", [
-      {
-        text: "Cancel",
-        onPress: () => null,
-        style: "cancel",
-      },
-      { text: "YES", onPress: () => BackHandler.exitApp() },
-    ]);
-    return true;
+    if (navigation.isFocused()) {
+      //This is used to check if the user in in homescreen
+      Alert.alert("Hold on!", "Are you sure you want to exit the app?", [
+        {
+          text: "Cancel",
+          onPress: () => null,
+          style: "cancel",
+        },
+        { text: "YES", onPress: () => BackHandler.exitApp() },
+      ]);
+      return true;
+    }
   };
 
   useEffect(() => {

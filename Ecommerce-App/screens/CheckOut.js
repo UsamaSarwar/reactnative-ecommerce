@@ -5,16 +5,12 @@ import {
   ImageBackground,
   Pressable,
   Image,
-  FlatList,
   StyleSheet,
   ScrollView,
 } from "react-native";
 
-import Icon from "react-native-vector-icons/AntDesign";
-
 import styles from "../styles/Styles.js";
 import UniversalStyles from "../styles/UniversalStyles.js";
-import IconStyles from "../styles/IconStyles.js";
 
 import NumberFormat from "react-number-format";
 
@@ -23,7 +19,7 @@ import Footer from "../components/Footer.js";
 export default function Setting({ navigation, route }) {
   const { cart, total } = route.params;
   const [payMethod, setPayMethod] = useState(true);
-  // console.log(total);
+
   return (
     <View style={styles.container}>
       <ImageBackground

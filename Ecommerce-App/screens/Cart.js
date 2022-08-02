@@ -180,7 +180,12 @@ export default function Cart({ navigation, route }) {
                           flexDirection: "row",
                         }}
                       >
-                        <View style={UniversalStyles.row_f1_sb_c}>
+                        <View
+                          style={[
+                            UniversalStyles.row_f1_sb_c,
+                            { alignItems: "flex-start" },
+                          ]}
+                        >
                           <View
                             style={[
                               UniversalStyles.row_f1_sb_c,
@@ -268,25 +273,27 @@ export default function Cart({ navigation, route }) {
                                 name="minus"
                                 size={21}
                                 onPress={async () => {
-                                  await updateQuantityCart(
-                                    item[0]["_id"],
-                                    false
-                                  );
-                                  user.refreshCustomData();
-                                  setTotalPrice(
-                                    totalPrice - Number(item[0].price)
-                                  );
-                                  setCart((prevState) => {
-                                    if (item[1] > 1) {
-                                      let index = prevState.indexOf(item);
-                                      let newVal = [
-                                        prevState[index][0],
-                                        prevState[index][1] - 1,
-                                      ];
-                                      prevState.splice(index, 1, newVal);
-                                      return [...prevState];
-                                    }
-                                  });
+                                  if (item[1] > 1) {
+                                    await updateQuantityCart(
+                                      item[0]["_id"],
+                                      false
+                                    );
+                                    user.refreshCustomData();
+                                    setTotalPrice(
+                                      totalPrice - Number(item[0].price)
+                                    );
+                                    setCart((prevState) => {
+                                      if (item[1] > 1) {
+                                        let index = prevState.indexOf(item);
+                                        let newVal = [
+                                          prevState[index][0],
+                                          prevState[index][1] - 1,
+                                        ];
+                                        prevState.splice(index, 1, newVal);
+                                        return [...prevState];
+                                      }
+                                    });
+                                  }
                                 }}
                               />
                             </View>
