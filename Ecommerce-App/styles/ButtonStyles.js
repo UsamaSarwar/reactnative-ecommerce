@@ -2,6 +2,7 @@ import { StyleSheet } from "react-native";
 
 export default buttonStyles = StyleSheet.create({
   p_button: {
+    flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
     paddingVertical: 12,
@@ -10,14 +11,14 @@ export default buttonStyles = StyleSheet.create({
     elevation: 3,
     backgroundColor: "#40e1d1",
     marginBottom: 24,
-    // height: 45,
   },
   p_button_text: {
     fontSize: 21,
-    lineHeight: 21,
     fontWeight: "bold",
     letterSpacing: 0.25,
     color: "white",
+    textAlign: "center",
+    textAlignVertical: "center",
   },
 
   s_button: {
@@ -51,5 +52,24 @@ export default buttonStyles = StyleSheet.create({
     fontWeight: "bold",
     letterSpacing: 0.25,
     color: "white",
+  },
+
+  checkout_button: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 12,
+    paddingHorizontal: 15,
+    borderRadius: 15,
+    elevation: 3,
+    backgroundColor: "#40e1d1",
+  },
+  checkout_button_text: {
+    fontSize: 21,
+    fontWeight: "bold",
+    letterSpacing: 0.25,
+    color: "white",
+    textAlign: "center",
+    textAlignVertical: "center",
   },
 });

@@ -26,6 +26,7 @@ import Footer from "../components/Footer.js";
 import styles from "../styles/Styles.js";
 import UniversalStyles from "../styles/UniversalStyles.js";
 import IconStyles from "../styles/IconStyles.js";
+import ButtonStyles from "../styles/ButtonStyles.js";
 
 export default function Cart({ navigation, route }) {
   const { updateQuantityCart, removeFromCart, user } = useAuth();
@@ -82,33 +83,26 @@ export default function Cart({ navigation, route }) {
             {cart.length === 0 ? null : null}
 
             <View style={UniversalStyles.header}>
-              <Shimmer
-                autoRun={true}
-                visible={!added}
-                style={{ width: 100, height: 30, borderRadius: 15 }}
-              >
+              <View style={{ flexDirection: "column" }}>
                 <Text style={{ fontSize: 23, fontWeight: "bold" }}>Total</Text>
-                <NumberFormat
-                  value={totalPrice > 0 ? totalPrice : getTotal()}
-                  displayType={"text"}
-                  thousandSeparator={true}
-                  prefix={"PKR "}
-                  renderText={(value) => (
-                    <Text style={{ fontSize: 23 }}>{value}</Text>
-                  )}
-                />
-              </Shimmer>
+                <Shimmer
+                  autoRun={true}
+                  visible={!added}
+                  style={{ width: 100, height: 30, borderRadius: 15 }}
+                >
+                  <NumberFormat
+                    value={totalPrice > 0 ? totalPrice : getTotal()}
+                    displayType={"text"}
+                    thousandSeparator={true}
+                    prefix={"PKR "}
+                    renderText={(value) => (
+                      <Text style={{ fontSize: 23 }}>{value}</Text>
+                    )}
+                  />
+                </Shimmer>
+              </View>
               <Pressable
-                style={{
-                  alignItems: "center",
-                  justifyContent: "center",
-                  paddingVertical: 12,
-                  paddingHorizontal: 20,
-                  borderRadius: 15,
-                  elevation: 3,
-                  flexDirection: "row",
-                  backgroundColor: "#40e1d1",
-                }}
+                style={ButtonStyles.checkout_button}
                 onPress={() => {
                   navigation.navigate("Checkout", {
                     total: totalPrice,
@@ -117,14 +111,10 @@ export default function Cart({ navigation, route }) {
                 }}
               >
                 <Text
-                  style={{
-                    fontSize: 15,
-                    lineHeight: 18,
-                    fontWeight: "bold",
-                    letterSpacing: 0.25,
-                    color: "white",
-                    marginRight: 7,
-                  }}
+                  style={[
+                    ButtonStyles.checkout_button_text,
+                    { marginRight: 15 },
+                  ]}
                 >
                   Checkout
                 </Text>
@@ -352,8 +342,8 @@ export default function Cart({ navigation, route }) {
     );
   } else {
     return (
-      <SafeAreaView style={UniversalStyles.flex1}>
-        <View style={UniversalStyles.flex1}>
+      <SafeAreaView style={UniversalStyles.main}>
+        <View style={UniversalStyles.main}>
           <ImageBackground
             source={require("../assets/home.jpeg")}
             resizeMode="cover"

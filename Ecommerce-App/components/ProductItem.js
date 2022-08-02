@@ -55,7 +55,7 @@ export default function ProductItem({
 
   const makeRemoveButton = (item) => {
     return (
-      <View style={[IconStyles.background2, { justifyContent: "flex-end" }]}>
+      <View style={[IconStyles.background2, { marginLeft: 3 }]}>
         <Icon
           name="delete"
           color={"#ff6c70"}

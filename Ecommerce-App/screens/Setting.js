@@ -10,6 +10,9 @@ import Updatepassword from "./UpdatePassword.js";
 import Deleteaccount from "./DeleteAccount.js";
 import Footer from "../components/Footer.js";
 
+import UniversalStyles from "../styles/UniversalStyles.js";
+import ButtonStyles from "../styles/ButtonStyles.js";
+
 export default function Setting({ navigation, route }) {
   // console.log(app.currentUser.identities);
   const { user, signOut } = useAuth();
@@ -20,36 +23,51 @@ export default function Setting({ navigation, route }) {
   }, [user]);
 
   return (
-    <View style={styles.container}>
+    <View style={UniversalStyles.main}>
       <ImageBackground
         source={require("../assets/home.jpeg")}
         resizeMode="cover"
-        style={styles.image}
+        style={UniversalStyles.image}
       >
         <View style={styles.logoView}></View>
-        <View style={styles.fields}>
-          <Pressable
-            style={styles.p_button}
-            // onPress={() => navigation.navigate("Updatedetails")}
-          >
-            <IonIcon name="person-outline" size={32} color="white" />
-            <Text style={styles.p_button_text}>Update Personal Detail</Text>
+
+        <View style={UniversalStyles.fields}>
+          <Pressable style={ButtonStyles.p_button}>
+            <IonIcon
+              name="person-outline"
+              size={21}
+              color="white"
+              style={{ marginRight: 15 }}
+            />
+            <Text style={ButtonStyles.p_button_text}>
+              Update Personal Detail
+            </Text>
           </Pressable>
 
           <Pressable
-            style={styles.p_button}
+            style={ButtonStyles.p_button}
             onPress={() => navigation.navigate(Updatepassword)}
           >
-            <IonIcon name="key-outline" size={32} color="white" />
-            <Text style={styles.p_button_text}>Update Password</Text>
+            <IonIcon
+              name="key-outline"
+              size={21}
+              color="white"
+              style={{ marginRight: 15 }}
+            />
+            <Text style={ButtonStyles.p_button_text}>Update Password</Text>
           </Pressable>
 
           <Pressable
-            style={styles.p_button}
+            style={ButtonStyles.p_button}
             onPress={() => navigation.navigate(Deleteaccount)}
           >
-            <IonIcon name="trash-outline" size={32} color="white" />
-            <Text style={styles.p_button_text}>Delete Account</Text>
+            <IonIcon
+              name="trash-outline"
+              size={21}
+              color="white"
+              style={{ marginRight: 15 }}
+            />
+            <Text style={ButtonStyles.p_button_text}>Delete Account</Text>
           </Pressable>
           <Pressable
             style={styles.s_button}
@@ -67,7 +85,7 @@ export default function Setting({ navigation, route }) {
               ])
             }
           >
-            <IonIcon name="log-out-outline" size={25} color="#AAAAAA" />
+            <IonIcon name="log-out-outline" size={21} color="#AAAAAA" />
             <Text style={styles.s_button_text}>Log Out</Text>
           </Pressable>
         </View>

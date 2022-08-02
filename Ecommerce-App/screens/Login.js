@@ -80,15 +80,19 @@ export default function Login({ navigation }) {
             theme={{ roundness: 15 }}
             autoCapitalize="none"
             underlineColor="transparent"
-            // activeUnderlineColor="transparent"
-            right={<TextInput.Icon color="#43C785" name="account" />}
+            activeUnderlineColor="#77ded1"
+            right={<TextInput.Icon color="#77ded1" name="account" />}
             onChangeText={(text) => {
               setErrorMessage("");
               setAddr(text);
             }}
             style={[
               inputStyles.textInput,
-              { borderColor: addrError ? "red" : "transparent" },
+              {
+                borderColor: addrError ? "red" : "transparent",
+                underlineColor: "transparent",
+                activeUnderlineColor: "transparent",
+              },
             ]}
           />
 
@@ -100,12 +104,12 @@ export default function Login({ navigation }) {
             placeholder="Password"
             autoCapitalize="none"
             underlineColor="transparent"
-            // activeUnderlineColor="transparent"
+            activeUnderlineColor="#77ded1"
             secureTextEntry={!secure}
             theme={{ roundness: 15 }}
             right={
               <TextInput.Icon
-                color="#43C785"
+                color="#77ded1"
                 name={secure ? "eye-off" : "eye"}
                 onPress={() => {
                   setSecure(!secure);
