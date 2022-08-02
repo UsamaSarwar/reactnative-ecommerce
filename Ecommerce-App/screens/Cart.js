@@ -11,6 +11,7 @@ import {
   FlatList,
 } from "react-native";
 import Icon from "react-native-vector-icons/AntDesign";
+import IonIcon from "react-native-vector-icons/Ionicons";
 import NumberFormat from "react-number-format";
 
 //Providers
@@ -29,7 +30,6 @@ import IconStyles from "../styles/IconStyles.js";
 export default function Cart({ navigation, route }) {
   const { updateQuantityCart, removeFromCart, user } = useAuth();
   const { getCart, getTotal, added, setAdded } = useTasks();
-  const [render, setRender] = useState(false);
   const [totalPrice, setTotalPrice] = useState(getTotal());
   const [cart, setCart] = useState(getCart(user.customData.memberOf));
   const refreshCart = async () => {
@@ -106,6 +106,7 @@ export default function Cart({ navigation, route }) {
                   paddingHorizontal: 20,
                   borderRadius: 15,
                   elevation: 3,
+                  flexDirection: "row",
                   backgroundColor: "#40e1d1",
                 }}
                 onPress={() => {
@@ -117,15 +118,21 @@ export default function Cart({ navigation, route }) {
               >
                 <Text
                   style={{
-                    fontSize: 18,
+                    fontSize: 15,
                     lineHeight: 18,
                     fontWeight: "bold",
                     letterSpacing: 0.25,
                     color: "white",
+                    marginRight: 7,
                   }}
                 >
                   Checkout
                 </Text>
+                <IonIcon
+                  name="arrow-forward-circle-outline"
+                  size={24}
+                  color="white"
+                />
               </Pressable>
             </View>
 

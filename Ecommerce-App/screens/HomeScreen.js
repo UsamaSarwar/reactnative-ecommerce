@@ -23,7 +23,6 @@ import ProductItem from "../components/ProductItem.js";
 import Footer from "../components/Footer.js";
 import UserSlideUpCard from "../components/UserSlideUpCard.js";
 import AdminSlideUpCard from "../components/AdminUserSlideUpCard.js";
-import { trusted } from "mongoose";
 
 export default function Homescreen({ navigation }) {
   const { user } = useAuth();

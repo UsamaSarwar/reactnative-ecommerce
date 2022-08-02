@@ -35,7 +35,10 @@ export default universalStyles = StyleSheet.create({
     height: "40%",
     marginBottom: 20,
   },
-  center: { justifyContent: "center", alignItems: "center" },
+  center: {
+    justifyContent: "center",
+    alignItems: "center",
+  },
 
   container: {
     flex: 1,

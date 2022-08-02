@@ -53,13 +53,14 @@ export default styles = StyleSheet.create({
   },
   p_button: {
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "flex-start",
     paddingVertical: 12,
     paddingHorizontal: 32,
     borderRadius: 15,
     elevation: 3,
     backgroundColor: "#40e1d1",
     marginBottom: 24,
+    flexDirection: "row",
   },
   p_button_text: {
     fontSize: 21,
@@ -67,12 +68,14 @@ export default styles = StyleSheet.create({
     fontWeight: "bold",
     letterSpacing: 0.25,
     color: "white",
+    marginLeft: 25,
   },
 
   s_button: {
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "transparent",
+    flexDirection: "row",
     marginBottom: 24,
   },
   s_button_text: {
@@ -80,6 +83,7 @@ export default styles = StyleSheet.create({
     lineHeight: 22,
     fontWeight: "bold",
     letterSpacing: 0.25,
+    marginLeft: 5,
     color: "#AAAAAA",
   },
   checkout_button: {

@@ -2,24 +2,12 @@ import React, { useEffect } from "react";
 import Icon from "react-native-vector-icons/AntDesign";
 // import app from "../realmApp";
 import { useAuth } from "../providers/AuthProvider.js";
-import {
-  StyleSheet,
-  Text,
-  View,
-  SafeAreaView,
-  TextInput,
-  StatusBar,
-  Button,
-  ImageBackground,
-  Pressable,
-  Image,
-  Alert,
-} from "react-native";
+import { Text, View, ImageBackground, Pressable, Alert } from "react-native";
+import IonIcon from "react-native-vector-icons/Ionicons";
 
 import styles from "../styles/Styles.js";
 import Updatepassword from "./UpdatePassword.js";
 import Deleteaccount from "./DeleteAccount.js";
-
 import Footer from "../components/Footer.js";
 
 export default function Setting({ navigation, route }) {
@@ -44,6 +32,7 @@ export default function Setting({ navigation, route }) {
             style={styles.p_button}
             // onPress={() => navigation.navigate("Updatedetails")}
           >
+            <IonIcon name="person-outline" size={32} color="white" />
             <Text style={styles.p_button_text}>Update Personal Detail</Text>
           </Pressable>
 
@@ -51,6 +40,7 @@ export default function Setting({ navigation, route }) {
             style={styles.p_button}
             onPress={() => navigation.navigate(Updatepassword)}
           >
+            <IonIcon name="key-outline" size={32} color="white" />
             <Text style={styles.p_button_text}>Update Password</Text>
           </Pressable>
 
@@ -58,6 +48,7 @@ export default function Setting({ navigation, route }) {
             style={styles.p_button}
             onPress={() => navigation.navigate(Deleteaccount)}
           >
+            <IonIcon name="trash-outline" size={32} color="white" />
             <Text style={styles.p_button_text}>Delete Account</Text>
           </Pressable>
           <Pressable
@@ -76,6 +67,7 @@ export default function Setting({ navigation, route }) {
               ])
             }
           >
+            <IonIcon name="log-out-outline" size={25} color="#AAAAAA" />
             <Text style={styles.s_button_text}>Log Out</Text>
           </Pressable>
         </View>

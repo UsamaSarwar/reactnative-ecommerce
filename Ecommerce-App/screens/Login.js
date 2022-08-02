@@ -1,14 +1,8 @@
 //React
 import React, { useEffect, useState } from "react";
-import {
-  Text,
-  View,
-  TextInput,
-  ImageBackground,
-  Pressable,
-  Image,
-} from "react-native";
-
+import { Text, View, ImageBackground, Pressable, Image } from "react-native";
+import IonIcon from "react-native-vector-icons/Ionicons";
+import { TextInput } from "react-native-paper";
 //Providers
 import { useAuth } from "../providers/AuthProvider.js";
 
@@ -22,6 +16,7 @@ export default function Login({ navigation }) {
 
   const [addr, setAddr] = useState("");
   const [pass, setPass] = useState("");
+  const [secure, setSecure] = useState(false);
 
   const [addrError, setAddrError] = useState(false);
   const [passError, setPassError] = useState(false);
@@ -82,7 +77,11 @@ export default function Login({ navigation }) {
           <TextInput
             value={addr}
             placeholder="Email Address"
+            theme={{ roundness: 15 }}
             autoCapitalize="none"
+            underlineColor="transparent"
+            // activeUnderlineColor="transparent"
+            right={<TextInput.Icon color="#43C785" name="account" />}
             onChangeText={(text) => {
               setErrorMessage("");
               setAddr(text);
@@ -100,7 +99,19 @@ export default function Login({ navigation }) {
             value={pass}
             placeholder="Password"
             autoCapitalize="none"
-            secureTextEntry={true}
+            underlineColor="transparent"
+            // activeUnderlineColor="transparent"
+            secureTextEntry={!secure}
+            theme={{ roundness: 15 }}
+            right={
+              <TextInput.Icon
+                color="#43C785"
+                name={secure ? "eye-off" : "eye"}
+                onPress={() => {
+                  setSecure(!secure);
+                }}
+              />
+            }
             onChangeText={(text) => {
               setErrorMessage("");
               setPass(text);
