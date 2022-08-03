@@ -1,6 +1,14 @@
 //React
 import React, { useState } from "react";
-import { Text, View, Pressable, Image, FlatList, Alert } from "react-native";
+import {
+  Text,
+  View,
+  Pressable,
+  Image,
+  FlatList,
+  Alert,
+  ScrollView,
+} from "react-native";
 import NumberFormat from "react-number-format";
 import Icon from "react-native-vector-icons/AntDesign";
 

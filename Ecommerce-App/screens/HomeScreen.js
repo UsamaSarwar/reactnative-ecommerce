@@ -71,7 +71,6 @@ export default function Homescreen({ navigation, route }) {
     };
   }, []);
 
-  console.log(isKeyboardVisible);
   const onPanelClose = () => {
     setData({ name: "", category: "", price: "", description: "" });
     setIsClosed(true);
@@ -88,7 +87,6 @@ export default function Homescreen({ navigation, route }) {
 
   const backAction = () => {
     if (navigation.isFocused()) {
-      //This is used to check if the user in in homescreen
       Alert.alert("Hold on!", "Are you sure you want to exit the app?", [
         {
           text: "Cancel",

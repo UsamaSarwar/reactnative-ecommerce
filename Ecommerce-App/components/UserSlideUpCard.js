@@ -1,6 +1,6 @@
 //React
 import React, { useState, useEffect } from "react";
-import { Alert, Text, View, Pressable, Image } from "react-native";
+import { Alert, Text, View, Pressable, Image, ScrollView } from "react-native";
 import NumberFormat from "react-number-format";
 
 //Providers
@@ -52,39 +52,29 @@ export default function UserSlideUpCard({ data, isClosed }) {
             }}
           />
         </View>
+        <View>
+          <View style={{ marginBottom: 2 }}>
+            <Text style={{ fontWeight: "bold", fontSize: 15 }}>
+              {data.name}
+            </Text>
+          </View>
 
-        <View
-          style={[
-            UniversalStyles.flex1,
-            {
-              marginBottom: 3,
-            },
-          ]}
-        >
-          <Text style={{ fontWeight: "bold", fontSize: 15 }}>{data.name}</Text>
+          <View style={{ marginBottom: 10 }}>
+            <Text
+              style={{
+                fontSize: 11,
+                color: "grey",
+              }}
+            >
+              {data.category}
+            </Text>
+          </View>
         </View>
-
-        <View
-          style={[
-            UniversalStyles.flex1,
-            {
-              marginBottom: 5,
-            },
-          ]}
-        >
-          <Text
-            style={{
-              fontSize: 11,
-              color: "grey",
-            }}
-          >
-            {data.category}
-          </Text>
-        </View>
-
-        <Text numberOfLines={3} style={{ marginBottom: 10, fontSize: 15 }}>
-          {data.description}
-        </Text>
+        <ScrollView style={{ height: 60 }}>
+          <View>
+            <Text style={{ fontSize: 15 }}>{data.description}</Text>
+          </View>
+        </ScrollView>
         <View
           style={[
             UniversalStyles.row_f1_sb_c,
