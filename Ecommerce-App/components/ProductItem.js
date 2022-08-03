@@ -19,6 +19,7 @@ export default function ProductItem({
   user,
   elementRef,
   childToParent,
+  searchText,
   childToParent_edit,
 }) {
   const { tasks } = useTasks();
@@ -31,7 +32,7 @@ export default function ProductItem({
   if (tasks.length > 0 && loading) {
     setLoading(false);
   }
-
+  // console.log(searchText, "Inside Product Item");
   const renderSlide = (item) => {
     childToParent(item);
     childToParent_edit(true);
@@ -65,10 +66,15 @@ export default function ProductItem({
       </View>
     );
   };
-
+  const searchTasks = tasks.filter((item) => {
+    return (
+      item.name.toLowerCase().includes(searchText.toLowerCase()) ||
+      searchText === ""
+    );
+  });
   return (
     <FlatList
-      data={!loading ? tasks : [1, 2, 3, 4, 5]}
+      data={!loading ? searchTasks : [1, 2, 3, 4, 5]}
       renderItem={({ item }) => (
         <Pressable onPress={() => renderSlide(item)}>
           <View style={universalStyles.productCard}>

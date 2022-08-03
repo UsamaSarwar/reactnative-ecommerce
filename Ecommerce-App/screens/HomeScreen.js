@@ -6,14 +6,19 @@ import {
   SafeAreaView,
   ImageBackground,
   Alert,
+  Keyboard,
+  ScrollView,
   BackHandler,
+  TextInput,
 } from "react-native";
 import IonIcon from "react-native-vector-icons/Ionicons";
-
+import Icon from "react-native-vector-icons/AntDesign";
+import SearchBar from "react-native-dynamic-search-bar";
 import SlidingUpPanel from "rn-sliding-up-panel";
 
 //Providers
 import { useAuth } from "../providers/AuthProvider.js";
+import { useTasks } from "../providers/TasksProvider";
 
 //Styles
 import universalStyles from "../styles/UniversalStyles.js";
@@ -26,6 +31,8 @@ import AdminSlideUpCard from "../components/AdminUserSlideUpCard.js";
 
 export default function Homescreen({ navigation, route }) {
   const { user } = useAuth();
+  const { tasks } = useTasks();
+
   useEffect(() => {
     if (!user) {
       navigation.navigate("Login");
@@ -33,12 +40,38 @@ export default function Homescreen({ navigation, route }) {
   }, [user]);
 
   const admin = user.customData["userType"] === "admin" ? true : false;
-  // console.log(navigation);
   const elementRef = useRef();
-  // navigation.navigate("Homescreen");
   const [data, setData] = useState("");
   const [edit, setEdit] = useState(true);
   const [isClosed, setIsClosed] = useState(false);
+  const [searchState, setSearchState] = useState(false);
+  const [spinnerState, setSpinnerState] = useState(true);
+  const [searchText, setSearchText] = useState("");
+  const [isKeyboardVisible, setKeyboardVisible] = useState(false);
+
+  const [listType, setListType] = useState("Inventory");
+
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      "keyboardDidShow",
+      () => {
+        setKeyboardVisible(true); // or some other action
+      }
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      "keyboardDidHide",
+      () => {
+        setKeyboardVisible(false); // or some other action
+      }
+    );
+
+    return () => {
+      keyboardDidHideListener.remove();
+      keyboardDidShowListener.remove();
+    };
+  }, []);
+
+  console.log(isKeyboardVisible);
   const onPanelClose = () => {
     setData({ name: "", category: "", price: "", description: "" });
     setIsClosed(true);
@@ -74,6 +107,83 @@ export default function Homescreen({ navigation, route }) {
     return () =>
       BackHandler.removeEventListener("hardwareBackPress", backAction);
   }, []);
+  useEffect(() => {
+    if (!isKeyboardVisible) {
+      setSearchState(false);
+    }
+  }, []);
+
+  const stats = () => {
+    return (
+      <View
+        style={{
+          flexDirection: "row",
+          height: 100,
+          justifyContent: "space-between",
+          marginLeft: 10,
+          marginRight: 10,
+        }}
+      >
+        <View
+          style={{
+            backgroundColor: "white",
+            opacity: 0.9,
+            borderRadius: 15,
+            flex: 1,
+            padding: 10,
+            flexDirection: "column",
+            justifyContent: "space-between",
+          }}
+        >
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <IonIcon name="boat-outline" size={23} />
+            <Text
+              style={{
+                fontSize: 23,
+                fontWeight: listType === "Orders" ? "bold" : "normal",
+                marginLeft: 5,
+              }}
+            >
+              Orders
+            </Text>
+          </View>
+        </View>
+
+        <View
+          style={{
+            backgroundColor: "white",
+            opacity: 0.9,
+            borderRadius: 15,
+            flex: 1,
+            marginLeft: 10,
+            padding: 10,
+            flexDirection: "column",
+            justifyContent: "space-between",
+          }}
+        >
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <IonIcon name="cube-outline" size={23} />
+            <Text
+              style={{
+                fontSize: 23,
+                fontWeight: listType === "Inventory" ? "bold" : "normal",
+                marginLeft: 5,
+              }}
+            >
+              Inventory
+            </Text>
+          </View>
+          <Text
+            style={{
+              fontSize: 21,
+            }}
+          >
+            {tasks.length} Products
+          </Text>
+        </View>
+      </View>
+    );
+  };
 
   return (
     <SafeAreaView style={universalStyles.flex1}>
@@ -83,27 +193,64 @@ export default function Homescreen({ navigation, route }) {
           resizeMode="cover"
           style={universalStyles.image}
         >
-          <View style={universalStyles.header}>
-            <Text style={{ fontSize: 23 }}>
-              Welcome, {user.customData.email}
-            </Text>
-            <IonIcon name="search" size={32} />
-          </View>
+          {searchState ? (
+            <View style={universalStyles.header}>
+              <SearchBar
+                style={{ flex: 1 }}
+                placeholder="Search for Products here..."
+                defaultValue={searchText}
+                onChangeText={(text) => {
+                  setSearchText(text);
+                }}
+                spinnerVisibility={!spinnerState}
+                // onSearchPress={() => {
+                //   setSearchState(!searchState);
+                // }}
+                onClearPress={() => {
+                  setSearchText("");
+                }}
+                onBlur={() => {
+                  setSearchState(false);
+                }}
+              />
+            </View>
+          ) : (
+            <View style={universalStyles.header}>
+              <Text style={{ fontSize: 23 }}>
+                Welcome, {user.customData.email}
+              </Text>
+
+              <IonIcon
+                // style={{ transform: [{ rotateY: "180deg" }] }}
+                name="search"
+                size={32}
+                onPress={() => {
+                  setSearchState(true);
+                  setKeyboardVisible(true);
+                }}
+              />
+            </View>
+          )}
+
+          {admin ? stats() : null}
 
           <ProductItem
             navigation={navigation}
             user={user}
             elementRef={elementRef}
             childToParent={childToParent}
+            searchText={searchText}
             childToParent_edit={childToParent_edit}
             setData={setData}
           />
+
           <Footer
             navigation={navigation}
             childToParent={childToParent}
             childToParent_edit={childToParent_edit}
             elementRef={elementRef}
           />
+
           <SlidingUpPanel
             allowDragging={true}
             allowMomentum={true}

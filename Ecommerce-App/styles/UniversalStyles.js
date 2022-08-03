@@ -96,6 +96,7 @@ export default universalStyles = StyleSheet.create({
     opacity: 0.9,
     padding: 20,
     alignItems: "center",
+    marginBottom: 10,
   },
   footer: {
     backgroundColor: "white",

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Text, View, TextInput, Pressable, Alert, Image } from "react-native";
 import Icon from "react-native-vector-icons/AntDesign";
+import IonIcon from "react-native-vector-icons/Ionicons";
 
 import ImagePicker from "react-native-image-crop-picker";
 
@@ -215,7 +216,8 @@ export default function AdminSlideUpCard({
             style={ButtonStyles.p_button}
             onPress={() => openImagePicker()}
           >
-            <Text style={ButtonStyles.p_button_text}>Upload Image</Text>
+            <IonIcon name="image" size={23} color="white" />
+            {/* <Text style={ButtonStyles.p_button_text}>Upload Image</Text> */}
           </Pressable>
         )}
 
@@ -224,7 +226,7 @@ export default function AdminSlideUpCard({
             style={ButtonStyles.p_button}
             onPress={() => onPressEditItem()}
           >
-            <Text style={ButtonStyles.p_button_text}>Edit Item</Text>
+            <Text style={ButtonStyles.p_button_text}>Done Editing</Text>
           </Pressable>
         ) : (
           <View>
