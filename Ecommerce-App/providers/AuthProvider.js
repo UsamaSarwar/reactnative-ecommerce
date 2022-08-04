@@ -14,9 +14,7 @@ const AuthProvider = ({ children }) => {
   const [cartSize, SetCartSize] = useState(
     user ? user.customData.memberOf.length : 0
   );
-  // const [productData, setProductData] = useState([]);
-  // console.log(cartSize, "Cart Size");
-
+  console.log(cartSize);
   useEffect(() => {
     if (!user) {
       return;

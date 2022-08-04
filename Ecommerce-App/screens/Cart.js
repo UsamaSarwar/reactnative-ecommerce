@@ -79,8 +79,6 @@ export default function Cart({ navigation, route }) {
             resizeMode="cover"
             style={UniversalStyles.image}
           >
-            {cart.length === 0 ? null : null}
-
             <View style={UniversalStyles.header}>
               <View style={{ flexDirection: "column" }}>
                 <Text style={{ fontSize: 23, fontWeight: "bold" }}>Total</Text>
@@ -348,8 +346,8 @@ export default function Cart({ navigation, route }) {
     );
   } else {
     return (
-      <SafeAreaView style={UniversalStyles.main}>
-        <View style={UniversalStyles.main}>
+      <SafeAreaView style={UniversalStyles.flex1}>
+        <View style={UniversalStyles.flex1}>
           <ImageBackground
             source={require("../assets/home.jpeg")}
             resizeMode="cover"
