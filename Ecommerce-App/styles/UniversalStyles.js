@@ -49,7 +49,7 @@ export default universalStyles = StyleSheet.create({
     justifyContent: "space-between",
   },
   fields: {
-    backgroundColor: "rgba(255, 255, 255, 0.7)",
+    backgroundColor: "rgba(66, 200, 143, 0.3)",
     padding: 20,
     borderRadius: 20,
   },
@@ -66,6 +66,8 @@ export default universalStyles = StyleSheet.create({
   },
 
   productCard: {
+    borderColor: "rgba(66, 200, 143, 0.6)",
+    borderWidth: 4,
     backgroundColor: "white",
     opacity: 0.9,
     padding: 10,

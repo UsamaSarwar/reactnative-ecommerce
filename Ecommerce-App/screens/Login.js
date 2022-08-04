@@ -80,8 +80,8 @@ export default function Login({ navigation }) {
             theme={{ roundness: 15 }}
             autoCapitalize="none"
             underlineColor="transparent"
-            activeUnderlineColor="#77ded1"
-            right={<TextInput.Icon color="#77ded1" name="account" />}
+            activeUnderlineColor="#42C88F"
+            right={<TextInput.Icon color="#42C88F" name="account" />}
             onChangeText={(text) => {
               setErrorMessage("");
               setAddr(text);
@@ -104,12 +104,12 @@ export default function Login({ navigation }) {
             placeholder="Password"
             autoCapitalize="none"
             underlineColor="transparent"
-            activeUnderlineColor="#77ded1"
+            activeUnderlineColor="#42C88F"
             secureTextEntry={!secure}
             theme={{ roundness: 15 }}
             right={
               <TextInput.Icon
-                color="#77ded1"
+                color="#42C88F"
                 name={secure ? "eye-off" : "eye"}
                 onPress={() => {
                   setSecure(!secure);
@@ -123,10 +123,18 @@ export default function Login({ navigation }) {
             style={[
               inputStyles.textInput,
               { borderColor: passError ? "red" : "transparent" },
+              { marginBottom: 5 },
             ]}
           />
           <Pressable
-            style={buttonStyles.p_button}
+            style={buttonStyles.s_button_fp}
+            onPress={() => navigation.navigate("Forgotpass")}
+          >
+            <Text style={buttonStyles.s_button_text}>Forgot Password?</Text>
+          </Pressable>
+
+          <Pressable
+            style={buttonStyles.p_button_login}
             onPress={() => onPressLogIn()}
           >
             <Text style={buttonStyles.p_button_text}>Log In</Text>
@@ -136,12 +144,6 @@ export default function Login({ navigation }) {
             onPress={() => navigation.navigate("Signup")}
           >
             <Text style={buttonStyles.s_button_text}>Sign Up</Text>
-          </Pressable>
-          <Pressable
-            style={buttonStyles.s_button}
-            onPress={() => navigation.navigate("Forgotpass")}
-          >
-            <Text style={buttonStyles.s_button_text}>Forgot Password?</Text>
           </Pressable>
         </View>
       </ImageBackground>

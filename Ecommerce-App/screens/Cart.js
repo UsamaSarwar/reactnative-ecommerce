@@ -39,7 +39,6 @@ export default function Cart({ navigation, route }) {
     setAdded(false);
     setTotalPrice(getTotal());
   };
-
   // console.log(added, render);
   useEffect(() => {
     if (added) {

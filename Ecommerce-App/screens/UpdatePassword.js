@@ -103,7 +103,7 @@ export default function Updatepassword({ navigation }) {
               onChangeText={(text) => setConfirmNewPass(text)}
             />
             <Pressable
-              style={ButtonStyles.p_button}
+              style={ButtonStyles.p_button_login}
               onPress={() => onPressUpdatePass()}
             >
               <Text style={ButtonStyles.p_button_text}>Update Password</Text>

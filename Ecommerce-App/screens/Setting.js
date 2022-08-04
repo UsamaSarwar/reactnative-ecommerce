@@ -33,15 +33,17 @@ export default function Setting({ navigation, route }) {
 
         <View style={UniversalStyles.fields}>
           <Pressable style={ButtonStyles.p_button}>
-            <IonIcon
-              name="person-outline"
-              size={21}
-              color="white"
-              style={{ marginRight: 15 }}
-            />
-            <Text style={ButtonStyles.p_button_text}>
-              Update Personal Detail
-            </Text>
+            <View style={{ flexDirection: "row" }}>
+              <IonIcon
+                name="person-outline"
+                size={25}
+                color="white"
+                style={{ marginRight: 15 }}
+              />
+              <Text style={ButtonStyles.p_button_text}>
+                Update Personal Detail
+              </Text>
+            </View>
           </Pressable>
 
           <Pressable
@@ -50,7 +52,7 @@ export default function Setting({ navigation, route }) {
           >
             <IonIcon
               name="key-outline"
-              size={21}
+              size={25}
               color="white"
               style={{ marginRight: 15 }}
             />
@@ -63,7 +65,7 @@ export default function Setting({ navigation, route }) {
           >
             <IonIcon
               name="trash-outline"
-              size={21}
+              size={25}
               color="white"
               style={{ marginRight: 15 }}
             />

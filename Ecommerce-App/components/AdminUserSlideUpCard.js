@@ -205,7 +205,11 @@ export default function AdminSlideUpCard({
             <View
               style={[
                 IconStyles.background2,
-                { alignSelf: "flex-end", marginRight: 100 },
+                {
+                  alignSelf: "flex-end",
+                  marginRight: 100,
+                  backgroundColor: "rgba(66, 200, 143, 0.8)",
+                },
               ]}
             >
               <Icon name="edit" size={21} onPress={() => openImagePicker()} />
@@ -213,7 +217,7 @@ export default function AdminSlideUpCard({
           </View>
         ) : (
           <Pressable
-            style={ButtonStyles.p_button}
+            style={ButtonStyles.p_button_login}
             onPress={() => openImagePicker()}
           >
             <IonIcon name="image" size={23} color="white" />
@@ -223,7 +227,7 @@ export default function AdminSlideUpCard({
 
         {toEdit ? (
           <Pressable
-            style={ButtonStyles.p_button}
+            style={ButtonStyles.p_button_login}
             onPress={() => onPressEditItem()}
           >
             <Text style={ButtonStyles.p_button_text}>Done Editing</Text>
@@ -231,7 +235,7 @@ export default function AdminSlideUpCard({
         ) : (
           <View>
             <Pressable
-              style={ButtonStyles.p_button}
+              style={ButtonStyles.p_button_login}
               onPress={() => onPressAddItem()}
             >
               <Text style={ButtonStyles.p_button_text}>Add Item</Text>

@@ -32,7 +32,6 @@ import AdminSlideUpCard from "../components/AdminUserSlideUpCard.js";
 export default function Homescreen({ navigation, route }) {
   const { user } = useAuth();
   const { tasks } = useTasks();
-
   useEffect(() => {
     if (!user) {
       navigation.navigate("Login");
@@ -70,7 +69,6 @@ export default function Homescreen({ navigation, route }) {
       keyboardDidShowListener.remove();
     };
   }, []);
-
   const onPanelClose = () => {
     setData({ name: "", category: "", price: "", description: "" });
     setIsClosed(true);
@@ -98,7 +96,7 @@ export default function Homescreen({ navigation, route }) {
       return true;
     }
   };
-
+  // console.log("Again");
   useEffect(() => {
     BackHandler.addEventListener("hardwareBackPress", backAction);
 
@@ -124,7 +122,7 @@ export default function Homescreen({ navigation, route }) {
       >
         <View
           style={{
-            backgroundColor: "white",
+            backgroundColor: "rgba(66, 200, 143, 0.6)",
             opacity: 0.9,
             borderRadius: 15,
             flex: 1,
@@ -149,7 +147,7 @@ export default function Homescreen({ navigation, route }) {
 
         <View
           style={{
-            backgroundColor: "white",
+            backgroundColor: "rgba(66, 200, 143, 0.6)",
             opacity: 0.9,
             borderRadius: 15,
             flex: 1,
@@ -217,16 +215,30 @@ export default function Homescreen({ navigation, route }) {
               <Text style={{ fontSize: 23 }}>
                 Welcome, {user.customData.email}
               </Text>
-
-              <IonIcon
-                // style={{ transform: [{ rotateY: "180deg" }] }}
-                name="search"
-                size={32}
-                onPress={() => {
-                  setSearchState(true);
-                  setKeyboardVisible(true);
-                }}
-              />
+              <View style={{ flexDirection: "row" }}>
+                {searchText !== "" ? (
+                  <IonIcon
+                    style={{ marginRight: 8 }}
+                    color="red"
+                    name="close-circle-outline"
+                    size={32}
+                    onPress={() => {
+                      setSearchText("");
+                    }}
+                  />
+                ) : (
+                  void 0
+                )}
+                <IonIcon
+                  // style={{ transform: [{ rotateY: "180deg" }] }}
+                  name="search"
+                  size={32}
+                  onPress={() => {
+                    setSearchState(true);
+                    setKeyboardVisible(true);
+                  }}
+                />
+              </View>
             </View>
           )}
 
@@ -234,7 +246,6 @@ export default function Homescreen({ navigation, route }) {
 
           <ProductItem
             navigation={navigation}
-            user={user}
             elementRef={elementRef}
             childToParent={childToParent}
             searchText={searchText}

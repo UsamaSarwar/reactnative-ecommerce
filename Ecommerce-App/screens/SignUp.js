@@ -132,7 +132,10 @@ export default function Signup({ navigation }) {
             ]}
           />
 
-          <Pressable style={buttonStyles.p_button} onPress={onPressSignUp}>
+          <Pressable
+            style={buttonStyles.p_button_login}
+            onPress={onPressSignUp}
+          >
             <Text style={buttonStyles.p_button_text}>Sign Up</Text>
           </Pressable>
           <Pressable

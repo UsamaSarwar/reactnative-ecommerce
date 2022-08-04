@@ -1,6 +1,6 @@
 //React
-import React from "react";
-import { View } from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, Text } from "react-native";
 import Icon from "react-native-vector-icons/AntDesign";
 
 //Providers
@@ -16,9 +16,9 @@ export default function Footer({
   childToParent_edit,
   elementRef,
 }) {
-  const { user } = useAuth();
-  const { added, setAdded } = useTasks();
-  // console.log(setAdded, "HJello");
+  const { user, getCartSize } = useAuth();
+  const { setAdded } = useTasks();
+  let cartSize = getCartSize();
   let admin = null;
 
   if (user) {
@@ -31,7 +31,7 @@ export default function Footer({
     childToParent_edit(false);
     elementRef.current.show();
   };
-
+  // console.log(cartSize);
   const adminPanel = () => {
     return (
       <Icon style={iconStyles.icon} name="plus" onPress={() => renderSlide()} />
@@ -39,18 +39,38 @@ export default function Footer({
   };
   const userPanel = () => {
     return (
-      <Icon
-        style={iconStyles.icon}
-        name="shoppingcart"
-        onPress={() => {
-          setAdded(true);
-          navigation.navigate("Cart", {
-            childToParent: childToParent,
-            childToParent_edit: childToParent_edit,
-            elementRef: elementRef,
-          });
-        }}
-      />
+      <View style={{ flexDirection: "row-reverse" }}>
+        {cartSize > 0 ? (
+          <Text
+            style={{
+              position: "absolute",
+              top: -12,
+              right: 30,
+              // color: "#42C88F",
+              borderRadius: 10,
+              borderWidth: 1,
+              width: 20,
+              textAlign: "center",
+            }}
+          >
+            {String(cartSize)}
+          </Text>
+        ) : (
+          void 0
+        )}
+        <Icon
+          style={iconStyles.icon}
+          name="shoppingcart"
+          onPress={() => {
+            setAdded(true);
+            navigation.navigate("Cart", {
+              childToParent: childToParent,
+              childToParent_edit: childToParent_edit,
+              elementRef: elementRef,
+            });
+          }}
+        />
+      </View>
     );
   };
 

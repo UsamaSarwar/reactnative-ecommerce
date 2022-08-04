@@ -95,7 +95,10 @@ export default function UserSlideUpCard({ data, isClosed }) {
           <Quantity quantity={quantity} setQuantity={setQuantity} />
         </View>
 
-        <Pressable style={buttonStyles.p_button} onPress={onPressAddtoCart}>
+        <Pressable
+          style={buttonStyles.p_button_login}
+          onPress={onPressAddtoCart}
+        >
           <Text style={buttonStyles.p_button_text}>Add to Cart</Text>
         </Pressable>
 

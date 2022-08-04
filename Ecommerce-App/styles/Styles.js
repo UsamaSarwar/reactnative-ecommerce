@@ -58,10 +58,11 @@ export default styles = StyleSheet.create({
     paddingHorizontal: 32,
     borderRadius: 15,
     elevation: 3,
-    backgroundColor: "#40e1d1",
+    backgroundColor: "#42C88F",
     marginBottom: 24,
     flexDirection: "row",
   },
+
   p_button_text: {
     fontSize: 21,
     lineHeight: 21,

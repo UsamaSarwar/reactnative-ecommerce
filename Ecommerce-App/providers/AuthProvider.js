@@ -11,7 +11,11 @@ const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(app.currentUser);
   const realmRef = useRef(null);
   const [projectData, setProjectData] = useState([]);
+  const [cartSize, SetCartSize] = useState(
+    user ? user.customData.memberOf.length : 0
+  );
   // const [productData, setProductData] = useState([]);
+  // console.log(cartSize, "Cart Size");
 
   useEffect(() => {
     if (!user) {
@@ -148,6 +152,7 @@ const AuthProvider = ({ children }) => {
           users[0].memberOf[indexOfItem]["value"] + parseInt(quantity);
       });
     } else {
+      SetCartSize(cartSize + 1);
       await userRealm.write(() => {
         users[0].memberOf.push({
           type: String(productID),
@@ -161,6 +166,7 @@ const AuthProvider = ({ children }) => {
   const removeFromCart = async (product) => {
     const userRealm = realmRef.current;
     const user = userRealm.objects("User")[0];
+    SetCartSize(cartSize - 1);
     await userRealm.write(() => {
       for (let products = 0; products < user.memberOf.length; products++) {
         if (user.memberOf[products]["type"] === product) {
@@ -171,10 +177,14 @@ const AuthProvider = ({ children }) => {
     });
   };
 
+  const getCartSize = () => {
+    return cartSize;
+  };
   const updateQuantityCart = async (productID, operation) => {
     const userRealm = realmRef.current;
     const user = userRealm.objects("User")[0];
     let newQuantity = 0;
+    let isValid = true;
     // console.log("Preseed");
     for (var items = 0; items < user.memberOf.length; items++) {
       if (user.memberOf[items]["type"] === String(productID)) {
@@ -182,18 +192,19 @@ const AuthProvider = ({ children }) => {
           ? user.memberOf[items]["value"] + 1
           : user.memberOf[items]["value"] > 1
           ? user.memberOf[items]["value"] - 1
-          : user.memberOf[items]["value"];
+          : (isValid = false);
         break;
       }
     }
-
-    await userRealm.write(() => {
-      user.memberOf.splice(items, 1);
-      user.memberOf.push({
-        type: String(productID),
-        value: parseInt(newQuantity),
+    if (isValid) {
+      await userRealm.write(() => {
+        user.memberOf.splice(items, 1);
+        user.memberOf.push({
+          type: String(productID),
+          value: parseInt(newQuantity),
+        });
       });
-    });
+    }
   };
 
   return (
@@ -208,6 +219,7 @@ const AuthProvider = ({ children }) => {
         addToCart,
         removeFromCart,
         updateQuantityCart,
+        getCartSize,
         // setUsername,
         user,
         projectData, // list of projects the user is a memberOf

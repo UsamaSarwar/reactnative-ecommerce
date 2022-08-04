@@ -12,8 +12,11 @@ import {
 import NumberFormat from "react-number-format";
 import Icon from "react-native-vector-icons/AntDesign";
 
+import MatIcon from "react-native-vector-icons/MaterialIcons";
+
 //Providers
 import { useTasks } from "../providers/TasksProvider";
+import { useAuth } from "../providers/AuthProvider";
 
 //Components
 import Shimmer from "./Shimmer";
@@ -24,15 +27,13 @@ import productCardStyles from "../styles/ProductCardStyle";
 import IconStyles from "../styles/IconStyles";
 
 export default function ProductItem({
-  user,
   elementRef,
   childToParent,
   searchText,
   childToParent_edit,
 }) {
-  const { tasks } = useTasks();
-  const { deleteTask } = useTasks();
-
+  const { user, addToCart } = useAuth();
+  const { tasks, total, setTotal, setAdded, deleteTask } = useTasks();
   const [loading, setLoading] = useState(true);
 
   const admin = user.customData["userType"] === "admin" ? true : false;
@@ -45,6 +46,18 @@ export default function ProductItem({
     childToParent(item);
     childToParent_edit(true);
     elementRef.current.show();
+  };
+
+  const onPressAddtoCart = async (item) => {
+    console.log("Add to cart pressed Outside");
+
+    await addToCart(item["_id"], 1);
+    await user.refreshCustomData();
+
+    setTotal(total + item.price);
+    setAdded(true);
+
+    Alert.alert(item.name, "has been added to your shopping cart.");
   };
 
   const onPressDeleteProduct = (item) => {
@@ -70,6 +83,26 @@ export default function ProductItem({
           color={"#ff6c70"}
           size={18}
           onPress={() => onPressDeleteProduct(item)}
+        />
+      </View>
+    );
+  };
+  const makeAddToCartButton = (item) => {
+    return (
+      <View
+        style={{
+          borderWidth: 1,
+          borderColor: "#42C88F",
+          borderRadius: 100,
+          padding: 7,
+          marginLeft: 3,
+        }}
+      >
+        <MatIcon
+          name="add-shopping-cart"
+          color={"#42C88F"}
+          size={18}
+          onPress={() => onPressAddtoCart(item)}
         />
       </View>
     );
@@ -163,7 +196,7 @@ export default function ProductItem({
                     <Icon name="edit" size={18} />
                   </View>
                 ) : (
-                  void 0
+                  makeAddToCartButton(item)
                 )}
               </View>
             </View>
