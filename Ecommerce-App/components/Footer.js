@@ -75,9 +75,15 @@ export default function Footer({
   };
 
   return (
-    <View style={universalStyles.footer}>
+    <View
+      style={[
+        universalStyles.footer,
+        { backgroundColor: "rgba(66, 200, 143, 0.6)" },
+      ]}
+    >
       <Icon
         style={iconStyles.icon}
+        x
         name="home"
         onPress={() => navigation.navigate("Homescreen")}
       />
