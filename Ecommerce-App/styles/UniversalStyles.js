@@ -1,8 +1,81 @@
 import { StyleSheet } from "react-native";
 
 export default universalStyles = StyleSheet.create({
-  main: {
+  //General
+  row_sb_conatiner: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+
+  col_sb_conatiner: {
+    flexDirection: "column",
+    justifyContent: "space-between",
+  },
+
+  centered_container: {
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  page_container: {
     flex: 1,
+  },
+
+  background_image: {
+    flex: 1,
+    justifyContent: "space-between",
+  },
+
+  logo_container: {
+    alignItems: "center",
+    marginTop: 50,
+    marginBottom: 50,
+    padding: 10,
+  },
+
+  logo: {
+    width: 125,
+    height: 125,
+    borderRadius: 100,
+  },
+
+  centered_container: {
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  input_fields_container_1: {
+    flexDirection: "column",
+    // backgroundColor: "rgba(66, 200, 143, 0.3)",
+    backgroundColor: "#f6f8f9",
+    padding: 20,
+    borderRadius: 20,
+  },
+
+  pressable_1: {
+    backgroundColor: "#f6f8f9",
+    borderRadius: 20,
+    padding: 10,
+    shadowColor: "#AAAAAA",
+    shadowRadius: 100,
+    shadowOffset: { height: 100, width: 100 },
+    elevation: 100,
+  },
+
+  header: {
+    flexDirection: "row",
+    backgroundColor: "white",
+    justifyContent: "space-between",
+    opacity: 0.9,
+    padding: 20,
+    alignItems: "center",
+  },
+  footer: {
+    backgroundColor: "white",
+    opacity: 0.9,
+    flexDirection: "row",
+    justifyContent: "space-around",
+    padding: 15,
   },
 
   flex1: { flex: 1 },
@@ -19,7 +92,6 @@ export default universalStyles = StyleSheet.create({
     borderRadius: 20,
     padding: 20,
     flex: 0.85,
-    // alignItems: "center",
   },
 
   row_f1_sb_c: {
@@ -59,23 +131,6 @@ export default universalStyles = StyleSheet.create({
     marginBottom: 50,
     padding: 10,
   },
-  logo: {
-    width: 125,
-    height: 125,
-    borderRadius: 100,
-  },
-
-  productCard: {
-    borderColor: "rgba(66, 200, 143, 0.6)",
-    borderWidth: 4,
-    backgroundColor: "white",
-    opacity: 0.9,
-    padding: 10,
-    margin: 10,
-    borderRadius: 10,
-    flexDirection: "row",
-    flex: 1,
-  },
 
   headText: {
     paddingHorizontal: "2%",
@@ -90,24 +145,6 @@ export default universalStyles = StyleSheet.create({
     // margin: 36,
     borderWidth: 2,
     borderRadius: 20,
-  },
-
-  header: {
-    flexDirection: "row",
-    backgroundColor: "white",
-    justifyContent: "space-between",
-    opacity: 0.9,
-    padding: 20,
-    alignItems: "center",
-    marginBottom: 10,
-  },
-  footer: {
-    backgroundColor: "white",
-    opacity: 0.9,
-    flexDirection: "row",
-    justifyContent: "space-around",
-    padding: 15,
-    marginTop: 10,
   },
 
   inputContainer: {

@@ -18,12 +18,9 @@ export default function Footer({
 }) {
   const { user, getCartSize } = useAuth();
   const { setAdded } = useTasks();
-  let cartSize = getCartSize();
-  let admin = null;
+  const cartSize = getCartSize();
 
-  if (user) {
-    admin = user.customData["userType"] === "admin" ? true : false;
-  }
+  const admin = user.customData["userType"] === "admin" ? true : false;
 
   const renderSlide = () => {
     console.log("Pressed add item");
@@ -31,33 +28,36 @@ export default function Footer({
     childToParent_edit(false);
     elementRef.current.show();
   };
-  // console.log(cartSize);
+
   const adminPanel = () => {
     return (
       <Icon style={iconStyles.icon} name="plus" onPress={() => renderSlide()} />
     );
   };
+
+  const cartCount = () => {
+    return (
+      <View
+        style={[
+          iconStyles.background4,
+          {
+            position: "absolute",
+            top: -10,
+            right: -10,
+          },
+        ]}
+      >
+        <Text style={{ textAlign: "center", textAlignVertical: "center" }}>
+          {String(cartSize)}
+        </Text>
+      </View>
+    );
+  };
+
   const userPanel = () => {
     return (
-      <View style={{ flexDirection: "row-reverse" }}>
-        {cartSize > 0 ? (
-          <Text
-            style={{
-              position: "absolute",
-              top: -12,
-              right: 30,
-              // color: "#42C88F",
-              borderRadius: 10,
-              borderWidth: 1,
-              width: 20,
-              textAlign: "center",
-            }}
-          >
-            {String(cartSize)}
-          </Text>
-        ) : (
-          void 0
-        )}
+      <View>
+        {cartSize > 0 ? cartCount() : null}
         <Icon
           style={iconStyles.icon}
           name="shoppingcart"
@@ -75,15 +75,9 @@ export default function Footer({
   };
 
   return (
-    <View
-      style={[
-        universalStyles.footer,
-        { backgroundColor: "rgba(66, 200, 143, 0.6)" },
-      ]}
-    >
+    <View style={universalStyles.footer}>
       <Icon
         style={iconStyles.icon}
-        x
         name="home"
         onPress={() => navigation.navigate("Homescreen")}
       />

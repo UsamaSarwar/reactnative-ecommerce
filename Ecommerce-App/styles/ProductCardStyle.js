@@ -2,25 +2,19 @@ import { StyleSheet } from "react-native";
 
 export default productCardStyles = StyleSheet.create({
   productCard: {
-    backgroundColor: "white",
+    backgroundColor: "#f6f8f9",
     opacity: 0.9,
     padding: 10,
-    margin: 10,
-    borderRadius: 10,
+    borderRadius: 15,
     flexDirection: "row",
     flex: 1,
+    marginBottom: 10,
   },
 
-  imageContainer: {
-    borderWidth: 1,
-    borderColor: "#f3f3f3",
-    justifyContent: "center",
-  },
-
-  image: {
+  product_image: {
     height: 100,
     width: 100,
-    borderRadius: 10,
+    borderRadius: 15,
   },
 
   textContainer: {

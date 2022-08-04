@@ -1,17 +1,12 @@
 //React
 import React, { useState } from "react";
-import {
-  Text,
-  View,
-  Pressable,
-  Image,
-  FlatList,
-  Alert,
-  ScrollView,
-} from "react-native";
-import NumberFormat from "react-number-format";
-import Icon from "react-native-vector-icons/AntDesign";
 
+//React Components
+import { Text, View, Pressable, Image, FlatList, Alert } from "react-native";
+import NumberFormat from "react-number-format";
+
+//Icons
+import Icon from "react-native-vector-icons/AntDesign";
 import MatIcon from "react-native-vector-icons/MaterialIcons";
 
 //Providers
@@ -34,6 +29,7 @@ export default function ProductItem({
 }) {
   const { user, addToCart } = useAuth();
   const { tasks, total, setTotal, setAdded, deleteTask } = useTasks();
+
   const [loading, setLoading] = useState(true);
 
   const admin = user.customData["userType"] === "admin" ? true : false;
@@ -41,7 +37,7 @@ export default function ProductItem({
   if (tasks.length > 0 && loading) {
     setLoading(false);
   }
-  // console.log(searchText, "Inside Product Item");
+
   const renderSlide = (item) => {
     childToParent(item);
     childToParent_edit(true);
@@ -87,21 +83,20 @@ export default function ProductItem({
       </View>
     );
   };
+
   const makeAddToCartButton = (item) => {
     return (
       <View
         style={{
-          borderWidth: 1,
-          borderColor: "#42C88F",
+          backgroundColor: "rgba(66, 200, 143, 1)",
           borderRadius: 100,
           padding: 7,
-          marginLeft: 3,
         }}
       >
         <MatIcon
           name="add-shopping-cart"
-          color={"#42C88F"}
           size={18}
+          color={"#FFFFFF"}
           onPress={() => onPressAddtoCart(item)}
         />
       </View>
@@ -116,20 +111,26 @@ export default function ProductItem({
   return (
     <FlatList
       data={!loading ? searchTasks : [1, 2, 3, 4, 5]}
+      style={{ margin: 10, borderRadius: 15 }}
       renderItem={({ item }) => (
         <Pressable onPress={() => renderSlide(item)}>
-          <View style={universalStyles.productCard}>
-            <View style={productCardStyles.imageContainer}>
+          <View style={productCardStyles.productCard}>
+            <View
+              style={[
+                universalStyles.centered_container,
+                { backgroundColor: "white", padding: 10, borderRadius: 15 },
+              ]}
+            >
               <Shimmer
                 autoRun={true}
                 visible={!loading}
-                style={productCardStyles.image}
+                style={productCardStyles.product_image}
               >
                 <Image
                   source={{
                     uri: `data:${item.imageForm};base64,${item.image}`,
                   }}
-                  style={productCardStyles.image}
+                  style={productCardStyles.product_image}
                 />
               </Shimmer>
             </View>

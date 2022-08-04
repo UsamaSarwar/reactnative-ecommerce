@@ -21,17 +21,17 @@ export default function Setting({ navigation, route }) {
   const [payMethod, setPayMethod] = useState(true);
 
   return (
-    <View style={styles.container}>
+    <View style={UniversalStyles.page_container}>
       <ImageBackground
         source={require("../assets/home.jpeg")}
         resizeMode="cover"
-        style={styles.image}
+        style={UniversalStyles.background_image}
       >
         <View style={UniversalStyles.header}>
           <Text style={{ fontSize: 23 }}>Checkout</Text>
         </View>
         <ScrollView>
-          <View style={UniversalStyles.fields}>
+          <View style={UniversalStyles.input_fields_container_1}>
             <Text style={{ fontSize: 20, marginTop: 10 }}>Payment Method</Text>
             <View
               style={{

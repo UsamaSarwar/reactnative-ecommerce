@@ -1,5 +1,7 @@
 //React
 import React, { useState } from "react";
+
+//React Components
 import {
   Text,
   View,
@@ -16,6 +18,7 @@ import { useAuth } from "../providers/AuthProvider.js";
 import universalStyles from "../styles/UniversalStyles";
 import inputStyles from "../styles/InputStyles";
 import buttonStyles from "../styles/ButtonStyles";
+import TextStyles from "../styles/TextStyles.js";
 
 export default function Forgotpass({ navigation }) {
   const { passResetEmail } = useAuth();
@@ -32,7 +35,7 @@ export default function Forgotpass({ navigation }) {
     } else {
       try {
         await passResetEmail(addr);
-        Alert.alert("Success reset email has been sent to " + add, [
+        Alert.alert("Success reset email has been sent to " + addr, [
           {
             text: "OK",
             onPress: () => navigation.navigate("Login"),
@@ -45,27 +48,27 @@ export default function Forgotpass({ navigation }) {
   };
 
   return (
-    <View style={universalStyles.main}>
+    <View style={universalStyles.page_container}>
       <ImageBackground
         source={require("../assets/home.jpeg")}
         resizeMode="cover"
-        style={universalStyles.image}
+        style={universalStyles.background_image}
       >
-        <View style={universalStyles.logoView}>
+        <View style={universalStyles.logo_container}>
           <Image
             source={require("../assets/logo.png")}
             style={universalStyles.logo}
           ></Image>
         </View>
 
-        <View style={universalStyles.center}>
-          <Text style={styles.error_message}>{errorMessage}</Text>
+        <View style={universalStyles.centered_container}>
+          <Text style={TextStyles.error_message}>{errorMessage}</Text>
         </View>
 
-        <View style={universalStyles.fields}>
+        <View style={universalStyles.input_fields_container_1}>
           <TextInput
             style={[
-              inputStyles.textInput,
+              inputStyles.signup_input,
               { borderColor: addrError ? "red" : "transparent" },
             ]}
             placeholder="Recovery Email Address"
@@ -73,17 +76,19 @@ export default function Forgotpass({ navigation }) {
           />
 
           <Pressable
-            style={buttonStyles.p_button}
+            style={buttonStyles.p_button_login}
             onPress={() => onPressReset()}
           >
             <Text style={buttonStyles.p_button_text}>Send Reset Link</Text>
           </Pressable>
 
-          <Pressable
-            style={buttonStyles.s_button}
-            onPress={() => navigation.navigate("Login")}
-          >
-            <Text style={buttonStyles.s_button_text}>Go Back</Text>
+          <Pressable style={buttonStyles.s_button}>
+            <Text
+              style={buttonStyles.s_button_text}
+              onPress={() => navigation.navigate("Login")}
+            >
+              Go Back
+            </Text>
           </Pressable>
         </View>
       </ImageBackground>

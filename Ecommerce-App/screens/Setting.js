@@ -23,7 +23,7 @@ export default function Setting({ navigation, route }) {
   }, [user]);
 
   return (
-    <View style={UniversalStyles.main}>
+    <View style={UniversalStyles.page_container}>
       <ImageBackground
         source={require("../assets/home.jpeg")}
         resizeMode="cover"

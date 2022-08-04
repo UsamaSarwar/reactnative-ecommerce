@@ -1,5 +1,7 @@
 //React
 import React, { useRef, useState, useEffect } from "react";
+
+//React Compoenets
 import {
   Text,
   View,
@@ -7,12 +9,10 @@ import {
   ImageBackground,
   Alert,
   Keyboard,
-  ScrollView,
   BackHandler,
-  TextInput,
+  Pressable,
 } from "react-native";
-import IonIcon from "react-native-vector-icons/Ionicons";
-import Icon from "react-native-vector-icons/AntDesign";
+
 import SearchBar from "react-native-dynamic-search-bar";
 import SlidingUpPanel from "rn-sliding-up-panel";
 
@@ -20,35 +20,40 @@ import SlidingUpPanel from "rn-sliding-up-panel";
 import { useAuth } from "../providers/AuthProvider.js";
 import { useTasks } from "../providers/TasksProvider";
 
-//Styles
-import universalStyles from "../styles/UniversalStyles.js";
-
 //Components
 import ProductItem from "../components/ProductItem.js";
 import Footer from "../components/Footer.js";
 import UserSlideUpCard from "../components/UserSlideUpCard.js";
 import AdminSlideUpCard from "../components/AdminUserSlideUpCard.js";
 
-export default function Homescreen({ navigation, route }) {
+//Icons
+import IonIcon from "react-native-vector-icons/Ionicons";
+import Icon from "react-native-vector-icons/AntDesign";
+
+//Styles
+import universalStyles from "../styles/UniversalStyles.js";
+
+export default function Homescreen({ navigation }) {
   const { user } = useAuth();
   const { tasks } = useTasks();
+
   useEffect(() => {
     if (!user) {
       navigation.navigate("Login");
     }
   }, [user]);
 
-  const admin = user.customData["userType"] === "admin" ? true : false;
-  const elementRef = useRef();
-  const [data, setData] = useState("");
-  const [edit, setEdit] = useState(true);
-  const [isClosed, setIsClosed] = useState(false);
-  const [searchState, setSearchState] = useState(false);
-  const [spinnerState, setSpinnerState] = useState(true);
-  const [searchText, setSearchText] = useState("");
-  const [isKeyboardVisible, setKeyboardVisible] = useState(false);
+  useEffect(() => {
+    BackHandler.addEventListener("hardwareBackPress", backAction);
 
-  const [listType, setListType] = useState("Inventory");
+    return () =>
+      BackHandler.removeEventListener("hardwareBackPress", backAction);
+  }, []);
+  useEffect(() => {
+    if (!isKeyboardVisible) {
+      setSearchState(false);
+    }
+  }, []);
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
@@ -57,6 +62,7 @@ export default function Homescreen({ navigation, route }) {
         setKeyboardVisible(true); // or some other action
       }
     );
+
     const keyboardDidHideListener = Keyboard.addListener(
       "keyboardDidHide",
       () => {
@@ -69,6 +75,21 @@ export default function Homescreen({ navigation, route }) {
       keyboardDidShowListener.remove();
     };
   }, []);
+
+  const admin = user.customData["userType"] === "admin" ? true : false;
+  const elementRef = useRef();
+
+  const [data, setData] = useState("");
+  const [searchText, setSearchText] = useState("");
+
+  const [edit, setEdit] = useState(true);
+  const [isClosed, setIsClosed] = useState(false);
+  const [searchState, setSearchState] = useState(false);
+  const [spinnerState, setSpinnerState] = useState(true);
+  const [isKeyboardVisible, setKeyboardVisible] = useState(false);
+
+  const [listType, setListType] = useState("Inventory");
+
   const onPanelClose = () => {
     setData({ name: "", category: "", price: "", description: "" });
     setIsClosed(true);
@@ -96,41 +117,24 @@ export default function Homescreen({ navigation, route }) {
       return true;
     }
   };
-  // console.log("Again");
-  useEffect(() => {
-    BackHandler.addEventListener("hardwareBackPress", backAction);
-
-    return () =>
-      BackHandler.removeEventListener("hardwareBackPress", backAction);
-  }, []);
-  useEffect(() => {
-    if (!isKeyboardVisible) {
-      setSearchState(false);
-    }
-  }, []);
 
   const stats = () => {
     return (
       <View
-        style={{
-          flexDirection: "row",
-          height: 100,
-          justifyContent: "space-between",
-          marginLeft: 10,
-          marginRight: 10,
-          // backgroundColor: "rgba(66, 200, 143, 0.6)",
-        }}
+        style={[
+          universalStyles.row_sb_conatiner,
+          {
+            height: 100,
+            margin: 10,
+          },
+        ]}
       >
-        <View
-          style={{
-            backgroundColor: "rgba(66, 200, 143, 0.6)",
-            opacity: 0.9,
-            borderRadius: 15,
-            flex: 1,
-            padding: 10,
-            flexDirection: "column",
-            justifyContent: "space-between",
-          }}
+        <Pressable
+          style={[
+            universalStyles.col_sb_conatiner,
+            universalStyles.pressable_1,
+            { flex: 1 },
+          ]}
         >
           <View style={{ flexDirection: "row", alignItems: "center" }}>
             <IonIcon name="boat-outline" size={23} />
@@ -144,19 +148,14 @@ export default function Homescreen({ navigation, route }) {
               Orders
             </Text>
           </View>
-        </View>
+        </Pressable>
 
         <View
-          style={{
-            backgroundColor: "rgba(66, 200, 143, 0.6)",
-            opacity: 0.9,
-            borderRadius: 15,
-            flex: 1,
-            marginLeft: 10,
-            padding: 10,
-            flexDirection: "column",
-            justifyContent: "space-between",
-          }}
+          style={[
+            universalStyles.col_sb_conatiner,
+            universalStyles.pressable_1,
+            { flex: 1, marginLeft: 10 },
+          ]}
         >
           <View style={{ flexDirection: "row", alignItems: "center" }}>
             <IonIcon name="cube-outline" size={23} />
@@ -182,76 +181,71 @@ export default function Homescreen({ navigation, route }) {
     );
   };
 
+  const renderSearchBar = () => {
+    return (
+      <SearchBar
+        style={{ flex: 1 }}
+        placeholder="Search for Products here..."
+        defaultValue={searchText}
+        onChangeText={(text) => {
+          setSearchText(text);
+        }}
+        spinnerVisibility={!spinnerState}
+        onSearchPress={() => {
+          setSearchState(false);
+        }}
+        onClearPress={() => {
+          setSearchText("");
+        }}
+        onBlur={() => {
+          setSearchState(false);
+        }}
+      />
+    );
+  };
+
+  const renderWelcome = () => {
+    return (
+      <>
+        <Text style={{ fontSize: 23 }}>Welcome, {user.customData.email}</Text>
+        <View style={{ flexDirection: "row" }}>
+          {searchText !== "" ? (
+            <IonIcon
+              style={{ marginRight: 8 }}
+              color="red"
+              name="close-circle-outline"
+              size={32}
+              onPress={() => {
+                setSearchText("");
+              }}
+            />
+          ) : (
+            void 0
+          )}
+          <IonIcon
+            name="search"
+            size={32}
+            onPress={() => {
+              setSearchState(true);
+              setKeyboardVisible(true);
+            }}
+          />
+        </View>
+      </>
+    );
+  };
+
   return (
-    <SafeAreaView style={universalStyles.flex1}>
-      <View style={universalStyles.main}>
+    <SafeAreaView style={universalStyles.page_container}>
+      <View style={universalStyles.page_container}>
         <ImageBackground
           source={require("../assets/home.jpeg")}
           resizeMode="cover"
-          style={universalStyles.image}
+          style={universalStyles.background_image}
         >
-          {searchState ? (
-            <View
-              style={[
-                universalStyles.header,
-                { backgroundColor: "rgba(66, 200, 143, 0.6)" },
-              ]}
-            >
-              <SearchBar
-                style={{ flex: 1 }}
-                placeholder="Search for Products here..."
-                defaultValue={searchText}
-                onChangeText={(text) => {
-                  setSearchText(text);
-                }}
-                spinnerVisibility={!spinnerState}
-                onSearchPress={() => {
-                  setSearchState(false);
-                }}
-                onClearPress={() => {
-                  setSearchText("");
-                }}
-                onBlur={() => {
-                  setSearchState(false);
-                }}
-              />
-            </View>
-          ) : (
-            <View
-              style={[
-                universalStyles.header,
-                { backgroundColor: "rgba(66, 200, 143, 0.6)" },
-              ]}
-            >
-              <Text style={{ fontSize: 23 }}>
-                Welcome, {user.customData.email}
-              </Text>
-              <View style={{ flexDirection: "row" }}>
-                {searchText !== "" ? (
-                  <IonIcon
-                    style={{ marginRight: 8 }}
-                    color="red"
-                    name="close-circle-outline"
-                    size={32}
-                    onPress={() => {
-                      setSearchText("");
-                    }}
-                  />
-                ) : (
-                  void 0
-                )}
-                <IonIcon
-                  // style={{ transform: [{ rotateY: "180deg" }] }}
-                  name="search"
-                  size={32}
-                  onPress={() => {
-                    setSearchState(true);
-                    setKeyboardVisible(true);
-                  }}
-                />
-              </View>
-            </View>
-          )}
+          <View style={[universalStyles.header]}>
+            {searchState ? renderSearchBar() : renderWelcome()}
+          </View>
 
           {admin ? stats() : null}
 

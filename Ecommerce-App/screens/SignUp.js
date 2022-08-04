@@ -1,5 +1,7 @@
 //React
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+
+//React Components
 import {
   Text,
   View,
@@ -70,24 +72,24 @@ export default function Signup({ navigation }) {
   };
 
   return (
-    <View style={universalStyles.main}>
+    <View style={universalStyles.page_container}>
       <ImageBackground
         source={require("../assets/home.jpeg")}
         resizeMode="cover"
-        style={universalStyles.image}
+        style={universalStyles.background_image}
       >
-        <View style={universalStyles.logoView}>
+        <View style={universalStyles.logo_container}>
           <Image
             source={require("../assets/logo.png")}
             style={universalStyles.logo}
           ></Image>
         </View>
 
-        <View style={universalStyles.center}>
+        <View style={universalStyles.centered_container}>
           <Text style={styles.error_message}>{errorMessage}</Text>
         </View>
 
-        <View style={universalStyles.fields}>
+        <View style={universalStyles.input_fields_container_1}>
           {addr === "" ? null : (
             <Text style={{ marginBottom: 5 }}>Email Address</Text>
           )}
@@ -99,7 +101,7 @@ export default function Signup({ navigation }) {
               setAddr(text);
             }}
             style={[
-              inputStyles.textInput,
+              inputStyles.signup_input,
               { borderColor: addrError ? "red" : "transparent" },
             ]}
           />
@@ -113,7 +115,7 @@ export default function Signup({ navigation }) {
             secureTextEntry={true}
             onChangeText={(text) => setPass(text)}
             style={[
-              inputStyles.textInput,
+              inputStyles.signup_input,
               { borderColor: passError ? "red" : "transparent" },
             ]}
           />
@@ -127,7 +129,7 @@ export default function Signup({ navigation }) {
             secureTextEntry={true}
             onChangeText={(text) => setConfirmPass(text)}
             style={[
-              inputStyles.textInput,
+              inputStyles.signup_input,
               { borderColor: confirmPassError ? "red" : "transparent" },
             ]}
           />
@@ -138,13 +140,14 @@ export default function Signup({ navigation }) {
           >
             <Text style={buttonStyles.p_button_text}>Sign Up</Text>
           </Pressable>
-          <Pressable
-            style={buttonStyles.s_button}
-            onPress={() => {
-              navigation.navigate("Login");
-            }}
-          >
-            <Text style={buttonStyles.s_button_text}>Go Back</Text>
+
+          <Pressable style={buttonStyles.s_button}>
+            <Text
+              style={buttonStyles.s_button_text}
+              onPress={() => navigation.navigate("Login")}
+            >
+              Go Back
+            </Text>
           </Pressable>
         </View>
       </ImageBackground>
