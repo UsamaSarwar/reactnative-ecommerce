@@ -118,6 +118,7 @@ export default function Homescreen({ navigation, route }) {
           justifyContent: "space-between",
           marginLeft: 10,
           marginRight: 10,
+          // backgroundColor: "rgba(66, 200, 143, 0.6)",
         }}
       >
         <View
@@ -190,7 +191,12 @@ export default function Homescreen({ navigation, route }) {
           style={universalStyles.image}
         >
           {searchState ? (
-            <View style={universalStyles.header}>
+            <View
+              style={[
+                universalStyles.header,
+                { backgroundColor: "rgba(66, 200, 143, 0.6)" },
+              ]}
+            >
               <SearchBar
                 style={{ flex: 1 }}
                 placeholder="Search for Products here..."
@@ -199,9 +205,9 @@ export default function Homescreen({ navigation, route }) {
                   setSearchText(text);
                 }}
                 spinnerVisibility={!spinnerState}
-                // onSearchPress={() => {
-                //   setSearchState(!searchState);
-                // }}
+                onSearchPress={() => {
+                  setSearchState(false);
+                }}
                 onClearPress={() => {
                   setSearchText("");
                 }}
@@ -211,7 +217,12 @@ export default function Homescreen({ navigation, route }) {
               />
             </View>
           ) : (
-            <View style={universalStyles.header}>
+            <View
+              style={[
+                universalStyles.header,
+                { backgroundColor: "rgba(66, 200, 143, 0.6)" },
+              ]}
+            >
               <Text style={{ fontSize: 23 }}>
                 Welcome, {user.customData.email}
               </Text>
