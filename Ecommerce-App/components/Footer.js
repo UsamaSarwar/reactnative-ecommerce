@@ -16,9 +16,10 @@ export default function Footer({
   childToParent_edit,
   elementRef,
 }) {
-  const { user, getCartSize } = useAuth();
+  const { user, cartSize } = useAuth();
   const { setAdded } = useTasks();
-  const cartSize = getCartSize();
+
+  // console.log(cartSize);
 
   const admin = user.customData["userType"] === "admin" ? true : false;
 

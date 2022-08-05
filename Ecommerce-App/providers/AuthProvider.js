@@ -14,7 +14,7 @@ const AuthProvider = ({ children }) => {
   const [cartSize, SetCartSize] = useState(
     user ? user.customData.memberOf.length : 0
   );
-  console.log(cartSize);
+  // console.log(cartSize);
   useEffect(() => {
     if (!user) {
       return;
@@ -76,6 +76,10 @@ const AuthProvider = ({ children }) => {
       }
       // Realm.close();
     };
+  }, [user, cartSize]);
+
+  useEffect(() => {
+    SetCartSize(user ? user.customData.memberOf.length : 0);
   }, [user]);
 
   // The signIn function takes an email and password and uses the
@@ -175,9 +179,19 @@ const AuthProvider = ({ children }) => {
     });
   };
 
-  const getCartSize = () => {
-    return cartSize;
+  const undoAddCart = async (product) => {
+    const userRealm = realmRef.current;
+    const user = userRealm.objects("User")[0];
+    await userRealm.write(() => {
+      for (let products = 0; products < user.memberOf.length; products++) {
+        if (user.memberOf[products]["type"] === product) {
+          user.memberOf.splice(products, 1);
+          break;
+        }
+      }
+    });
   };
+
   const updateQuantityCart = async (productID, operation) => {
     const userRealm = realmRef.current;
     const user = userRealm.objects("User")[0];
@@ -217,10 +231,11 @@ const AuthProvider = ({ children }) => {
         addToCart,
         removeFromCart,
         updateQuantityCart,
-        getCartSize,
-        // setUsername,
+        SetCartSize,
+        undoAddCart,
         user,
         projectData, // list of projects the user is a memberOf
+        cartSize,
       }}
     >
       {children}

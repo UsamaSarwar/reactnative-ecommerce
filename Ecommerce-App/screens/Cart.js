@@ -61,7 +61,6 @@ export default function Cart({ navigation, route }) {
               prevState.splice(prevState.indexOf(item), 1);
               return [...prevState];
             });
-
             Alert.alert(item.name, "is removed from shopping cart.");
           }}
         />

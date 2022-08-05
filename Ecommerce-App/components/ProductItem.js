@@ -2,8 +2,17 @@
 import React, { useState } from "react";
 
 //React Components
-import { Text, View, Pressable, Image, FlatList, Alert } from "react-native";
+import {
+  Text,
+  View,
+  Pressable,
+  Image,
+  FlatList,
+  Alert,
+  ActivityIndicator,
+} from "react-native";
 import NumberFormat from "react-number-format";
+import Snackbar from "react-native-snackbar";
 
 //Icons
 import Icon from "react-native-vector-icons/AntDesign";
@@ -27,10 +36,18 @@ export default function ProductItem({
   searchText,
   childToParent_edit,
 }) {
-  const { user, addToCart } = useAuth();
+  const {
+    user,
+    addToCart,
+    removeFromCart,
+    cartSize,
+    SetCartSize,
+    undoAddCart,
+  } = useAuth();
   const { tasks, total, setTotal, setAdded, deleteTask } = useTasks();
 
   const [loading, setLoading] = useState(true);
+  const [activeItemArr, setActiveItemArr] = useState([]);
 
   const admin = user.customData["userType"] === "admin" ? true : false;
 
@@ -50,14 +67,33 @@ export default function ProductItem({
     await addToCart(item["_id"], 1);
     await user.refreshCustomData();
 
+    setActiveItemArr((prevState) => {
+      prevState.splice(prevState.indexOf(String(item["_id"])), 1);
+      return [...prevState];
+    });
     setTotal(total + item.price);
     setAdded(true);
-
-    Alert.alert(item.name, "has been added to your shopping cart.");
+    Snackbar.show({
+      text: item["name"] + " is added to your cart",
+      duration: Snackbar.LENGTH_SHORT,
+      action: {
+        text: "UNDO",
+        textColor: "green",
+        onPress: async () => {
+          await undoAddCart(String(item["_id"]));
+          await user.refreshCustomData();
+          SetCartSize(cartSize);
+          Snackbar.show({
+            text: item["name"] + " addition is reversed",
+          });
+        },
+      },
+    });
+    // Alert.alert(item.name, "has been added to your shopping cart.");
+    // <Snackbar visible={true}>Hey there! I'm a Snackbar.</Snackbar>;
   };
 
   const onPressDeleteProduct = (item) => {
-    console.log(item);
     Alert.alert("Are you sure you want to delete this product?", null, [
       {
         text: "Yes, Delete",
@@ -93,12 +129,26 @@ export default function ProductItem({
           padding: 7,
         }}
       >
-        <MatIcon
-          name="add-shopping-cart"
-          size={18}
-          color={"#FFFFFF"}
-          onPress={() => onPressAddtoCart(item)}
-        />
+        {activeItemArr.includes(String(item["_id"])) ? (
+          <Pressable
+            onPress={() => {
+              setActiveItemArr([]);
+            }}
+          >
+            <ActivityIndicator />
+          </Pressable>
+        ) : (
+          <MatIcon
+            name="add-shopping-cart"
+            size={18}
+            color={"#FFFFFF"}
+            // onPress={() => onPressAddtoCart(item)}
+            onPress={() => {
+              setActiveItemArr(activeItemArr.concat([String(item["_id"])]));
+              onPressAddtoCart(item);
+            }}
+          />
+        )}
       </View>
     );
   };
