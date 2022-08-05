@@ -36,14 +36,7 @@ export default function ProductItem({
   searchText,
   childToParent_edit,
 }) {
-  const {
-    user,
-    addToCart,
-    removeFromCart,
-    cartSize,
-    SetCartSize,
-    undoAddCart,
-  } = useAuth();
+  const { user, addToCart, cartSize, SetCartSize, undoAddCart } = useAuth();
   const { tasks, total, setTotal, setAdded, deleteTask } = useTasks();
 
   const [loading, setLoading] = useState(true);
@@ -62,15 +55,15 @@ export default function ProductItem({
   };
 
   const onPressAddtoCart = async (item) => {
-    console.log("Add to cart pressed Outside");
-
     await addToCart(item["_id"], 1);
     await user.refreshCustomData();
-
+    setTotal(total + item.price);
+    setAdded(true);
     setActiveItemArr((prevState) => {
       prevState.splice(prevState.indexOf(String(item["_id"])), 1);
       return [...prevState];
     });
+
     setTotal(total + item.price);
     setAdded(true);
     Snackbar.show({
@@ -84,13 +77,11 @@ export default function ProductItem({
           await user.refreshCustomData();
           SetCartSize(cartSize);
           Snackbar.show({
-            text: item["name"] + " addition is reversed",
+            text: item["name"] + " addition was reversed",
           });
         },
       },
     });
-    // Alert.alert(item.name, "has been added to your shopping cart.");
-    // <Snackbar visible={true}>Hey there! I'm a Snackbar.</Snackbar>;
   };
 
   const onPressDeleteProduct = (item) => {
@@ -130,19 +121,12 @@ export default function ProductItem({
         }}
       >
         {activeItemArr.includes(String(item["_id"])) ? (
-          <Pressable
-            onPress={() => {
-              setActiveItemArr([]);
-            }}
-          >
-            <ActivityIndicator />
-          </Pressable>
+          <ActivityIndicator color={"white"} />
         ) : (
           <MatIcon
             name="add-shopping-cart"
             size={18}
             color={"#FFFFFF"}
-            // onPress={() => onPressAddtoCart(item)}
             onPress={() => {
               setActiveItemArr(activeItemArr.concat([String(item["_id"])]));
               onPressAddtoCart(item);

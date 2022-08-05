@@ -9,10 +9,12 @@ import {
   Image,
   Alert,
   FlatList,
+  ActivityIndicator,
 } from "react-native";
 import Icon from "react-native-vector-icons/AntDesign";
 import IonIcon from "react-native-vector-icons/Ionicons";
 import NumberFormat from "react-number-format";
+import Snackbar from "react-native-snackbar";
 
 //Providers
 import { useAuth } from "../providers/AuthProvider.js";
@@ -33,6 +35,7 @@ export default function Cart({ navigation, route }) {
   const { getCart, getTotal, added, setAdded } = useTasks();
   const [totalPrice, setTotalPrice] = useState(getTotal());
   const [cart, setCart] = useState(getCart(user.customData.memberOf));
+  const [deleteItemArr, setDeleteItemArr] = useState([]);
   const refreshCart = async () => {
     await user.refreshCustomData();
     await setCart(getCart(user.customData.memberOf));
@@ -45,25 +48,48 @@ export default function Cart({ navigation, route }) {
       refreshCart();
     }
   });
+  const onPressDelete = async (item) => {
+    await removeFromCart(String(item[0]["_id"]));
+    await user.refreshCustomData();
+    setTotalPrice(totalPrice - item[0].price * item[1]);
+    setCart((prevState) => {
+      prevState.splice(prevState.indexOf(item), 1);
+      return [...prevState];
+    });
+    setDeleteItemArr((prevState) => {
+      prevState.splice(prevState.indexOf(String(item[0]["_id"])), 1);
+      return [...prevState];
+    });
+    // Alert.alert(item.name, "is removed from shopping cart.");
+    Snackbar.show({
+      text:
+        "(" +
+        String(item[1]) +
+        ") - " +
+        item[0]["name"] +
+        (item[1] > 1
+          ? " were removed from your cart"
+          : " is removed from your cart"),
+      duration: Snackbar.LENGTH_SHORT,
+    });
+  };
 
   const makeRemoveButton = (item) => {
     return (
       <View style={IconStyles.background2}>
-        <Icon
-          name="delete"
-          color={"#ff6c70"}
-          size={21}
-          onPress={async () => {
-            await removeFromCart(String(item[0]["_id"]));
-            await user.refreshCustomData();
-            setTotalPrice(totalPrice - item[0].price * item[1]);
-            setCart((prevState) => {
-              prevState.splice(prevState.indexOf(item), 1);
-              return [...prevState];
-            });
-            Alert.alert(item.name, "is removed from shopping cart.");
-          }}
-        />
+        {deleteItemArr.includes(String(item[0]["_id"])) ? (
+          <ActivityIndicator color={"#ff6c70"} />
+        ) : (
+          <Icon
+            name="delete"
+            color={"#ff6c70"}
+            size={21}
+            onPress={async () => {
+              setDeleteItemArr(deleteItemArr.concat([String(item[0]["_id"])]));
+              onPressDelete(item);
+            }}
+          />
+        )}
       </View>
     );
   };
