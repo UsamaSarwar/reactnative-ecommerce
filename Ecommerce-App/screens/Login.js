@@ -1,5 +1,5 @@
 //React
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useReducer } from "react";
 
 //React Components
 import { Text, View, ImageBackground, Pressable, Image } from "react-native";
@@ -17,20 +17,41 @@ import inputStyles from "../styles/InputStyles";
 import buttonStyles from "../styles/ButtonStyles";
 import TextStyles from "../styles/TextStyles.js";
 
+const initialStates = {
+  addr: "",
+  pass: "",
+
+  addrError: false,
+  passError: false,
+
+  errorMessage: "",
+
+  showPass: false,
+};
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "ADDRESS":
+      return { ...state, addr: action.payload, errorMessage: "" };
+    case "ADDRESS_ERROR":
+      return { ...state, addrError: action.payload };
+    case "PASSWORD":
+      return { ...state, pass: action.payload, errorMessage: "" };
+    case "PASSWORD_ERROR":
+      return { ...state, passError: action.payload };
+    case "ERROR_MSG":
+      return { ...state, errorMessage: action.payload };
+    case "SHOW_PASSWORD":
+      return { ...state, showPass: action.payload };
+    default:
+      return state;
+  }
+};
+
 export default function Login({ navigation }) {
   const { user, signIn } = useAuth();
 
-  const [addr, setAddr] = useState("");
-  const [pass, setPass] = useState("");
-
-  const [showPass, setShowPass] = useState(false);
-
-  const [addrError, setAddrError] = useState(false);
-  const [passError, setPassError] = useState(false);
-
-  const [errorMessage, setErrorMessage] = useState("");
-
-  const [loading, setLoading] = useState(false);
+  const [state, dispatch] = useReducer(reducer, initialStates);
 
   useEffect(() => {
     if (user) {
@@ -43,23 +64,22 @@ export default function Login({ navigation }) {
   const onPressLogIn = async () => {
     console.log("Pressed LogIn");
 
-    if (pass.length === 0) {
-      setPassError(true);
+    if (state.pass.length === 0) {
+      dispatch({ type: "PASSWORD_ERROR", payload: true });
       console.log("password length zero");
     }
-    if (addr.length === 0) {
-      setAddrError(true);
+    if (state.addr.length === 0) {
+      dispatch({ type: "ADDRESS_ERROR", payload: true });
       console.log("email address length zero");
     }
 
-    console.log(passError, addrError);
+    console.log(state.passError, state.addrError);
 
-    if (!passError && !addrError) {
-      setLoading(true);
+    if (!state.passError && !state.addrError) {
       try {
-        await signIn(addr, pass);
+        await signIn(state.addr, state.pass);
       } catch (error) {
-        setErrorMessage(error.message);
+        dispatch({ type: "ERROR_MSG", payload: error.message });
       }
     }
   };
@@ -79,25 +99,21 @@ export default function Login({ navigation }) {
         </View>
 
         <View style={universalStyles.centered_container}>
-          <Text style={TextStyles.error_message}>{errorMessage}</Text>
-          {/* {loading ? (
-            <Icon name="loadingoutline" size={50} color="#42C88F" />
-          ) : null} */}
+          <Text style={TextStyles.error_message}>{state.errorMessage}</Text>
         </View>
 
         <View style={universalStyles.input_fields_container_1}>
-          {addr === "" ? null : (
+          {state.addr === "" ? null : (
             <Text style={{ marginBottom: 5 }}>Email Address</Text>
           )}
           <TextInput
-            value={addr}
+            value={state.addr}
             placeholder="Email Address"
             autoCapitalize="none"
-            onChangeText={(text) => {
-              setErrorMessage("");
-              setAddr(text);
-            }}
-            onFocus={() => setAddrError(false)}
+            onChangeText={(text) =>
+              dispatch({ type: "ADDRESS", payload: text })
+            }
+            onFocus={() => dispatch({ type: "ADDRESS_ERROR", payload: false })}
             right={<TextInput.Icon color="#42C88F" name="account" />}
             theme={{ roundness: 15 }}
             underlineColor="transparent"
@@ -105,31 +121,32 @@ export default function Login({ navigation }) {
             style={[
               inputStyles.login_input,
               {
-                borderColor: addrError ? "red" : "transparent",
+                borderColor: state.addrError ? "red" : "transparent",
                 underlineColor: "transparent",
                 activeUnderlineColor: "transparent",
               },
             ]}
           />
 
-          {pass === "" ? null : (
+          {state.pass === "" ? null : (
             <Text style={{ marginBottom: 5 }}>Password</Text>
           )}
           <TextInput
-            value={pass}
+            value={state.pass}
             placeholder="Password"
             autoCapitalize="none"
-            secureTextEntry={!showPass}
-            onChangeText={(text) => {
-              setErrorMessage("");
-              setPass(text);
-            }}
-            onFocus={() => setPassError(false)}
+            secureTextEntry={!state.showPass}
+            onChangeText={(text) =>
+              dispatch({ type: "PASSWORD", payload: text })
+            }
+            onFocus={() => dispatch({ type: "PASSWORD_ERROR", payload: false })}
             right={
               <TextInput.Icon
                 color="#42C88F"
-                name={showPass ? "eye-off" : "eye"}
-                onPress={() => setShowPass(!showPass)}
+                name={state.showPass ? "eye-off" : "eye"}
+                onPress={() =>
+                  dispatch({ type: "SHOW_PASSWORD", payload: !state.showPass })
+                }
               />
             }
             activeUnderlineColor="#42C88F"
@@ -138,7 +155,7 @@ export default function Login({ navigation }) {
             style={[
               inputStyles.login_input,
               {
-                borderColor: passError ? "red" : "transparent",
+                borderColor: state.passError ? "red" : "transparent",
                 underlineColor: "transparent",
                 activeUnderlineColor: "transparent",
                 marginBottom: 5,

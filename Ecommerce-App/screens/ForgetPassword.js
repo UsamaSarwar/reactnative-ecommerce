@@ -1,5 +1,5 @@
 //React
-import React, { useState } from "react";
+import React, { useReducer } from "react";
 
 //React Components
 import {
@@ -20,29 +20,49 @@ import inputStyles from "../styles/InputStyles";
 import buttonStyles from "../styles/ButtonStyles";
 import TextStyles from "../styles/TextStyles.js";
 
+const initialStates = {
+  addr: "",
+
+  addrError: false,
+
+  errorMessage: "",
+};
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "ADDRESS":
+      return { ...state, addr: action.payload, errorMessage: "" };
+
+    case "ADDRESS_ERROR":
+      return { ...state, addrError: action.payload };
+
+    case "ERROR_MSG":
+      return { ...state, errorMessage: action.payload };
+
+    default:
+      return state;
+  }
+};
+
 export default function Forgotpass({ navigation }) {
   const { passResetEmail } = useAuth();
 
-  const [addr, setAddr] = useState("");
-
-  const [addrError, setAddrError] = useState(false);
-
-  const [errorMessage, setErrorMessage] = useState("");
+  const [state, dispatch] = useReducer(reducer, initialStates);
 
   const onPressReset = async () => {
-    if (addr.length === 0) {
-      setAddrError(true);
+    if (state.addr.length === 0) {
+      dispatch({ type: "ADDRESS_ERROR", payload: true });
     } else {
       try {
-        await passResetEmail(addr);
-        Alert.alert("Success reset email has been sent to " + addr, [
+        await passResetEmail(state.addr);
+        Alert.alert("Success reset email has been sent to " + state.addr, [
           {
             text: "OK",
             onPress: () => navigation.navigate("Login"),
           },
         ]);
       } catch (error) {
-        setErrorMessage(error.message);
+        dispatch({ type: "ERROR_MSG", payload: error.message });
       }
     }
   };
@@ -62,17 +82,22 @@ export default function Forgotpass({ navigation }) {
         </View>
 
         <View style={universalStyles.centered_container}>
-          <Text style={TextStyles.error_message}>{errorMessage}</Text>
+          <Text style={TextStyles.error_message}>{state.errorMessage}</Text>
         </View>
 
         <View style={universalStyles.input_fields_container_1}>
+          {state.addr === "" ? null : (
+            <Text style={{ marginBottom: 5 }}>Recovery Email Address</Text>
+          )}
           <TextInput
             style={[
               inputStyles.signup_input,
-              { borderColor: addrError ? "red" : "transparent" },
+              { borderColor: state.addrError ? "red" : "transparent" },
             ]}
             placeholder="Recovery Email Address"
-            onChangeText={(text) => setAddr(text)}
+            onChangeText={(text) =>
+              dispatch({ type: "ADDRESS", payload: text })
+            }
           />
 
           <Pressable

@@ -1,5 +1,5 @@
 //React
-import React, { useState } from "react";
+import React, { useReducer } from "react";
 
 //React Components
 import {
@@ -20,53 +20,87 @@ import universalStyles from "../styles/UniversalStyles";
 import inputStyles from "../styles/InputStyles";
 import buttonStyles from "../styles/ButtonStyles";
 
+const initialStates = {
+  addr: "",
+  pass: "",
+  confirmPass: "",
+
+  addrError: false,
+  passError: false,
+  confirmPassError: false,
+
+  errorMessage: "",
+
+  showPass: false,
+};
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "ADDRESS":
+      return { ...state, addr: action.payload, errorMessage: "" };
+    case "ADDRESS_ERROR":
+      return { ...state, addrError: action.payload };
+    case "PASSWORD":
+      return { ...state, pass: action.payload, errorMessage: "" };
+    case "PASSWORD_ERROR":
+      return { ...state, passError: action.payload };
+    case "CONF_PASSWORD":
+      return { ...state, confirmPass: action.payload, errorMessage: "" };
+    case "CONF_PASSWORD_ERROR":
+      return { ...state, confirmPassError: action.payload };
+    case "ERROR_MSG":
+      return { ...state, errorMessage: action.payload };
+
+    default:
+      return state;
+  }
+};
+
 export default function Signup({ navigation }) {
   const { signUp } = useAuth();
 
-  const [addr, setAddr] = useState("");
-  const [pass, setPass] = useState("");
-  const [confirmpass, setConfirmPass] = useState("");
-
-  const [addrError, setAddrError] = useState(false);
-  const [passError, setPassError] = useState(false);
-  const [confirmPassError, setConfirmPassError] = useState(false);
-
-  const [errorMessage, setErrorMessage] = useState("");
+  const [state, dispatch] = useReducer(reducer, initialStates);
 
   const onPressSignUp = async () => {
     if (
-      addr.length === 0 ||
-      pass.length === 0 ||
-      confirmpass.length === 0 ||
-      pass !== confirmpass ||
-      !(addr.includes("@") || addr.includes(".com"))
+      state.addr.length === 0 ||
+      state.pass.length === 0 ||
+      state.confirmpass.length === 0 ||
+      state.pass !== state.confirmpass ||
+      !(state.addr.includes("@") || state.addr.includes(".com"))
     ) {
-      if (addr.length === 0) {
-        setAddrError(true);
+      if (state.addr.length === 0) {
+        dispatch({ type: "ADDRESS_ERROR", payload: true });
       }
-      if (pass.length === 0) {
-        setPassError(true);
+      if (state.pass.length === 0) {
+        dispatch({ type: "PASSWORD_ERROR", payload: true });
       }
-      if (confirmpass.length === 0) {
-        setConfirmPassError(true);
+      if (state.confirmPass.length === 0) {
+        dispatch({ type: "CONF_PASSWORD_ERROR", payload: true });
       }
-      if (pass !== confirmpass) {
-        setErrorMessage("Passwords do not match");
+      if (state.pass !== state.confirmPass) {
+        dispatch({ type: "ERROR_MSG", payload: "Passwords do not match" });
       }
-      if (!(addr.includes("@") || addr.includes(".com"))) {
-        setErrorMessage("Invalid email address entered");
+      if (!(state.addr.includes("@") || state.addr.includes(".com"))) {
+        dispatch({
+          type: "ERROR_MSG",
+          payload: "Invalid email address entered",
+        });
       }
     } else {
       try {
-        await signUp(addr, pass);
-        Alert.alert("Success", addr + " has been added successfully.", [
+        await signUp(state.addr, state.pass);
+        Alert.alert("Success", state.addr + " has been added successfully.", [
           {
             text: "OK",
             onPress: () => navigation.navigate("Login"),
           },
         ]);
       } catch (error) {
-        setErrorMessage(error.message);
+        dispatch({
+          type: "ERROR_MSG",
+          payload: error.message,
+        });
       }
     }
   };
@@ -86,51 +120,59 @@ export default function Signup({ navigation }) {
         </View>
 
         <View style={universalStyles.centered_container}>
-          <Text style={styles.error_message}>{errorMessage}</Text>
+          <Text style={styles.error_message}>{state.errorMessage}</Text>
         </View>
 
         <View style={universalStyles.input_fields_container_1}>
-          {addr === "" ? null : (
+          {state.addr === "" ? null : (
             <Text style={{ marginBottom: 5 }}>Email Address</Text>
           )}
           <TextInput
             placeholder="Email Address"
             autoCapitalize="none"
-            onChangeText={(text) => {
-              setErrorMessage("");
-              setAddr(text);
-            }}
+            onChangeText={(text) =>
+              dispatch({ type: "ADDRESS", payload: text })
+            }
+            onFocus={() => dispatch({ type: "ADDRESS_ERROR", payload: false })}
             style={[
               inputStyles.signup_input,
-              { borderColor: addrError ? "red" : "transparent" },
+              { borderColor: state.addrError ? "red" : "transparent" },
             ]}
           />
 
-          {pass === "" ? null : (
+          {state.pass === "" ? null : (
             <Text style={{ marginBottom: 5 }}>Password</Text>
           )}
           <TextInput
             placeholder="Password"
             autoCapitalize="none"
             secureTextEntry={true}
-            onChangeText={(text) => setPass(text)}
+            onChangeText={(text) =>
+              dispatch({ type: "PASSWORD", payload: text })
+            }
+            onFocus={() => dispatch({ type: "PASSWORD_ERROR", payload: false })}
             style={[
               inputStyles.signup_input,
-              { borderColor: passError ? "red" : "transparent" },
+              { borderColor: state.passError ? "red" : "transparent" },
             ]}
           />
 
-          {confirmpass === "" ? null : (
+          {state.confirmPass === "" ? null : (
             <Text style={{ marginBottom: 5 }}>Confirm Password</Text>
           )}
           <TextInput
             placeholder="Confirm Password"
             autoCapitalize="none"
             secureTextEntry={true}
-            onChangeText={(text) => setConfirmPass(text)}
+            onChangeText={(text) =>
+              dispatch({ type: "CONF_PASSWORD", payload: text })
+            }
+            onFocus={() =>
+              dispatch({ type: "CONF_PASSWORD_ERROR", payload: false })
+            }
             style={[
               inputStyles.signup_input,
-              { borderColor: confirmPassError ? "red" : "transparent" },
+              { borderColor: state.confirmPassError ? "red" : "transparent" },
             ]}
           />
 

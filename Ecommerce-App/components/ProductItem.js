@@ -12,7 +12,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 import NumberFormat from "react-number-format";
-import Snackbar from "react-native-snackbar";
+// import Snackbar from "react-native-snackbar";
 
 //Icons
 import Icon from "react-native-vector-icons/AntDesign";
@@ -73,24 +73,22 @@ export default function ProductItem({
     });
     setTotal(total + item.price);
     setAdded(true);
-    Snackbar.show({
-      text: item["name"] + " is added to your cart",
-      duration: Snackbar.LENGTH_SHORT,
-      action: {
-        text: "UNDO",
-        textColor: "green",
-        onPress: async () => {
-          await undoAddCart(String(item["_id"]));
-          await user.refreshCustomData();
-          SetCartSize(cartSize);
-          Snackbar.show({
-            text: item["name"] + " addition is reversed",
-          });
-        },
-      },
-    });
-    // Alert.alert(item.name, "has been added to your shopping cart.");
-    // <Snackbar visible={true}>Hey there! I'm a Snackbar.</Snackbar>;
+    // Snackbar.show({
+    //   text: item["name"] + " is added to your cart",
+    //   duration: Snackbar.LENGTH_SHORT,
+    //   action: {
+    //     text: "UNDO",
+    //     textColor: "green",
+    //     onPress: async () => {
+    //       await undoAddCart(String(item["_id"]));
+    //       await user.refreshCustomData();
+    //       SetCartSize(cartSize);
+    //       Snackbar.show({
+    //         text: item["name"] + " addition is reversed",
+    //       });
+    //     },
+    //   },
+    // });
   };
 
   const onPressDeleteProduct = (item) => {
