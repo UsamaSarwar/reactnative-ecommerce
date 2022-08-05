@@ -12,7 +12,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 import NumberFormat from "react-number-format";
-// import Snackbar from "react-native-snackbar";
+import Snackbar from "react-native-snackbar";
 
 //Icons
 import Icon from "react-native-vector-icons/AntDesign";
@@ -113,27 +113,36 @@ export default function ProductItem({
 
   const makeAddToCartButton = (item) => {
     return (
-      <View
+      <Shimmer
+        autoRun={true}
+        visible={!loading}
         style={{
-          backgroundColor: "rgba(66, 200, 143, 1)",
+          width: 20,
           borderRadius: 100,
-          padding: 7,
         }}
       >
-        {activeItemArr.includes(String(item["_id"])) ? (
-          <ActivityIndicator color={"white"} />
-        ) : (
-          <MatIcon
-            name="add-shopping-cart"
-            size={18}
-            color={"#FFFFFF"}
-            onPress={() => {
-              setActiveItemArr(activeItemArr.concat([String(item["_id"])]));
-              onPressAddtoCart(item);
-            }}
-          />
-        )}
-      </View>
+        <View
+          style={{
+            backgroundColor: "rgba(66, 200, 143, 1)",
+            borderRadius: 100,
+            padding: 7,
+          }}
+        >
+          {activeItemArr.includes(String(item["_id"])) ? (
+            <ActivityIndicator color={"white"} />
+          ) : (
+            <MatIcon
+              name="add-shopping-cart"
+              size={18}
+              color={"#FFFFFF"}
+              onPress={() => {
+                setActiveItemArr(activeItemArr.concat([String(item["_id"])]));
+                onPressAddtoCart(item);
+              }}
+            />
+          )}
+        </View>
+      </Shimmer>
     );
   };
   const searchTasks = tasks.filter((item) => {

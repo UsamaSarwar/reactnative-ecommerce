@@ -14,7 +14,7 @@ const TasksProvider = ({ children, projectPartition }) => {
   // directly rendered, so updating it should not trigger a re-render as using
   // state would.
   const realmRef = useRef(null);
-
+  console.log(user);
   useEffect(() => {
     console.log("Task Realm Opened");
     // Enables offline-first: opens a local realm immediately without waiting
