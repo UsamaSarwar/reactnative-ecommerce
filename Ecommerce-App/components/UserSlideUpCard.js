@@ -1,7 +1,16 @@
 //React
 import React, { useState, useEffect } from "react";
-import { Alert, Text, View, Pressable, Image, ScrollView } from "react-native";
+import {
+  Alert,
+  Text,
+  View,
+  Pressable,
+  Image,
+  ScrollView,
+  ActivityIndicator,
+} from "react-native";
 import NumberFormat from "react-number-format";
+import Snackbar from "react-native-snackbar";
 
 //Providers
 import { useAuth } from "../providers/AuthProvider";
@@ -16,6 +25,7 @@ import UniversalStyles from "../styles/UniversalStyles";
 export default function UserSlideUpCard({ data, isClosed }) {
   const { user, addToCart } = useAuth();
   const { total, setTotal, setAdded } = useTasks();
+  const [activity, setActivity] = useState(false);
 
   const [quantity, setQuantity] = useState("1");
 
@@ -30,11 +40,19 @@ export default function UserSlideUpCard({ data, isClosed }) {
 
     await addToCart(data["_id"], quantity);
     await user.refreshCustomData();
-
+    setActivity(false);
     setTotal(total + data.price * quantity);
     setAdded(true);
-
-    Alert.alert(data.name, "has been added to your shopping cart.");
+    Snackbar.show({
+      text:
+        "(" +
+        String(quantity) +
+        ") - " +
+        data["name"] +
+        (quantity > 1 ? " are added to your cart" : " is added to your cart"),
+      duration: Snackbar.LENGTH_SHORT,
+    });
+    // Alert.alert(data.name, "has been added to your shopping cart.");
   };
 
   return (
@@ -94,13 +112,22 @@ export default function UserSlideUpCard({ data, isClosed }) {
 
           <Quantity quantity={quantity} setQuantity={setQuantity} />
         </View>
-
-        <Pressable
-          style={buttonStyles.p_button_login}
-          onPress={onPressAddtoCart}
-        >
-          <Text style={buttonStyles.p_button_text}>Add to Cart</Text>
-        </Pressable>
+        {activity ? (
+          <Pressable style={buttonStyles.p_button_login}>
+            <ActivityIndicator size="large" color={"white"} />
+          </Pressable>
+        ) : (
+          <Pressable
+            style={buttonStyles.p_button_login}
+            // onPress={onPressAddtoCart}
+            onPress={() => {
+              setActivity(true);
+              onPressAddtoCart();
+            }}
+          >
+            <Text style={buttonStyles.p_button_text}>Add to Cart</Text>
+          </Pressable>
+        )}
 
         <Pressable style={buttonStyles.s_button}>
           <Text style={buttonStyles.s_button_text}>Checkout Now</Text>
