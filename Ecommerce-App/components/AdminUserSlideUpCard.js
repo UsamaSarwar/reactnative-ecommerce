@@ -18,7 +18,7 @@ export default function AdminSlideUpCard({
   isClosed,
   elementRef,
 }) {
-  const { createTask, updateTask, deleteTask } = useTasks();
+  const { createTask, updateTask } = useTasks();
 
   const [prodName, setProdName] = useState("");
   const [category, setCategory] = useState("");

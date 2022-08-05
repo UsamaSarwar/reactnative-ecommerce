@@ -227,8 +227,13 @@ export default function ProductItem({
                   )}
                 />
                 {admin && !loading ? (
-                  <View style={IconStyles.background2}>
-                    <Icon name="edit" size={18} />
+                  <View
+                    style={[
+                      IconStyles.background2,
+                      { backgroundColor: "#42C88F" },
+                    ]}
+                  >
+                    <Icon name="edit" color="white" size={18} />
                   </View>
                 ) : (
                   makeAddToCartButton(item)
