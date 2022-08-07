@@ -10,7 +10,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 import NumberFormat from "react-number-format";
-import Snackbar from "react-native-snackbar";
+// import Snackbar from "react-native-snackbar";
 
 //Providers
 import { useAuth } from "../providers/AuthProvider";
@@ -33,7 +33,7 @@ export default function UserSlideUpCard({ data, isClosed }) {
     if (isClosed) {
       setQuantity("1");
     }
-  });
+  }, [isClosed]);
 
   const onPressAddtoCart = async () => {
     console.log("Add to cart pressed");
@@ -43,15 +43,15 @@ export default function UserSlideUpCard({ data, isClosed }) {
     setActivity(false);
     setTotal(total + data.price * quantity);
     setAdded(true);
-    Snackbar.show({
-      text:
-        "(" +
-        String(quantity) +
-        ") - " +
-        data["name"] +
-        (quantity > 1 ? " are added to your cart" : " is added to your cart"),
-      duration: Snackbar.LENGTH_SHORT,
-    });
+    // Snackbar.show({
+    //   text:
+    //     "(" +
+    //     String(quantity) +
+    //     ") - " +
+    //     data["name"] +
+    //     (quantity > 1 ? " are added to your cart" : " is added to your cart"),
+    //   duration: Snackbar.LENGTH_SHORT,
+    // });
     // Alert.alert(data.name, "has been added to your shopping cart.");
   };
 

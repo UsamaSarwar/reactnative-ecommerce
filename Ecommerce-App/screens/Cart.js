@@ -14,7 +14,7 @@ import {
 import Icon from "react-native-vector-icons/AntDesign";
 import IonIcon from "react-native-vector-icons/Ionicons";
 import NumberFormat from "react-number-format";
-import Snackbar from "react-native-snackbar";
+// import Snackbar from "react-native-snackbar";
 
 //Providers
 import { useAuth } from "../providers/AuthProvider.js";
@@ -61,17 +61,17 @@ export default function Cart({ navigation, route }) {
       return [...prevState];
     });
     // Alert.alert(item.name, "is removed from shopping cart.");
-    Snackbar.show({
-      text:
-        "(" +
-        String(item[1]) +
-        ") - " +
-        item[0]["name"] +
-        (item[1] > 1
-          ? " were removed from your cart"
-          : " is removed from your cart"),
-      duration: Snackbar.LENGTH_SHORT,
-    });
+    // Snackbar.show({
+    //   text:
+    //     "(" +
+    //     String(item[1]) +
+    //     ") - " +
+    //     item[0]["name"] +
+    //     (item[1] > 1
+    //       ? " were removed from your cart"
+    //       : " is removed from your cart"),
+    //   duration: Snackbar.LENGTH_SHORT,
+    // });
   };
 
   const makeRemoveButton = (item) => {

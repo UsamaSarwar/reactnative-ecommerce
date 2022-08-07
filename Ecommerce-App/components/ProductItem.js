@@ -12,7 +12,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 import NumberFormat from "react-number-format";
-import Snackbar from "react-native-snackbar";
+// import Snackbar from "react-native-snackbar";
 
 //Icons
 import Icon from "react-native-vector-icons/AntDesign";
@@ -66,22 +66,22 @@ export default function ProductItem({
 
     setTotal(total + item.price);
     setAdded(true);
-    Snackbar.show({
-      text: item["name"] + " is added to your cart",
-      duration: Snackbar.LENGTH_SHORT,
-      action: {
-        text: "UNDO",
-        textColor: "green",
-        onPress: async () => {
-          await undoAddCart(String(item["_id"]));
-          await user.refreshCustomData();
-          SetCartSize(cartSize);
-          Snackbar.show({
-            text: item["name"] + " addition was reversed",
-          });
-        },
-      },
-    });
+    // Snackbar.show({
+    //   text: item["name"] + " is added to your cart",
+    //   duration: Snackbar.LENGTH_SHORT,
+    //   action: {
+    //     text: "UNDO",
+    //     textColor: "green",
+    //     onPress: async () => {
+    //       await undoAddCart(String(item["_id"]));
+    //       await user.refreshCustomData();
+    //       SetCartSize(cartSize);
+    //       Snackbar.show({
+    //         text: item["name"] + " addition was reversed",
+    //       });
+    //     },
+    //   },
+    // });
   };
 
   const onPressDeleteProduct = (item) => {
@@ -179,7 +179,12 @@ export default function ProductItem({
             </View>
 
             <View style={productCardStyles.textContainer}>
-              <View style={universalStyles.row_f1_sb_c}>
+              <View
+                style={[
+                  universalStyles.row_f1_sb_c,
+                  { alignItems: "flex-start" },
+                ]}
+              >
                 <View
                   style={[universalStyles.row_f1_sb_c, { flexWrap: "wrap" }]}
                 >

@@ -28,4 +28,14 @@ export default inputStyles = StyleSheet.create({
     paddingLeft: 10,
     borderWidth: 3,
   },
+  muktilineInput: {
+    minHeight: 45,
+    backgroundColor: "white",
+    borderRadius: 15,
+    shadowColor: "black",
+    shadowRadius: 100,
+    marginBottom: 24,
+    paddingLeft: 10,
+    borderWidth: 3,
+  },
 });

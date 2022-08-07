@@ -177,7 +177,7 @@ export default function AdminSlideUpCard({
           placeholder="Product Description"
           multiline={true}
           style={[
-            InputStyles.textInput,
+            InputStyles.muktilineInput,
             {
               backgroundColor: "#f6f8f9",
               borderColor: descriptionError ? "red" : "transparent",
