@@ -15,6 +15,7 @@ import NumberFormat from "react-number-format";
 //Providers
 import { useAuth } from "../providers/AuthProvider";
 import { useTasks } from "../providers/TasksProvider";
+import { useGlobal } from "../providers/GlobalProvider";
 
 //Components
 import Quantity from "./Quantity";
@@ -22,27 +23,31 @@ import Quantity from "./Quantity";
 //Styles
 import UniversalStyles from "../styles/UniversalStyles";
 
-export default function UserSlideUpCard({ data, isClosed }) {
+export default function UserSlideUpCard({ elementRef }) {
   const { user, addToCart } = useAuth();
   const { total, setTotal, setAdded } = useTasks();
+
+  const { product } = useGlobal();
+
   const [activity, setActivity] = useState(false);
 
   const [quantity, setQuantity] = useState("1");
 
-  useEffect(() => {
-    if (isClosed) {
-      setQuantity("1");
-    }
-  }, [isClosed]);
+  // useEffect(() => {
+  //   if (isClosed) {
+  //     setQuantity("1");
+  //   }
+  // }, [isClosed]);
 
   const onPressAddtoCart = async () => {
     console.log("Add to cart pressed");
 
-    await addToCart(data["_id"], quantity);
+    await addToCart(product["_id"], quantity);
     await user.refreshCustomData();
     setActivity(false);
-    setTotal(total + data.price * quantity);
+    setTotal(total + product.price * quantity);
     setAdded(true);
+    elementRef.current.hide();
     // Snackbar.show({
     //   text:
     //     "(" +
@@ -61,7 +66,7 @@ export default function UserSlideUpCard({ data, isClosed }) {
         <View style={UniversalStyles.view_card_img_1}>
           <Image
             source={{
-              uri: `data:${data.imageForm};base64,${data.image}`,
+              uri: `data:${product.imageForm};base64,${product.image}`,
             }}
             style={{
               height: "100%",
@@ -73,7 +78,7 @@ export default function UserSlideUpCard({ data, isClosed }) {
         <View>
           <View style={{ marginBottom: 2 }}>
             <Text style={{ fontWeight: "bold", fontSize: 15 }}>
-              {data.name}
+              {product.name}
             </Text>
           </View>
 
@@ -84,13 +89,13 @@ export default function UserSlideUpCard({ data, isClosed }) {
                 color: "grey",
               }}
             >
-              {data.category}
+              {product.category}
             </Text>
           </View>
         </View>
         <ScrollView style={{ height: 60 }}>
           <View>
-            <Text style={{ fontSize: 15 }}>{data.description}</Text>
+            <Text style={{ fontSize: 15 }}>{product.description}</Text>
           </View>
         </ScrollView>
         <View
@@ -103,7 +108,7 @@ export default function UserSlideUpCard({ data, isClosed }) {
           ]}
         >
           <NumberFormat
-            value={parseInt(data.price)}
+            value={parseInt(product.price)}
             displayType={"text"}
             thousandSeparator={true}
             prefix={"PKR "}
@@ -119,7 +124,6 @@ export default function UserSlideUpCard({ data, isClosed }) {
         ) : (
           <Pressable
             style={buttonStyles.p_button_login}
-            // onPress={onPressAddtoCart}
             onPress={() => {
               setActivity(true);
               onPressAddtoCart();

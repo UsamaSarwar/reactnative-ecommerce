@@ -2,7 +2,14 @@
 import React, { useEffect, useState, useReducer } from "react";
 
 //React Components
-import { Text, View, ImageBackground, Pressable, Image } from "react-native";
+import {
+  Text,
+  View,
+  ImageBackground,
+  Pressable,
+  Image,
+  ActivityIndicator,
+} from "react-native";
 import { TextInput } from "react-native-paper";
 
 //Providers
@@ -51,6 +58,8 @@ const reducer = (state, action) => {
 export default function Login({ navigation }) {
   const { user, signIn } = useAuth();
 
+  const [loggingIn, setLoggingIn] = useState(false);
+
   const [state, dispatch] = useReducer(reducer, initialStates);
 
   useEffect(() => {
@@ -76,9 +85,11 @@ export default function Login({ navigation }) {
     console.log(state.passError, state.addrError);
 
     if (!state.passError && !state.addrError) {
+      setLoggingIn(true);
       try {
         await signIn(state.addr, state.pass);
       } catch (error) {
+        setLoggingIn(false);
         dispatch({ type: "ERROR_MSG", payload: error.message });
       }
     }
@@ -175,7 +186,11 @@ export default function Login({ navigation }) {
             style={buttonStyles.p_button_login}
             onPress={() => onPressLogIn()}
           >
-            <Text style={buttonStyles.p_button_text}>Log In</Text>
+            {loggingIn ? (
+              <ActivityIndicator color="#ffffff" size={24} />
+            ) : (
+              <Text style={buttonStyles.p_button_text}>Log In</Text>
+            )}
           </Pressable>
 
           <Pressable style={buttonStyles.s_button}>

@@ -21,6 +21,7 @@ import MatIcon from "react-native-vector-icons/MaterialIcons";
 //Providers
 import { useTasks } from "../providers/TasksProvider";
 import { useAuth } from "../providers/AuthProvider";
+import { useGlobal } from "../providers/GlobalProvider";
 
 //Components
 import Shimmer from "./Shimmer";
@@ -30,14 +31,10 @@ import universalStyles from "../styles/UniversalStyles";
 import productCardStyles from "../styles/ProductCardStyle";
 import IconStyles from "../styles/IconStyles";
 
-export default function ProductItem({
-  elementRef,
-  childToParent,
-  searchText,
-  childToParent_edit,
-}) {
-  const { user, addToCart, cartSize, SetCartSize, undoAddCart } = useAuth();
+export default function ProductItem({ elementRef, searchText }) {
+  const { user, addToCart } = useAuth();
   const { tasks, total, setTotal, setAdded, deleteTask } = useTasks();
+  const { setProduct, setIsNewProduct } = useGlobal();
 
   const [loading, setLoading] = useState(true);
   const [activeItemArr, setActiveItemArr] = useState([]);
@@ -49,9 +46,9 @@ export default function ProductItem({
   }
 
   const renderSlide = (item) => {
-    childToParent(item);
-    childToParent_edit(true);
     elementRef.current.show();
+    setProduct(item);
+    setIsNewProduct(false);
   };
 
   const onPressAddtoCart = async (item) => {
@@ -113,36 +110,21 @@ export default function ProductItem({
 
   const makeAddToCartButton = (item) => {
     return (
-      <Shimmer
-        autoRun={true}
-        visible={!loading}
-        style={{
-          width: 20,
-          borderRadius: 100,
-        }}
-      >
-        <View
-          style={{
-            backgroundColor: "rgba(66, 200, 143, 1)",
-            borderRadius: 100,
-            padding: 7,
-          }}
-        >
-          {activeItemArr.includes(String(item["_id"])) ? (
-            <ActivityIndicator color={"white"} />
-          ) : (
-            <MatIcon
-              name="add-shopping-cart"
-              size={18}
-              color={"#FFFFFF"}
-              onPress={() => {
-                setActiveItemArr(activeItemArr.concat([String(item["_id"])]));
-                onPressAddtoCart(item);
-              }}
-            />
-          )}
-        </View>
-      </Shimmer>
+      <View style={IconStyles.background3}>
+        {activeItemArr.includes(String(item["_id"])) ? (
+          <ActivityIndicator color={"white"} />
+        ) : (
+          <MatIcon
+            name="add-shopping-cart"
+            size={18}
+            color={"#FFFFFF"}
+            onPress={() => {
+              setActiveItemArr(activeItemArr.concat([String(item["_id"])]));
+              onPressAddtoCart(item);
+            }}
+          />
+        )}
+      </View>
     );
   };
   const searchTasks = tasks.filter((item) => {
@@ -196,7 +178,7 @@ export default function ProductItem({
                     <Text style={productCardStyles.nameText}>{item.name}</Text>
                   </Shimmer>
                 </View>
-                {admin && !loading ? makeRemoveButton(item) : void 0}
+                {admin && !loading ? makeRemoveButton(item) : null}
               </View>
 
               <View style={productCardStyles.categoryContainer}>
@@ -241,17 +223,12 @@ export default function ProductItem({
                   )}
                 />
                 {admin && !loading ? (
-                  <View
-                    style={[
-                      IconStyles.background2,
-                      { backgroundColor: "#42C88F" },
-                    ]}
-                  >
+                  <View style={IconStyles.background3}>
                     <Icon name="edit" color="white" size={18} />
                   </View>
-                ) : (
+                ) : !loading ? (
                   makeAddToCartButton(item)
-                )}
+                ) : null}
               </View>
             </View>
           </View>

@@ -1,15 +1,6 @@
 import { StyleSheet } from "react-native";
 
 export default iconStyles = StyleSheet.create({
-  icon: {
-    fontSize: 30,
-  },
-
-  background: {
-    backgroundColor: "#f6f8f9",
-    borderRadius: 100,
-    padding: 3,
-  },
   background1: {
     backgroundColor: "#f6f8f9",
     borderRadius: 100,
@@ -22,7 +13,7 @@ export default iconStyles = StyleSheet.create({
   },
 
   background3: {
-    backgroundColor: "#f6f8f9",
+    backgroundColor: "#42C88F",
     borderRadius: 100,
     padding: 4,
   },

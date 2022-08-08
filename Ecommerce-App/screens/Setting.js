@@ -1,21 +1,26 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import Icon from "react-native-vector-icons/AntDesign";
 // import app from "../realmApp";
 import { useAuth } from "../providers/AuthProvider.js";
 import { Text, View, ImageBackground, Pressable, Alert } from "react-native";
 import IonIcon from "react-native-vector-icons/Ionicons";
+import SlidingUpPanel from "rn-sliding-up-panel";
 
 import styles from "../styles/Styles.js";
 import Updatepassword from "./UpdatePassword.js";
 import Deleteaccount from "./DeleteAccount.js";
 import Footer from "../components/Footer.js";
+import UserSlideUpCard from "../components/UserSlideUpCard.js";
+import AdminSlideUpCard from "../components/AdminUserSlideUpCard.js";
 
 import UniversalStyles from "../styles/UniversalStyles.js";
 import ButtonStyles from "../styles/ButtonStyles.js";
 
-export default function Setting({ navigation, route }) {
-  // console.log(app.currentUser.identities);
+export default function Setting({ navigation }) {
   const { user, signOut } = useAuth();
+
+  const elementRef = useRef();
+
   useEffect(() => {
     if (!user) {
       navigation.navigate("Login");
@@ -91,12 +96,15 @@ export default function Setting({ navigation, route }) {
             <Text style={styles.s_button_text}>Log Out</Text>
           </Pressable>
         </View>
-        <Footer
-          navigation={navigation}
-          childToParent={route.params.childToParent}
-          childToParent_edit={route.params.childToParent_edit}
-          elementRef={route.params.elementRef}
-        />
+        <Footer navigation={navigation} elementRef={elementRef} />
+
+        <SlidingUpPanel
+          allowDragging={true}
+          allowMomentum={true}
+          ref={(c) => (elementRef.current = c)}
+        >
+          <AdminSlideUpCard elementRef={elementRef} />
+        </SlidingUpPanel>
       </ImageBackground>
     </View>
   );

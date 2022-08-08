@@ -1,39 +1,33 @@
 //React
 import React, { useState, useEffect } from "react";
+
+//React Components
 import { View, Text } from "react-native";
 import Icon from "react-native-vector-icons/AntDesign";
 
 //Providers
 import { useAuth } from "../providers/AuthProvider.js";
 import { useTasks } from "../providers/TasksProvider.js";
+import { useGlobal } from "../providers/GlobalProvider.js";
+
 //Styles
 import universalStyles from "../styles/UniversalStyles.js";
 import iconStyles from "../styles/IconStyles.js";
 
-export default function Footer({
-  navigation,
-  childToParent,
-  childToParent_edit,
-  elementRef,
-}) {
+export default function Footer({ navigation, elementRef }) {
   const { user, cartSize } = useAuth();
   const { setAdded } = useTasks();
-
-  // console.log(cartSize);
+  const { setIsNewProduct } = useGlobal();
 
   const admin = user.customData["userType"] === "admin" ? true : false;
 
   const renderSlide = () => {
-    console.log("Pressed add item");
-    childToParent("");
-    childToParent_edit(false);
     elementRef.current.show();
+    setIsNewProduct(true);
   };
 
   const adminPanel = () => {
-    return (
-      <Icon style={iconStyles.icon} name="plus" onPress={() => renderSlide()} />
-    );
+    return <Icon name="plus" size={30} onPress={() => renderSlide()} />;
   };
 
   const cartCount = () => {
@@ -60,15 +54,11 @@ export default function Footer({
       <View>
         {cartSize > 0 ? cartCount() : null}
         <Icon
-          style={iconStyles.icon}
           name="shoppingcart"
+          size={30}
           onPress={() => {
             setAdded(true);
-            navigation.navigate("Cart", {
-              childToParent: childToParent,
-              childToParent_edit: childToParent_edit,
-              elementRef: elementRef,
-            });
+            navigation.navigate("Cart");
           }}
         />
       </View>
@@ -78,23 +68,17 @@ export default function Footer({
   return (
     <View style={universalStyles.footer}>
       <Icon
-        style={iconStyles.icon}
         name="home"
+        size={30}
         onPress={() => navigation.navigate("Homescreen")}
       />
 
       {admin ? adminPanel() : userPanel()}
 
       <Icon
-        style={iconStyles.icon}
         name="user"
-        onPress={() =>
-          navigation.navigate("Setting", {
-            childToParent: childToParent,
-            childToParent_edit: childToParent_edit,
-            elementRef: elementRef,
-          })
-        }
+        size={30}
+        onPress={() => navigation.navigate("Setting")}
       />
     </View>
   );

@@ -19,6 +19,7 @@ import SlidingUpPanel from "rn-sliding-up-panel";
 //Providers
 import { useAuth } from "../providers/AuthProvider.js";
 import { useTasks } from "../providers/TasksProvider";
+import { useGlobal } from "../providers/GlobalProvider.js";
 
 //Components
 import ProductItem from "../components/ProductItem.js";
@@ -77,32 +78,16 @@ export default function Homescreen({ navigation }) {
   }, []);
 
   const admin = user.customData["userType"] === "admin" ? true : false;
+
   const elementRef = useRef();
 
-  const [data, setData] = useState("");
   const [searchText, setSearchText] = useState("");
 
-  const [edit, setEdit] = useState(true);
-  const [isClosed, setIsClosed] = useState(false);
   const [searchState, setSearchState] = useState(false);
   const [spinnerState, setSpinnerState] = useState(true);
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
 
   const [listType, setListType] = useState("Inventory");
-
-  const onPanelClose = () => {
-    setData({ name: "", category: "", price: "", description: "" });
-    setIsClosed(true);
-  };
-
-  const childToParent = (childData) => {
-    setData(childData);
-    setIsClosed(false);
-  };
-
-  const childToParent_edit = (childData) => {
-    setEdit(childData);
-  };
 
   const backAction = () => {
     if (navigation.isFocused()) {
@@ -224,7 +209,7 @@ export default function Homescreen({ navigation }) {
           )}
           <IonIcon
             name="search"
-            size={32}
+            size={30}
             onPress={() => {
               setSearchState(true);
               setKeyboardVisible(true);
@@ -252,34 +237,20 @@ export default function Homescreen({ navigation }) {
           <ProductItem
             navigation={navigation}
             elementRef={elementRef}
-            childToParent={childToParent}
             searchText={searchText}
-            childToParent_edit={childToParent_edit}
-            setData={setData}
           />
 
-          <Footer
-            navigation={navigation}
-            childToParent={childToParent}
-            childToParent_edit={childToParent_edit}
-            elementRef={elementRef}
-          />
+          <Footer navigation={navigation} elementRef={elementRef} />
 
           <SlidingUpPanel
             allowDragging={true}
             allowMomentum={true}
             ref={(c) => (elementRef.current = c)}
-            onBottomReached={() => onPanelClose()}
           >
             {admin ? (
-              <AdminSlideUpCard
-                data={data}
-                toEdit={edit}
-                isClosed={isClosed}
-                elementRef={elementRef}
-              />
+              <AdminSlideUpCard elementRef={elementRef} />
             ) : (
-              <UserSlideUpCard data={data} isClosed={isClosed} />
+              <UserSlideUpCard elementRef={elementRef} />
             )}
           </SlidingUpPanel>
         </ImageBackground>

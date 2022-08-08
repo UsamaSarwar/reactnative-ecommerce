@@ -96,12 +96,15 @@ const AuthProvider = ({ children }) => {
       console.log(err);
     }
   };
+
   const deleteUser = async (email) => {
     await app.deleteUser(email);
   };
+
   const passResetEmail = async (emailAddress) => {
     await app.emailPasswordAuth.sendResetPasswordEmail(emailAddress);
   };
+
   // The signOut function calls the logOut function on the currently
   // logged in user
   const signOut = () => {
@@ -119,6 +122,7 @@ const AuthProvider = ({ children }) => {
     setUser(newUser);
     return newUser;
   };
+
   // The signUp function takes an email and password and uses the
   // emailPassword authentication provider to register the user.
   const signUp = async (email, password) => {
@@ -142,7 +146,6 @@ const AuthProvider = ({ children }) => {
     const users = userRealm.objects("User");
     let indexOfItem = -1;
     const productList = users[0].memberOf;
-    // console.log(users[0].memberOf[0]["type"]);
     for (let x = 0; x < productList.length; x++) {
       if (productList[x]["type"] === String(productID)) {
         indexOfItem = x;

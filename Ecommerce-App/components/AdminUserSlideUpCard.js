@@ -1,24 +1,31 @@
 import React, { useEffect, useState } from "react";
-import { Text, View, TextInput, Pressable, Alert, Image } from "react-native";
+import {
+  Text,
+  View,
+  TextInput,
+  Pressable,
+  Alert,
+  Image,
+  ActivityIndicator,
+} from "react-native";
 import Icon from "react-native-vector-icons/AntDesign";
 import IonIcon from "react-native-vector-icons/Ionicons";
-
 import ImagePicker from "react-native-image-crop-picker";
 
+//Providers
+import { useAuth } from "../providers/AuthProvider.js";
 import { useTasks } from "../providers/TasksProvider.js";
+import { useGlobal } from "../providers/GlobalProvider.js";
 
+//Styles
 import UniversalStyles from "../styles/UniversalStyles.js";
 import ButtonStyles from "../styles/ButtonStyles.js";
 import InputStyles from "../styles/InputStyles.js";
 import IconStyles from "../styles/IconStyles.js";
 
-export default function AdminSlideUpCard({
-  data,
-  toEdit,
-  isClosed,
-  elementRef,
-}) {
+export default function AdminSlideUpCard({ elementRef }) {
   const { createTask, updateTask } = useTasks();
+  const { product, isNewProduct } = useGlobal();
 
   const [prodName, setProdName] = useState("");
   const [category, setCategory] = useState("");
@@ -32,37 +39,22 @@ export default function AdminSlideUpCard({
   const [priceError, setPriceError] = useState(false);
   const [descriptionError, setDescriptionError] = useState(false);
   const [imageError, setImageError] = useState(false);
+
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (data.name && !loading) {
-      setProdName(data.name);
-      setCategory(data.category);
-      setDescription(data.description);
-      setPrice(data.price);
-      setImageUri(data.image);
-      setImageForm(data.imageForm);
-      setLoading(true);
-    }
+    setProdName(product.name);
+    setCategory(product.category);
+    setDescription(product.description);
+    setPrice(product.price);
+    setImageUri(product.image);
+    setImageForm(product.imageForm);
 
-    if (isClosed) {
-      setProdName("");
-      setCategory("");
-      setPrice("");
-      setDescription("");
-      setImageUri("");
-      setImageForm("");
-
-      setNameError(false);
-      setCategoryError(false);
-      setDescriptionError(false);
-      setPriceError(false);
-
-      setLoading(false);
-
-      // elementRef.current.hide();
-    }
-  });
+    setNameError(false);
+    setCategoryError(false);
+    setPriceError(false);
+    setDescriptionError(false);
+  }, [product]);
 
   const openImagePicker = () =>
     ImagePicker.openPicker({
@@ -75,7 +67,7 @@ export default function AdminSlideUpCard({
       setImageForm(image.mime);
     });
 
-  const onPressAddItem = () => {
+  const onPressAddItem = async () => {
     if (prodName === "") {
       setNameError(true);
     }
@@ -87,19 +79,27 @@ export default function AdminSlideUpCard({
     }
     if (description === "") {
       setDescriptionError(true);
-    } else {
-      // if (imageForm === "") {
-      //   setImageError(true);
-      // }
-      createTask(prodName, category, price, description, imageUri, imageForm);
-      Alert.alert(prodName + " added to the main inventory.");
+    } else if (!nameError && !category && !priceError && !descriptionError) {
+      setLoading(true);
+      await createTask(
+        prodName,
+        category,
+        price,
+        description,
+        imageUri,
+        imageForm
+      );
+      setLoading(false);
+      // Alert.alert(prodName + " added to the main inventory.");
       elementRef.current.hide();
     }
   };
 
-  const onPressEditItem = () => {
-    updateTask(
-      data,
+  const onPressEditItem = async () => {
+    setLoading(true);
+
+    await updateTask(
+      product,
       prodName,
       category,
       price,
@@ -108,15 +108,17 @@ export default function AdminSlideUpCard({
       imageForm
     );
 
-    Alert.alert(prodName + " is edited from main inventory.", null, [
-      {
-        text: "Ok",
-        onPress: () => {
-          setLoading(false);
-        },
-      },
-      { text: "Cancel", style: "cancel" },
-    ]);
+    setLoading(false);
+    elementRef.current.hide();
+    // Alert.alert(prodName + " is edited from main inventory.", null, [
+    //   {
+    //     text: "Ok",
+    //     onPress: () => {
+    //       setLoading(false);
+    //     },
+    //   },
+    //   { text: "Cancel", style: "cancel" },
+    // ]);
   };
 
   return (
@@ -204,15 +206,19 @@ export default function AdminSlideUpCard({
             />
             <View
               style={[
-                IconStyles.background2,
+                IconStyles.background3,
                 {
                   alignSelf: "flex-end",
                   marginRight: 100,
-                  backgroundColor: "rgba(66, 200, 143, 0.8)",
                 },
               ]}
             >
-              <Icon name="edit" size={21} onPress={() => openImagePicker()} />
+              <Icon
+                name="edit"
+                color={"#ffffff"}
+                size={21}
+                onPress={() => openImagePicker()}
+              />
             </View>
           </View>
         ) : (
@@ -221,26 +227,31 @@ export default function AdminSlideUpCard({
             onPress={() => openImagePicker()}
           >
             <IonIcon name="image" size={23} color="white" />
-            {/* <Text style={ButtonStyles.p_button_text}>Upload Image</Text> */}
           </Pressable>
         )}
 
-        {toEdit ? (
+        {isNewProduct ? (
+          <Pressable
+            style={ButtonStyles.p_button_login}
+            onPress={() => onPressAddItem()}
+          >
+            {loading ? (
+              <ActivityIndicator color="#ffffff" size={24} />
+            ) : (
+              <Text style={ButtonStyles.p_button_text}>Add Item</Text>
+            )}
+          </Pressable>
+        ) : (
           <Pressable
             style={ButtonStyles.p_button_login}
             onPress={() => onPressEditItem()}
           >
-            <Text style={ButtonStyles.p_button_text}>Done Editing</Text>
+            {loading ? (
+              <ActivityIndicator color="#ffffff" size={24} />
+            ) : (
+              <Text style={ButtonStyles.p_button_text}>Done Editing</Text>
+            )}
           </Pressable>
-        ) : (
-          <View>
-            <Pressable
-              style={ButtonStyles.p_button_login}
-              onPress={() => onPressAddItem()}
-            >
-              <Text style={ButtonStyles.p_button_text}>Add Item</Text>
-            </Pressable>
-          </View>
         )}
       </View>
     </View>

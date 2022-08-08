@@ -9,7 +9,7 @@ import IconStyles from "../styles/IconStyles";
 export default function Quantity({ quantity, setQuantity }) {
   return (
     <View style={{ flexDirection: "row", alignItems: "center" }}>
-      <View style={IconStyles.background}>
+      <View style={IconStyles.background1}>
         <Icon
           name="minus"
           size={21}
@@ -31,7 +31,7 @@ export default function Quantity({ quantity, setQuantity }) {
         keyboardType="number-pad"
         textAlign="center"
       ></TextInput>
-      <View style={IconStyles.background}>
+      <View style={IconStyles.background1}>
         <Icon
           name="plus"
           size={21}
