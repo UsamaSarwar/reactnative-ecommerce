@@ -33,11 +33,7 @@ export default function UserSlideUpCard({ elementRef }) {
 
   const [quantity, setQuantity] = useState("1");
 
-  // useEffect(() => {
-  //   if (isClosed) {
-  //     setQuantity("1");
-  //   }
-  // }, [isClosed]);
+  useEffect(() => setQuantity("1"), [product]);
 
   const onPressAddtoCart = async () => {
     console.log("Add to cart pressed");
