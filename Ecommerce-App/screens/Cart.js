@@ -1,5 +1,5 @@
 //React
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   SafeAreaView,
   Text,
@@ -14,7 +14,7 @@ import {
 import Icon from "react-native-vector-icons/AntDesign";
 import IonIcon from "react-native-vector-icons/Ionicons";
 import NumberFormat from "react-number-format";
-// import Snackbar from "react-native-snackbar";
+import Snackbar from "react-native-snackbar";
 
 //Providers
 import { useAuth } from "../providers/AuthProvider.js";
@@ -30,7 +30,7 @@ import UniversalStyles from "../styles/UniversalStyles.js";
 import IconStyles from "../styles/IconStyles.js";
 import ButtonStyles from "../styles/ButtonStyles.js";
 
-export default function Cart({ navigation, route }) {
+export default function Cart({ navigation }) {
   const { updateQuantityCart, removeFromCart, user } = useAuth();
   const { getCart, getTotal, added, setAdded } = useTasks();
   const [totalPrice, setTotalPrice] = useState(getTotal());
@@ -38,19 +38,55 @@ export default function Cart({ navigation, route }) {
   const [deleteItemArr, setDeleteItemArr] = useState([]);
   const [addItemArr, setAddItemArr] = useState([]);
   const [removeItemArr, setRemoveItemArr] = useState([]);
-
+  const elementRef = useRef();
   const refreshCart = async () => {
     await user.refreshCustomData();
     setCart(getCart(user.customData.cart));
     setAdded(false);
     setTotalPrice(getTotal());
   };
-  // console.log(added, render);
   useEffect(() => {
     if (added) {
       refreshCart();
     }
   });
+
+  const onPressAdd = async (item) => {
+    await updateQuantityCart(item[0]["_id"], true);
+    await user.refreshCustomData();
+    setTotalPrice(totalPrice + Number(item[0].price));
+    setCart((prevState) => {
+      let index = prevState.indexOf(item);
+      let newVal = [prevState[index][0], prevState[index][1] + 1];
+      prevState.splice(index, 1, newVal);
+      return [...prevState];
+    });
+    setAddItemArr((prevState) => {
+      prevState.splice(prevState.indexOf(String(item[0]["_id"])), 1);
+      return [...prevState];
+    });
+  };
+
+  const onPressRemove = async (item) => {
+    if (item[1] > 1) {
+      await updateQuantityCart(item[0]["_id"], false);
+      await user.refreshCustomData();
+      setTotalPrice(totalPrice - Number(item[0].price));
+      setCart((prevState) => {
+        if (item[1] > 1) {
+          let index = prevState.indexOf(item);
+          let newVal = [prevState[index][0], prevState[index][1] - 1];
+          prevState.splice(index, 1, newVal);
+          return [...prevState];
+        }
+      });
+      setRemoveItemArr((prevState) => {
+        prevState.splice(prevState.indexOf(String(item[0]["_id"])), 1);
+        return [...prevState];
+      });
+    }
+  };
+
   const onPressDelete = async (item) => {
     await removeFromCart(String(item[0]["_id"]));
     await user.refreshCustomData();
@@ -64,17 +100,17 @@ export default function Cart({ navigation, route }) {
       return [...prevState];
     });
     // Alert.alert(item.name, "is removed from shopping cart.");
-    // Snackbar.show({
-    //   text:
-    //     "(" +
-    //     String(item[1]) +
-    //     ") - " +
-    //     item[0]["name"] +
-    //     (item[1] > 1
-    //       ? " were removed from your cart"
-    //       : " is removed from your cart"),
-    //   duration: Snackbar.LENGTH_SHORT,
-    // });
+    Snackbar.show({
+      text:
+        "(" +
+        String(item[1]) +
+        ") - " +
+        item[0]["name"] +
+        (item[1] > 1
+          ? " were removed from your cart"
+          : " is removed from your cart"),
+      duration: Snackbar.LENGTH_SHORT,
+    });
   };
 
   const makeRemoveButton = (item) => {
@@ -294,33 +330,24 @@ export default function Cart({ navigation, route }) {
                             }}
                           >
                             <View style={IconStyles.background2}>
-                              <Icon
-                                name="minus"
-                                size={21}
-                                onPress={async () => {
-                                  if (item[1] > 1) {
-                                    await updateQuantityCart(
-                                      item[0]["_id"],
-                                      false
+                              {removeItemArr.includes(
+                                String(item[0]["_id"])
+                              ) ? (
+                                <ActivityIndicator color={"black"} />
+                              ) : (
+                                <Icon
+                                  name="minus"
+                                  size={21}
+                                  onPress={async () => {
+                                    setRemoveItemArr(
+                                      removeItemArr.concat([
+                                        String(item[0]["_id"]),
+                                      ])
                                     );
-                                    user.refreshCustomData();
-                                    setTotalPrice(
-                                      totalPrice - Number(item[0].price)
-                                    );
-                                    setCart((prevState) => {
-                                      if (item[1] > 1) {
-                                        let index = prevState.indexOf(item);
-                                        let newVal = [
-                                          prevState[index][0],
-                                          prevState[index][1] - 1,
-                                        ];
-                                        prevState.splice(index, 1, newVal);
-                                        return [...prevState];
-                                      }
-                                    });
-                                  }
-                                }}
-                              />
+                                    onPressRemove(item);
+                                  }}
+                                />
+                              )}
                             </View>
 
                             <Text
@@ -334,29 +361,22 @@ export default function Cart({ navigation, route }) {
                             </Text>
 
                             <View style={IconStyles.background2}>
-                              <Icon
-                                name="plus"
-                                size={21}
-                                onPress={async () => {
-                                  await updateQuantityCart(
-                                    item[0]["_id"],
-                                    true
-                                  );
-                                  user.refreshCustomData();
-                                  setTotalPrice(
-                                    totalPrice + Number(item[0].price)
-                                  );
-                                  setCart((prevState) => {
-                                    let index = prevState.indexOf(item);
-                                    let newVal = [
-                                      prevState[index][0],
-                                      prevState[index][1] + 1,
-                                    ];
-                                    prevState.splice(index, 1, newVal);
-                                    return [...prevState];
-                                  });
-                                }}
-                              />
+                              {addItemArr.includes(String(item[0]["_id"])) ? (
+                                <ActivityIndicator color={"black"} />
+                              ) : (
+                                <Icon
+                                  name="plus"
+                                  size={21}
+                                  onPress={async () => {
+                                    setAddItemArr(
+                                      addItemArr.concat([
+                                        String(item[0]["_id"]),
+                                      ])
+                                    );
+                                    onPressAdd(item);
+                                  }}
+                                />
+                              )}
                             </View>
                           </View>
                         ) : null}
@@ -398,10 +418,7 @@ export default function Cart({ navigation, route }) {
               />
             </View>
 
-            <Footer
-              navigation={navigation}
-              elementRef={route.params.elementRef}
-            />
+            <Footer navigation={navigation} elementRef={elementRef} />
           </ImageBackground>
         </View>
       </SafeAreaView>

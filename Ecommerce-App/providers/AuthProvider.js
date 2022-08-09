@@ -202,7 +202,7 @@ const AuthProvider = ({ children }) => {
     let isValid = true;
     // console.log("Preseed");
     for (var items = 0; items < user.cart.length; items++) {
-      if (user.cart[items]["type"] === String(productID)) {
+      if (user.cart[items]["productId"] === String(productID)) {
         newQuantity = operation
           ? user.cart[items]["qty"] + 1
           : user.cart[items]["qty"] > 1

@@ -133,15 +133,15 @@ const TasksProvider = ({ children, projectPartition }) => {
     let productIDs = [];
     let newTotal = 0;
     for (let productInfo = 0; productInfo < userCart.length; productInfo++) {
-      productIDs.push(userCart[productInfo]["type"]); //Pushing all Id's
+      productIDs.push(userCart[productInfo]["productId"]); //Pushing all Id's
     } // Done for small optimization
 
     for (let productIndex = 0; productIndex < tasks.length; productIndex++) {
       if (productIDs.includes(String(tasks[productIndex]["_id"]))) {
         let taskIndex = productIDs.indexOf(String(tasks[productIndex]["_id"]));
-        cart.push([tasks[productIndex], userCart[taskIndex]["value"]]);
+        cart.push([tasks[productIndex], userCart[taskIndex]["qty"]]);
         newTotal +=
-          Number(tasks[productIndex].price) * userCart[taskIndex]["value"];
+          Number(tasks[productIndex].price) * userCart[taskIndex]["qty"];
       }
     }
     setTotal(newTotal);
