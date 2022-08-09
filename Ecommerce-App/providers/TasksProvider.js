@@ -2,6 +2,8 @@ import React, { useContext, useState, useEffect, useRef } from "react";
 import Realm from "realm";
 import { Task } from "../schemas";
 import { useAuth } from "./AuthProvider";
+import { ObjectId } from "bson";
+import { set } from "react-native-reanimated";
 
 const TasksContext = React.createContext(null);
 
@@ -10,6 +12,8 @@ const TasksProvider = ({ children, projectPartition }) => {
   const { user, total, setTotal } = useAuth();
   // const [total, setTotal] = useState(0);
   const [added, setAdded] = useState(false);
+
+  const [shoppingCart, setShoppingCart] = useState([]);
   // Use a Ref to store the realm rather than the state because it is not
   // directly rendered, so updating it should not trigger a re-render as using
   // state would.
@@ -125,24 +129,40 @@ const TasksProvider = ({ children, projectPartition }) => {
   };
 
   const getCart = (userCart) => {
-    let cart = [];
-    let productIDs = [];
-    let newTotal = 0;
-    for (let productInfo = 0; productInfo < userCart.length; productInfo++) {
-      productIDs.push(userCart[productInfo]["productId"]); //Pushing all Id's
-    } // Done for small optimization
+    const products = realmRef.current.objects("Task");
 
-    for (let productIndex = 0; productIndex < tasks.length; productIndex++) {
-      if (productIDs.includes(String(tasks[productIndex]["_id"]))) {
-        let taskIndex = productIDs.indexOf(String(tasks[productIndex]["_id"]));
-        cart.push([tasks[productIndex], userCart[taskIndex]["qty"]]);
-        newTotal +=
-          Number(tasks[productIndex].price) * userCart[taskIndex]["qty"];
-      }
+    const c = [];
+    let newTotal = 0;
+
+    for (let i = 0; i < userCart.length; i++) {
+      const id = ObjectId(userCart[i]["productId"]);
+      c.push([products.filtered("_id == $0", id)[0], userCart[i]["qty"]]);
+      newTotal +=
+        Number(products.filtered("_id == $0", id)[0].price) *
+        userCart[i]["qty"];
+      // console.log(products.filtered("_id == $0", id)[0]);
     }
+
+    // setShoppingCart(c);
+
+    // let cart = [];
+    // let productIDs = [];
+
+    // for (let productInfo = 0; productInfo < userCart.length; productInfo++) {
+    //   productIDs.push(userCart[productInfo]["productId"]); //Pushing all Id's
+    // } // Done for small optimization
+
+    // for (let productIndex = 0; productIndex < tasks.length; productIndex++) {
+    //   if (productIDs.includes(String(tasks[productIndex]["_id"]))) {
+    //     let taskIndex = productIDs.indexOf(String(tasks[productIndex]["_id"]));
+    //     cart.push([tasks[productIndex], userCart[taskIndex]["qty"]]);
+    //     newTotal +=
+    //       Number(tasks[productIndex].price) * userCart[taskIndex]["qty"];
+    //   }
+    // }
     setTotal(newTotal);
     // console.log("Here", cart[2][0]);
-    return cart;
+    return c;
   };
 
   // Render the children within the TaskContext's provider. The value contains
@@ -151,6 +171,7 @@ const TasksProvider = ({ children, projectPartition }) => {
   return (
     <TasksContext.Provider
       value={{
+        shoppingCart,
         createTask,
         deleteTask,
         updateTask,
