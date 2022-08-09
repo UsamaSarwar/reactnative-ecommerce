@@ -36,6 +36,9 @@ export default function Cart({ navigation, route }) {
   const [totalPrice, setTotalPrice] = useState(getTotal());
   const [cart, setCart] = useState(getCart(user.customData.memberOf));
   const [deleteItemArr, setDeleteItemArr] = useState([]);
+  const [addItemArr, setAddItemArr] = useState([]);
+  const [removeItemArr, setRemoveItemArr] = useState([]);
+
   const refreshCart = async () => {
     await user.refreshCustomData();
     await setCart(getCart(user.customData.memberOf));
