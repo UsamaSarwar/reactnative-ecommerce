@@ -8,12 +8,12 @@ import { set } from "react-native-reanimated";
 const TasksContext = React.createContext(null);
 
 const TasksProvider = ({ children, projectPartition }) => {
-  const [tasks, setTasks] = useState([]);
-  const { user, total, setTotal } = useAuth();
-  // const [total, setTotal] = useState(0);
-  const [added, setAdded] = useState(false);
+  const { user, userCart } = useAuth();
 
+  const [tasks, setTasks] = useState([]);
   const [shoppingCart, setShoppingCart] = useState([]);
+  const [cartTotal, setCartTotal] = useState(0);
+
   // Use a Ref to store the realm rather than the state because it is not
   // directly rendered, so updating it should not trigger a re-render as using
   // state would.
@@ -95,14 +95,8 @@ const TasksProvider = ({ children, projectPartition }) => {
     image,
     imageForm
   ) => {
-    // One advantage of centralizing the realm functionality in this provider is
-    // that we can check to make sure a valid status was passed in here.
-
-    // console.log(task);
-
     const projectRealm = realmRef.current;
     console.log(projectRealm);
-    // console.log(projectRealm);
 
     projectRealm.write(() => {
       task.name = prodName;
@@ -125,10 +119,9 @@ const TasksProvider = ({ children, projectPartition }) => {
     } catch (e) {
       console.error(e);
     }
-    // setTasks([...projectRealm.objects("Task").sorted("name")]);
   };
 
-  const getCart = (userCart) => {
+  const cartDetails = () => {
     const products = realmRef.current.objects("Task");
 
     const c = [];
@@ -140,29 +133,11 @@ const TasksProvider = ({ children, projectPartition }) => {
       newTotal +=
         Number(products.filtered("_id == $0", id)[0].price) *
         userCart[i]["qty"];
-      // console.log(products.filtered("_id == $0", id)[0]);
     }
 
-    // setShoppingCart(c);
-
-    // let cart = [];
-    // let productIDs = [];
-
-    // for (let productInfo = 0; productInfo < userCart.length; productInfo++) {
-    //   productIDs.push(userCart[productInfo]["productId"]); //Pushing all Id's
-    // } // Done for small optimization
-
-    // for (let productIndex = 0; productIndex < tasks.length; productIndex++) {
-    //   if (productIDs.includes(String(tasks[productIndex]["_id"]))) {
-    //     let taskIndex = productIDs.indexOf(String(tasks[productIndex]["_id"]));
-    //     cart.push([tasks[productIndex], userCart[taskIndex]["qty"]]);
-    //     newTotal +=
-    //       Number(tasks[productIndex].price) * userCart[taskIndex]["qty"];
-    //   }
-    // }
-    setTotal(newTotal);
-    // console.log("Here", cart[2][0]);
-    return c;
+    console.log(newTotal);
+    setShoppingCart(c);
+    setCartTotal(cartTotal);
   };
 
   // Render the children within the TaskContext's provider. The value contains
@@ -171,13 +146,12 @@ const TasksProvider = ({ children, projectPartition }) => {
   return (
     <TasksContext.Provider
       value={{
-        shoppingCart,
         createTask,
         deleteTask,
         updateTask,
-        getCart,
-        setAdded,
-        added,
+        cartDetails,
+        shoppingCart,
+        cartTotal,
         tasks,
       }}
     >

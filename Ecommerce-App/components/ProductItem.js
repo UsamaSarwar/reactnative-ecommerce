@@ -32,12 +32,13 @@ import productCardStyles from "../styles/ProductCardStyle";
 import IconStyles from "../styles/IconStyles";
 
 export default function ProductItem({ elementRef, searchText }) {
-  const { user, setTotal, total, addToCart } = useAuth();
+  const { user, setTotal, total, addToCart, addToUserCart } = useAuth();
   const { tasks, setAdded, deleteTask } = useTasks();
-  const { setProduct, setIsNewProduct } = useGlobal();
+  const { setProduct, setIsNewProduct, userCart, setUserCart } = useGlobal();
 
   const [loading, setLoading] = useState(true);
-  const [activeItemArr, setActiveItemArr] = useState([]);
+
+  const [updatingCart, setUpdatingCart] = useState(false);
 
   const admin = user.customData["userType"] === "admin" ? true : false;
 
@@ -51,34 +52,10 @@ export default function ProductItem({ elementRef, searchText }) {
     setIsNewProduct(false);
   };
 
-  const onPressAddtoCart = async (item) => {
-    await addToCart(item["_id"], 1);
-    await user.refreshCustomData();
-    setTotal(total + item.price);
-    setAdded(true);
-    setActiveItemArr((prevState) => {
-      prevState.splice(prevState.indexOf(String(item["_id"])), 1);
-      return [...prevState];
-    });
-
-    setTotal(total + item.price);
-    setAdded(true);
-    // Snackbar.show({
-    //   text: item["name"] + " is added to your cart",
-    //   duration: Snackbar.LENGTH_SHORT,
-    //   action: {
-    //     text: "UNDO",
-    //     textColor: "green",
-    //     onPress: async () => {
-    //       await undoAddCart(String(item["_id"]));
-    //       await user.refreshCustomData();
-    //       SetCartSize(cartSize);
-    //       Snackbar.show({
-    //         text: item["name"] + " addition was reversed",
-    //       });
-    //     },
-    //   },
-    // });
+  const onPressAddtoCart = (item) => {
+    setUpdatingCart(true);
+    addToUserCart(item["_id"], 1);
+    setUpdatingCart(false);
   };
 
   const onPressDeleteProduct = (item) => {
@@ -111,17 +88,14 @@ export default function ProductItem({ elementRef, searchText }) {
   const makeAddToCartButton = (item) => {
     return (
       <View style={IconStyles.background3}>
-        {activeItemArr.includes(String(item["_id"])) ? (
+        {updatingCart ? (
           <ActivityIndicator color={"white"} />
         ) : (
           <MatIcon
             name="add-shopping-cart"
             size={18}
             color={"#FFFFFF"}
-            onPress={() => {
-              setActiveItemArr(activeItemArr.concat([String(item["_id"])]));
-              onPressAddtoCart(item);
-            }}
+            onPress={() => onPressAddtoCart(item)}
           />
         )}
       </View>

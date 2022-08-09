@@ -24,36 +24,26 @@ import Quantity from "./Quantity";
 import UniversalStyles from "../styles/UniversalStyles";
 
 export default function UserSlideUpCard({ elementRef }) {
-  const { user, addToCart } = useAuth();
-  const { total, setTotal, setAdded } = useTasks();
+  const { addToUserCart } = useAuth();
 
   const { product } = useGlobal();
 
-  const [activity, setActivity] = useState(false);
+  const [updatingCart, setUpdatingCart] = useState(false);
 
-  const [quantity, setQuantity] = useState("1");
+  const [quantity, setQuantity] = useState(1);
 
-  useEffect(() => setQuantity("1"), [product]);
+  useEffect(() => setQuantity(1), [product]);
 
-  const onPressAddtoCart = async () => {
+  const onPressAddtoCart = () => {
     console.log("Add to cart pressed");
 
-    await addToCart(product["_id"], quantity);
-    await user.refreshCustomData();
-    setActivity(false);
-    setTotal(total + product.price * quantity);
-    setAdded(true);
+    setUpdatingCart(true);
+
+    addToUserCart(product["_id"], quantity);
+
+    setUpdatingCart(false);
+
     elementRef.current.hide();
-    // Snackbar.show({
-    //   text:
-    //     "(" +
-    //     String(quantity) +
-    //     ") - " +
-    //     data["name"] +
-    //     (quantity > 1 ? " are added to your cart" : " is added to your cart"),
-    //   duration: Snackbar.LENGTH_SHORT,
-    // });
-    // Alert.alert(data.name, "has been added to your shopping cart.");
   };
 
   return (
@@ -113,17 +103,14 @@ export default function UserSlideUpCard({ elementRef }) {
 
           <Quantity quantity={quantity} setQuantity={setQuantity} />
         </View>
-        {activity ? (
+        {updatingCart ? (
           <Pressable style={buttonStyles.p_button_login}>
             <ActivityIndicator size="large" color={"white"} />
           </Pressable>
         ) : (
           <Pressable
             style={buttonStyles.p_button_login}
-            onPress={() => {
-              setActivity(true);
-              onPressAddtoCart();
-            }}
+            onPress={() => onPressAddtoCart()}
           >
             <Text style={buttonStyles.p_button_text}>Add to Cart</Text>
           </Pressable>

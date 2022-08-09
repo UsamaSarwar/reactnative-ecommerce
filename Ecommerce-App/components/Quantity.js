@@ -1,6 +1,6 @@
 //React
 import React from "react";
-import { View, TextInput } from "react-native";
+import { View, Text } from "react-native";
 import Icon from "react-native-vector-icons/AntDesign";
 
 //Styles
@@ -13,31 +13,28 @@ export default function Quantity({ quantity, setQuantity }) {
         <Icon
           name="minus"
           size={21}
-          onPress={() => {
+          onPress={() =>
             setQuantity((prevState) =>
-              prevState === "1" ? prevState : String(Number(prevState) - 1)
-            );
-          }}
+              prevState === 1 ? prevState : prevState - 1
+            )
+          }
         />
       </View>
-      <TextInput
+      <Text
         style={{
           marginLeft: 10,
           marginRight: 10,
           fontSize: 21,
+          textAlign: "center",
         }}
-        onChangeText={(text) => setQuantity(text)}
-        value={quantity}
-        keyboardType="number-pad"
-        textAlign="center"
-      ></TextInput>
+      >
+        {quantity}
+      </Text>
       <View style={IconStyles.background1}>
         <Icon
           name="plus"
           size={21}
-          onPress={() => {
-            setQuantity((prevState) => String(Number(prevState) + 1));
-          }}
+          onPress={() => setQuantity((prevState) => prevState + 1)}
         />
       </View>
     </View>

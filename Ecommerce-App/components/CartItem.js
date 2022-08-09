@@ -8,24 +8,19 @@ import {
   Pressable,
   Image,
   FlatList,
-  Alert,
   ActivityIndicator,
 } from "react-native";
 import NumberFormat from "react-number-format";
-// import Snackbar from "react-native-snackbar";
 
 //Icons
 import Icon from "react-native-vector-icons/AntDesign";
-import MatIcon from "react-native-vector-icons/MaterialIcons";
 
 //Providers
 import { useTasks } from "../providers/TasksProvider";
 import { useAuth } from "../providers/AuthProvider";
-import { useGlobal } from "../providers/GlobalProvider";
 
 //Components
 import Shimmer from "./Shimmer";
-import Quantity from "./Quantity";
 
 //Styles
 import universalStyles from "../styles/UniversalStyles";
@@ -33,64 +28,42 @@ import productCardStyles from "../styles/ProductCardStyle";
 import IconStyles from "../styles/IconStyles";
 
 export default function CarItem() {
-  const { updateQuantityCart, removeFromCart, user } = useAuth();
-  const { getCart, getTotal, added, setAdded } = useTasks();
+  const { user, removeFromUserCart, updateQuantity } = useAuth();
+  const { cartDetails, shoppingCart } = useTasks();
 
-  const [loading, setLoading] = useState(true);
-  const [activeItemArr, setActiveItemArr] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  const [cart, setCart] = useState(getCart(user.customData.cart));
-  const [deleteItemArr, setDeleteItemArr] = useState([]);
-
-  const refreshCart = async () => {
-    await user.refreshCustomData();
-    setCart(getCart(user.customData.cart));
-  };
+  const [updatingCart, setUpdatingCart] = useState(false);
 
   useEffect(() => {
-    refreshCart();
-    setLoading(false);
+    cartDetails();
   }, []);
 
-  const onPressDelete = async (item) => {
-    await removeFromCart(String(item[0]["_id"]));
-    await user.refreshCustomData();
-    setCart((prevState) => {
-      prevState.splice(prevState.indexOf(item), 1);
-      return [...prevState];
-    });
-    setDeleteItemArr((prevState) => {
-      prevState.splice(prevState.indexOf(String(item[0]["_id"])), 1);
-      return [...prevState];
-    });
-    // Alert.alert(item.name, "is removed from shopping cart.");
-    // Snackbar.show({
-    //   text:
-    //     "(" +
-    //     String(item[1]) +
-    //     ") - " +
-    //     item[0]["name"] +
-    //     (item[1] > 1
-    //       ? " were removed from your cart"
-    //       : " is removed from your cart"),
-    //   duration: Snackbar.LENGTH_SHORT,
-    // });
+  const onPressMinus = (item) => {
+    updateQuantity(item["_id"], false);
+  };
+
+  const onPressPlus = (item) => {
+    updateQuantity(item["_id"], true);
+  };
+
+  const onPressDelete = (item) => {
+    setUpdatingCart(true);
+    removeFromUserCart(item["_id"]);
+    setUpdatingCart(false);
   };
 
   const makeRemoveButton = (item) => {
     return (
       <View style={[IconStyles.background2, { marginLeft: 3 }]}>
-        {deleteItemArr.includes(String(item[0]["_id"])) ? (
+        {updatingCart ? (
           <ActivityIndicator color={"#ff6c70"} />
         ) : (
           <Icon
             name="delete"
             color={"#ff6c70"}
             size={18}
-            onPress={async () => {
-              setDeleteItemArr(deleteItemArr.concat([String(item[0]["_id"])]));
-              onPressDelete(item);
-            }}
+            onPress={() => onPressDelete(item[0])}
           />
         )}
       </View>
@@ -99,11 +72,10 @@ export default function CarItem() {
 
   return (
     <FlatList
-      extraData={cart}
-      data={cart}
+      data={shoppingCart}
       style={{ margin: 10, borderRadius: 15 }}
       renderItem={({ item }) => (
-        <Pressable onPress={() => renderSlide(item)}>
+        <Pressable onPress={() => renderSlide(item[0])}>
           <View style={productCardStyles.productCard}>
             <View
               style={[
@@ -176,7 +148,7 @@ export default function CarItem() {
                     </Shimmer>
                   )}
                 />
-                {/* <Quantity /> */}
+
                 <View
                   style={{
                     flexDirection: "row",
@@ -187,24 +159,11 @@ export default function CarItem() {
                     <Icon
                       name="minus"
                       size={21}
-                      onPress={async () => {
-                        if (item[1] > 1) {
-                          await updateQuantityCart(item[0]["_id"], false);
-                          user.refreshCustomData();
-                          setTotalPrice(totalPrice - Number(item[0].price));
-                          setCart((prevState) => {
-                            if (item[1] > 1) {
-                              let index = prevState.indexOf(item);
-                              let newVal = [
-                                prevState[index][0],
-                                prevState[index][1] - 1,
-                              ];
-                              prevState.splice(index, 1, newVal);
-                              return [...prevState];
-                            }
-                          });
-                        }
-                      }}
+                      onPress={() =>
+                        item[1] === 1
+                          ? onPressDelete(item[0])
+                          : onPressMinus(item[0])
+                      }
                     />
                   </View>
 
@@ -222,20 +181,7 @@ export default function CarItem() {
                     <Icon
                       name="plus"
                       size={21}
-                      onPress={async () => {
-                        await updateQuantityCart(item[0]["_id"], true);
-                        user.refreshCustomData();
-                        setTotalPrice(totalPrice + Number(item[0].price));
-                        setCart((prevState) => {
-                          let index = prevState.indexOf(item);
-                          let newVal = [
-                            prevState[index][0],
-                            prevState[index][1] + 1,
-                          ];
-                          prevState.splice(index, 1, newVal);
-                          return [...prevState];
-                        });
-                      }}
+                      onPress={() => onPressPlus(item[0])}
                     />
                   </View>
                 </View>

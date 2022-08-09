@@ -15,8 +15,7 @@ import universalStyles from "../styles/UniversalStyles.js";
 import iconStyles from "../styles/IconStyles.js";
 
 export default function Footer({ navigation, elementRef }) {
-  const { user, cartSize } = useAuth();
-  const { setAdded } = useTasks();
+  const { user, userCart } = useAuth();
   const { setIsNewProduct } = useGlobal();
 
   const admin = user.customData["userType"] === "admin" ? true : false;
@@ -43,7 +42,7 @@ export default function Footer({ navigation, elementRef }) {
         ]}
       >
         <Text style={{ textAlign: "center", textAlignVertical: "center" }}>
-          {String(cartSize)}
+          {String(userCart)}
         </Text>
       </View>
     );
@@ -52,14 +51,11 @@ export default function Footer({ navigation, elementRef }) {
   const userPanel = () => {
     return (
       <View>
-        {cartSize > 0 ? cartCount() : null}
+        {userCart > 0 ? cartCount() : null}
         <Icon
           name="shoppingcart"
           size={30}
-          onPress={() => {
-            setAdded(true);
-            navigation.navigate("Cart", { elementRef: elementRef });
-          }}
+          onPress={() => navigation.navigate("Cart")}
         />
       </View>
     );
