@@ -58,7 +58,7 @@ export default function Footer({ navigation, elementRef }) {
           size={30}
           onPress={() => {
             setAdded(true);
-            navigation.navigate("Cart");
+            navigation.navigate("Cart", { elementRef: elementRef });
           }}
         />
       </View>

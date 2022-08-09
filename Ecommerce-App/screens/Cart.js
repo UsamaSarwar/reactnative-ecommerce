@@ -397,8 +397,6 @@ export default function Cart({ navigation, route }) {
 
             <Footer
               navigation={navigation}
-              childToParent={route.params.childToParent}
-              childToParent_edit={route.params.childToParent_edit}
               elementRef={route.params.elementRef}
             />
           </ImageBackground>
