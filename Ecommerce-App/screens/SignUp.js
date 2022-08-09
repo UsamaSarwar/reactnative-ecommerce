@@ -10,6 +10,7 @@ import {
   Pressable,
   Image,
   Alert,
+  ActivityIndicator,
 } from "react-native";
 
 //Providers
@@ -61,6 +62,8 @@ export default function Signup({ navigation }) {
 
   const [state, dispatch] = useReducer(reducer, initialStates);
 
+  const [signingUp, setSigningUp] = useState(false);
+
   const onPressSignUp = async () => {
     if (
       state.addr.length === 0 ||
@@ -89,8 +92,12 @@ export default function Signup({ navigation }) {
       }
     } else {
       try {
-        console.log("here");
+        setSigningUp(true);
+
         await signUp(state.addr, state.pass);
+
+        setSigningUp(false);
+
         Alert.alert("Success", state.addr + " has been added successfully.", [
           {
             text: "OK",
@@ -181,7 +188,11 @@ export default function Signup({ navigation }) {
             style={buttonStyles.p_button_login}
             onPress={onPressSignUp}
           >
-            <Text style={buttonStyles.p_button_text}>Sign Up</Text>
+            {loggingIn ? (
+              <ActivityIndicator color="#ffffff" size={24} />
+            ) : (
+              <Text style={buttonStyles.p_button_text}>Sign Up</Text>
+            )}
           </Pressable>
 
           <Pressable style={buttonStyles.s_button}>
