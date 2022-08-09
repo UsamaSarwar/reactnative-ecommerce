@@ -65,7 +65,7 @@ export default function Signup({ navigation }) {
     if (
       state.addr.length === 0 ||
       state.pass.length === 0 ||
-      state.confirmpass.length === 0 ||
+      state.confirmPass.length === 0 ||
       state.pass !== state.confirmpass ||
       !(state.addr.includes("@") || state.addr.includes(".com"))
     ) {
