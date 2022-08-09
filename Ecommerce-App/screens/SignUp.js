@@ -66,7 +66,7 @@ export default function Signup({ navigation }) {
       state.addr.length === 0 ||
       state.pass.length === 0 ||
       state.confirmPass.length === 0 ||
-      state.pass !== state.confirmpass ||
+      state.pass !== state.confirmPass ||
       !(state.addr.includes("@") || state.addr.includes(".com"))
     ) {
       if (state.addr.length === 0) {
@@ -89,6 +89,7 @@ export default function Signup({ navigation }) {
       }
     } else {
       try {
+        console.log("here");
         await signUp(state.addr, state.pass);
         Alert.alert("Success", state.addr + " has been added successfully.", [
           {
