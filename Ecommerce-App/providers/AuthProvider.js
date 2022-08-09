@@ -12,7 +12,7 @@ const AuthProvider = ({ children }) => {
   const realmRef = useRef(null);
   const [projectData, setProjectData] = useState([]);
   const [cartSize, SetCartSize] = useState(
-    user ? user.customData.memberOf.length : 0
+    user ? user.customData.cart.length : 0
   );
   // console.log(cartSize);
   useEffect(() => {
@@ -55,8 +55,8 @@ const AuthProvider = ({ children }) => {
           setProjectData([myProject]);
         } else {
           // console.log("hello");
-          const { memberOf } = users[0];
-          setProjectData([...memberOf]);
+          const { cart } = users[0];
+          setProjectData([...cart]);
         }
       });
     });
@@ -79,7 +79,7 @@ const AuthProvider = ({ children }) => {
   }, [user, cartSize]);
 
   useEffect(() => {
-    SetCartSize(user ? user.customData.memberOf.length : 0);
+    SetCartSize(user ? user.customData.cart.length : 0);
   }, [user]);
 
   // The signIn function takes an email and password and uses the
@@ -145,23 +145,23 @@ const AuthProvider = ({ children }) => {
     const userRealm = realmRef.current;
     const users = userRealm.objects("User");
     let indexOfItem = -1;
-    const productList = users[0].memberOf;
+    const productList = users[0].cart;
     for (let x = 0; x < productList.length; x++) {
-      if (productList[x]["type"] === String(productID)) {
+      if (productList[x]["productId"] === String(productID)) {
         indexOfItem = x;
       }
     }
     if (indexOfItem > -1) {
       await userRealm.write(() => {
-        users[0].memberOf[indexOfItem]["value"] =
-          users[0].memberOf[indexOfItem]["value"] + parseInt(quantity);
+        users[0].cart[indexOfItem]["qty"] =
+          users[0].cart[indexOfItem]["qty"] + parseInt(quantity);
       });
     } else {
       SetCartSize(cartSize + 1);
       await userRealm.write(() => {
-        users[0].memberOf.push({
-          type: String(productID),
-          value: parseInt(quantity),
+        users[0].cart.push({
+          productId: String(productID),
+          qty: parseInt(quantity),
         });
       });
     }
@@ -173,9 +173,9 @@ const AuthProvider = ({ children }) => {
     const user = userRealm.objects("User")[0];
     SetCartSize(cartSize - 1);
     await userRealm.write(() => {
-      for (let products = 0; products < user.memberOf.length; products++) {
-        if (user.memberOf[products]["type"] === product) {
-          user.memberOf.splice(products, 1);
+      for (let products = 0; products < user.cart.length; products++) {
+        if (user.cart[products]["productId"] === product) {
+          user.cart.splice(products, 1);
           break;
         }
       }
@@ -186,9 +186,9 @@ const AuthProvider = ({ children }) => {
     const userRealm = realmRef.current;
     const user = userRealm.objects("User")[0];
     await userRealm.write(() => {
-      for (let products = 0; products < user.memberOf.length; products++) {
-        if (user.memberOf[products]["type"] === product) {
-          user.memberOf.splice(products, 1);
+      for (let products = 0; products < user.cart.length; products++) {
+        if (user.cart[products]["productId"] === product) {
+          user.cart.splice(products, 1);
           break;
         }
       }
@@ -201,22 +201,22 @@ const AuthProvider = ({ children }) => {
     let newQuantity = 0;
     let isValid = true;
     // console.log("Preseed");
-    for (var items = 0; items < user.memberOf.length; items++) {
-      if (user.memberOf[items]["type"] === String(productID)) {
+    for (var items = 0; items < user.cart.length; items++) {
+      if (user.cart[items]["type"] === String(productID)) {
         newQuantity = operation
-          ? user.memberOf[items]["value"] + 1
-          : user.memberOf[items]["value"] > 1
-          ? user.memberOf[items]["value"] - 1
+          ? user.cart[items]["qty"] + 1
+          : user.cart[items]["qty"] > 1
+          ? user.cart[items]["qty"] - 1
           : (isValid = false);
         break;
       }
     }
     if (isValid) {
       await userRealm.write(() => {
-        user.memberOf.splice(items, 1);
-        user.memberOf.push({
-          type: String(productID),
-          value: parseInt(newQuantity),
+        user.cart.splice(items, 1);
+        user.cart.push({
+          productId: String(productID),
+          qty: parseInt(newQuantity),
         });
       });
     }
@@ -237,7 +237,7 @@ const AuthProvider = ({ children }) => {
         SetCartSize,
         undoAddCart,
         user,
-        projectData, // list of projects the user is a memberOf
+        projectData, // list of projects the user is a cart
         cartSize,
       }}
     >

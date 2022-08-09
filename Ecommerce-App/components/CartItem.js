@@ -39,12 +39,12 @@ export default function CarItem() {
   const [loading, setLoading] = useState(true);
   const [activeItemArr, setActiveItemArr] = useState([]);
 
-  const [cart, setCart] = useState(getCart(user.customData.memberOf));
+  const [cart, setCart] = useState(getCart(user.customData.cart));
   const [deleteItemArr, setDeleteItemArr] = useState([]);
 
   const refreshCart = async () => {
     await user.refreshCustomData();
-    setCart(getCart(user.customData.memberOf));
+    setCart(getCart(user.customData.cart));
   };
 
   useEffect(() => {

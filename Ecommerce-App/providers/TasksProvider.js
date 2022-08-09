@@ -128,20 +128,20 @@ const TasksProvider = ({ children, projectPartition }) => {
     return total;
   };
 
-  const getCart = (memberOf) => {
+  const getCart = (userCart) => {
     let cart = [];
     let productIDs = [];
     let newTotal = 0;
-    for (let productInfo = 0; productInfo < memberOf.length; productInfo++) {
-      productIDs.push(memberOf[productInfo]["type"]); //Pushing all Id's
+    for (let productInfo = 0; productInfo < userCart.length; productInfo++) {
+      productIDs.push(userCart[productInfo]["type"]); //Pushing all Id's
     } // Done for small optimization
 
     for (let productIndex = 0; productIndex < tasks.length; productIndex++) {
       if (productIDs.includes(String(tasks[productIndex]["_id"]))) {
         let taskIndex = productIDs.indexOf(String(tasks[productIndex]["_id"]));
-        cart.push([tasks[productIndex], memberOf[taskIndex]["value"]]);
+        cart.push([tasks[productIndex], userCart[taskIndex]["value"]]);
         newTotal +=
-          Number(tasks[productIndex].price) * memberOf[taskIndex]["value"];
+          Number(tasks[productIndex].price) * userCart[taskIndex]["value"];
       }
     }
     setTotal(newTotal);
