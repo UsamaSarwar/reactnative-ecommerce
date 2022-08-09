@@ -32,8 +32,8 @@ import productCardStyles from "../styles/ProductCardStyle";
 import IconStyles from "../styles/IconStyles";
 
 export default function ProductItem({ elementRef, searchText }) {
-  const { user, addToCart } = useAuth();
-  const { tasks, total, setTotal, setAdded, deleteTask } = useTasks();
+  const { user, setTotal, total, addToCart } = useAuth();
+  const { tasks, setAdded, deleteTask } = useTasks();
   const { setProduct, setIsNewProduct } = useGlobal();
 
   const [loading, setLoading] = useState(true);

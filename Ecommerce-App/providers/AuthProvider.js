@@ -11,6 +11,7 @@ const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(app.currentUser);
   const realmRef = useRef(null);
   const [projectData, setProjectData] = useState([]);
+  const [total, setTotal] = useState(0);
   const [cartSize, SetCartSize] = useState(
     user ? user.customData.cart.length : 0
   );
@@ -195,7 +196,7 @@ const AuthProvider = ({ children }) => {
     });
   };
 
-  const updateQuantityCart = async (productID, operation) => {
+  const updateQuantityCart = async (productID, operation, price) => {
     const userRealm = realmRef.current;
     const user = userRealm.objects("User")[0];
     let newQuantity = 0;
@@ -212,13 +213,32 @@ const AuthProvider = ({ children }) => {
       }
     }
     if (isValid) {
-      await userRealm.write(() => {
-        user.cart.splice(items, 1);
-        user.cart.push({
-          productId: String(productID),
-          qty: parseInt(newQuantity),
-        });
+      operation ? setTotal(total + price) : setTotal(total - price);
+      // await userRealm.write(() => {
+      //   user.cart.splice(items, 1);
+      //   user.cart.push({
+      //     productId: String(productID),
+      //     qty: parseInt(newQuantity),
+      //   });
+      // });
+      let newCart = user.cart.reduce((acc, curr, index) => {
+        if (index !== items) {
+          acc.push(curr);
+        }
+        return acc;
+      }, []);
+      newCart.push({
+        productId: String(productID),
+        qty: parseInt(newQuantity),
       });
+
+      const mongo = app.currentUser.mongoClient("mongodb-atlas");
+      const collection = mongo.db("tracker").collection("User");
+      // console.log(collection);
+      await collection.updateOne(
+        { _id: app.currentUser.id }, // Query for the user object of the logged in user
+        { $set: { cart: newCart } } // Set the logged in user's cart with new one
+      );
     }
   };
 
@@ -236,7 +256,9 @@ const AuthProvider = ({ children }) => {
         updateQuantityCart,
         SetCartSize,
         undoAddCart,
+        setTotal,
         user,
+        total,
         projectData, // list of projects the user is a cart
         cartSize,
       }}

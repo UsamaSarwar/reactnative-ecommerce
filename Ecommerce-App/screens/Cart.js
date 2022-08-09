@@ -31,9 +31,9 @@ import IconStyles from "../styles/IconStyles.js";
 import ButtonStyles from "../styles/ButtonStyles.js";
 
 export default function Cart({ navigation }) {
-  const { updateQuantityCart, removeFromCart, user } = useAuth();
-  const { getCart, getTotal, added, setAdded } = useTasks();
-  const [totalPrice, setTotalPrice] = useState(getTotal());
+  const { updateQuantityCart, removeFromCart, user, total } = useAuth();
+  const { getCart, added, setAdded } = useTasks();
+  const [totalPrice, setTotalPrice] = useState(total);
   const [cart, setCart] = useState(getCart(user.customData.cart));
   const [deleteItemArr, setDeleteItemArr] = useState([]);
   const [addItemArr, setAddItemArr] = useState([]);
@@ -43,24 +43,23 @@ export default function Cart({ navigation }) {
     await user.refreshCustomData();
     setCart(getCart(user.customData.cart));
     setAdded(false);
-    setTotalPrice(getTotal());
+    setTotalPrice(total);
   };
   useEffect(() => {
-    if (added) {
-      refreshCart();
-    }
-  });
+    refreshCart();
+  }, [total]);
 
   const onPressAdd = async (item) => {
-    await updateQuantityCart(item[0]["_id"], true);
+    await updateQuantityCart(item[0]["_id"], true, item[0]["price"]);
     await user.refreshCustomData();
-    setTotalPrice(totalPrice + Number(item[0].price));
-    setCart((prevState) => {
-      let index = prevState.indexOf(item);
-      let newVal = [prevState[index][0], prevState[index][1] + 1];
-      prevState.splice(index, 1, newVal);
-      return [...prevState];
-    });
+    // setTotalPrice(totalPrice + Number(item[0].price));
+    // setCart((prevState) => {
+    //   let index = prevState.indexOf(item);
+    //   let newVal = [prevState[index][0], prevState[index][1] + 1];
+    //   prevState.splice(index, 1, newVal);
+    //   return [...prevState];
+    // });
+    await refreshCart();
     setAddItemArr((prevState) => {
       prevState.splice(prevState.indexOf(String(item[0]["_id"])), 1);
       return [...prevState];
@@ -69,17 +68,18 @@ export default function Cart({ navigation }) {
 
   const onPressRemove = async (item) => {
     if (item[1] > 1) {
-      await updateQuantityCart(item[0]["_id"], false);
+      await updateQuantityCart(item[0]["_id"], false, item[0]["price"]);
       await user.refreshCustomData();
-      setTotalPrice(totalPrice - Number(item[0].price));
-      setCart((prevState) => {
-        if (item[1] > 1) {
-          let index = prevState.indexOf(item);
-          let newVal = [prevState[index][0], prevState[index][1] - 1];
-          prevState.splice(index, 1, newVal);
-          return [...prevState];
-        }
-      });
+      // setTotalPrice(totalPrice - Number(item[0].price));
+      // setCart((prevState) => {
+      //   if (item[1] > 1) {
+      //     let index = prevState.indexOf(item);
+      //     let newVal = [prevState[index][0], prevState[index][1] - 1];
+      //     prevState.splice(index, 1, newVal);
+      //     return [...prevState];
+      //   }
+      // });
+      await refreshCart();
       setRemoveItemArr((prevState) => {
         prevState.splice(prevState.indexOf(String(item[0]["_id"])), 1);
         return [...prevState];
@@ -152,7 +152,7 @@ export default function Cart({ navigation }) {
                   style={{ width: 100, height: 30, borderRadius: 15 }}
                 >
                   <NumberFormat
-                    value={totalPrice > 0 ? totalPrice : getTotal()}
+                    value={totalPrice > 0 ? totalPrice : total}
                     displayType={"text"}
                     thousandSeparator={true}
                     prefix={"PKR "}

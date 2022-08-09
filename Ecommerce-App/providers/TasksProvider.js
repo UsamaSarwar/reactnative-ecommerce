@@ -7,8 +7,8 @@ const TasksContext = React.createContext(null);
 
 const TasksProvider = ({ children, projectPartition }) => {
   const [tasks, setTasks] = useState([]);
-  const { user } = useAuth();
-  const [total, setTotal] = useState(0);
+  const { user, total, setTotal } = useAuth();
+  // const [total, setTotal] = useState(0);
   const [added, setAdded] = useState(false);
   // Use a Ref to store the realm rather than the state because it is not
   // directly rendered, so updating it should not trigger a re-render as using
@@ -124,10 +124,6 @@ const TasksProvider = ({ children, projectPartition }) => {
     // setTasks([...projectRealm.objects("Task").sorted("name")]);
   };
 
-  const getTotal = () => {
-    return total;
-  };
-
   const getCart = (userCart) => {
     let cart = [];
     let productIDs = [];
@@ -159,8 +155,6 @@ const TasksProvider = ({ children, projectPartition }) => {
         deleteTask,
         updateTask,
         getCart,
-        setTotal,
-        getTotal,
         setAdded,
         added,
         tasks,
