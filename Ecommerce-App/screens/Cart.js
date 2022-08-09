@@ -152,7 +152,7 @@ export default function Cart({ navigation }) {
                   style={{ width: 100, height: 30, borderRadius: 15 }}
                 >
                   <NumberFormat
-                    value={totalPrice > 0 ? totalPrice : total}
+                    value={total}
                     displayType={"text"}
                     thousandSeparator={true}
                     prefix={"PKR "}
