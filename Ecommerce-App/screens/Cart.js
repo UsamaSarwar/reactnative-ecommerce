@@ -43,16 +43,16 @@ export default function Cart({ navigation }) {
     await user.refreshCustomData();
     setCart(getCart(user.customData.cart));
     setAdded(false);
-    setTotalPrice(total);
   };
   useEffect(() => {
+    console.log(deleteItemArr);
     refreshCart();
-  }, [total]);
+  });
 
   const onPressAdd = async (item) => {
     await updateQuantityCart(item[0]["_id"], true, item[0]["price"]);
     await user.refreshCustomData();
-    // setTotalPrice(totalPrice + Number(item[0].price));
+    setTotalPrice(totalPrice + Number(item[0].price));
     // setCart((prevState) => {
     //   let index = prevState.indexOf(item);
     //   let newVal = [prevState[index][0], prevState[index][1] + 1];
@@ -70,7 +70,7 @@ export default function Cart({ navigation }) {
     if (item[1] > 1) {
       await updateQuantityCart(item[0]["_id"], false, item[0]["price"]);
       await user.refreshCustomData();
-      // setTotalPrice(totalPrice - Number(item[0].price));
+      setTotalPrice(totalPrice - Number(item[0].price));
       // setCart((prevState) => {
       //   if (item[1] > 1) {
       //     let index = prevState.indexOf(item);
@@ -91,14 +91,14 @@ export default function Cart({ navigation }) {
     await removeFromCart(String(item[0]["_id"]));
     await user.refreshCustomData();
     setTotalPrice(totalPrice - item[0].price * item[1]);
-    setCart((prevState) => {
-      prevState.splice(prevState.indexOf(item), 1);
-      return [...prevState];
-    });
-    setDeleteItemArr((prevState) => {
-      prevState.splice(prevState.indexOf(String(item[0]["_id"])), 1);
-      return [...prevState];
-    });
+    // setCart((prevState) => {
+    //   prevState.splice(prevState.indexOf(item), 1);
+    //   return [...prevState];
+    // });
+    // setDeleteItemArr((prevState) => {
+    //   prevState.splice(prevState.indexOf(String(item[0]["_id"])), 1);
+    //   return [...prevState];
+    // });
     // Alert.alert(item.name, "is removed from shopping cart.");
     Snackbar.show({
       text:

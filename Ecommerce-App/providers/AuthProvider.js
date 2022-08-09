@@ -227,7 +227,7 @@ const AuthProvider = ({ children }) => {
         }
         return acc;
       }, []);
-      newCart.push({
+      newCart.splice(items, 0, {
         productId: String(productID),
         qty: parseInt(newQuantity),
       });
