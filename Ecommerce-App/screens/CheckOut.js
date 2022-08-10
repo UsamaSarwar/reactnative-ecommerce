@@ -9,15 +9,16 @@ import {
   ScrollView,
 } from "react-native";
 
-import styles from "../styles/Styles.js";
 import UniversalStyles from "../styles/UniversalStyles.js";
+
+import { useTasks } from "../providers/TasksProvider.js";
 
 import NumberFormat from "react-number-format";
 
 import Footer from "../components/Footer.js";
 
-export default function Setting({ navigation, route }) {
-  const { cart, total } = route.params;
+export default function Setting({ navigation }) {
+  const { shoppingCart, cartTotal } = useTasks();
   const [payMethod, setPayMethod] = useState(true);
 
   return (
@@ -111,7 +112,7 @@ export default function Setting({ navigation, route }) {
               }}
             />
 
-            {cart.map((item) => {
+            {shoppingCart.map((item) => {
               return (
                 <View
                   style={{
@@ -197,7 +198,7 @@ export default function Setting({ navigation, route }) {
               }}
             >
               <NumberFormat
-                value={String(total)}
+                value={String(cartTotal)}
                 displayType={"text"}
                 thousandSeparator={true}
                 prefix={"PKR "}

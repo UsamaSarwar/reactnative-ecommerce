@@ -76,7 +76,7 @@ export default function CarItem() {
       data={shoppingCart}
       style={{ margin: 10, borderRadius: 15 }}
       renderItem={({ item }) => (
-        <Pressable onPress={() => renderSlide(item[0])}>
+        <Pressable>
           <View style={productCardStyles.productCard}>
             <View
               style={[

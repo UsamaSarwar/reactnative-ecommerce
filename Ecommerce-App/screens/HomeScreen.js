@@ -1,7 +1,7 @@
 //React
 import React, { useRef, useState, useEffect } from "react";
 
-//React Compoenets
+//React Components
 import {
   Text,
   View,
