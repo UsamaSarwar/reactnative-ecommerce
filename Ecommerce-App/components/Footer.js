@@ -1,5 +1,5 @@
 //React
-import React, { useState, useEffect } from "react";
+import React from "react";
 
 //React Components
 import { View, Text } from "react-native";
@@ -7,7 +7,6 @@ import Icon from "react-native-vector-icons/AntDesign";
 
 //Providers
 import { useAuth } from "../providers/AuthProvider.js";
-import { useTasks } from "../providers/TasksProvider.js";
 import { useGlobal } from "../providers/GlobalProvider.js";
 
 //Styles
@@ -42,7 +41,7 @@ export default function Footer({ navigation, elementRef }) {
         ]}
       >
         <Text style={{ textAlign: "center", textAlignVertical: "center" }}>
-          {String(userCart)}
+          {userCart.length}
         </Text>
       </View>
     );
@@ -51,7 +50,7 @@ export default function Footer({ navigation, elementRef }) {
   const userPanel = () => {
     return (
       <View>
-        {userCart > 0 ? cartCount() : null}
+        {userCart.length > 0 ? cartCount() : null}
         <Icon
           name="shoppingcart"
           size={30}

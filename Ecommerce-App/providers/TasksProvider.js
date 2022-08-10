@@ -135,7 +135,6 @@ const TasksProvider = ({ children, projectPartition }) => {
         userCart[i]["qty"];
     }
 
-    console.log(newTotal);
     setShoppingCart(c);
     setCartTotal(newTotal);
   };

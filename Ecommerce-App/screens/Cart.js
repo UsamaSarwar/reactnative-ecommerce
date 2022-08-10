@@ -13,7 +13,6 @@ import NumberFormat from "react-number-format";
 import Snackbar from "react-native-snackbar";
 
 //Providers
-import { useAuth } from "../providers/AuthProvider.js";
 import { useTasks } from "../providers/TasksProvider.js";
 import { useGlobal } from "../providers/GlobalProvider.js";
 
