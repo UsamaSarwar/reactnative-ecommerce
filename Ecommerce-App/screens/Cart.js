@@ -1,5 +1,5 @@
 //React
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import {
   SafeAreaView,
   Text,
@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import IonIcon from "react-native-vector-icons/Ionicons";
 import NumberFormat from "react-number-format";
+import SlidingUpPanel from "rn-sliding-up-panel";
 import Snackbar from "react-native-snackbar";
 
 //Providers
@@ -19,6 +20,7 @@ import { useGlobal } from "../providers/GlobalProvider.js";
 //Components
 import Footer from "../components/Footer.js";
 import CarItem from "../components/CartItem.js";
+import CartSlideUpCard from "../components/CartSlideUpCard.js";
 
 //Styles
 import UniversalStyles from "../styles/UniversalStyles.js";
@@ -27,6 +29,8 @@ import ButtonStyles from "../styles/ButtonStyles.js";
 export default function Cart({ navigation }) {
   const { shoppingCart, cartDetails, cartTotal } = useTasks();
   const { cartUpdate } = useGlobal();
+
+  const elementRef = useRef();
 
   useEffect(() => {
     cartDetails();
@@ -70,7 +74,7 @@ export default function Cart({ navigation }) {
           </View>
 
           {shoppingCart.length ? (
-            <CarItem />
+            <CarItem elementRef={elementRef} />
           ) : (
             <View style={UniversalStyles.center}>
               <Image
@@ -84,6 +88,14 @@ export default function Cart({ navigation }) {
           )}
 
           <Footer navigation={navigation} />
+
+          <SlidingUpPanel
+            allowDragging={true}
+            allowMomentum={true}
+            ref={(c) => (elementRef.current = c)}
+          >
+            <CartSlideUpCard elementRef={elementRef} />
+          </SlidingUpPanel>
         </ImageBackground>
       </View>
     </SafeAreaView>

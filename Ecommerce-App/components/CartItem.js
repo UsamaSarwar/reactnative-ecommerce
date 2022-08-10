@@ -28,10 +28,11 @@ import universalStyles from "../styles/UniversalStyles";
 import productCardStyles from "../styles/ProductCardStyle";
 import IconStyles from "../styles/IconStyles";
 
-export default function CarItem() {
+export default function CarItem({ elementRef }) {
   const { removeFromUserCart, updateQuantity } = useAuth();
   const { shoppingCart } = useTasks();
-  const { cartUpdate, setCartUpdate } = useGlobal();
+  const { setProduct, setIsNewProduct, cartUpdate, setCartUpdate } =
+    useGlobal();
 
   const [loading, setLoading] = useState(false);
 
@@ -71,12 +72,18 @@ export default function CarItem() {
     );
   };
 
+  const renderSlide = (item) => {
+    elementRef.current.show();
+    setProduct(item);
+    setIsNewProduct(false);
+  };
+
   return (
     <FlatList
       data={shoppingCart}
       style={{ margin: 10, borderRadius: 15 }}
       renderItem={({ item }) => (
-        <Pressable>
+        <Pressable onPress={() => renderSlide(item[0])}>
           <View style={productCardStyles.productCard}>
             <View
               style={[
