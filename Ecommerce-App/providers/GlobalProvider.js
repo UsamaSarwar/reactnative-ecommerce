@@ -12,6 +12,8 @@ const GlobalProvider = ({ children }) => {
 
   const [isNewProduct, setIsNewProduct] = useState(false);
 
+  const [cartUpdate, setCartUpdate] = useState(false);
+
   useEffect(() => {
     if (isNewProduct) {
       setProduct({
@@ -30,6 +32,8 @@ const GlobalProvider = ({ children }) => {
         setProduct,
         isNewProduct,
         setIsNewProduct,
+        cartUpdate,
+        setCartUpdate,
       }}
     >
       {children}

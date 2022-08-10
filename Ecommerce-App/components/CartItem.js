@@ -16,8 +16,9 @@ import NumberFormat from "react-number-format";
 import Icon from "react-native-vector-icons/AntDesign";
 
 //Providers
-import { useTasks } from "../providers/TasksProvider";
 import { useAuth } from "../providers/AuthProvider";
+import { useTasks } from "../providers/TasksProvider";
+import { useGlobal } from "../providers/GlobalProvider";
 
 //Components
 import Shimmer from "./Shimmer";
@@ -28,29 +29,29 @@ import productCardStyles from "../styles/ProductCardStyle";
 import IconStyles from "../styles/IconStyles";
 
 export default function CarItem() {
-  const { user, removeFromUserCart, updateQuantity } = useAuth();
-  const { cartDetails, shoppingCart } = useTasks();
+  const { removeFromUserCart, updateQuantity } = useAuth();
+  const { shoppingCart } = useTasks();
+  const { cartUpdate, setCartUpdate } = useGlobal();
 
   const [loading, setLoading] = useState(false);
 
   const [updatingCart, setUpdatingCart] = useState(false);
 
-  useEffect(() => {
-    cartDetails();
-  }, []);
-
   const onPressMinus = (item) => {
     updateQuantity(item["_id"], false);
+    setCartUpdate(!cartUpdate);
   };
 
   const onPressPlus = (item) => {
     updateQuantity(item["_id"], true);
+    setCartUpdate(!cartUpdate);
   };
 
-  const onPressDelete = (item) => {
+  const onPressDelete = async (item) => {
     setUpdatingCart(true);
     removeFromUserCart(item["_id"]);
     setUpdatingCart(false);
+    setCartUpdate(!cartUpdate);
   };
 
   const makeRemoveButton = (item) => {
@@ -62,7 +63,7 @@ export default function CarItem() {
           <Icon
             name="delete"
             color={"#ff6c70"}
-            size={18}
+            size={21}
             onPress={() => onPressDelete(item[0])}
           />
         )}

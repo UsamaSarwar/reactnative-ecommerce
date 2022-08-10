@@ -169,6 +169,9 @@ const AuthProvider = ({ children }) => {
         user.cart.splice(index, 1);
       }
     });
+
+    const { cart } = user;
+    setUserCart([...cart]);
   };
 
   const updateQuantity = (itemId, bool) => {

@@ -1,5 +1,5 @@
 //React
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect } from "react";
 import {
   SafeAreaView,
   Text,
@@ -7,11 +7,7 @@ import {
   ImageBackground,
   Pressable,
   Image,
-  Alert,
-  FlatList,
-  ActivityIndicator,
 } from "react-native";
-import Icon from "react-native-vector-icons/AntDesign";
 import IonIcon from "react-native-vector-icons/Ionicons";
 import NumberFormat from "react-number-format";
 import Snackbar from "react-native-snackbar";
@@ -19,25 +15,23 @@ import Snackbar from "react-native-snackbar";
 //Providers
 import { useAuth } from "../providers/AuthProvider.js";
 import { useTasks } from "../providers/TasksProvider.js";
+import { useGlobal } from "../providers/GlobalProvider.js";
 
 //Components
-import Shimmer from "../components/Shimmer";
 import Footer from "../components/Footer.js";
+import CarItem from "../components/CartItem.js";
 
 //Styles
-import styles from "../styles/Styles.js";
 import UniversalStyles from "../styles/UniversalStyles.js";
-import IconStyles from "../styles/IconStyles.js";
 import ButtonStyles from "../styles/ButtonStyles.js";
-import CarItem from "../components/CartItem.js";
 
 export default function Cart({ navigation }) {
   const { shoppingCart, cartDetails, cartTotal } = useTasks();
+  const { cartUpdate } = useGlobal();
 
   useEffect(() => {
     cartDetails();
-    console.log("CartTotal:", cartTotal);
-  }, []);
+  }, [cartUpdate]);
 
   return (
     <SafeAreaView style={UniversalStyles.page_container}>
