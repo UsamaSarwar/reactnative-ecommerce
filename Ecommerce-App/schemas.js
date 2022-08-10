@@ -59,7 +59,7 @@ export class Order {
   constructor({
     name,
     partition,
-    status = Task.STATUS_OPEN,
+    // status = Task.STATUS_OPEN,
     id = new ObjectId(),
     category,
     price,
@@ -81,12 +81,29 @@ export class Order {
   static STATUS_OPEN = "Open";
   static STATUS_IN_PROGRESS = "InProgress";
   static STATUS_COMPLETE = "Complete";
+
+  static Task = {
+    name: "Task",
+    properties: {
+      _id: "objectId",
+      name: "string",
+      status: "string",
+      category: "string",
+      price: "string",
+      // price: "double",
+      description: "string",
+      image: "string",
+      imageForm: "string",
+    },
+    primaryKey: "_id",
+  };
+
   static schema = {
     name: "Order",
     properties: {
       _id: "objectId",
       status: "string",
-      orderItems: "array",
+      orderItems: "Task[]",
     },
 
     primaryKey: "_id",
