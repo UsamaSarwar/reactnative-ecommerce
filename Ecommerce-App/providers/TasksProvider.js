@@ -137,7 +137,7 @@ const TasksProvider = ({ children, projectPartition }) => {
 
     console.log(newTotal);
     setShoppingCart(c);
-    setCartTotal(cartTotal);
+    setCartTotal(newTotal);
   };
 
   // Render the children within the TaskContext's provider. The value contains
