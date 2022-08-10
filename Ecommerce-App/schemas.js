@@ -58,52 +58,51 @@ export class Order {
    */
   constructor({
     name,
+    orderNumber,
+    paymentMethod, // COD or card
+    userId,
     partition,
-    // status = Task.STATUS_OPEN,
+    status = Order.STATUS_OPEN,
     id = new ObjectId(),
-    category,
-    price,
-    description,
-    image,
-    imageForm,
   }) {
     this._partition = partition;
     this._id = id;
+    this.orderNumber = orderNumber;
     this.name = name;
     this.status = status;
-    this.category = category;
-    this.price = price;
-    this.description = description;
-    this.image = image;
-    this.imageForm = imageForm;
+    this.paymentMethod = paymentMethod;
+    this.userId = userId;
   }
 
   static STATUS_OPEN = "Open";
   static STATUS_IN_PROGRESS = "InProgress";
   static STATUS_COMPLETE = "Complete";
 
-  static Task = {
-    name: "Task",
-    properties: {
-      _id: "objectId",
-      name: "string",
-      status: "string",
-      category: "string",
-      price: "string",
-      // price: "double",
-      description: "string",
-      image: "string",
-      imageForm: "string",
-    },
-    primaryKey: "_id",
-  };
+  // static Task = {
+  //   name: "Task",
+  //   properties: {
+  //     _id: "objectId",
+  //     name: "string",
+  //     status: "string",
+  //     category: "string",
+  //     price: "string",
+  //     // price: "double",
+  //     description: "string",
+  //     image: "string",
+  //     imageForm: "string",
+  //   },
+  //   primaryKey: "_id",
+  // };
 
   static schema = {
     name: "Order",
     properties: {
       _id: "objectId",
       status: "string",
-      orderItems: "Task[]",
+      orderNumber: "string",
+      // orderItems: "Task[]",
+      userId: "string",
+      paymentMethod: "string",
     },
 
     primaryKey: "_id",

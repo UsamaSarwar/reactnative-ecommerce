@@ -91,7 +91,7 @@ export default function Setting({ navigation }) {
               >
                 <Pressable
                   onPress={() => {
-                    setPayMethod(true);
+                    navigation.navigate("Orderdetails");
                   }}
                 >
                   <Image

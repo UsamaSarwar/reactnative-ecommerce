@@ -11,12 +11,14 @@ import Deleteaccount from "./screens/DeleteAccount";
 import Setting from "./screens/Setting";
 import Cart from "./screens/Cart";
 import Checkout from "./screens/CheckOut";
+import OrderDetails from "./screens/OrderDetails";
 
 import Updatedetails from "./screens/UpdateDetails";
 
 import { useAuth } from "./providers/AuthProvider";
 import { TasksProvider } from "./providers/TasksProvider";
 import { GlobalProvider } from "./providers/GlobalProvider";
+import { OrderProvider } from "./providers/OrderProvider";
 
 const Stack = createNativeStackNavigator();
 
@@ -26,25 +28,31 @@ export default function AppNavigator() {
   if (user) {
     return (
       <TasksProvider user={user} projectPartition={`project=${user.id}`}>
-        <GlobalProvider>
-          <NavigationContainer>
-            <Stack.Navigator
-              screenOptions={{ headerShown: false }}
-              initialRouteName="Login"
-            >
-              <Stack.Screen name="Login" component={Login} />
-              <Stack.Screen name="Signup" component={Signup} />
-              <Stack.Screen name="Forgotpass" component={Forgotpass} />
-              <Stack.Screen name="Homescreen" component={Homescreen} />
-              <Stack.Screen name="Setting" component={Setting} />
-              <Stack.Screen name="Cart" component={Cart} />
-              <Stack.Screen name="Updatepassword" component={Updatepassword} />
-              <Stack.Screen name="Checkout" component={Checkout} />
-              <Stack.Screen name="Updatedetails" component={Updatedetails} />
-              <Stack.Screen name="Deleteaccount" component={Deleteaccount} />
-            </Stack.Navigator>
-          </NavigationContainer>
-        </GlobalProvider>
+        <OrderProvider user={user} projectPartition={`project=${user.id}`}>
+          <GlobalProvider>
+            <NavigationContainer>
+              <Stack.Navigator
+                screenOptions={{ headerShown: false }}
+                initialRouteName="Login"
+              >
+                <Stack.Screen name="Login" component={Login} />
+                <Stack.Screen name="Signup" component={Signup} />
+                <Stack.Screen name="Forgotpass" component={Forgotpass} />
+                <Stack.Screen name="Homescreen" component={Homescreen} />
+                <Stack.Screen name="Setting" component={Setting} />
+                <Stack.Screen name="Cart" component={Cart} />
+                <Stack.Screen
+                  name="Updatepassword"
+                  component={Updatepassword}
+                />
+                <Stack.Screen name="Checkout" component={Checkout} />
+                <Stack.Screen name="Updatedetails" component={Updatedetails} />
+                <Stack.Screen name="Deleteaccount" component={Deleteaccount} />
+                <Stack.Screen name="Orderdetails" component={OrderDetails} />
+              </Stack.Navigator>
+            </NavigationContainer>
+          </GlobalProvider>
+        </OrderProvider>
       </TasksProvider>
     );
   } else {
@@ -62,6 +70,7 @@ export default function AppNavigator() {
           <Stack.Screen name="Cart" component={Cart} />
           <Stack.Screen name="Updatepassword" component={Updatepassword} />
           <Stack.Screen name="Deleteaccount" component={Deleteaccount} />
+          <Stack.Screen name="Orderdetails" component={OrderDetails} />
         </Stack.Navigator>
       </NavigationContainer>
     );
