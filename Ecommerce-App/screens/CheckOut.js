@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import {
   Text,
   View,
@@ -20,6 +20,7 @@ import Footer from "../components/Footer.js";
 export default function Setting({ navigation }) {
   const { shoppingCart, cartTotal } = useTasks();
   const [payMethod, setPayMethod] = useState(true);
+  const elementRef = useRef();
 
   return (
     <View style={UniversalStyles.page_container}>
@@ -216,7 +217,7 @@ export default function Setting({ navigation }) {
             </View>
           </View>
         </ScrollView>
-        <Footer navigation={navigation} />
+        <Footer navigation={navigation} elementRef={elementRef} />
       </ImageBackground>
     </View>
     // </LinearGradient>

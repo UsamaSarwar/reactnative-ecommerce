@@ -24,4 +24,15 @@ export default iconStyles = StyleSheet.create({
     height: 20,
     width: 20,
   },
+  background5: {
+    borderRadius: 100,
+    backgroundColor: "rgba(255, 108, 112, 0.4)",
+    padding: 4,
+  },
+  background6: {
+    backgroundColor: "#999999",
+    opacity: 0.6,
+    borderRadius: 100,
+    padding: 4,
+  },
 });

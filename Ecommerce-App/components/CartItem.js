@@ -12,6 +12,9 @@ import {
 } from "react-native";
 import NumberFormat from "react-number-format";
 
+//Animation-Component
+import * as Animatable from "react-native-animatable";
+
 //Icons
 import Icon from "react-native-vector-icons/AntDesign";
 
@@ -38,7 +41,10 @@ export default function CarItem({ elementRef }) {
 
   const [updatingCart, setUpdatingCart] = useState(false);
 
+  const animationTime = 700;
+
   const onPressMinus = (item) => {
+    elementRef[item._id + "removeIcon"].rubberBand(animationTime);
     updateQuantity(item["_id"], false);
     setCartUpdate(!cartUpdate);
   };
@@ -48,11 +54,23 @@ export default function CarItem({ elementRef }) {
     setCartUpdate(!cartUpdate);
   };
 
-  const onPressDelete = async (item) => {
+  const onPressDelete = (item) => {
     setUpdatingCart(true);
     removeFromUserCart(item["_id"]);
     setUpdatingCart(false);
     setCartUpdate(!cartUpdate);
+  };
+
+  const animateDelete = (item) => {
+    elementRef[String(item[0]._id) + "deleteButton"].fadeOutLeft(animationTime);
+    setTimeout(() => onPressDelete(item[0]), animationTime);
+    setTimeout(
+      () =>
+        elementRef[String(item[0]._id) + "deleteButton"].fadeInRight(
+          animationTime
+        ),
+      animationTime
+    );
   };
 
   const makeRemoveButton = (item) => {
@@ -65,7 +83,9 @@ export default function CarItem({ elementRef }) {
             name="delete"
             color={"#ff6c70"}
             size={21}
-            onPress={() => onPressDelete(item[0])}
+            onPress={() => {
+              animateDelete(item);
+            }}
           />
         )}
       </View>
@@ -84,7 +104,12 @@ export default function CarItem({ elementRef }) {
       style={{ margin: 10, borderRadius: 15 }}
       renderItem={({ item }) => (
         <Pressable onPress={() => renderSlide(item[0])}>
-          <View style={productCardStyles.productCard}>
+          <Animatable.View
+            style={productCardStyles.productCard}
+            ref={(here) => {
+              elementRef[String(item[0]._id) + "deleteButton"] = here;
+            }}
+          >
             <View
               style={[
                 universalStyles.centered_container,
@@ -163,17 +188,26 @@ export default function CarItem({ elementRef }) {
                     alignItems: "center",
                   }}
                 >
-                  <View style={IconStyles.background2}>
+                  <Animatable.View
+                    style={
+                      item[1] === 1
+                        ? IconStyles.background5
+                        : IconStyles.background2
+                    }
+                    ref={(here) =>
+                      (elementRef[item[0]._id + "removeIcon"] = here)
+                    }
+                  >
                     <Icon
                       name="minus"
                       size={21}
                       onPress={() =>
                         item[1] === 1
-                          ? onPressDelete(item[0])
+                          ? animateDelete(item)
                           : onPressMinus(item[0])
                       }
                     />
-                  </View>
+                  </Animatable.View>
 
                   <Text
                     style={{
@@ -185,17 +219,27 @@ export default function CarItem({ elementRef }) {
                     {item[1]}
                   </Text>
 
-                  <View style={IconStyles.background2}>
+                  <Animatable.View
+                    style={IconStyles.background2}
+                    ref={(here) =>
+                      (elementRef[item[0]._id + "plusIcon"] = here)
+                    }
+                  >
                     <Icon
                       name="plus"
                       size={21}
-                      onPress={() => onPressPlus(item[0])}
+                      onPress={() => {
+                        elementRef[item[0]._id + "plusIcon"].rubberBand(
+                          animationTime
+                        );
+                        onPressPlus(item[0]);
+                      }}
                     />
-                  </View>
+                  </Animatable.View>
                 </View>
               </View>
             </View>
-          </View>
+          </Animatable.View>
         </Pressable>
       )}
     />

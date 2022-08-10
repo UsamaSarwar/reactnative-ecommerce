@@ -5,6 +5,9 @@ import React from "react";
 import { View, Text } from "react-native";
 import Icon from "react-native-vector-icons/AntDesign";
 
+//Animation-Component
+import * as Animatable from "react-native-animatable";
+
 //Providers
 import { useAuth } from "../providers/AuthProvider.js";
 import { useGlobal } from "../providers/GlobalProvider.js";
@@ -49,14 +52,14 @@ export default function Footer({ navigation, elementRef }) {
 
   const userPanel = () => {
     return (
-      <View>
+      <Animatable.View ref={(here) => (elementRef.cartIcon = here)}>
         {userCart.length > 0 ? cartCount() : null}
         <Icon
           name="shoppingcart"
           size={30}
           onPress={() => navigation.navigate("Cart")}
         />
-      </View>
+      </Animatable.View>
     );
   };
 

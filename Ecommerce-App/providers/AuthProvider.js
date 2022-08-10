@@ -131,8 +131,6 @@ const AuthProvider = ({ children }) => {
   const addToUserCart = (itemId, qty) => {
     console.log("Adding Item to cart");
 
-    let total = 0;
-
     const userRealm = realmRef.current;
     const user = userRealm.objects("User")[0];
 
