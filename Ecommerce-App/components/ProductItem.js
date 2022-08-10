@@ -12,6 +12,9 @@ import {
   ActivityIndicator,
 } from "react-native";
 import NumberFormat from "react-number-format";
+
+//Animation-Component
+import * as Animatable from "react-native-animatable";
 // import Snackbar from "react-native-snackbar";
 
 //Icons
@@ -91,12 +94,18 @@ export default function ProductItem({ elementRef, searchText }) {
         {updatingCart ? (
           <ActivityIndicator color={"white"} />
         ) : (
-          <MatIcon
-            name="add-shopping-cart"
-            size={18}
-            color={"#FFFFFF"}
-            onPress={() => onPressAddtoCart(item)}
-          />
+          <Animatable.View ref={(here) => (elementRef[item._id] = here)}>
+            <MatIcon
+              name="add-shopping-cart"
+              size={18}
+              color={"#FFFFFF"}
+              onPress={() => {
+                elementRef[item._id].rotate(1000);
+                elementRef.cartIcon.rubberBand(1000);
+                onPressAddtoCart(item);
+              }}
+            />
+          </Animatable.View>
         )}
       </View>
     );
@@ -113,7 +122,11 @@ export default function ProductItem({ elementRef, searchText }) {
       style={{ margin: 10, borderRadius: 15 }}
       renderItem={({ item }) => (
         <Pressable onPress={() => renderSlide(item)}>
-          <View style={productCardStyles.productCard}>
+          <Animatable.View
+            animation="zoomInUp"
+            duration={1500}
+            style={productCardStyles.productCard}
+          >
             <View
               style={[
                 universalStyles.centered_container,
@@ -205,7 +218,7 @@ export default function ProductItem({ elementRef, searchText }) {
                 ) : null}
               </View>
             </View>
-          </View>
+          </Animatable.View>
         </Pressable>
       )}
     />

@@ -3,23 +3,33 @@ import React from "react";
 import { View, Text } from "react-native";
 import Icon from "react-native-vector-icons/AntDesign";
 
+//Animation-Component
+import * as Animatable from "react-native-animatable";
+
 //Styles
 import IconStyles from "../styles/IconStyles";
 
-export default function Quantity({ quantity, setQuantity }) {
+export default function Quantity({ quantity, setQuantity, elementRef }) {
+  const animationTime = 800;
   return (
     <View style={{ flexDirection: "row", alignItems: "center" }}>
-      <View style={IconStyles.background1}>
+      <Animatable.View
+        style={quantity > 1 ? IconStyles.background1 : IconStyles.background6}
+        ref={(here) => {
+          elementRef["minusSlideUp"] = here;
+        }}
+      >
         <Icon
           name="minus"
           size={21}
-          onPress={() =>
-            setQuantity((prevState) =>
-              prevState === 1 ? prevState : prevState - 1
-            )
-          }
+          onPress={() => {
+            if (quantity > 1) {
+              elementRef["minusSlideUp"].rubberBand(animationTime);
+              setQuantity(quantity - 1);
+            }
+          }}
         />
-      </View>
+      </Animatable.View>
       <Text
         style={{
           marginLeft: 10,
@@ -30,13 +40,21 @@ export default function Quantity({ quantity, setQuantity }) {
       >
         {quantity}
       </Text>
-      <View style={IconStyles.background1}>
+      <Animatable.View
+        style={IconStyles.background1}
+        ref={(here) => {
+          elementRef["plusSlideUp"] = here;
+        }}
+      >
         <Icon
           name="plus"
           size={21}
-          onPress={() => setQuantity((prevState) => prevState + 1)}
+          onPress={() => {
+            elementRef["plusSlideUp"].rubberBand(animationTime);
+            setQuantity((prevState) => prevState + 1);
+          }}
         />
-      </View>
+      </Animatable.View>
     </View>
   );
 }

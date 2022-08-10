@@ -87,7 +87,7 @@ export default function Cart({ navigation }) {
             </View>
           )}
 
-          <Footer navigation={navigation} />
+          <Footer navigation={navigation} elementRef={elementRef} />
 
           <SlidingUpPanel
             allowDragging={true}

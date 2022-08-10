@@ -12,9 +12,11 @@ import {
 import NumberFormat from "react-number-format";
 // import Snackbar from "react-native-snackbar";
 
+//Animation-Component
+import * as Animatable from "react-native-animatable";
+
 //Providers
 import { useAuth } from "../providers/AuthProvider";
-import { useTasks } from "../providers/TasksProvider";
 import { useGlobal } from "../providers/GlobalProvider";
 
 //Components
@@ -22,6 +24,7 @@ import Quantity from "./Quantity";
 
 //Styles
 import UniversalStyles from "../styles/UniversalStyles";
+import { Icon } from "react-native-elements";
 
 export default function UserSlideUpCard({ elementRef }) {
   const { addToUserCart } = useAuth();
@@ -30,20 +33,23 @@ export default function UserSlideUpCard({ elementRef }) {
 
   const [updatingCart, setUpdatingCart] = useState(false);
 
+  const [addToCartPressed, setAddToCartPressed] = useState(false);
+
   const [quantity, setQuantity] = useState(1);
+
+  const animationTime = 800;
 
   useEffect(() => setQuantity(1), [product]);
 
   const onPressAddtoCart = () => {
-    console.log("Add to cart pressed");
-
     setUpdatingCart(true);
-
     addToUserCart(product["_id"], quantity);
-
     setUpdatingCart(false);
-
-    elementRef.current.hide();
+    elementRef[String(product._id) + "addToCartButton"].bounce(animationTime);
+    setTimeout(() => {
+      elementRef.current.hide();
+      setAddToCartPressed(false);
+    }, animationTime);
   };
 
   return (
@@ -101,7 +107,11 @@ export default function UserSlideUpCard({ elementRef }) {
             renderText={(value) => <Text>{value}</Text>}
           />
 
-          <Quantity quantity={quantity} setQuantity={setQuantity} />
+          <Quantity
+            quantity={quantity}
+            setQuantity={setQuantity}
+            elementRef={elementRef}
+          />
         </View>
         {updatingCart ? (
           <Pressable style={buttonStyles.p_button_login}>
@@ -110,9 +120,22 @@ export default function UserSlideUpCard({ elementRef }) {
         ) : (
           <Pressable
             style={buttonStyles.p_button_login}
-            onPress={() => onPressAddtoCart()}
+            onPress={() => {
+              setAddToCartPressed(true);
+              onPressAddtoCart();
+            }}
           >
-            <Text style={buttonStyles.p_button_text}>Add to Cart</Text>
+            <Animatable.View
+              ref={(here) => {
+                elementRef[String(product._id) + "addToCartButton"] = here;
+              }}
+            >
+              {addToCartPressed ? (
+                <Icon name="check" size={28} color="white" />
+              ) : (
+                <Text style={buttonStyles.p_button_text}>Add to Cart</Text>
+              )}
+            </Animatable.View>
           </Pressable>
         )}
 
