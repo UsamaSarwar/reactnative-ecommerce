@@ -1,5 +1,5 @@
 //React
-import React, { useReducer } from "react";
+import React, { useReducer, useState } from "react";
 
 //React Components
 import {
@@ -188,7 +188,7 @@ export default function Signup({ navigation }) {
             style={buttonStyles.p_button_login}
             onPress={onPressSignUp}
           >
-            {loggingIn ? (
+            {signingUp ? (
               <ActivityIndicator color="#ffffff" size={24} />
             ) : (
               <Text style={buttonStyles.p_button_text}>Sign Up</Text>
