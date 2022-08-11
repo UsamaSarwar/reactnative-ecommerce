@@ -22,7 +22,7 @@ const OrderProvider = ({ children, projectPartition }) => {
       type: "openImmediately",
     };
     const config = {
-      schema: [Order.schema],
+      schema: [Order.schema, Order.Order_ItemsSchema],
       sync: {
         user: user,
         partitionValue: "admin",
@@ -34,7 +34,7 @@ const OrderProvider = ({ children, projectPartition }) => {
     Realm.open(config).then((projectRealm) => {
       realmRef.current = projectRealm;
       const syncTasks = projectRealm.objects("Order");
-      setOrdersx([...syncTasks]);
+      setOrders([...syncTasks]);
     });
 
     return () => {
@@ -49,7 +49,7 @@ const OrderProvider = ({ children, projectPartition }) => {
     };
   }, [user, projectPartition]);
 
-  const createOrder = () => {
+  const createOrder = (customerid, orderNumber, paymentMethod, userCart) => {
     const projectRealm = realmRef.current;
     projectRealm.write(() => {
       // Create a new task in the same partition -- that is, in the same project.
@@ -58,6 +58,10 @@ const OrderProvider = ({ children, projectPartition }) => {
         new Order({
           id: new ObjectId(),
           partition: "admin", //Public Partition
+          customerid: customerid,
+          orderNumber: orderNumber,
+          paymentMethod: paymentMethod,
+          orderItems: userCart,
         })
       );
     });

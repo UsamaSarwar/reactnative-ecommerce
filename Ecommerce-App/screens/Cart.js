@@ -26,11 +26,13 @@ import CartSlideUpCard from "../components/CartSlideUpCard.js";
 //Styles
 import UniversalStyles from "../styles/UniversalStyles.js";
 import ButtonStyles from "../styles/ButtonStyles.js";
+import { useAuth } from "../providers/AuthProvider.js";
 
 export default function Cart({ navigation }) {
   const { shoppingCart, cartDetails, cartTotal } = useTasks();
   const { cartUpdate } = useGlobal();
   const { orders, createOrder } = useOrder();
+  const { userCart } = useAuth();
 
   const elementRef = useRef();
 
@@ -93,7 +95,7 @@ export default function Cart({ navigation }) {
 
           <Pressable
             style={ButtonStyles.checkout_button}
-            onPress={() => createOrder()}
+            onPress={() => createOrder("A", 222, "33", userCart)}
           >
             <Text
               style={[ButtonStyles.checkout_button_text, { marginRight: 15 }]}

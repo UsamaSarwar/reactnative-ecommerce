@@ -96,9 +96,20 @@ export class Order {
    * @param {string status The status of the task. Default value is "Open"}
    * @param {ObjectId} id The ObjectId to create this task with
    */
-  constructor({ partition, id }) {
+  constructor({
+    partition,
+    id,
+    customerid,
+    orderNumber,
+    paymentMethod,
+    orderItems,
+  }) {
     this._partition = partition;
     this._id = id;
+    this.customerid = customerid;
+    this.orderNumber = orderNumber;
+    this.paymentMethod = paymentMethod;
+    this.orderItems = orderItems;
   }
 
   static schema = {
@@ -106,8 +117,19 @@ export class Order {
     properties: {
       _id: "objectId",
       _partition: "string",
+      customerid: "string",
+      orderItems: "Order_orderItems[]",
+      orderNumber: "int",
+      paymentMethod: "string",
     },
-
     primaryKey: "_id",
+  };
+  static Order_ItemsSchema = {
+    name: "Order_orderItems",
+    embedded: true,
+    properties: {
+      productId: "string?",
+      qty: "int?",
+    },
   };
 }
