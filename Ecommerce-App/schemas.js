@@ -51,7 +51,7 @@ export class Task {
     name,
     partition,
     status = Task.STATUS_OPEN,
-    id = new ObjectId(),
+    id,
     category,
     price,
     description,
@@ -96,7 +96,7 @@ export class Order {
    * @param {string status The status of the task. Default value is "Open"}
    * @param {ObjectId} id The ObjectId to create this task with
    */
-  constructor({ partition, id = new ObjectId() }) {
+  constructor({ partition, id }) {
     this._partition = partition;
     this._id = id;
   }

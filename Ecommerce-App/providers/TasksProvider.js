@@ -73,6 +73,7 @@ const TasksProvider = ({ children }) => {
       projectRealm.create(
         "Task",
         new Task({
+          id: new ObjectId(),
           name: newTaskName || "New Task",
           partition: "project=62d9368379c1a7aeb844d2a2", //Public Partition
           category: category,

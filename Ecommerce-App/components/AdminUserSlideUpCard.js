@@ -70,16 +70,13 @@ export default function AdminSlideUpCard({ elementRef }) {
   const onPressAddItem = async () => {
     if (prodName === "") {
       setNameError(true);
-    }
-    if (category === "") {
+    } else if (category === "") {
       setCategoryError(true);
-    }
-    if (price === "") {
+    } else if (price === "") {
       setPriceError(true);
-    }
-    if (description === "") {
+    } else if (description === "") {
       setDescriptionError(true);
-    } else if (!nameError && !category && !priceError && !descriptionError) {
+    } else {
       setLoading(true);
       await createTask(
         prodName,

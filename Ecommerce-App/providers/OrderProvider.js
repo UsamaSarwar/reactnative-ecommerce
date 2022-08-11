@@ -3,6 +3,7 @@ import { add } from "react-native-reanimated";
 import Realm from "realm";
 import { Order } from "../schemas";
 import { useAuth } from "./AuthProvider";
+import { ObjectId } from "bson";
 
 const OrderContext = React.createContext(null);
 
@@ -54,6 +55,7 @@ const OrderProvider = ({ children, projectPartition }) => {
       projectRealm.create(
         "Order",
         new Order({
+          id: new ObjectId(),
           partition: "admin", //Public Partition
         })
       );
