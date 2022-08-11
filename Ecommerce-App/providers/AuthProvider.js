@@ -19,6 +19,34 @@ const AuthProvider = ({ children }) => {
     user ? user.customData.details.imageForm : null
   );
 
+  const [name, setName] = useState(user ? user.customData.details.name : "");
+
+  const [phoneNumber, setPhoneNumber] = useState(
+    user ? user.customData.details.phoneNumber : ""
+  );
+
+  const [altPhoneNumber, setAltPhoneNumber] = useState(
+    user ? user.customData.details.altPhoneNumber : ""
+  );
+
+  const [country, setCountry] = useState(
+    user ? user.customData.details.country : ""
+  );
+
+  const [province, setProvince] = useState(
+    user ? user.customData.details.province : ""
+  );
+
+  const [city, setCity] = useState(user ? user.customData.details.city : "");
+
+  const [address, setAddress] = useState(
+    user ? user.customData.details.address : ""
+  );
+
+  const [postalCode, setPostalCode] = useState(
+    user ? user.customData.details.postalCode : ""
+  );
+
   const realmRef = useRef(null);
 
   const [userCart, setUserCart] = useState([]);
@@ -254,10 +282,26 @@ const AuthProvider = ({ children }) => {
         updateQuantity,
         updateAvatar,
         updateUserDetails,
+        setAddress,
+        setAltPhoneNumber,
+        setCity,
+        setCountry,
+        setName,
+        setPhoneNumber,
+        setPostalCode,
+        setProvince,
         image,
         imageForm,
         user,
         userCart,
+        name,
+        address,
+        country,
+        province,
+        city,
+        postalCode,
+        phoneNumber,
+        altPhoneNumber,
       }}
     >
       {children}

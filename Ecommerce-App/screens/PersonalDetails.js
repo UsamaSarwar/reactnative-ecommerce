@@ -1,24 +1,117 @@
 import React, { useState } from "react";
-import { Text, View, TextInput, ScrollView, Pressable } from "react-native";
+import {
+  Text,
+  View,
+  TextInput,
+  ScrollView,
+  Pressable,
+  Alert,
+} from "react-native";
 import universalStyles from "../styles/UniversalStyles";
 import inputStyles from "../styles/InputStyles";
 import { useAuth } from "../providers/AuthProvider.js";
 // import { useOrder } from "../providers/OrderProvider";
 
 export default function OrderDetails({ navigation }) {
-  const { user, updateUserDetails } = useAuth();
+  const {
+    user,
+    updateUserDetails,
+    name,
+    phoneNumber,
+    altPhoneNumber,
+    country,
+    province,
+    city,
+    address,
+    postalCode,
+    setName,
+    setPhoneNumber,
+    setAltPhoneNumber,
+    setCountry,
+    setProvince,
+    setCity,
+    setAddress,
+    setPostalCode,
+  } = useAuth();
 
-  const [name, setName] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [altPhoneNumber, setAltPhoneNumber] = useState("");
-  const [country, setCountry] = useState("");
-  const [province, setProvince] = useState("");
-  const [city, setCity] = useState("");
-  const [address, setAddress] = useState("");
-  const [postalCode, setPostalCode] = useState("");
+  const [nameError, setNameError] = useState(false);
+  const [phoneNumberError, setPhoneNumberError] = useState(false);
+  const [countryError, setcountryError] = useState(false);
+  const [provinceError, setProvinceError] = useState(false);
+  const [cityError, setCityError] = useState(false);
+  const [addressError, setAddressError] = useState(false);
+  const [postalCodeError, setPostalCodeError] = useState(false);
 
-  const log_address = () => {
-    console.log(address);
+  const onPressUpdate = () => {
+    if (
+      name === "" ||
+      phoneNumber === "" ||
+      country === "" ||
+      province === "" ||
+      city === "" ||
+      address === "" ||
+      postalCode === ""
+    ) {
+      if (name === "") {
+        setNameError(true);
+        console.log("Name field has zero length");
+      } else {
+        setNameError(false);
+      }
+      if (phoneNumber === "") {
+        setPhoneNumberError(true);
+        console.log("Phone Number field has zero length");
+      } else {
+        setPhoneNumberError(false);
+      }
+      if (country === "") {
+        setcountryError(true);
+        console.log("Country field has zero length");
+      } else {
+        setcountryError(false);
+      }
+      if (province === "") {
+        setProvinceError(true);
+        console.log("Province field has zero length");
+      } else {
+        setProvinceError(false);
+      }
+      if (address === "") {
+        setAddressError(true);
+        console.log("Province field has zero length");
+      } else {
+        setAddressError(false);
+      }
+      if (city === "") {
+        setCityError(true);
+        console.log("Province field has zero length");
+      } else {
+        setCityError(false);
+      }
+      if (postalCode === "") {
+        setPostalCodeError(true);
+        console.log("Province field has zero length");
+      } else {
+        setPostalCodeError(false);
+      }
+    } else {
+      try {
+        updateUserDetails(
+          name,
+          phoneNumber,
+          altPhoneNumber,
+          country,
+          city,
+          province,
+          address,
+          postalCode
+        );
+        Alert.alert("User Details updated");
+        navigation.navigate("Setting");
+      } catch (error) {
+        Alert.alert(`error.message`);
+      }
+    }
   };
   return (
     <ScrollView>
@@ -30,7 +123,10 @@ export default function OrderDetails({ navigation }) {
           <TextInput
             defaultValue={user.customData.details.name}
             placeholder="Enter your Full Name"
-            style={[inputStyles.textInput, { margin: 10 }]}
+            style={[
+              inputStyles.textInput,
+              { margin: 10, borderColor: nameError ? "red" : "green" },
+            ]}
             onChangeText={(value) => {
               setName(value);
             }}
@@ -46,7 +142,10 @@ export default function OrderDetails({ navigation }) {
             onChangeText={(value) => {
               setPhoneNumber(value);
             }}
-            style={[inputStyles.textInput, { margin: 10 }]}
+            style={[
+              inputStyles.textInput,
+              { margin: 10, borderColor: phoneNumberError ? "red" : "green" },
+            ]}
           ></TextInput>
         </View>
         <View>
@@ -70,7 +169,10 @@ export default function OrderDetails({ navigation }) {
             onChangeText={(value) => {
               setCountry(value);
             }}
-            style={[inputStyles.textInput, { margin: 10 }]}
+            style={[
+              inputStyles.textInput,
+              { margin: 10, borderColor: countryError ? "red" : "green" },
+            ]}
           ></TextInput>
         </View>
         <View>
@@ -83,7 +185,10 @@ export default function OrderDetails({ navigation }) {
             onChangeText={(value) => {
               setProvince(value);
             }}
-            style={[inputStyles.textInput, { margin: 10 }]}
+            style={[
+              inputStyles.textInput,
+              { margin: 10, borderColor: provinceError ? "red" : "green" },
+            ]}
           ></TextInput>
         </View>
         <View>
@@ -93,7 +198,10 @@ export default function OrderDetails({ navigation }) {
           <TextInput
             defaultValue={user.customData.details.city}
             placeholder="Enter your City Name"
-            style={[inputStyles.textInput, { margin: 10 }]}
+            style={[
+              inputStyles.textInput,
+              { margin: 10, borderColor: cityError ? "red" : "green" },
+            ]}
             onChangeText={(value) => {
               setCity(value);
             }}
@@ -106,10 +214,12 @@ export default function OrderDetails({ navigation }) {
           <TextInput
             defaultValue={user.customData.details.address}
             placeholder="House#/ apartment# along with Area Name"
-            style={[inputStyles.textInput, { margin: 10 }]}
+            style={[
+              inputStyles.textInput,
+              { margin: 10, borderColor: addressError ? "red" : "green" },
+            ]}
             onChangeText={(value) => {
               setAddress(value);
-              log_address();
             }}
           ></TextInput>
         </View>
@@ -120,7 +230,10 @@ export default function OrderDetails({ navigation }) {
           <TextInput
             defaultValue={user.customData.details.postalCode}
             placeholder="Enter your Area's Postal Code"
-            style={[inputStyles.textInput, { margin: 10 }]}
+            style={[
+              inputStyles.textInput,
+              { margin: 10, borderColor: postalCodeError ? "red" : "green" },
+            ]}
             onChangeText={(value) => {
               setPostalCode(value);
             }}
@@ -130,16 +243,7 @@ export default function OrderDetails({ navigation }) {
           <Pressable
             style={styles.s_button}
             onPress={() => {
-              updateUserDetails(
-                name,
-                phoneNumber,
-                altPhoneNumber,
-                country,
-                city,
-                province,
-                address,
-                postalCode
-              );
+              onPressUpdate();
             }}
           >
             <Text style={styles.s_button_text}>Update</Text>

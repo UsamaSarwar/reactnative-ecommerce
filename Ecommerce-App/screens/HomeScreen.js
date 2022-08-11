@@ -199,7 +199,7 @@ export default function Homescreen({ navigation }) {
             style={productCardStyles.homeImage}
           />
           <Text style={{ fontSize: 23, marginLeft: 10 }}>
-            {user.customData.email}
+            {user.customData.details.name}
           </Text>
         </View>
         <View style={{ flexDirection: "row" }}>
