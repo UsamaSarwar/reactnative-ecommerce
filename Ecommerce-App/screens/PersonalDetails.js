@@ -6,6 +6,7 @@ import {
   ScrollView,
   Pressable,
   ImageBackground,
+  Alert,
 } from "react-native";
 import universalStyles from "../styles/UniversalStyles";
 import inputStyles from "../styles/InputStyles";
