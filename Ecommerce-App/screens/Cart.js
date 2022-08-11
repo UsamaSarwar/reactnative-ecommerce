@@ -30,13 +30,15 @@ import ButtonStyles from "../styles/ButtonStyles.js";
 export default function Cart({ navigation }) {
   const { shoppingCart, cartDetails, cartTotal } = useTasks();
   const { cartUpdate } = useGlobal();
-  const { createOrder } = useOrder();
+  const { orders, createOrder } = useOrder();
 
   const elementRef = useRef();
 
   useEffect(() => {
     cartDetails();
   }, [cartUpdate]);
+
+  console.log(orders);
 
   return (
     <SafeAreaView style={UniversalStyles.page_container}>

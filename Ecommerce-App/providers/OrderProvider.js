@@ -1,5 +1,4 @@
 import React, { useContext, useState, useEffect, useRef } from "react";
-import { add } from "react-native-reanimated";
 import Realm from "realm";
 import { Order } from "../schemas";
 import { useAuth } from "./AuthProvider";
@@ -8,7 +7,7 @@ import { ObjectId } from "bson";
 const OrderContext = React.createContext(null);
 
 const OrderProvider = ({ children, projectPartition }) => {
-  // const [orders, setOrders] = useState([]);
+  const [orders, setOrders] = useState([]);
   const { user } = useAuth();
   // Use a Ref to store the realm rather than the state because it is not
   // directly rendered, so updating it should not trigger a re-render as using
@@ -34,6 +33,8 @@ const OrderProvider = ({ children, projectPartition }) => {
     // open a realm for this particular project
     Realm.open(config).then((projectRealm) => {
       realmRef.current = projectRealm;
+      const syncTasks = projectRealm.objects("Order");
+      setOrdersx([...syncTasks]);
     });
 
     return () => {
@@ -70,6 +71,7 @@ const OrderProvider = ({ children, projectPartition }) => {
     <OrderContext.Provider
       value={{
         createOrder,
+        orders,
       }}
     >
       {children}
