@@ -8,10 +8,13 @@ import {
   StyleSheet,
   ScrollView,
 } from "react-native";
+import Icon from "react-native-vector-icons/AntDesign";
+import IonIcon from "react-native-vector-icons/Ionicons";
 
 import UniversalStyles from "../styles/UniversalStyles.js";
 
 import { useTasks } from "../providers/TasksProvider.js";
+import { useAuth } from "../providers/AuthProvider.js";
 
 import NumberFormat from "react-number-format";
 
@@ -19,6 +22,7 @@ import Footer from "../components/Footer.js";
 
 export default function Setting({ navigation }) {
   const { shoppingCart, cartTotal } = useTasks();
+  const { user } = useAuth();
   const [payMethod, setPayMethod] = useState(true);
   const elementRef = useRef();
 
@@ -34,7 +38,150 @@ export default function Setting({ navigation }) {
         </View>
         <ScrollView>
           <View style={UniversalStyles.input_fields_container_1}>
-            <Text style={{ fontSize: 20, marginTop: 10 }}>Payment Method</Text>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <Text style={{ fontSize: 20 }}>Shipping Details</Text>
+              <View
+                style={{
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <Icon
+                  name="edit"
+                  color="#42C88F"
+                  size={24}
+                  onPress={() => {
+                    navigation.navigate("Personaldetails");
+                  }}
+                />
+              </View>
+            </View>
+            <View
+              style={{
+                borderBottomColor: "black",
+                borderBottomWidth: StyleSheet.hairlineWidth,
+              }}
+            />
+            <View>
+              <View
+                style={{
+                  marginTop: 10,
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                }}
+              >
+                <View style={{ flexDirection: "row" }}>
+                  <View style={{ marginRight: 5, justifyContent: "center" }}>
+                    <IonIcon
+                      name="location-outline"
+                      color="#42C88F"
+                      size={36}
+                    />
+                  </View>
+                  <View>
+                    <Text style={{ color: "grey", fontSize: 11 }}>
+                      Location
+                    </Text>
+                    <Text style={{ color: "black", fontSize: 15 }}>
+                      {user.customData.details.city
+                        ? user.customData.details.city
+                        : "-"}{" "}
+                      ,{" "}
+                      {user.customData.details.province
+                        ? user.customData.details.province
+                        : "-"}
+                      ,{" "}
+                      {user.customData.details.country
+                        ? user.customData.details.country
+                        : "-"}
+                    </Text>
+                  </View>
+                </View>
+                <View style={{ flexDirection: "row" }}>
+                  <View style={{ marginRight: 5, justifyContent: "center" }}>
+                    <IonIcon name="mail-outline" color="#42C88F" size={36} />
+                  </View>
+                  <View>
+                    <Text style={{ color: "grey", fontSize: 11 }}>
+                      Postal Code
+                    </Text>
+                    <Text style={{ color: "black", fontSize: 15 }}>
+                      {user.customData.details.postalCode
+                        ? user.customData.details.postalCode
+                        : "-"}
+                    </Text>
+                  </View>
+                </View>
+              </View>
+              <View
+                style={{
+                  marginTop: 15,
+                  flexDirection: "row",
+                }}
+              >
+                <IonIcon name="home-outline" color="#42C88F" size={36} />
+                <View style={{ marginLeft: 5 }}>
+                  <Text style={{ color: "grey", fontSize: 11 }}>Address</Text>
+                  <Text style={{ color: "black", fontSize: 15 }}>
+                    {user.customData.details.address
+                      ? user.customData.details.address
+                      : "-"}
+                  </Text>
+                </View>
+              </View>
+
+              <View
+                style={{
+                  marginTop: 15,
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                }}
+              >
+                <View style={{ flexDirection: "row" }}>
+                  <View style={{ marginRight: 5, justifyContent: "center" }}>
+                    <IonIcon
+                      name="phone-portrait-outline"
+                      color="#42C88F"
+                      size={36}
+                    />
+                  </View>
+                  <View>
+                    <Text style={{ color: "grey", fontSize: 11 }}>
+                      Phone Number
+                    </Text>
+                    <Text style={{ color: "black", fontSize: 15 }}>
+                      {user.customData.details.phoneNumber
+                        ? user.customData.details.phoneNumber
+                        : "-"}
+                    </Text>
+                  </View>
+                </View>
+                <View style={{ flexDirection: "row" }}>
+                  <View style={{ marginRight: 5, justifyContent: "center" }}>
+                    <IonIcon name="call-outline" color="#42C88F" size={36} />
+                  </View>
+                  <View>
+                    <Text style={{ color: "grey", fontSize: 11 }}>
+                      Alt. Number
+                    </Text>
+                    <Text style={{ color: "black", fontSize: 15 }}>
+                      {user.customData.details.altPhoneNumber
+                        ? user.customData.details.altPhoneNumber
+                        : "-"}
+                    </Text>
+                  </View>
+                </View>
+              </View>
+            </View>
+          </View>
+          <View style={UniversalStyles.input_fields_container_1}>
+            <Text style={{ fontSize: 20 }}>Payment Method</Text>
             <View
               style={{
                 borderBottomColor: "black",
@@ -92,7 +239,6 @@ export default function Setting({ navigation }) {
                 <Pressable
                   onPress={() => {
                     setPayMethod(true);
-                    // navigation.navigate("Orderdetails");
                   }}
                 >
                   <Image

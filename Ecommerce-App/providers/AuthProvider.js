@@ -250,6 +250,7 @@ const AuthProvider = ({ children }) => {
     country,
     province,
     city,
+    province,
     addressDetails,
     postalCode
   ) => {
