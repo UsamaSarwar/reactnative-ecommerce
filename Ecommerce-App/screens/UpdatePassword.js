@@ -65,20 +65,13 @@ export default function Updatepassword({ navigation }) {
   };
 
   return (
-    <SafeAreaView style={UniversalStyles.main}>
-      <View style={UniversalStyles.main}>
+    <SafeAreaView style={UniversalStyles.page_container}>
+      <View style={UniversalStyles.page_container}>
         <ImageBackground
           source={require("../assets/home.jpeg")}
           resizeMode="cover"
-          style={UniversalStyles.image}
+          style={UniversalStyles.background_image}
         >
-          {/* <View style={UniversalStyles.logoView}>
-          <Image
-            source={require("../assets/logo.png")}
-            style={UniversalStyles.logo}
-          ></Image>
-        </View> */}
-
           <View style={UniversalStyles.center}>
             <Text style={styles.error_message}>{errorMessage}</Text>
           </View>
