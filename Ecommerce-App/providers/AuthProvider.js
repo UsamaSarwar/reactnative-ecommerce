@@ -1,4 +1,5 @@
 import React, { useContext, useState, useEffect, useRef } from "react";
+import { User, Task } from "../schemas";
 import Realm from "realm";
 import app from "../realmApp";
 // Create a new Context object that will be provided to descendants of
@@ -9,6 +10,14 @@ const AuthContext = React.createContext(null);
 // use the useAuth() hook to access the auth value.
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(app.currentUser);
+
+  const [image, setImage] = useState(
+    user ? user.customData.details.image : null
+  );
+
+  const [imageForm, setImageForm] = useState(
+    user ? user.customData.details.imageForm : null
+  );
 
   const realmRef = useRef(null);
 
@@ -28,6 +37,7 @@ const AuthProvider = ({ children }) => {
     // TODO: Open the user realm, which contains at most one user custom data object
     // for the logged-in user.
     const config = {
+      schema: [User.UserSchema, User.User_cartSchema, User.User_detailsSchema],
       sync: {
         user,
         partitionValue: `user=${user.id}`,
@@ -47,8 +57,10 @@ const AuthProvider = ({ children }) => {
         // the server side yet when a user is first registered.
 
         if (users.length !== 0) {
-          const { cart } = users[0];
-          setUserCart([...cart]);
+          const { cart, details } = users[0];
+          setUserCart([...cart]); //To set cart of user on login
+          setImage(details.image);
+          setImageForm(details.imageForm); //To set Image of user on login
         }
       });
     });
@@ -63,7 +75,8 @@ const AuthProvider = ({ children }) => {
         realmRef.current = null;
 
         setUserCart([]); // set project data to an empty array (this prevents the array from staying in state on logout)
-
+        setImage(null);
+        setImageForm(null);
         console.log("Closing User realm");
       }
     };
@@ -188,6 +201,20 @@ const AuthProvider = ({ children }) => {
     });
   };
 
+  const updateAvatar = (image, imageForm) => {
+    console.log("Updating Avatar");
+
+    const userRealm = realmRef.current;
+    const user = userRealm.objects("User")[0];
+
+    userRealm.write(() => {
+      user.details["image"] = image;
+      user.details["imageForm"] = imageForm;
+    });
+    setImage(image);
+    setImageForm(imageForm);
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -200,6 +227,9 @@ const AuthProvider = ({ children }) => {
         addToUserCart,
         removeFromUserCart,
         updateQuantity,
+        updateAvatar,
+        image,
+        imageForm,
         user,
         userCart,
       }}

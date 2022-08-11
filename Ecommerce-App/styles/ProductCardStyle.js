@@ -16,6 +16,21 @@ export default productCardStyles = StyleSheet.create({
     width: 100,
     borderRadius: 15,
   },
+  avatarImage: {
+    height: 150,
+    width: 150,
+    borderRadius: 75,
+  },
+  homeImage: {
+    height: 40,
+    width: 40,
+    borderRadius: 75,
+  },
+  homeImageView: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+  },
 
   textContainer: {
     flex: 1,

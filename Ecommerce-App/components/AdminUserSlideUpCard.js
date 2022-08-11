@@ -110,15 +110,6 @@ export default function AdminSlideUpCard({ elementRef }) {
 
     setLoading(false);
     elementRef.current.hide();
-    // Alert.alert(prodName + " is edited from main inventory.", null, [
-    //   {
-    //     text: "Ok",
-    //     onPress: () => {
-    //       setLoading(false);
-    //     },
-    //   },
-    //   { text: "Cancel", style: "cancel" },
-    // ]);
   };
 
   return (

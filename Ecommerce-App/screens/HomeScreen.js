@@ -11,6 +11,7 @@ import {
   Keyboard,
   BackHandler,
   Pressable,
+  Image,
 } from "react-native";
 
 import SearchBar from "react-native-dynamic-search-bar";
@@ -19,7 +20,6 @@ import SlidingUpPanel from "rn-sliding-up-panel";
 //Providers
 import { useAuth } from "../providers/AuthProvider.js";
 import { useTasks } from "../providers/TasksProvider";
-import { useGlobal } from "../providers/GlobalProvider.js";
 
 //Components
 import ProductItem from "../components/ProductItem.js";
@@ -29,13 +29,12 @@ import AdminSlideUpCard from "../components/AdminUserSlideUpCard.js";
 
 //Icons
 import IonIcon from "react-native-vector-icons/Ionicons";
-import Icon from "react-native-vector-icons/AntDesign";
 
 //Styles
 import universalStyles from "../styles/UniversalStyles.js";
 
 export default function Homescreen({ navigation }) {
-  const { user } = useAuth();
+  const { user, image, imageForm } = useAuth();
   const { tasks } = useTasks();
 
   useEffect(() => {
@@ -192,7 +191,17 @@ export default function Homescreen({ navigation }) {
   const renderWelcome = () => {
     return (
       <>
-        <Text style={{ fontSize: 23 }}>Welcome, {user.customData.email}</Text>
+        <View style={productCardStyles.homeImageView}>
+          <Image
+            source={{
+              uri: `data:${imageForm};base64,${image}`,
+            }}
+            style={productCardStyles.homeImage}
+          />
+          <Text style={{ fontSize: 23, marginLeft: 10 }}>
+            {user.customData.email}
+          </Text>
+        </View>
         <View style={{ flexDirection: "row" }}>
           {searchText !== "" ? (
             <IonIcon

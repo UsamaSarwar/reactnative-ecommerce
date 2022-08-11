@@ -1,5 +1,45 @@
 import { ObjectId } from "bson";
 
+export class User {
+  static User_detailsSchema = {
+    name: "User_details",
+    embedded: true,
+    properties: {
+      address: "string?",
+      altPhoneNumber: "string?",
+      city: "string?",
+      country: "string?",
+      image: "string?",
+      imageForm: "string?",
+      name: "string?",
+      phoneNumber: "string?",
+      postalCode: "string?",
+      province: "string?",
+    },
+  };
+  static User_cartSchema = {
+    name: "User_cart",
+    embedded: true,
+    properties: {
+      productId: "string?",
+      qty: "int?",
+    },
+  };
+  static UserSchema = {
+    name: "User",
+    properties: {
+      _id: "string",
+      _partition: "string",
+      cart: "User_cart[]",
+      details: "User_details",
+      email: "string",
+      name: "string",
+      userType: "string?",
+    },
+    primaryKey: "_id",
+  };
+}
+
 export class Task {
   /**
    *
