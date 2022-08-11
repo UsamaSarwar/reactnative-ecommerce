@@ -220,8 +220,8 @@ const AuthProvider = ({ children }) => {
     phoneNumber,
     altPhoneNumber,
     country,
-    province,
     city,
+    province,
     addressDetails,
     postalCode
   ) => {
