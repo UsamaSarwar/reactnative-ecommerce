@@ -81,7 +81,12 @@ export default function Setting({ navigation }) {
         </View>
 
         <View style={UniversalStyles.fields}>
-          <Pressable style={ButtonStyles.p_button}>
+          <Pressable
+            style={ButtonStyles.p_button}
+            onPress={() => {
+              navigation.navigate("Personaldetails");
+            }}
+          >
             <View style={{ flexDirection: "row" }}>
               <IonIcon
                 name="person-outline"

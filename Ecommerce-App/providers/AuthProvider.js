@@ -215,6 +215,31 @@ const AuthProvider = ({ children }) => {
     setImageForm(imageForm);
   };
 
+  const updateUserDetails = (
+    fullName,
+    phoneNumber,
+    altPhoneNumber,
+    country,
+    province,
+    city,
+    addressDetails,
+    postalCode
+  ) => {
+    console.log("Updating user details");
+    const userRealm = realmRef.current;
+    const user = userRealm.objects("User")[0];
+    userRealm.write(() => {
+      user.details["name"] = fullName;
+      user.details["phoneNumber"] = phoneNumber;
+      user.details["altPhoneNumber"] = altPhoneNumber;
+      user.details["country"] = country;
+      user.details["province"] = province;
+      user.details["city"] = city;
+      user.details["address"] = addressDetails;
+      user.details["postalCode"] = postalCode;
+    });
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -228,6 +253,7 @@ const AuthProvider = ({ children }) => {
         removeFromUserCart,
         updateQuantity,
         updateAvatar,
+        updateUserDetails,
         image,
         imageForm,
         user,
