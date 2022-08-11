@@ -16,6 +16,7 @@ import Snackbar from "react-native-snackbar";
 //Providers
 import { useTasks } from "../providers/TasksProvider.js";
 import { useGlobal } from "../providers/GlobalProvider.js";
+import { useOrder } from "../providers/OrderProvider.js";
 
 //Components
 import Footer from "../components/Footer.js";
@@ -29,6 +30,7 @@ import ButtonStyles from "../styles/ButtonStyles.js";
 export default function Cart({ navigation }) {
   const { shoppingCart, cartDetails, cartTotal } = useTasks();
   const { cartUpdate } = useGlobal();
+  const { createOrder } = useOrder();
 
   const elementRef = useRef();
 
@@ -86,6 +88,17 @@ export default function Cart({ navigation }) {
               />
             </View>
           )}
+
+          <Pressable
+            style={ButtonStyles.checkout_button}
+            onPress={() => createOrder()}
+          >
+            <Text
+              style={[ButtonStyles.checkout_button_text, { marginRight: 15 }]}
+            >
+              Order
+            </Text>
+          </Pressable>
 
           <Footer navigation={navigation} elementRef={elementRef} />
 

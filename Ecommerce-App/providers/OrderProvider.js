@@ -7,7 +7,7 @@ import { useAuth } from "./AuthProvider";
 const OrderContext = React.createContext(null);
 
 const OrderProvider = ({ children, projectPartition }) => {
-  const [orders, setOrders] = useState([]);
+  // const [orders, setOrders] = useState([]);
   const { user } = useAuth();
   // Use a Ref to store the realm rather than the state because it is not
   // directly rendered, so updating it should not trigger a re-render as using
@@ -15,7 +15,7 @@ const OrderProvider = ({ children, projectPartition }) => {
   const realmRef = useRef(null);
   //   console.log(user);
   useEffect(() => {
-    console.log("Task Realm Opened");
+    console.log("Order Realm Opened");
     // Enables offline-first: opens a local realm immediately without waiting
     // for the download of a synchronized realm to be completed.
     const OpenRealmBehaviorConfiguration = {
@@ -25,7 +25,7 @@ const OrderProvider = ({ children, projectPartition }) => {
       schema: [Order.schema],
       sync: {
         user: user,
-        partitionValue: projectPartition,
+        partitionValue: "admin",
         newRealmFileBehavior: OpenRealmBehaviorConfiguration,
         existingRealmFileBehavior: OpenRealmBehaviorConfiguration,
       },
@@ -41,59 +41,24 @@ const OrderProvider = ({ children, projectPartition }) => {
       if (projectRealm) {
         projectRealm.close();
         realmRef.current = null;
-        setOrders([]);
-        console.log("Closing task realm");
+        // setOrders([]);
+        console.log("Closing Order realm");
       }
     };
   }, [user, projectPartition]);
 
-  const createOrder = (
-    orderNumber,
-    name,
-    phoneNumber,
-    altPhoneNumber,
-    country,
-    province,
-    city,
-    address,
-    postalCode,
-    orderItems
-  ) => {
+  const createOrder = () => {
     const projectRealm = realmRef.current;
     projectRealm.write(() => {
       // Create a new task in the same partition -- that is, in the same project.
       projectRealm.create(
         "Order",
         new Order({
-          name: name || "New Order",
-          partition: user._id, //Public Partition
-          orderNumber: orderNumber,
-          phoneNumber: phoneNumber,
-          altPhoneNumber: altPhoneNumber,
-          country: country,
-          province: province,
-          city: city,
-          address: address,
-          postalCode: postalCode,
-          orderItems: orderItems,
+          partition: "admin", //Public Partition
         })
       );
     });
     console.log("Order Created");
-  };
-
-  // Define the function for deleting a task.
-  const deleteOrder = (order) => {
-    try {
-      console.log("here");
-      const projectRealm = realmRef.current;
-      projectRealm.write(() => {
-        projectRealm.delete(order);
-      });
-    } catch (e) {
-      console.error(e);
-    }
-    // setTasks([...projectRealm.objects("Task").sorted("name")]);
   };
 
   // Render the children within the TaskContext's provider. The value contains
@@ -103,8 +68,6 @@ const OrderProvider = ({ children, projectPartition }) => {
     <OrderContext.Provider
       value={{
         createOrder,
-        deleteOrder,
-        orders,
       }}
     >
       {children}

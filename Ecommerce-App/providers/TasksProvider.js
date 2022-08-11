@@ -7,7 +7,7 @@ import { set } from "react-native-reanimated";
 
 const TasksContext = React.createContext(null);
 
-const TasksProvider = ({ children, projectPartition }) => {
+const TasksProvider = ({ children }) => {
   const { user, userCart } = useAuth();
 
   const [tasks, setTasks] = useState([]);
@@ -57,7 +57,7 @@ const TasksProvider = ({ children, projectPartition }) => {
         console.log("Closing task realm");
       }
     };
-  }, [user, projectPartition]);
+  }, [user]);
 
   const createTask = (
     newTaskName,

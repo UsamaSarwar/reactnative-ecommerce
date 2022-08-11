@@ -76,11 +76,11 @@ export class Task {
     name: "Task",
     properties: {
       _id: "objectId",
+      _partition: "string",
       name: "string",
       status: "string",
       category: "string",
       price: "string",
-      // price: "double",
       description: "string",
       image: "string",
       imageForm: "string",
@@ -96,53 +96,16 @@ export class Order {
    * @param {string status The status of the task. Default value is "Open"}
    * @param {ObjectId} id The ObjectId to create this task with
    */
-  constructor({
-    name,
-    orderNumber,
-    paymentMethod, // COD or card
-    userId,
-    partition,
-    status = Order.STATUS_OPEN,
-    id = new ObjectId(),
-  }) {
+  constructor({ partition, id = new ObjectId() }) {
     this._partition = partition;
     this._id = id;
-    this.orderNumber = orderNumber;
-    this.name = name;
-    this.status = status;
-    this.paymentMethod = paymentMethod;
-    this.userId = userId;
   }
-
-  static STATUS_OPEN = "Open";
-  static STATUS_IN_PROGRESS = "InProgress";
-  static STATUS_COMPLETE = "Complete";
-
-  // static Task = {
-  //   name: "Task",
-  //   properties: {
-  //     _id: "objectId",
-  //     name: "string",
-  //     status: "string",
-  //     category: "string",
-  //     price: "string",
-  //     // price: "double",
-  //     description: "string",
-  //     image: "string",
-  //     imageForm: "string",
-  //   },
-  //   primaryKey: "_id",
-  // };
 
   static schema = {
     name: "Order",
     properties: {
       _id: "objectId",
-      status: "string",
-      orderNumber: "string",
-      // orderItems: "Task[]",
-      userId: "string",
-      paymentMethod: "string",
+      _partition: "string",
     },
 
     primaryKey: "_id",
