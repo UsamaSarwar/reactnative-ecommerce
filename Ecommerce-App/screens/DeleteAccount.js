@@ -15,36 +15,32 @@ import {
   Alert,
 } from "react-native";
 
-import styles from "../styles/Styles.js";
+import UniversalStyles from "../styles/UniversalStyles.js";
+import InputStyles from "../styles/InputStyles.js";
+import TextStyles from "../styles/TextStyles.js";
+import ButtonStyles from "../styles/ButtonStyles.js";
 
 export default function Deleteaccount({ navigation }) {
   const { signOut, user, deleteUser } = useAuth();
   const [text, setText] = useState("");
   return (
-    <View style={styles.container}>
+    <View style={UniversalStyles.page_container}>
       <ImageBackground
         source={require("../assets/home.jpeg")}
         resizeMode="cover"
-        style={styles.image}
+        style={UniversalStyles.background_image}
       >
-        <View style={styles.logoView}>
-          <Image
-            source={require("../assets/hu_logo.png")}
-            style={styles.logo}
-          ></Image>
-        </View>
-        <View style={styles.fields}>
-          <Text style={styles.headText}>
+        <View style={UniversalStyles.fields}>
+          <Text style={TextStyles.error_message}>
             Please write "DELETE ACCOUNT" below:
           </Text>
           <TextInput
-            style={styles.inputbox}
+            style={InputStyles.textInput}
             placeholder="Confirmation Text"
-            // secureTextEntry={true}
             onChangeText={(text) => setText(text)}
           />
           <Pressable
-            style={styles.p_button}
+            style={ButtonStyles.p_button_login}
             onPress={() =>
               Alert.alert(
                 "Are you sure you want to delete this account?",
@@ -72,7 +68,7 @@ export default function Deleteaccount({ navigation }) {
               )
             }
           >
-            <Text style={styles.p_button_text}>Delete Account</Text>
+            <Text style={ButtonStyles.p_button_text}>Delete Account</Text>
           </Pressable>
         </View>
       </ImageBackground>
