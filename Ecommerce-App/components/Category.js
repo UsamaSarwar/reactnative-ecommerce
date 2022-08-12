@@ -5,10 +5,12 @@ import React from "react";
 import { Text, Pressable, FlatList } from "react-native";
 
 //Providers
+import { useTasks } from "../providers/TasksProvider.js";
 import { useGlobal } from "../providers/GlobalProvider.js";
 
 export default function Category() {
-  const { category, categoryFilter, setCategoryFilter } = useGlobal();
+  const { category } = useGlobal();
+  const { categoryFilter, setCategoryFilter } = useTasks();
 
   const onPressCategory = (item) => {
     setCategoryFilter(item);

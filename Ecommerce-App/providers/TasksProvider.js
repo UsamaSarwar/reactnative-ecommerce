@@ -3,7 +3,6 @@ import Realm from "realm";
 import { Task } from "../schemas";
 import { useAuth } from "./AuthProvider";
 import { ObjectId } from "bson";
-import { set } from "react-native-reanimated";
 
 const TasksContext = React.createContext(null);
 
@@ -14,11 +13,13 @@ const TasksProvider = ({ children }) => {
   const [shoppingCart, setShoppingCart] = useState([]);
   const [cartTotal, setCartTotal] = useState(0);
 
+  const [categoryFilter, setCategoryFilter] = useState("All");
+
   // Use a Ref to store the realm rather than the state because it is not
   // directly rendered, so updating it should not trigger a re-render as using
   // state would.
   const realmRef = useRef(null);
-  console.log(user);
+
   useEffect(() => {
     console.log("Task Realm Opened");
     // Enables offline-first: opens a local realm immediately without waiting
@@ -58,6 +59,18 @@ const TasksProvider = ({ children }) => {
       }
     };
   }, [user]);
+
+  useEffect(() => {
+    const projectRealm = realmRef.current;
+    if (projectRealm) {
+      let products = projectRealm.objects("Task");
+
+      if (categoryFilter !== "All") {
+        products = products.filtered("category == $0", categoryFilter);
+      } else products = projectRealm.objects("Task");
+      setTasks([...products]);
+    }
+  }, [categoryFilter]);
 
   const createTask = (
     newTaskName,
@@ -153,6 +166,8 @@ const TasksProvider = ({ children }) => {
         shoppingCart,
         cartTotal,
         tasks,
+        categoryFilter,
+        setCategoryFilter,
       }}
     >
       {children}

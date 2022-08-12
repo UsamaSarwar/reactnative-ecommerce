@@ -20,7 +20,6 @@ const GlobalProvider = ({ children }) => {
   const [searchText, setSearchText] = useState("");
 
   //Categories in homscreen
-  const [categoryFilter, setCategoryFilter] = useState("All");
   const category = [
     "All",
     "Accessories",
@@ -59,8 +58,6 @@ const GlobalProvider = ({ children }) => {
         searchText,
         setSearchText,
         category,
-        categoryFilter,
-        setCategoryFilter,
       }}
     >
       {children}
