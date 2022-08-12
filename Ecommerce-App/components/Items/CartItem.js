@@ -2,14 +2,7 @@
 import React, { useEffect, useState } from "react";
 
 //React Components
-import {
-  Text,
-  View,
-  Pressable,
-  Image,
-  FlatList,
-  ActivityIndicator,
-} from "react-native";
+import { Text, View, Pressable, Image, FlatList } from "react-native";
 import NumberFormat from "react-number-format";
 
 //Animation-Component
@@ -19,17 +12,17 @@ import * as Animatable from "react-native-animatable";
 import Icon from "react-native-vector-icons/AntDesign";
 
 //Providers
-import { useAuth } from "../providers/AuthProvider";
-import { useTasks } from "../providers/TasksProvider";
-import { useGlobal } from "../providers/GlobalProvider";
+import { useAuth } from "../../providers/AuthProvider";
+import { useTasks } from "../../providers/TasksProvider";
+import { useGlobal } from "../../providers/GlobalProvider";
 
 //Components
-import Shimmer from "./Shimmer";
+import Shimmer from "../Shimmer";
 
 //Styles
-import universalStyles from "../styles/UniversalStyles";
-import productCardStyles from "../styles/ProductCardStyle";
-import IconStyles from "../styles/IconStyles";
+import universalStyles from "../../styles/UniversalStyles";
+import productCardStyles from "../../styles/ProductCardStyle";
+import IconStyles from "../../styles/IconStyles";
 
 export default function CarItem({ elementRef }) {
   const { removeFromUserCart, updateQuantity } = useAuth();
@@ -38,8 +31,6 @@ export default function CarItem({ elementRef }) {
     useGlobal();
 
   const [loading, setLoading] = useState(false);
-
-  const [updatingCart, setUpdatingCart] = useState(false);
 
   const animationTime = 700;
 
@@ -55,9 +46,7 @@ export default function CarItem({ elementRef }) {
   };
 
   const onPressDelete = (item) => {
-    setUpdatingCart(true);
     removeFromUserCart(item["_id"]);
-    setUpdatingCart(false);
     setCartUpdate(!cartUpdate);
   };
 
@@ -76,18 +65,12 @@ export default function CarItem({ elementRef }) {
   const makeRemoveButton = (item) => {
     return (
       <View style={[IconStyles.background2, { marginLeft: 3 }]}>
-        {updatingCart ? (
-          <ActivityIndicator color={"#ff6c70"} />
-        ) : (
-          <Icon
-            name="delete"
-            color={"#ff6c70"}
-            size={21}
-            onPress={() => {
-              animateDelete(item);
-            }}
-          />
-        )}
+        <Icon
+          name="delete"
+          color={"#ff6c70"}
+          size={21}
+          onPress={() => animateDelete(item)}
+        />
       </View>
     );
   };

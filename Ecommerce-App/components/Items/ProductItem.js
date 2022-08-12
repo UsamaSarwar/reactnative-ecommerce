@@ -2,37 +2,28 @@
 import React, { useState } from "react";
 
 //React Components
-import {
-  Text,
-  View,
-  Pressable,
-  Image,
-  FlatList,
-  Alert,
-  ActivityIndicator,
-} from "react-native";
+import { Text, View, Pressable, Image, FlatList, Alert } from "react-native";
 import NumberFormat from "react-number-format";
 
 //Animation-Component
 import * as Animatable from "react-native-animatable";
-// import Snackbar from "react-native-snackbar";
 
 //Icons
 import Icon from "react-native-vector-icons/AntDesign";
 import MatIcon from "react-native-vector-icons/MaterialIcons";
 
 //Providers
-import { useTasks } from "../providers/TasksProvider";
-import { useAuth } from "../providers/AuthProvider";
-import { useGlobal } from "../providers/GlobalProvider";
+import { useTasks } from "../../providers/TasksProvider";
+import { useAuth } from "../../providers/AuthProvider";
+import { useGlobal } from "../../providers/GlobalProvider";
 
 //Components
-import Shimmer from "./Shimmer";
+import Shimmer from "../Shimmer";
 
 //Styles
-import universalStyles from "../styles/UniversalStyles";
-import productCardStyles from "../styles/ProductCardStyle";
-import IconStyles from "../styles/IconStyles";
+import universalStyles from "../../styles/UniversalStyles";
+import productCardStyles from "../../styles/ProductCardStyle";
+import IconStyles from "../../styles/IconStyles";
 
 export default function ProductItem({ elementRef }) {
   const { user, addToUserCart } = useAuth();
@@ -40,8 +31,6 @@ export default function ProductItem({ elementRef }) {
   const { setProduct, setIsNewProduct, searchText } = useGlobal();
 
   const [loading, setLoading] = useState(true);
-
-  const [updatingCart, setUpdatingCart] = useState(false);
 
   const admin = user.customData["userType"] === "admin" ? true : false;
 
@@ -56,9 +45,7 @@ export default function ProductItem({ elementRef }) {
   };
 
   const onPressAddtoCart = (item) => {
-    setUpdatingCart(true);
     addToUserCart(item["_id"], 1);
-    setUpdatingCart(false);
   };
 
   const onPressDeleteProduct = (item) => {
@@ -91,22 +78,18 @@ export default function ProductItem({ elementRef }) {
   const makeAddToCartButton = (item) => {
     return (
       <View style={IconStyles.background3}>
-        {updatingCart ? (
-          <ActivityIndicator color={"white"} />
-        ) : (
-          <Animatable.View ref={(here) => (elementRef[item._id] = here)}>
-            <MatIcon
-              name="add-shopping-cart"
-              size={18}
-              color={"#FFFFFF"}
-              onPress={() => {
-                elementRef[item._id].rotate(1000);
-                elementRef.cartIcon.rubberBand(1000);
-                onPressAddtoCart(item);
-              }}
-            />
-          </Animatable.View>
-        )}
+        <Animatable.View ref={(here) => (elementRef[item._id] = here)}>
+          <MatIcon
+            name="add-shopping-cart"
+            size={18}
+            color={"#FFFFFF"}
+            onPress={() => {
+              elementRef[item._id].rotate(1000);
+              elementRef.cartIcon.rubberBand(1000);
+              onPressAddtoCart(item);
+            }}
+          />
+        </Animatable.View>
       </View>
     );
   };

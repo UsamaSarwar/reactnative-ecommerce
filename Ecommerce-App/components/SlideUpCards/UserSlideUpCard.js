@@ -2,14 +2,7 @@
 
 //React Components
 import React, { useState, useEffect } from "react";
-import {
-  Text,
-  View,
-  Pressable,
-  Image,
-  ScrollView,
-  ActivityIndicator,
-} from "react-native";
+import { Text, View, Pressable, Image, ScrollView } from "react-native";
 import NumberFormat from "react-number-format";
 
 //Animation-Component
@@ -31,8 +24,6 @@ export default function UserSlideUpCard({ elementRef }) {
 
   const { product } = useGlobal();
 
-  const [updatingCart, setUpdatingCart] = useState(false);
-
   const [addToCartPressed, setAddToCartPressed] = useState(false);
 
   const [quantity, setQuantity] = useState(1);
@@ -42,9 +33,7 @@ export default function UserSlideUpCard({ elementRef }) {
   useEffect(() => setQuantity(1), [product]);
 
   const onPressAddtoCart = () => {
-    setUpdatingCart(true);
     addToUserCart(product["_id"], quantity);
-    setUpdatingCart(false);
     elementRef[String(product._id) + "addToCartButton"].bounce(animationTime);
     setTimeout(() => {
       elementRef.current.hide();
@@ -113,31 +102,26 @@ export default function UserSlideUpCard({ elementRef }) {
             elementRef={elementRef}
           />
         </View>
-        {updatingCart ? (
-          <Pressable style={buttonStyles.p_button_login}>
-            <ActivityIndicator size="large" color={"white"} />
-          </Pressable>
-        ) : (
-          <Pressable
-            style={buttonStyles.p_button_login}
-            onPress={() => {
-              setAddToCartPressed(true);
-              onPressAddtoCart();
+
+        <Pressable
+          style={buttonStyles.p_button_login}
+          onPress={() => {
+            setAddToCartPressed(true);
+            onPressAddtoCart();
+          }}
+        >
+          <Animatable.View
+            ref={(here) => {
+              elementRef[String(product._id) + "addToCartButton"] = here;
             }}
           >
-            <Animatable.View
-              ref={(here) => {
-                elementRef[String(product._id) + "addToCartButton"] = here;
-              }}
-            >
-              {addToCartPressed ? (
-                <Icon name="check" size={28} color="white" />
-              ) : (
-                <Text style={buttonStyles.p_button_text}>Add to Cart</Text>
-              )}
-            </Animatable.View>
-          </Pressable>
-        )}
+            {addToCartPressed ? (
+              <Icon name="check" size={28} color="white" />
+            ) : (
+              <Text style={buttonStyles.p_button_text}>Add to Cart</Text>
+            )}
+          </Animatable.View>
+        </Pressable>
 
         <Pressable style={buttonStyles.s_button}>
           <Text style={buttonStyles.s_button_text}>Checkout Now</Text>
