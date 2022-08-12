@@ -139,7 +139,7 @@ export default function OrderDetails({ navigation: { goBack } }) {
           <Text style={{ fontSize: 23 }}>Update Personal Details</Text>
         </View>
         <ScrollView>
-          {/* <View style={universalStyles.avatar_container_settings_page}>
+          <View style={universalStyles.avatar_container_settings_page}>
             <Image
               source={{
                 uri: `data:${personalDetails.imageForm};base64,${personalDetails.image}`,
@@ -164,7 +164,7 @@ export default function OrderDetails({ navigation: { goBack } }) {
                 onPress={() => openImagePicker()}
               />
             </View>
-          </View> */}
+          </View>
           <View style={universalStyles.main}>
             <View>
               <Text style={{ marginLeft: 10, marginTop: 10 }}>
@@ -308,18 +308,18 @@ export default function OrderDetails({ navigation: { goBack } }) {
                 }}
               ></TextInput>
             </View>
-            <View>
-              <Pressable
-                style={styles.s_button}
-                onPress={() => {
-                  onPressUpdate();
-                }}
-              >
-                <Text style={styles.s_button_text}>Update</Text>
-              </Pressable>
-            </View>
           </View>
         </ScrollView>
+        <View>
+          <Pressable
+            style={styles.s_button}
+            onPress={() => {
+              onPressUpdate();
+            }}
+          >
+            <Text style={styles.s_button_text}>Update</Text>
+          </Pressable>
+        </View>
       </ImageBackground>
     </View>
   );

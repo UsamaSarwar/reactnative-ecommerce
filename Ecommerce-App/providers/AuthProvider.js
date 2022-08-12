@@ -18,9 +18,7 @@ const AuthContext = React.createContext(null);
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(app.currentUser);
 
-  const [personalDetails, setPersonalDetails] = useState(
-    user ? user.customData.details : {}
-  );
+  const [personalDetails, setPersonalDetails] = useState({});
 
   const realmRef = useRef(null);
 
@@ -214,12 +212,6 @@ const AuthProvider = ({ children }) => {
       user.details["image"] = image;
       user.details["imageForm"] = imageForm;
     });
-    setPersonalDetails((prevState) => {
-      prevState["image"] = image;
-    });
-    setImageForm((prevState) => {
-      prevState["imageForm"] = imageForm;
-    });
   };
 
   const updateUserDetails = (
@@ -246,17 +238,6 @@ const AuthProvider = ({ children }) => {
       user.details["city"] = city;
       user.details["address"] = addressDetails;
       user.details["postalCode"] = postalCode;
-    });
-    setPersonalDetails({
-      name: fullName,
-      userName: userName,
-      phoneNumber: phoneNumber,
-      altPhoneNumber: altPhoneNumber,
-      country: country,
-      province: province,
-      city: city,
-      address: addressDetails,
-      postalCode: postalCode,
     });
   };
 
