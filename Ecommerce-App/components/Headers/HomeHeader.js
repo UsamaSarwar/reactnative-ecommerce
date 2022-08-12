@@ -72,12 +72,12 @@ export default function HomeHeader() {
         <View style={productCardStyles.homeImageView}>
           <Image
             source={{
-              uri: `data:${personalDetails.imageForm};base64,${personalDetails.image}`,
+              uri: `data:${personalDetails?.imageForm};base64,${personalDetails?.image}`,
             }}
             style={productCardStyles.homeImage}
           />
           <Text style={{ fontSize: 23, marginLeft: 10 }}>
-            {personalDetails.userName ? personalDetails.userName : "User"}
+            {personalDetails?.userName ? personalDetails?.userName : "User"}
           </Text>
         </View>
         <View style={{ flexDirection: "row" }}>
