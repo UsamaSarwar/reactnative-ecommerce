@@ -34,10 +34,10 @@ import universalStyles from "../styles/UniversalStyles";
 import productCardStyles from "../styles/ProductCardStyle";
 import IconStyles from "../styles/IconStyles";
 
-export default function ProductItem({ elementRef, searchText }) {
+export default function ProductItem({ elementRef }) {
   const { user, addToUserCart } = useAuth();
   const { tasks, deleteTask } = useTasks();
-  const { setProduct, setIsNewProduct } = useGlobal();
+  const { setProduct, setIsNewProduct, searchText } = useGlobal();
 
   const [loading, setLoading] = useState(true);
 

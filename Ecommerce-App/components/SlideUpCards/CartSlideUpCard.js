@@ -5,23 +5,13 @@ import NumberFormat from "react-number-format";
 // import Snackbar from "react-native-snackbar";
 
 //Providers
-import { useAuth } from "../providers/AuthProvider";
-import { useGlobal } from "../providers/GlobalProvider";
-
-//Components
-import Quantity from "./Quantity";
+import { useGlobal } from "../../providers/GlobalProvider";
 
 //Styles
-import UniversalStyles from "../styles/UniversalStyles";
+import UniversalStyles from "../../styles/UniversalStyles";
 
-export default function CartSlideUpCard({ elementRef }) {
+export default function CartSlideUpCard() {
   const { product } = useGlobal();
-
-  const [updatingCart, setUpdatingCart] = useState(false);
-
-  const [quantity, setQuantity] = useState(1);
-
-  // useEffect(() => setQuantity(1), [product]);
 
   return (
     <View style={UniversalStyles.col_f_e}>
@@ -77,8 +67,6 @@ export default function CartSlideUpCard({ elementRef }) {
             prefix={"PKR "}
             renderText={(value) => <Text>{value}</Text>}
           />
-
-          {/* <Quantity quantity={quantity} setQuantity={setQuantity} /> */}
         </View>
       </View>
     </View>

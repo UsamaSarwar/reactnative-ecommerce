@@ -1,7 +1,8 @@
 //React
+
+//React Components
 import React, { useState, useEffect } from "react";
 import {
-  Alert,
   Text,
   View,
   Pressable,
@@ -10,20 +11,19 @@ import {
   ActivityIndicator,
 } from "react-native";
 import NumberFormat from "react-number-format";
-// import Snackbar from "react-native-snackbar";
 
 //Animation-Component
 import * as Animatable from "react-native-animatable";
 
 //Providers
-import { useAuth } from "../providers/AuthProvider";
-import { useGlobal } from "../providers/GlobalProvider";
+import { useAuth } from "../../providers/AuthProvider";
+import { useGlobal } from "../../providers/GlobalProvider";
 
 //Components
-import Quantity from "./Quantity";
+import Quantity from "../Quantity";
 
 //Styles
-import UniversalStyles from "../styles/UniversalStyles";
+import UniversalStyles from "../../styles/UniversalStyles";
 import { Icon } from "react-native-elements";
 
 export default function UserSlideUpCard({ elementRef }) {

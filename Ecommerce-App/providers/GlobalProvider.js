@@ -10,9 +10,14 @@ const GlobalProvider = ({ children }) => {
     description: "",
   });
 
+  const [listType, setListType] = useState("Inventory");
+
   const [isNewProduct, setIsNewProduct] = useState(false);
 
   const [cartUpdate, setCartUpdate] = useState(false);
+
+  //Homescreen
+  const [searchText, setSearchText] = useState("");
 
   useEffect(() => {
     if (isNewProduct) {
@@ -34,6 +39,8 @@ const GlobalProvider = ({ children }) => {
         setIsNewProduct,
         cartUpdate,
         setCartUpdate,
+        searchText,
+        setSearchText,
       }}
     >
       {children}

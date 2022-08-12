@@ -4,7 +4,6 @@ import {
   View,
   TextInput,
   Pressable,
-  Alert,
   Image,
   ActivityIndicator,
 } from "react-native";
@@ -13,15 +12,14 @@ import IonIcon from "react-native-vector-icons/Ionicons";
 import ImagePicker from "react-native-image-crop-picker";
 
 //Providers
-import { useAuth } from "../providers/AuthProvider.js";
-import { useTasks } from "../providers/TasksProvider.js";
-import { useGlobal } from "../providers/GlobalProvider.js";
+import { useTasks } from "../../providers/TasksProvider.js";
+import { useGlobal } from "../../providers/GlobalProvider.js";
 
 //Styles
-import UniversalStyles from "../styles/UniversalStyles.js";
-import ButtonStyles from "../styles/ButtonStyles.js";
-import InputStyles from "../styles/InputStyles.js";
-import IconStyles from "../styles/IconStyles.js";
+import UniversalStyles from "../../styles/UniversalStyles.js";
+import ButtonStyles from "../../styles/ButtonStyles.js";
+import InputStyles from "../../styles/InputStyles.js";
+import IconStyles from "../../styles/IconStyles.js";
 
 export default function AdminSlideUpCard({ elementRef }) {
   const { createTask, updateTask } = useTasks();
