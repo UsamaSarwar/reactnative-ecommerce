@@ -67,7 +67,7 @@ export default function Homescreen({ navigation }) {
           resizeMode="cover"
           style={universalStyles.background_image}
         >
-          <HomeHeader />
+          <HomeHeader navigation={navigation} />
 
           {admin ? <Stats /> : null}
 

@@ -256,6 +256,7 @@ export default function Setting({ navigation }) {
             {shoppingCart.map((item) => {
               return (
                 <View
+                  key={item[0]._id}
                   style={{
                     backgroundColor: "white",
                     opacity: 0.9,

@@ -34,16 +34,6 @@ export default function Setting({ navigation }) {
     }
   }, [user]);
 
-  const openImagePicker = () =>
-    ImagePicker.openPicker({
-      width: 150,
-      height: 150,
-      cropping: true,
-      includeBase64: true,
-    }).then((image) => {
-      updateAvatar(image.data, image.mime);
-    });
-
   return (
     <View style={UniversalStyles.page_container}>
       <ImageBackground
@@ -60,24 +50,6 @@ export default function Setting({ navigation }) {
             }}
             style={productCardStyles.avatarImage}
           />
-          <View
-            style={[
-              IconStyles.background3,
-              {
-                top: "90%",
-                right: "10%",
-                position: "absolute",
-                alignSelf: "flex-end",
-              },
-            ]}
-          >
-            <Icon
-              name="edit"
-              color={"#ffffff"}
-              size={24}
-              onPress={() => openImagePicker()}
-            />
-          </View>
         </View>
 
         <View style={UniversalStyles.fields}>

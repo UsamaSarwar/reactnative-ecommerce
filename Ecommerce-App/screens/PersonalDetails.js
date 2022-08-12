@@ -4,6 +4,7 @@ import {
   View,
   TextInput,
   ScrollView,
+  SafeAreaView,
   Pressable,
   ImageBackground,
   Alert,
@@ -165,7 +166,7 @@ export default function OrderDetails({ navigation: { goBack } }) {
               />
             </View>
           </View>
-          <View style={universalStyles.main}>
+          <View style={{ marginBottom: 10, top: -20 }}>
             <View>
               <Text style={{ marginLeft: 10, marginTop: 10 }}>
                 Full Name <Text style={{ color: "orange" }}>*</Text>
@@ -175,7 +176,7 @@ export default function OrderDetails({ navigation: { goBack } }) {
                 placeholder="Enter your Full Name"
                 style={[
                   inputStyles.textInput,
-                  { margin: 10, borderColor: nameError ? "red" : "green" },
+                  { margin: 10, borderColor: nameError ? "red" : "#42C88F" },
                 ]}
                 onChangeText={(value) => {
                   setName(value);
@@ -209,7 +210,7 @@ export default function OrderDetails({ navigation: { goBack } }) {
                   inputStyles.textInput,
                   {
                     margin: 10,
-                    borderColor: phoneNumberError ? "red" : "green",
+                    borderColor: phoneNumberError ? "red" : "#42C88F",
                   },
                 ]}
               ></TextInput>
@@ -237,7 +238,7 @@ export default function OrderDetails({ navigation: { goBack } }) {
                 }}
                 style={[
                   inputStyles.textInput,
-                  { margin: 10, borderColor: countryError ? "red" : "green" },
+                  { margin: 10, borderColor: countryError ? "red" : "#42C88F" },
                 ]}
               ></TextInput>
             </View>
@@ -253,7 +254,10 @@ export default function OrderDetails({ navigation: { goBack } }) {
                 }}
                 style={[
                   inputStyles.textInput,
-                  { margin: 10, borderColor: provinceError ? "red" : "green" },
+                  {
+                    margin: 10,
+                    borderColor: provinceError ? "red" : "#42C88F",
+                  },
                 ]}
               ></TextInput>
             </View>
@@ -266,7 +270,7 @@ export default function OrderDetails({ navigation: { goBack } }) {
                 placeholder="Enter your City Name"
                 style={[
                   inputStyles.textInput,
-                  { margin: 10, borderColor: cityError ? "red" : "green" },
+                  { margin: 10, borderColor: cityError ? "red" : "#42C88F" },
                 ]}
                 onChangeText={(value) => {
                   setCity(value);
@@ -282,7 +286,7 @@ export default function OrderDetails({ navigation: { goBack } }) {
                 placeholder="House#/ apartment# along with Area Name"
                 style={[
                   inputStyles.textInput,
-                  { margin: 10, borderColor: addressError ? "red" : "green" },
+                  { margin: 10, borderColor: addressError ? "red" : "#42C88F" },
                 ]}
                 onChangeText={(value) => {
                   setAddress(value);
@@ -300,7 +304,7 @@ export default function OrderDetails({ navigation: { goBack } }) {
                   inputStyles.textInput,
                   {
                     margin: 10,
-                    borderColor: postalCodeError ? "red" : "green",
+                    borderColor: postalCodeError ? "red" : "#42C88F",
                   },
                 ]}
                 onChangeText={(value) => {
@@ -312,12 +316,20 @@ export default function OrderDetails({ navigation: { goBack } }) {
         </ScrollView>
         <View>
           <Pressable
-            style={styles.s_button}
-            onPress={() => {
-              onPressUpdate();
-            }}
+            style={[
+              // styles.s_button,
+              {
+                alignItems: "center",
+                justifyContent: "center",
+                height: 50,
+                backgroundColor: "#42C88F",
+              },
+            ]}
+            onPress={() => onPressUpdate()}
           >
-            <Text style={styles.s_button_text}>Update</Text>
+            <Text style={[styles.s_button_text, { color: "white" }]}>
+              Update
+            </Text>
           </Pressable>
         </View>
       </ImageBackground>

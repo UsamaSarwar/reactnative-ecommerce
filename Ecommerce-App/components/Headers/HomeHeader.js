@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 
 //React Components
-import { View, Text, Image, Keyboard } from "react-native";
+import { View, Text, Image, Keyboard, Pressable } from "react-native";
 import SearchBar from "react-native-dynamic-search-bar";
 
 //Providers
@@ -15,7 +15,7 @@ import IonIcon from "react-native-vector-icons/Ionicons";
 //Styles
 import universalStyles from "../../styles/UniversalStyles.js";
 
-export default function HomeHeader() {
+export default function HomeHeader({ navigation }) {
   const { personalDetails } = useAuth();
   const { searchText, setSearchText } = useGlobal();
 
@@ -69,17 +69,19 @@ export default function HomeHeader() {
   const renderWelcome = () => {
     return (
       <>
-        <View style={productCardStyles.homeImageView}>
-          <Image
-            source={{
-              uri: `data:${personalDetails?.imageForm};base64,${personalDetails?.image}`,
-            }}
-            style={productCardStyles.homeImage}
-          />
-          <Text style={{ fontSize: 23, marginLeft: 10 }}>
-            {personalDetails?.userName ? personalDetails?.userName : "User"}
-          </Text>
-        </View>
+        <Pressable onPress={() => navigation.navigate("Personaldetails")}>
+          <View style={productCardStyles.homeImageView}>
+            <Image
+              source={{
+                uri: `data:${personalDetails?.imageForm};base64,${personalDetails?.image}`,
+              }}
+              style={productCardStyles.homeImage}
+            />
+            <Text style={{ fontSize: 23, marginLeft: 10 }}>
+              {personalDetails?.userName ? personalDetails?.userName : "User"}
+            </Text>
+          </View>
+        </Pressable>
         <View style={{ flexDirection: "row" }}>
           {searchText !== "" ? (
             <IonIcon

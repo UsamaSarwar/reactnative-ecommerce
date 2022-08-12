@@ -34,6 +34,7 @@ export default universalStyles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     padding: 10,
+    top: -15,
   },
 
   page_container: {
