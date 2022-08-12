@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+//React Components
+import React, { useState, useRef } from "react";
 import {
   Text,
   View,
@@ -10,17 +11,24 @@ import {
   Alert,
   Image,
 } from "react-native";
+
+//Icon Component
 import Icon from "react-native-vector-icons/AntDesign";
+
+//Image Picker Component
 import ImagePicker from "react-native-image-crop-picker";
 
+//Animation-Component
+import * as Animatable from "react-native-animatable";
+
+//Styles
 import universalStyles from "../styles/UniversalStyles";
 import inputStyles from "../styles/InputStyles";
 import IconStyles from "../styles/IconStyles.js";
-
-import { useAuth } from "../providers/AuthProvider.js";
-// import { useOrder } from "../providers/OrderProvider";
-
 import UniversalStyles from "../styles/UniversalStyles.js";
+
+//Provides
+import { useAuth } from "../providers/AuthProvider.js";
 
 export default function OrderDetails({ navigation: { goBack } }) {
   const { updateUserDetails, personalDetails, updateAvatar } = useAuth();
@@ -45,78 +53,86 @@ export default function OrderDetails({ navigation: { goBack } }) {
   const [address, setAddress] = useState(personalDetails.address);
   const [postalCode, setPostalCode] = useState(personalDetails.postalCode);
 
+  const animationTime = 800;
+  const elementRef = useRef();
+  const [updatePressed, setUpdatePressed] = useState(false);
+
   const onPressUpdate = () => {
-    if (
-      name === "" ||
-      userName === "" ||
-      phoneNumber === "" ||
-      country === "" ||
-      province === "" ||
-      city === "" ||
-      address === "" ||
-      postalCode === ""
-    ) {
-      if (name === "") {
-        setNameError(true);
-        console.log("Name field has zero length");
+    setUpdatePressed(true);
+    elementRef.updateButton.bounceIn(animationTime);
+    setTimeout(() => {
+      if (
+        name === "" ||
+        userName === "" ||
+        phoneNumber === "" ||
+        country === "" ||
+        province === "" ||
+        city === "" ||
+        address === "" ||
+        postalCode === ""
+      ) {
+        if (name === "") {
+          setNameError(true);
+          console.log("Name field has zero length");
+        } else {
+          setNameError(false);
+        }
+        if (phoneNumber === "") {
+          setPhoneNumberError(true);
+          console.log("Phone Number field has zero length");
+        } else {
+          setPhoneNumberError(false);
+        }
+        if (country === "") {
+          setCountryError(true);
+          console.log("Country field has zero length");
+        } else {
+          setCountryError(false);
+        }
+        if (province === "") {
+          setProvinceError(true);
+          console.log("Province field has zero length");
+        } else {
+          setProvinceError(false);
+        }
+        if (address === "") {
+          setAddressError(true);
+          console.log("Province field has zero length");
+        } else {
+          setAddressError(false);
+        }
+        if (city === "") {
+          setCityError(true);
+          console.log("Province field has zero length");
+        } else {
+          setCityError(false);
+        }
+        if (postalCode === "") {
+          setPostalCodeError(true);
+          console.log("Province field has zero length");
+        } else {
+          setPostalCodeError(false);
+        }
       } else {
-        setNameError(false);
+        try {
+          updateUserDetails(
+            name,
+            userName,
+            phoneNumber,
+            altPhoneNumber,
+            country,
+            city,
+            province,
+            address,
+            postalCode
+          );
+          setUpdatePressed(false);
+          goBack();
+        } catch (error) {
+          Alert.alert(`error.message`);
+        }
       }
-      if (phoneNumber === "") {
-        setPhoneNumberError(true);
-        console.log("Phone Number field has zero length");
-      } else {
-        setPhoneNumberError(false);
-      }
-      if (country === "") {
-        setCountryError(true);
-        console.log("Country field has zero length");
-      } else {
-        setCountryError(false);
-      }
-      if (province === "") {
-        setProvinceError(true);
-        console.log("Province field has zero length");
-      } else {
-        setProvinceError(false);
-      }
-      if (address === "") {
-        setAddressError(true);
-        console.log("Province field has zero length");
-      } else {
-        setAddressError(false);
-      }
-      if (city === "") {
-        setCityError(true);
-        console.log("Province field has zero length");
-      } else {
-        setCityError(false);
-      }
-      if (postalCode === "") {
-        setPostalCodeError(true);
-        console.log("Province field has zero length");
-      } else {
-        setPostalCodeError(false);
-      }
-    } else {
-      try {
-        updateUserDetails(
-          name,
-          userName,
-          phoneNumber,
-          altPhoneNumber,
-          country,
-          city,
-          province,
-          address,
-          postalCode
-        );
-        Alert.alert("User Details updated");
-        goBack();
-      } catch (error) {
-        Alert.alert(`error.message`);
-      }
-    }
+    }, animationTime);
   };
 
   const openImagePicker = () =>
@@ -151,7 +167,7 @@ export default function OrderDetails({ navigation: { goBack } }) {
               style={[
                 IconStyles.background3,
                 {
-                  top: "90%",
+                  top: "80%",
                   right: "10%",
                   position: "absolute",
                   alignSelf: "flex-end",
@@ -166,9 +182,9 @@ export default function OrderDetails({ navigation: { goBack } }) {
               />
             </View>
           </View>
-          <View style={{ marginBottom: 10, top: -20 }}>
+          <View style={{ top: -40 }}>
             <View>
-              <Text style={{ marginLeft: 10, marginTop: 10 }}>
+              <Text style={{ marginLeft: 10 }}>
                 Full Name <Text style={{ color: "orange" }}>*</Text>
               </Text>
               <TextInput
@@ -176,7 +192,7 @@ export default function OrderDetails({ navigation: { goBack } }) {
                 placeholder="Enter your Full Name"
                 style={[
                   inputStyles.textInput,
-                  { margin: 10, borderColor: nameError ? "red" : "#42C88F" },
+                  { margin: 10, borderColor: nameError ? "red" : "black" },
                 ]}
                 onChangeText={(value) => {
                   setName(value);
@@ -210,7 +226,7 @@ export default function OrderDetails({ navigation: { goBack } }) {
                   inputStyles.textInput,
                   {
                     margin: 10,
-                    borderColor: phoneNumberError ? "red" : "#42C88F",
+                    borderColor: phoneNumberError ? "red" : "black",
                   },
                 ]}
               ></TextInput>
@@ -238,7 +254,7 @@ export default function OrderDetails({ navigation: { goBack } }) {
                 }}
                 style={[
                   inputStyles.textInput,
-                  { margin: 10, borderColor: countryError ? "red" : "#42C88F" },
+                  { margin: 10, borderColor: countryError ? "red" : "black" },
                 ]}
               ></TextInput>
             </View>
@@ -256,7 +272,7 @@ export default function OrderDetails({ navigation: { goBack } }) {
                   inputStyles.textInput,
                   {
                     margin: 10,
-                    borderColor: provinceError ? "red" : "#42C88F",
+                    borderColor: provinceError ? "red" : "black",
                   },
                 ]}
               ></TextInput>
@@ -270,7 +286,7 @@ export default function OrderDetails({ navigation: { goBack } }) {
                 placeholder="Enter your City Name"
                 style={[
                   inputStyles.textInput,
-                  { margin: 10, borderColor: cityError ? "red" : "#42C88F" },
+                  { margin: 10, borderColor: cityError ? "red" : "black" },
                 ]}
                 onChangeText={(value) => {
                   setCity(value);
@@ -286,7 +302,7 @@ export default function OrderDetails({ navigation: { goBack } }) {
                 placeholder="House#/ apartment# along with Area Name"
                 style={[
                   inputStyles.textInput,
-                  { margin: 10, borderColor: addressError ? "red" : "#42C88F" },
+                  { margin: 10, borderColor: addressError ? "red" : "black" },
                 ]}
                 onChangeText={(value) => {
                   setAddress(value);
@@ -304,7 +320,7 @@ export default function OrderDetails({ navigation: { goBack } }) {
                   inputStyles.textInput,
                   {
                     margin: 10,
-                    borderColor: postalCodeError ? "red" : "#42C88F",
+                    borderColor: postalCodeError ? "red" : "black",
                   },
                 ]}
                 onChangeText={(value) => {
@@ -317,7 +333,6 @@ export default function OrderDetails({ navigation: { goBack } }) {
         <View>
           <Pressable
             style={[
-              // styles.s_button,
               {
                 alignItems: "center",
                 justifyContent: "center",
@@ -327,9 +342,19 @@ export default function OrderDetails({ navigation: { goBack } }) {
             ]}
             onPress={() => onPressUpdate()}
           >
-            <Text style={[styles.s_button_text, { color: "white" }]}>
-              Update
-            </Text>
+            <Animatable.View
+              ref={(here) => {
+                elementRef["updateButton"] = here;
+              }}
+            >
+              {updatePressed ? (
+                <Icon name="check" size={28} color="white" />
+              ) : (
+                <Text style={[styles.s_button_text, { color: "white" }]}>
+                  Update
+                </Text>
+              )}
+            </Animatable.View>
           </Pressable>
         </View>
       </ImageBackground>
