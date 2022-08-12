@@ -23,7 +23,7 @@ import UniversalStyles from "../styles/UniversalStyles.js";
 import ButtonStyles from "../styles/ButtonStyles.js";
 import TextStyles from "../styles/TextStyles.js";
 
-export default function Setting({ navigation }) {
+export default function Setting({ navigation, route }) {
   const { user, signOut, personalDetails } = useAuth();
 
   const elementRef = useRef();
@@ -118,7 +118,7 @@ export default function Setting({ navigation }) {
             <Text style={styles.s_button_text}>Log Out</Text>
           </Pressable>
         </View>
-        <Footer navigation={navigation} elementRef={elementRef} />
+        <Footer navigation={navigation} route={route} elementRef={elementRef} />
 
         <SlidingUpPanel
           allowDragging={true}

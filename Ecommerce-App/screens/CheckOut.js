@@ -20,7 +20,7 @@ import NumberFormat from "react-number-format";
 
 import Footer from "../components/Footer.js";
 
-export default function Setting({ navigation }) {
+export default function Setting({ navigation, route }) {
   const { shoppingCart, cartTotal } = useTasks();
   const { personalDetails } = useAuth();
   const [payMethod, setPayMethod] = useState(true);
@@ -364,7 +364,7 @@ export default function Setting({ navigation }) {
             </View>
           </View>
         </ScrollView>
-        <Footer navigation={navigation} elementRef={elementRef} />
+        <Footer navigation={navigation} route={route} elementRef={elementRef} />
       </ImageBackground>
     </View>
     // </LinearGradient>

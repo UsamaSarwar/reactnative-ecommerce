@@ -24,10 +24,14 @@ const GlobalProvider = ({ children }) => {
   const category = [
     "All",
     "Accessories",
+    "Casings",
     "Consoles",
     "Displays",
+    "Earphones",
     "Headphones",
+    "Keyboards",
     "Laptops",
+    "Mouse",
     "Smartphones",
     "Webcams",
   ];

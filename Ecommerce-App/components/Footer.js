@@ -16,7 +16,7 @@ import { useGlobal } from "../providers/GlobalProvider.js";
 import universalStyles from "../styles/UniversalStyles.js";
 import iconStyles from "../styles/IconStyles.js";
 
-export default function Footer({ navigation, elementRef }) {
+export default function Footer({ navigation, route, elementRef }) {
   const { user, userCart } = useAuth();
   const { setIsNewProduct } = useGlobal();
 
@@ -57,6 +57,7 @@ export default function Footer({ navigation, elementRef }) {
         <Icon
           name="shoppingcart"
           size={30}
+          color={route.name === "Cart" ? "black" : "grey"}
           onPress={() => navigation.navigate("Cart")}
         />
       </Animatable.View>
@@ -68,6 +69,7 @@ export default function Footer({ navigation, elementRef }) {
       <Icon
         name="home"
         size={30}
+        color={route.name === "Homescreen" ? "black" : "grey"}
         onPress={() => navigation.navigate("Homescreen")}
       />
 
@@ -76,6 +78,7 @@ export default function Footer({ navigation, elementRef }) {
       <Icon
         name="user"
         size={30}
+        color={route.name === "Setting" ? "black" : "grey"}
         onPress={() => navigation.navigate("Setting")}
       />
     </View>

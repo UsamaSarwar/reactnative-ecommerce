@@ -32,15 +32,29 @@ export default function CartHeader({ navigation }) {
         />
       </View>
       <Pressable
-        style={ButtonStyles.checkout_button}
-        onPress={() => {
-          navigation.navigate("Checkout");
-        }}
+        style={
+          cartTotal === 0
+            ? ButtonStyles.checkout_button_dis
+            : ButtonStyles.checkout_button
+        }
+        disabled={cartTotal === 0 ? true : false}
+        onPress={() => navigation.navigate("Checkout")}
       >
-        <Text style={[ButtonStyles.checkout_button_text, { marginRight: 15 }]}>
+        <Text
+          style={[
+            cartTotal === 0
+              ? ButtonStyles.checkout_button_text_dis
+              : ButtonStyles.checkout_button_text,
+            { marginRight: 15 },
+          ]}
+        >
           Checkout
         </Text>
-        <IonIcon name="arrow-forward" size={24} color="white" />
+        <IonIcon
+          name="arrow-forward"
+          size={24}
+          color={cartTotal === 0 ? "grey" : "white"}
+        />
       </Pressable>
     </View>
   );

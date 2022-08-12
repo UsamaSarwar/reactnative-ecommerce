@@ -2,14 +2,10 @@
 import React from "react";
 
 //React Components
-import { Text, Pressable, FlatList, View } from "react-native";
+import { Text, Pressable, FlatList } from "react-native";
 
 //Providers
 import { useGlobal } from "../providers/GlobalProvider.js";
-
-//Styles
-import universalStyles from "../styles/UniversalStyles.js";
-import iconStyles from "../styles/IconStyles.js";
 
 export default function Category() {
   const { category, categoryFilter, setCategoryFilter } = useGlobal();

@@ -102,6 +102,7 @@ export default function ProductItem({ elementRef }) {
   return (
     <FlatList
       data={!loading ? searchTasks : [1, 2, 3, 4, 5]}
+      showsVerticalScrollIndicator={false}
       style={{ margin: 10, borderRadius: 15 }}
       renderItem={({ item }) => (
         <Pressable onPress={() => renderSlide(item)}>

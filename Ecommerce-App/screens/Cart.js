@@ -1,17 +1,8 @@
 //React
 import React, { useEffect, useRef } from "react";
-import {
-  SafeAreaView,
-  Text,
-  View,
-  ImageBackground,
-  Pressable,
-  Image,
-} from "react-native";
-import IonIcon from "react-native-vector-icons/Ionicons";
-import NumberFormat from "react-number-format";
+import { SafeAreaView, View, ImageBackground, Image } from "react-native";
+
 import SlidingUpPanel from "rn-sliding-up-panel";
-import Snackbar from "react-native-snackbar";
 
 //Providers
 import { useTasks } from "../providers/TasksProvider.js";
@@ -26,7 +17,7 @@ import CartSlideUpCard from "../components/SlideUpCards/CartSlideUpCard.js";
 //Styles
 import UniversalStyles from "../styles/UniversalStyles.js";
 
-export default function Cart({ navigation }) {
+export default function Cart({ navigation, route }) {
   const { shoppingCart, cartDetails } = useTasks();
   const { cartUpdate } = useGlobal();
 
@@ -60,7 +51,11 @@ export default function Cart({ navigation }) {
             </View>
           )}
 
-          <Footer navigation={navigation} elementRef={elementRef} />
+          <Footer
+            navigation={navigation}
+            route={route}
+            elementRef={elementRef}
+          />
 
           <SlidingUpPanel
             allowDragging={true}

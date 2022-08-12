@@ -29,8 +29,9 @@ import Footer from "../components/Footer.js";
 //Styles
 import universalStyles from "../styles/UniversalStyles.js";
 
-export default function Homescreen({ navigation }) {
+export default function Homescreen({ navigation, route }) {
   const { user } = useAuth();
+  const { searchText } = useGlobal();
 
   const admin = user.customData["userType"] === "admin" ? true : false;
 
@@ -73,13 +74,17 @@ export default function Homescreen({ navigation }) {
         >
           <HomeHeader navigation={navigation} />
 
-          <Category />
+          {searchText === "" ? <Category /> : null}
 
           {admin ? <Stats /> : null}
 
           <ProductItem navigation={navigation} elementRef={elementRef} />
 
-          <Footer navigation={navigation} elementRef={elementRef} />
+          <Footer
+            navigation={navigation}
+            route={route}
+            elementRef={elementRef}
+          />
 
           <SlidingUpPanel
             allowDragging={true}
