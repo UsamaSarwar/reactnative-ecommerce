@@ -69,19 +69,19 @@ export default function HomeHeader({ navigation }) {
   const renderWelcome = () => {
     return (
       <>
-        <Pressable onPress={() => navigation.navigate("Personaldetails")}>
-          <View style={productCardStyles.homeImageView}>
+        <View style={productCardStyles.homeImageView}>
+          <Pressable onPress={() => navigation.navigate("Personaldetails")}>
             <Image
               source={{
                 uri: `data:${personalDetails?.imageForm};base64,${personalDetails?.image}`,
               }}
               style={productCardStyles.homeImage}
             />
-            <Text style={{ fontSize: 23, marginLeft: 10 }}>
-              {personalDetails?.userName ? personalDetails?.userName : "User"}
-            </Text>
-          </View>
-        </Pressable>
+          </Pressable>
+          <Text style={{ fontSize: 23, marginLeft: 10 }}>
+            {personalDetails?.userName ? personalDetails?.userName : "User"}
+          </Text>
+        </View>
         <View style={{ flexDirection: "row" }}>
           {searchText !== "" ? (
             <IonIcon

@@ -1,5 +1,4 @@
-import React, { useContext, useState, useEffect, useRef } from "react";
-// import app from "../realmApp";
+import React, { useState } from "react";
 import { useAuth } from "../providers/AuthProvider.js";
 import {
   Text,
@@ -11,6 +10,10 @@ import {
   Alert,
 } from "react-native";
 
+//Icon Component
+import IonIcon from "react-native-vector-icons/Ionicons";
+
+//Styles
 import styles from "../styles/Styles.js";
 import UniversalStyles from "../styles/UniversalStyles.js";
 import InputStyles from "../styles/InputStyles.js";
@@ -72,6 +75,15 @@ export default function Updatepassword({ navigation }) {
           resizeMode="cover"
           style={UniversalStyles.background_image}
         >
+          <View style={[UniversalStyles.header]}>
+            <IonIcon
+              name="arrow-back-circle-outline"
+              size={28}
+              color="red"
+              onPress={() => navigation.goBack()}
+            />
+            <Text style={{ fontSize: 23 }}>Update password</Text>
+          </View>
           <View style={UniversalStyles.center}>
             <Text style={styles.error_message}>{errorMessage}</Text>
           </View>
@@ -104,7 +116,7 @@ export default function Updatepassword({ navigation }) {
 
             <Pressable
               style={ButtonStyles.s_button}
-              onPress={() => navigation.navigate("Homescreen")}
+              onPress={() => navigation.goBack()}
             >
               <Text style={ButtonStyles.s_button_text}>Go Back</Text>
             </Pressable>

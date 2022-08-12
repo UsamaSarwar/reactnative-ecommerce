@@ -15,6 +15,10 @@ import {
   Alert,
 } from "react-native";
 
+//Icon Component
+import IonIcon from "react-native-vector-icons/Ionicons";
+
+//Styles
 import UniversalStyles from "../styles/UniversalStyles.js";
 import InputStyles from "../styles/InputStyles.js";
 import TextStyles from "../styles/TextStyles.js";
@@ -30,6 +34,15 @@ export default function Deleteaccount({ navigation }) {
         resizeMode="cover"
         style={UniversalStyles.background_image}
       >
+        <View style={[UniversalStyles.header]}>
+          <IonIcon
+            name="arrow-back-circle-outline"
+            size={28}
+            color="red"
+            onPress={() => navigation.goBack()}
+          />
+          <Text style={{ fontSize: 23 }}>Delete Account</Text>
+        </View>
         <View style={UniversalStyles.fields}>
           <Text style={TextStyles.error_message}>
             Please write "DELETE ACCOUNT" below:

@@ -22,7 +22,7 @@ import Footer from "../components/Footer.js";
 
 export default function Setting({ navigation }) {
   const { shoppingCart, cartTotal } = useTasks();
-  const { user, personalDetails } = useAuth();
+  const { personalDetails } = useAuth();
   const [payMethod, setPayMethod] = useState(true);
   const elementRef = useRef();
 
@@ -34,6 +34,12 @@ export default function Setting({ navigation }) {
         style={UniversalStyles.background_image}
       >
         <View style={UniversalStyles.header}>
+          <IonIcon
+            name="arrow-back-circle-outline"
+            size={28}
+            color="red"
+            onPress={() => navigation.goBack()}
+          />
           <Text style={{ fontSize: 23 }}>Checkout</Text>
         </View>
         <ScrollView>

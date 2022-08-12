@@ -14,6 +14,7 @@ import {
 
 //Icon Component
 import Icon from "react-native-vector-icons/AntDesign";
+import IonIcon from "react-native-vector-icons/Ionicons";
 
 //Image Picker Component
 import ImagePicker from "react-native-image-crop-picker";
@@ -30,7 +31,7 @@ import UniversalStyles from "../styles/UniversalStyles.js";
 //Provides
 import { useAuth } from "../providers/AuthProvider.js";
 
-export default function OrderDetails({ navigation: { goBack } }) {
+export default function OrderDetails({ navigation }) {
   const { updateUserDetails, personalDetails, updateAvatar } = useAuth();
 
   const [nameError, setNameError] = useState(false);
@@ -127,7 +128,7 @@ export default function OrderDetails({ navigation: { goBack } }) {
             postalCode
           );
           setUpdatePressed(false);
-          goBack();
+          navigation.goBack();
         } catch (error) {
           Alert.alert(`error.message`);
         }
@@ -152,8 +153,14 @@ export default function OrderDetails({ navigation: { goBack } }) {
         resizeMode="cover"
         style={universalStyles.background_image}
       >
-        <View style={UniversalStyles.header}>
-          <Text style={{ fontSize: 23 }}>Update Personal Details</Text>
+        <View style={[UniversalStyles.header]}>
+          <IonIcon
+            name="arrow-back-circle-outline"
+            size={28}
+            color="red"
+            onPress={() => navigation.goBack()}
+          />
+          <Text style={{ fontSize: 23 }}>Personal Details</Text>
         </View>
         <ScrollView>
           <View style={universalStyles.avatar_container_settings_page}>
@@ -167,8 +174,8 @@ export default function OrderDetails({ navigation: { goBack } }) {
               style={[
                 IconStyles.background3,
                 {
-                  top: "80%",
-                  right: "10%",
+                  top: "85%",
+                  right: "35%",
                   position: "absolute",
                   alignSelf: "flex-end",
                 },
@@ -182,7 +189,7 @@ export default function OrderDetails({ navigation: { goBack } }) {
               />
             </View>
           </View>
-          <View style={{ top: -40 }}>
+          <View>
             <View>
               <Text style={{ marginLeft: 10 }}>
                 Full Name <Text style={{ color: "orange" }}>*</Text>
@@ -191,7 +198,7 @@ export default function OrderDetails({ navigation: { goBack } }) {
                 defaultValue={personalDetails.name}
                 placeholder="Enter your Full Name"
                 style={[
-                  inputStyles.textInput,
+                  inputStyles.textInputUpdateDetails,
                   { margin: 10, borderColor: nameError ? "red" : "black" },
                 ]}
                 onChangeText={(value) => {
@@ -206,7 +213,7 @@ export default function OrderDetails({ navigation: { goBack } }) {
                   personalDetails.userName ? personalDetails.userName : "User"
                 }
                 placeholder="Enter your UserName"
-                style={[inputStyles.textInput, { margin: 10 }]}
+                style={[inputStyles.textInputUpdateDetails, { margin: 10 }]}
                 onChangeText={(value) => {
                   setUserName(value);
                 }}
@@ -223,7 +230,7 @@ export default function OrderDetails({ navigation: { goBack } }) {
                   setPhoneNumber(value);
                 }}
                 style={[
-                  inputStyles.textInput,
+                  inputStyles.textInputUpdateDetails,
                   {
                     margin: 10,
                     borderColor: phoneNumberError ? "red" : "black",
@@ -236,7 +243,7 @@ export default function OrderDetails({ navigation: { goBack } }) {
               <TextInput
                 defaultValue={personalDetails.altPhoneNumber}
                 placeholder="Enter your Phone Number"
-                style={[inputStyles.textInput, { margin: 10 }]}
+                style={[inputStyles.textInputUpdateDetails, { margin: 10 }]}
                 onChangeText={(value) => {
                   setAltPhoneNumber(value);
                 }}
@@ -253,7 +260,7 @@ export default function OrderDetails({ navigation: { goBack } }) {
                   setCountry(value);
                 }}
                 style={[
-                  inputStyles.textInput,
+                  inputStyles.textInputUpdateDetails,
                   { margin: 10, borderColor: countryError ? "red" : "black" },
                 ]}
               ></TextInput>
@@ -269,7 +276,7 @@ export default function OrderDetails({ navigation: { goBack } }) {
                   setProvince(value);
                 }}
                 style={[
-                  inputStyles.textInput,
+                  inputStyles.textInputUpdateDetails,
                   {
                     margin: 10,
                     borderColor: provinceError ? "red" : "black",
@@ -285,7 +292,7 @@ export default function OrderDetails({ navigation: { goBack } }) {
                 defaultValue={personalDetails.city}
                 placeholder="Enter your City Name"
                 style={[
-                  inputStyles.textInput,
+                  inputStyles.textInputUpdateDetails,
                   { margin: 10, borderColor: cityError ? "red" : "black" },
                 ]}
                 onChangeText={(value) => {
@@ -301,7 +308,7 @@ export default function OrderDetails({ navigation: { goBack } }) {
                 defaultValue={personalDetails.address}
                 placeholder="House#/ apartment# along with Area Name"
                 style={[
-                  inputStyles.textInput,
+                  inputStyles.textInputUpdateDetails,
                   { margin: 10, borderColor: addressError ? "red" : "black" },
                 ]}
                 onChangeText={(value) => {
@@ -317,7 +324,7 @@ export default function OrderDetails({ navigation: { goBack } }) {
                 defaultValue={personalDetails.postalCode}
                 placeholder="Enter your Area's Postal Code"
                 style={[
-                  inputStyles.textInput,
+                  inputStyles.textInputUpdateDetails,
                   {
                     margin: 10,
                     borderColor: postalCodeError ? "red" : "black",

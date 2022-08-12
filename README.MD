@@ -22,6 +22,18 @@ yarn android
 
 ## 📝 Patch Notes Of Releases
 
+v12.08.22
+
+- [x] Add Search bar for products
+- [x] Add shipping location at checkout page
+- [x] Cart operations optimization
+- [x] UI update on cart, checkout, and settings screen
+- [x] Added Avatar other personal information update features (CoD information screen)
+- [x] Added Animations
+- [ ] Order Placing and tracking functionality
+
+Demonstration of application at this version will be uploaded soon
+
 v01.08.22
 
 - [x] UI updates

@@ -28,6 +28,15 @@ export default inputStyles = StyleSheet.create({
     paddingLeft: 10,
     borderWidth: 3,
   },
+  textInputUpdateDetails: {
+    height: 45,
+    backgroundColor: "white",
+    borderRadius: 15,
+    shadowColor: "black",
+    shadowRadius: 100,
+    paddingLeft: 10,
+    borderWidth: 3,
+  },
   muktilineInput: {
     minHeight: 45,
     backgroundColor: "white",

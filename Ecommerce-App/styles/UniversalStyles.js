@@ -18,23 +18,14 @@ export default universalStyles = StyleSheet.create({
   },
   avatar_container: {
     marginTop: 50,
-    backgroundColor: "white",
-    marginLeft: "31%",
-    marginRight: "31%",
-    height: "20%",
     justifyContent: "center",
     alignItems: "center",
-    padding: 10,
   },
   avatar_container_settings_page: {
-    backgroundColor: "white",
-    marginLeft: "31%",
-    marginRight: "31%",
-    height: "20%",
+    marginTop: 10,
+    marginBottom: 15,
     justifyContent: "center",
     alignItems: "center",
-    padding: 10,
-    top: -15,
   },
 
   page_container: {
@@ -66,7 +57,6 @@ export default universalStyles = StyleSheet.create({
 
   input_fields_container_1: {
     flexDirection: "column",
-    // backgroundColor: "rgba(66, 200, 143, 0.3)",
     backgroundColor: "#f6f8f9",
     padding: 20,
     borderRadius: 20,

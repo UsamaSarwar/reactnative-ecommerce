@@ -11,7 +11,6 @@ import {
   Image,
 } from "react-native";
 import IonIcon from "react-native-vector-icons/Ionicons";
-import ImagePicker from "react-native-image-crop-picker";
 import SlidingUpPanel from "rn-sliding-up-panel";
 
 import styles from "../styles/Styles.js";
@@ -22,10 +21,10 @@ import AdminSlideUpCard from "../components/SlideUpCards/AdminUserSlideUpCard.js
 
 import UniversalStyles from "../styles/UniversalStyles.js";
 import ButtonStyles from "../styles/ButtonStyles.js";
-import IconStyles from "../styles/IconStyles.js";
+import TextStyles from "../styles/TextStyles.js";
 
 export default function Setting({ navigation }) {
-  const { user, signOut, updateAvatar, personalDetails } = useAuth();
+  const { user, signOut, personalDetails } = useAuth();
 
   const elementRef = useRef();
   useEffect(() => {
@@ -41,15 +40,17 @@ export default function Setting({ navigation }) {
         resizeMode="cover"
         style={UniversalStyles.image}
       >
-        {/* <View style={styles.logoView}></View> */}
         <View style={universalStyles.avatar_container}>
           <Image
-            // source={require("../assets/image.jpg")}
             source={{
               uri: `data:${personalDetails.imageForm};base64,${personalDetails.image}`,
             }}
             style={productCardStyles.avatarImage}
           />
+          <Text style={TextStyles.name_banner}>{personalDetails.name}</Text>
+          <Text style={TextStyles.userName_banner}>
+            {personalDetails.userName}
+          </Text>
         </View>
 
         <View style={UniversalStyles.fields}>
