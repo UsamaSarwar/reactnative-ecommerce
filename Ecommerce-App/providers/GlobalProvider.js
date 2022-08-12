@@ -16,8 +16,21 @@ const GlobalProvider = ({ children }) => {
 
   const [cartUpdate, setCartUpdate] = useState(false);
 
-  //Homescreen
+  //Searchbar on Homescreen
   const [searchText, setSearchText] = useState("");
+
+  //Categories in homscreen
+  const [categoryFilter, setCategoryFilter] = useState("All");
+  const category = [
+    "All",
+    "Accessories",
+    "Consoles",
+    "Displays",
+    "Headphones",
+    "Laptops",
+    "Smartphones",
+    "Webcams",
+  ];
 
   useEffect(() => {
     if (isNewProduct) {
@@ -41,6 +54,9 @@ const GlobalProvider = ({ children }) => {
         setCartUpdate,
         searchText,
         setSearchText,
+        category,
+        categoryFilter,
+        setCategoryFilter,
       }}
     >
       {children}

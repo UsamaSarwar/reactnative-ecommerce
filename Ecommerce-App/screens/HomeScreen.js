@@ -4,18 +4,22 @@ import React, { useRef, useEffect } from "react";
 //React Components
 import {
   View,
+  Text,
   SafeAreaView,
   ImageBackground,
   Alert,
   BackHandler,
+  FlatList,
 } from "react-native";
 import SlidingUpPanel from "rn-sliding-up-panel";
 
 //Providers
 import { useAuth } from "../providers/AuthProvider.js";
+import { useGlobal } from "../providers/GlobalProvider.js";
 
 //Components
 import HomeHeader from "../components/Headers/HomeHeader.js";
+import Category from "../components/Category.js";
 import Stats from "../components/Stats_Homescreen.js";
 import ProductItem from "../components/Items/ProductItem.js";
 import AdminSlideUpCard from "../components/SlideUpCards/AdminUserSlideUpCard.js";
@@ -68,6 +72,8 @@ export default function Homescreen({ navigation }) {
           style={universalStyles.background_image}
         >
           <HomeHeader navigation={navigation} />
+
+          <Category />
 
           {admin ? <Stats /> : null}
 
