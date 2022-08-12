@@ -7,14 +7,17 @@ import {
   Image,
   StyleSheet,
   ScrollView,
+  Alert,
 } from "react-native";
 import Icon from "react-native-vector-icons/AntDesign";
 import IonIcon from "react-native-vector-icons/Ionicons";
 
 import UniversalStyles from "../styles/UniversalStyles.js";
+import ButtonStyles from "../styles/ButtonStyles.js";
 
 import { useTasks } from "../providers/TasksProvider.js";
 import { useAuth } from "../providers/AuthProvider.js";
+import { useOrder } from "../providers/OrderProvider.js";
 
 import NumberFormat from "react-number-format";
 
@@ -22,9 +25,35 @@ import Footer from "../components/Footer.js";
 
 export default function Setting({ navigation, route }) {
   const { shoppingCart, cartTotal } = useTasks();
-  const { personalDetails } = useAuth();
+  const { user, personalDetails, userCart } = useAuth();
   const [payMethod, setPayMethod] = useState(true);
   const elementRef = useRef();
+  const { createOrder } = useOrder();
+  const [detailsError, setDetailsError] = useState(false);
+
+  const onPressOrder = () => {
+    if (
+      user.customData.details.name === "" ||
+      user.customData.details.phoneNumber === "" ||
+      user.customData.details.country === "" ||
+      user.customData.details.province === "" ||
+      user.customData.details.city === "" ||
+      user.customData.details.address === "" ||
+      user.customData.details.postalCode === ""
+    ) {
+      setDetailsError(true);
+    } else {
+      setDetailsError(false);
+    }
+    if (!detailsError) {
+      try {
+        createOrder(user.customData["_id"], 123, "COD", userCart);
+        console.log("Order Placed");
+      } catch (error) {
+        console.error(error.message);
+      }
+    }
+  };
 
   return (
     <View style={UniversalStyles.page_container}>
@@ -361,6 +390,28 @@ export default function Setting({ navigation, route }) {
                   </Text>
                 )}
               />
+            </View>
+            <View>
+              <Pressable
+                style={[
+                  ButtonStyles.p_button,
+                  { marginLeft: 5, marginTop: 30 },
+                ]}
+                onPress={() => {
+                  onPressOrder();
+                }}
+              >
+                <Text
+                  style={[
+                    ButtonStyles.p_button_text,
+                    {
+                      flex: 1,
+                    },
+                  ]}
+                >
+                  ORDER
+                </Text>
+              </Pressable>
             </View>
           </View>
         </ScrollView>
