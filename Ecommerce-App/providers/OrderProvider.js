@@ -65,6 +65,8 @@ const OrderProvider = ({ children, projectPartition }) => {
         })
       );
     });
+    const syncTasks = projectRealm.objects("Order");
+    setOrders([...syncTasks]);
     console.log("Order Created");
   };
 

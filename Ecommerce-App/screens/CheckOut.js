@@ -28,7 +28,7 @@ export default function Setting({ navigation, route }) {
   const { user, personalDetails, userCart } = useAuth();
   const [payMethod, setPayMethod] = useState(true);
   const elementRef = useRef();
-  const { createOrder } = useOrder();
+  const { createOrder, orders } = useOrder();
   const [detailsError, setDetailsError] = useState(false);
 
   const onPressOrder = () => {
@@ -47,8 +47,9 @@ export default function Setting({ navigation, route }) {
     }
     if (!detailsError) {
       try {
-        createOrder(user.customData["_id"], 123, "COD", userCart);
-        console.log("Order Placed");
+        createOrder(user.customData["_id"], orders.length + 1, "COD", userCart);
+        Alert.alert("Order Placed");
+        navigation.navigate("Homescreen");
       } catch (error) {
         console.error(error.message);
       }
