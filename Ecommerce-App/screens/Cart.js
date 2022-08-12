@@ -44,7 +44,7 @@ export default function Cart({ navigation }) {
           resizeMode="cover"
           style={UniversalStyles.background_image}
         >
-          <CartHeader />
+          <CartHeader navigation={navigation} />
 
           {shoppingCart.length ? (
             <CarItem elementRef={elementRef} />

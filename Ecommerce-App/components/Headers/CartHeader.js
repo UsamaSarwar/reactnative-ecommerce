@@ -15,7 +15,7 @@ import IonIcon from "react-native-vector-icons/Ionicons";
 import UniversalStyles from "../../styles/UniversalStyles.js";
 import ButtonStyles from "../../styles/ButtonStyles.js";
 
-export default function CartHeader() {
+export default function CartHeader({ navigation }) {
   const { cartTotal } = useTasks();
 
   return (

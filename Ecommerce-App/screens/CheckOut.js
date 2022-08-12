@@ -22,7 +22,7 @@ import Footer from "../components/Footer.js";
 
 export default function Setting({ navigation }) {
   const { shoppingCart, cartTotal } = useTasks();
-  const { user } = useAuth();
+  const { user, personalDetails } = useAuth();
   const [payMethod, setPayMethod] = useState(true);
   const elementRef = useRef();
 
@@ -89,17 +89,12 @@ export default function Setting({ navigation }) {
                       Location
                     </Text>
                     <Text style={{ color: "black", fontSize: 15 }}>
-                      {user.customData.details.city
-                        ? user.customData.details.city
-                        : "-"}{" "}
-                      ,{" "}
-                      {user.customData.details.province
-                        ? user.customData.details.province
+                      {personalDetails.city ? personalDetails.city : "-"} ,{" "}
+                      {personalDetails.province
+                        ? personalDetails.province
                         : "-"}
                       ,{" "}
-                      {user.customData.details.country
-                        ? user.customData.details.country
-                        : "-"}
+                      {personalDetails.country ? personalDetails.country : "-"}
                     </Text>
                   </View>
                 </View>
@@ -112,8 +107,8 @@ export default function Setting({ navigation }) {
                       Postal Code
                     </Text>
                     <Text style={{ color: "black", fontSize: 15 }}>
-                      {user.customData.details.postalCode
-                        ? user.customData.details.postalCode
+                      {personalDetails.postalCode
+                        ? personalDetails.postalCode
                         : "-"}
                     </Text>
                   </View>
@@ -129,9 +124,7 @@ export default function Setting({ navigation }) {
                 <View style={{ marginLeft: 5 }}>
                   <Text style={{ color: "grey", fontSize: 11 }}>Address</Text>
                   <Text style={{ color: "black", fontSize: 15 }}>
-                    {user.customData.details.address
-                      ? user.customData.details.address
-                      : "-"}
+                    {personalDetails.address ? personalDetails.address : "-"}
                   </Text>
                 </View>
               </View>
@@ -156,8 +149,8 @@ export default function Setting({ navigation }) {
                       Phone Number
                     </Text>
                     <Text style={{ color: "black", fontSize: 15 }}>
-                      {user.customData.details.phoneNumber
-                        ? user.customData.details.phoneNumber
+                      {personalDetails.phoneNumber
+                        ? personalDetails.phoneNumber
                         : "-"}
                     </Text>
                   </View>
@@ -171,8 +164,8 @@ export default function Setting({ navigation }) {
                       Alt. Number
                     </Text>
                     <Text style={{ color: "black", fontSize: 15 }}>
-                      {user.customData.details.altPhoneNumber
-                        ? user.customData.details.altPhoneNumber
+                      {personalDetails.altPhoneNumber
+                        ? personalDetails.altPhoneNumber
                         : "-"}
                     </Text>
                   </View>

@@ -12,6 +12,7 @@ export class User {
       image: "string?",
       imageForm: "string?",
       name: "string?",
+      userName: "string?",
       phoneNumber: "string?",
       postalCode: "string?",
       province: "string?",

@@ -16,7 +16,7 @@ import IonIcon from "react-native-vector-icons/Ionicons";
 import universalStyles from "../../styles/UniversalStyles.js";
 
 export default function HomeHeader() {
-  const { user, image, imageForm } = useAuth();
+  const { personalDetails } = useAuth();
   const { searchText, setSearchText } = useGlobal();
 
   const [searchState, setSearchState] = useState(false);
@@ -72,12 +72,12 @@ export default function HomeHeader() {
         <View style={productCardStyles.homeImageView}>
           <Image
             source={{
-              uri: `data:${imageForm};base64,${image}`,
+              uri: `data:${personalDetails.imageForm};base64,${personalDetails.image}`,
             }}
             style={productCardStyles.homeImage}
           />
           <Text style={{ fontSize: 23, marginLeft: 10 }}>
-            {user.customData.details.name}
+            {personalDetails.userName ? personalDetails.userName : "User"}
           </Text>
         </View>
         <View style={{ flexDirection: "row" }}>

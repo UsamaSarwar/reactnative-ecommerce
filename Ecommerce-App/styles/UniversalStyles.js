@@ -26,6 +26,15 @@ export default universalStyles = StyleSheet.create({
     alignItems: "center",
     padding: 10,
   },
+  avatar_container_settings_page: {
+    backgroundColor: "white",
+    marginLeft: "31%",
+    marginRight: "31%",
+    height: "20%",
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 10,
+  },
 
   page_container: {
     flex: 1,

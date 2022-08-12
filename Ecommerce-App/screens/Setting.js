@@ -25,7 +25,7 @@ import ButtonStyles from "../styles/ButtonStyles.js";
 import IconStyles from "../styles/IconStyles.js";
 
 export default function Setting({ navigation }) {
-  const { user, signOut, updateAvatar, image, imageForm } = useAuth();
+  const { user, signOut, updateAvatar, personalDetails } = useAuth();
 
   const elementRef = useRef();
   useEffect(() => {
@@ -36,8 +36,8 @@ export default function Setting({ navigation }) {
 
   const openImagePicker = () =>
     ImagePicker.openPicker({
-      width: 200,
-      height: 200,
+      width: 150,
+      height: 150,
       cropping: true,
       includeBase64: true,
     }).then((image) => {
@@ -56,7 +56,7 @@ export default function Setting({ navigation }) {
           <Image
             // source={require("../assets/image.jpg")}
             source={{
-              uri: `data:${imageForm};base64,${image}`,
+              uri: `data:${personalDetails.imageForm};base64,${personalDetails.image}`,
             }}
             style={productCardStyles.avatarImage}
           />

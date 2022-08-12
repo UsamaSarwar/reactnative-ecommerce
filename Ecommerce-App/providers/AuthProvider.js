@@ -18,40 +18,8 @@ const AuthContext = React.createContext(null);
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(app.currentUser);
 
-  const [image, setImage] = useState(
-    user ? user.customData.details.image : null
-  );
-
-  const [imageForm, setImageForm] = useState(
-    user ? user.customData.details.imageForm : null
-  );
-
-  const [name, setName] = useState(user ? user.customData.details.name : "");
-
-  const [phoneNumber, setPhoneNumber] = useState(
-    user ? user.customData.details.phoneNumber : ""
-  );
-
-  const [altPhoneNumber, setAltPhoneNumber] = useState(
-    user ? user.customData.details.altPhoneNumber : ""
-  );
-
-  const [country, setCountry] = useState(
-    user ? user.customData.details.country : ""
-  );
-
-  const [province, setProvince] = useState(
-    user ? user.customData.details.province : ""
-  );
-
-  const [city, setCity] = useState(user ? user.customData.details.city : "");
-
-  const [address, setAddress] = useState(
-    user ? user.customData.details.address : ""
-  );
-
-  const [postalCode, setPostalCode] = useState(
-    user ? user.customData.details.postalCode : ""
+  const [personalDetails, setPersonalDetails] = useState(
+    user ? user.customData.details : {}
   );
 
   const realmRef = useRef(null);
@@ -94,8 +62,7 @@ const AuthProvider = ({ children }) => {
         if (users.length !== 0) {
           const { cart, details } = users[0];
           setUserCart([...cart]); //To set cart of user on login
-          setImage(details.image);
-          setImageForm(details.imageForm); //To set Image of user on login
+          setPersonalDetails(details);
         }
       });
     });
@@ -110,8 +77,9 @@ const AuthProvider = ({ children }) => {
         realmRef.current = null;
 
         setUserCart([]); // set project data to an empty array (this prevents the array from staying in state on logout)
-        setImage(null);
-        setImageForm(null);
+        // setImage(null);
+        // setImageForm(null);
+        setPersonalDetails(null);
         console.log("Closing User realm");
       }
     };
@@ -246,12 +214,17 @@ const AuthProvider = ({ children }) => {
       user.details["image"] = image;
       user.details["imageForm"] = imageForm;
     });
-    setImage(image);
-    setImageForm(imageForm);
+    setPersonalDetails((prevState) => {
+      prevState["image"] = image;
+    });
+    setImageForm((prevState) => {
+      prevState["imageForm"] = imageForm;
+    });
   };
 
   const updateUserDetails = (
     fullName,
+    userName,
     phoneNumber,
     altPhoneNumber,
     country,
@@ -265,6 +238,7 @@ const AuthProvider = ({ children }) => {
     const user = userRealm.objects("User")[0];
     userRealm.write(() => {
       user.details["name"] = fullName;
+      user.details["userName"] = userName;
       user.details["phoneNumber"] = phoneNumber;
       user.details["altPhoneNumber"] = altPhoneNumber;
       user.details["country"] = country;
@@ -272,6 +246,17 @@ const AuthProvider = ({ children }) => {
       user.details["city"] = city;
       user.details["address"] = addressDetails;
       user.details["postalCode"] = postalCode;
+    });
+    setPersonalDetails({
+      name: fullName,
+      userName: userName,
+      phoneNumber: phoneNumber,
+      altPhoneNumber: altPhoneNumber,
+      country: country,
+      province: province,
+      city: city,
+      address: addressDetails,
+      postalCode: postalCode,
     });
   };
 
@@ -289,26 +274,9 @@ const AuthProvider = ({ children }) => {
         updateQuantity,
         updateAvatar,
         updateUserDetails,
-        setAddress,
-        setAltPhoneNumber,
-        setCity,
-        setCountry,
-        setName,
-        setPhoneNumber,
-        setPostalCode,
-        setProvince,
-        image,
-        imageForm,
         user,
         userCart,
-        name,
-        address,
-        country,
-        province,
-        city,
-        postalCode,
-        phoneNumber,
-        altPhoneNumber,
+        personalDetails,
       }}
     >
       {children}
