@@ -73,11 +73,11 @@ export default function UserSlideUpCard({ elementRef }) {
           </Text>
         </View>
       </View>
-      <ScrollView style={{ height: 60 }}>
-        <View>
-          <Text style={{ fontSize: 15 }}>{product.description}</Text>
-        </View>
-      </ScrollView>
+      {/* <ScrollView style={{ height: 60 }}> */}
+      <View>
+        <Text style={{ fontSize: 15 }}>{product.description}</Text>
+      </View>
+      {/* </ScrollView> */}
       <View
         style={[
           UniversalStyles.row_f1_sb_c,

@@ -38,9 +38,9 @@ export default function Setting({ navigation, route }) {
       <ImageBackground
         source={require("../assets/home.jpeg")}
         resizeMode="cover"
-        style={UniversalStyles.image}
+        style={UniversalStyles.background_image}
       >
-        <View style={universalStyles.avatar_container}>
+        <View style={UniversalStyles.avatar_container}>
           <Image
             source={{
               uri: `data:${personalDetails.imageForm};base64,${personalDetails.image}`,
@@ -53,7 +53,7 @@ export default function Setting({ navigation, route }) {
           </Text>
         </View>
 
-        <View style={UniversalStyles.fields}>
+        <View style={UniversalStyles.input_fields_container_1}>
           <Pressable
             style={ButtonStyles.p_button}
             onPress={() => {
@@ -99,7 +99,7 @@ export default function Setting({ navigation, route }) {
             <Text style={ButtonStyles.p_button_text}>Delete Account</Text>
           </Pressable>
           <Pressable
-            style={styles.s_button}
+            style={[styles.s_button, { marginBottom: 0 }]}
             onPress={() =>
               Alert.alert("Are you sure you want to Log Out?", null, [
                 {
@@ -125,7 +125,20 @@ export default function Setting({ navigation, route }) {
           allowMomentum={true}
           ref={(c) => (elementRef.current = c)}
         >
-          <AdminSlideUpCard elementRef={elementRef} />
+          {(dragHandler) => (
+            <View style={[UniversalStyles.col_f_e, { paddingTop: 10 }]}>
+              <View style={[UniversalStyles.col_wbg_p20, { paddingTop: 5 }]}>
+                <View
+                  style={UniversalStyles.card_drag_container}
+                  {...dragHandler}
+                >
+                  <View style={UniversalStyles.card_dragger} />
+                </View>
+
+                <AdminSlideUpCard elementRef={elementRef} />
+              </View>
+            </View>
+          )}
         </SlidingUpPanel>
       </ImageBackground>
     </View>
