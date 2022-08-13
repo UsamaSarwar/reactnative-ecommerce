@@ -73,10 +73,9 @@ export default function Homescreen({ navigation, route }) {
           style={universalStyles.background_image}
         >
           <HomeHeader navigation={navigation} />
+          {admin ? <Stats /> : null}
 
           {searchText === "" ? <Category /> : null}
-
-          {admin ? <Stats /> : null}
 
           <ProductItem navigation={navigation} elementRef={elementRef} />
 

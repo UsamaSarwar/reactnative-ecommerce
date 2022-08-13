@@ -2,7 +2,7 @@
 import React from "react";
 
 //React Components
-import { View, Text } from "react-native";
+import { View, Text, Pressable } from "react-native";
 import Icon from "react-native-vector-icons/AntDesign";
 
 //Animation-Component
@@ -28,7 +28,17 @@ export default function Footer({ navigation, route, elementRef }) {
   };
 
   const adminPanel = () => {
-    return <Icon name="plus" size={30} onPress={() => renderSlide()} />;
+    return (
+      <Pressable
+        onPress={() => renderSlide()}
+        style={{
+          backgroundColor: "#42C88F",
+          borderRadius: 10,
+        }}
+      >
+        <Icon name="plus" size={30} color={"white"} />
+      </Pressable>
+    );
   };
 
   const cartCount = () => {

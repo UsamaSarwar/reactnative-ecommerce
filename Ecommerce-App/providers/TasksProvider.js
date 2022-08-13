@@ -15,6 +15,19 @@ const TasksProvider = ({ children }) => {
 
   const [categoryFilter, setCategoryFilter] = useState("All");
 
+  // const categoryDict = {
+  // "Accessories":"Accessories",
+  // "Casings",
+  // "Consoles",
+  // "Displays",
+  // "Earphones",
+  // "Headphones",
+  // "Keyboards",
+  // "Laptops",
+  // "Mouse",
+  // "Smartphones",
+  // "Webcams",}
+
   // Use a Ref to store the realm rather than the state because it is not
   // directly rendered, so updating it should not trigger a re-render as using
   // state would.
