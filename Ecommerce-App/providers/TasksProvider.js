@@ -66,8 +66,10 @@ const TasksProvider = ({ children }) => {
       let products = projectRealm.objects("Task");
 
       if (categoryFilter !== "All") {
-        products = products.filtered("category == $0", categoryFilter);
-      } else products = projectRealm.objects("Task");
+        products = products
+          .filtered("category == $0", categoryFilter)
+          .sorted("name");
+      } else products = projectRealm.objects("Task").sorted("name");
       setTasks([...products]);
     }
   }, [categoryFilter]);

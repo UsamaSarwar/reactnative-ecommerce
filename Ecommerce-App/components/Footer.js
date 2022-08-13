@@ -57,7 +57,11 @@ export default function Footer({ navigation, route, elementRef }) {
         <Icon
           name="shoppingcart"
           size={30}
-          color={route.name === "Cart" ? "black" : "grey"}
+          color={
+            route.name === "Cart" || route.name === "Checkout"
+              ? "black"
+              : "grey"
+          }
           onPress={() => navigation.navigate("Cart")}
         />
       </Animatable.View>

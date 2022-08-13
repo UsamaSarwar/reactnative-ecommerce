@@ -2,7 +2,7 @@
 import React from "react";
 
 //React Components
-import { Text, Pressable, FlatList } from "react-native";
+import { Text, Pressable, FlatList, View } from "react-native";
 
 //Providers
 import { useTasks } from "../providers/TasksProvider.js";
@@ -17,32 +17,35 @@ export default function Category() {
   };
 
   return (
-    <FlatList
-      data={category}
-      horizontal={true}
-      showsHorizontalScrollIndicator={false}
-      style={{ margin: 10 }}
-      renderItem={({ item }) => (
-        <Pressable
-          style={{
-            backgroundColor: categoryFilter === item ? "#42C88F" : "#f6f8f9",
-            marginRight: 10,
-            alignItems: "center",
-            borderRadius: 20,
-            padding: 10,
-          }}
-          onPress={() => onPressCategory(item)}
-        >
-          <Text
+    <View>
+      <FlatList
+        data={category}
+        horizontal={true}
+        showsHorizontalScrollIndicator={false}
+        style={{ margin: 10 }}
+        renderItem={({ item }) => (
+          <Pressable
             style={{
-              height: 30,
-              color: categoryFilter === item ? "white" : "grey",
+              backgroundColor: categoryFilter === item ? "#42C88F" : "#f6f8f9",
+              marginRight: 10,
+              alignItems: "center",
+              borderRadius: 20,
+              padding: 10,
             }}
+            onPress={() => onPressCategory(item)}
           >
-            {item}
-          </Text>
-        </Pressable>
-      )}
-    />
+            <Text
+              style={{
+                textAlignVertical: "center",
+                textAlign: "center",
+                color: categoryFilter === item ? "white" : "grey",
+              }}
+            >
+              {item}
+            </Text>
+          </Pressable>
+        )}
+      />
+    </View>
   );
 }
