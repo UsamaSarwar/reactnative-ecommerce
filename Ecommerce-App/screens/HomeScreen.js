@@ -1,5 +1,5 @@
 //React
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 
 //React Components
 import {
@@ -73,6 +73,7 @@ export default function Homescreen({ navigation, route }) {
           style={universalStyles.background_image}
         >
           <HomeHeader navigation={navigation} />
+
           {admin ? <Stats /> : null}
 
           {searchText === "" ? <Category /> : null}
@@ -90,10 +91,22 @@ export default function Homescreen({ navigation, route }) {
             allowMomentum={true}
             ref={(c) => (elementRef.current = c)}
           >
-            {admin ? (
-              <AdminSlideUpCard elementRef={elementRef} />
-            ) : (
-              <UserSlideUpCard elementRef={elementRef} />
+            {(dragHandler) => (
+              <View style={[universalStyles.col_f_e, { paddingTop: 10 }]}>
+                <View style={[universalStyles.col_wbg_p20, { paddingTop: 5 }]}>
+                  <View
+                    style={universalStyles.card_drag_container}
+                    {...dragHandler}
+                  >
+                    <View style={universalStyles.card_dragger} />
+                  </View>
+                  {admin ? (
+                    <AdminSlideUpCard elementRef={elementRef} />
+                  ) : (
+                    <UserSlideUpCard elementRef={elementRef} />
+                  )}
+                </View>
+              </View>
             )}
           </SlidingUpPanel>
         </ImageBackground>

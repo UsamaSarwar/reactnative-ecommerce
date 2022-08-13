@@ -104,6 +104,19 @@ export default universalStyles = StyleSheet.create({
     // flex: 0.85,
   },
 
+  card_drag_container: {
+    alignItems: "center",
+    justifyContent: "flex-start",
+    height: 20,
+  },
+
+  card_dragger: {
+    height: 4,
+    backgroundColor: "#AAAAAA",
+    borderRadius: 20,
+    width: "60%",
+  },
+
   row_f1_sb_c: {
     flex: 1,
     flexDirection: "row",
