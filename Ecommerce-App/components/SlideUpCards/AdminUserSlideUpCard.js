@@ -47,19 +47,19 @@ export default function AdminSlideUpCard({ elementRef }) {
 
   //Dropdown
   const [open, setOpen] = useState(false);
-  // const [value, setValue] = useState(null);
   const [items, setItems] = useState([
     { label: "Accessory", value: "accessory" },
     { label: "Casing", value: "casing" },
-    { label: "Camera/Webcam", value: "webcam" },
+    { label: "Camera", value: "camera" },
     { label: "Console", value: "console" },
     { label: "Display", value: "display" },
-    { label: "Earphones/Headphones", value: "earphones" },
+    { label: "Earphones", value: "earphone" },
+    { label: "Headphone", value: "headphone" },
     { label: "Keyboard", value: "Keyboard" },
     { label: "Laptop", value: "laptop" },
     { label: "Mouse", value: "mouse" },
     { label: "Smartphone", value: "smartphone" },
-    { label: "Banana", value: "banana" },
+    { label: "Webcam", value: "webacam" },
   ]);
 
   useEffect(() => {
