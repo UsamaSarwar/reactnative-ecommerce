@@ -5,7 +5,6 @@ import { SafeAreaView, View, ImageBackground, Image } from "react-native";
 import SlidingUpPanel from "rn-sliding-up-panel";
 
 //Providers
-import { useAuth } from "../providers/AuthProvider.js";
 import { useTasks } from "../providers/TasksProvider.js";
 import { useGlobal } from "../providers/GlobalProvider.js";
 
@@ -17,7 +16,6 @@ import CartSlideUpCard from "../components/SlideUpCards/CartSlideUpCard.js";
 
 //Styles
 import UniversalStyles from "../styles/UniversalStyles.js";
-import { Icon } from "react-native-elements";
 
 export default function Cart({ navigation, route }) {
   const { shoppingCart, cartDetails } = useTasks();

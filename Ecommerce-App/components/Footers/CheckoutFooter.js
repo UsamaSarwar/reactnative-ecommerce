@@ -10,9 +10,6 @@ import { useAuth } from "../../providers/AuthProvider.js";
 import { useTasks } from "../../providers/TasksProvider.js";
 import { useOrder } from "../../providers/OrderProvider.js";
 
-//Icons
-import IonIcon from "react-native-vector-icons/Ionicons";
-
 //Styles
 import UniversalStyles from "../../styles/UniversalStyles.js";
 import ButtonStyles from "../../styles/ButtonStyles.js";

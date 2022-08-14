@@ -1,5 +1,5 @@
 //React
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 //React Components
 import { Text, View, Pressable, Image, FlatList } from "react-native";
@@ -11,8 +11,6 @@ import { useGlobal } from "../../providers/GlobalProvider";
 
 //Styles
 import universalStyles from "../../styles/UniversalStyles";
-import productCardStyles from "../../styles/ProductCardStyle";
-import IconStyles from "../../styles/IconStyles";
 
 export default function CheckoutItem({ elementRef }) {
   const { shoppingCart } = useTasks();

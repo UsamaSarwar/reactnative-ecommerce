@@ -1,6 +1,7 @@
 //React Components
-import React, { useState, useRef } from "react";
+import React, { useEffect, useRef, useReducer } from "react";
 import {
+  Alert,
   Text,
   View,
   TextInput,
@@ -8,127 +9,148 @@ import {
   SafeAreaView,
   Pressable,
   ImageBackground,
-  Alert,
   Image,
 } from "react-native";
-
-//Icon Component
 import Icon from "react-native-vector-icons/AntDesign";
 import IonIcon from "react-native-vector-icons/Ionicons";
-
-//Image Picker Component
 import ImagePicker from "react-native-image-crop-picker";
-
-//Animation-Component
 import * as Animatable from "react-native-animatable";
-
-//Styles
-import universalStyles from "../styles/UniversalStyles";
-import inputStyles from "../styles/InputStyles";
-import IconStyles from "../styles/IconStyles.js";
-import UniversalStyles from "../styles/UniversalStyles.js";
 
 //Provides
 import { useAuth } from "../providers/AuthProvider.js";
 
-export default function OrderDetails({ navigation }) {
-  const { updateUserDetails, personalDetails, updateAvatar } = useAuth();
+//Styles
+import UniversalStyles from "../styles/UniversalStyles";
+import inputStyles from "../styles/InputStyles";
+import IconStyles from "../styles/IconStyles.js";
+import ButtonStyles from "../styles/ButtonStyles.js";
 
-  const [nameError, setNameError] = useState(false);
-  const [phoneNumberError, setPhoneNumberError] = useState(false);
-  const [countryError, setCountryError] = useState(false);
-  const [provinceError, setProvinceError] = useState(false);
-  const [cityError, setCityError] = useState(false);
-  const [addressError, setAddressError] = useState(false);
-  const [postalCodeError, setPostalCodeError] = useState(false);
+const initStates = {
+  name: "",
+  userName: "",
+  address: "",
+  postalCode: "",
+  phoneNumber: "",
+  altPhoneNumber: "",
+  city: "",
+  province: "",
+  country: "",
 
-  const [name, setName] = useState(personalDetails.name);
-  const [userName, setUserName] = useState(personalDetails.userName);
-  const [phoneNumber, setPhoneNumber] = useState(personalDetails.phoneNumber);
-  const [altPhoneNumber, setAltPhoneNumber] = useState(
-    personalDetails.altPhoneNumber
-  );
-  const [country, setCountry] = useState(personalDetails.country);
-  const [province, setProvince] = useState(personalDetails.province);
-  const [city, setCity] = useState(personalDetails.city);
-  const [address, setAddress] = useState(personalDetails.address);
-  const [postalCode, setPostalCode] = useState(personalDetails.postalCode);
+  nameError: false,
+  userNameError: false,
+  addressError: false,
+  postalCodeError: false,
+  phoneNumberError: false,
+  cityError: false,
+  provinceError: false,
+  countryError: false,
+};
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "NAME":
+      return { ...state, name: action.payload, nameError: false };
+    case "NAME_ERR":
+      return { ...state, nameError: true };
+    case "USERNAME":
+      return { ...state, userName: action.payload };
+    case "ADDRESS":
+      return { ...state, address: action.payload, addressError: false };
+    case "ADDRESS_ERR":
+      return { ...state, addressError: true };
+    case "POSTALCODE":
+      return { ...state, postalCode: action.payload, postalCodeError: false };
+    case "POSTALCODE_ERR":
+      return { ...state, postalCodeError: true };
+    case "PHONE":
+      return { ...state, phoneNumber: action.payload, phoneNumberError: false };
+    case "PHONE_ERR":
+      return { ...state, phoneNumberError: true };
+    case "ALTPHONE":
+      return { ...state, altPhoneNumber: action.payload };
+    case "CITY":
+      return { ...state, city: action.payload, cityError: false };
+    case "CITY_ERR":
+      return { ...state, cityError: true };
+    case "PROVINCE":
+      return { ...state, province: action.payload, provinceError: false };
+    case "PROVINCE_ERR":
+      return { ...state, provinceError: true };
+    case "COUNTRY":
+      return { ...state, country: action.payload, countryError: false };
+    case "COUNTRY_ERR":
+      return { ...state, countryError: true };
+
+    default:
+      return state;
+  }
+};
+
+export default function PersonalDetails({ navigation }) {
+  const { personalDetails, updateUserDetails, updateAvatar } = useAuth();
+
+  const [state, dispatch] = useReducer(reducer, initStates);
 
   const animationTime = 800;
+
   const elementRef = useRef();
-  const [updatePressed, setUpdatePressed] = useState(false);
+
+  useEffect(() => {
+    dispatch({ type: "NAME", payload: personalDetails.name });
+    dispatch({ type: "USERNAME", payload: personalDetails.userName });
+    dispatch({ type: "ADDRESS", payload: personalDetails.address });
+    dispatch({ type: "POSTALCODE", payload: personalDetails.postalCode });
+    dispatch({ type: "PHONE", payload: personalDetails.phoneNumber });
+    dispatch({ type: "ALTPHONE", payload: personalDetails.altPhoneNumber });
+    dispatch({ type: "CITY", payload: personalDetails.city });
+    dispatch({ type: "PROVINCE", payload: personalDetails.province });
+    dispatch({ type: "COUNTRY", payload: personalDetails.country });
+  }, []);
 
   const onPressUpdate = () => {
-    setUpdatePressed(true);
-    elementRef.updateButton.bounceIn(animationTime);
+    // elementRef.updateButton.bounceIn(animationTime);
     setTimeout(() => {
       if (
-        name === "" ||
-        userName === "" ||
-        phoneNumber === "" ||
-        country === "" ||
-        province === "" ||
-        city === "" ||
-        address === "" ||
-        postalCode === ""
+        state.name === "" ||
+        state.userName === "" ||
+        state.phoneNumber === "" ||
+        state.country === "" ||
+        state.province === "" ||
+        state.city === "" ||
+        state.address === "" ||
+        state.postalCode === ""
       ) {
-        if (name === "") {
-          setNameError(true);
+        if (state.name === "") {
+          dispatch({ type: "NAME_ERR" });
           console.log("Name field has zero length");
-        } else {
-          setNameError(false);
         }
-        if (phoneNumber === "") {
-          setPhoneNumberError(true);
+        if (state.phoneNumber === "") {
+          dispatch({ type: "PHONE_ERR" });
           console.log("Phone Number field has zero length");
-        } else {
-          setPhoneNumberError(false);
         }
-        if (country === "") {
-          setCountryError(true);
+        if (state.country === "") {
+          dispatch({ type: "COUNTRY_ERR" });
           console.log("Country field has zero length");
-        } else {
-          setCountryError(false);
         }
-        if (province === "") {
-          setProvinceError(true);
+        if (state.province === "") {
+          dispatch({ type: "PROVINCE_ERR" });
           console.log("Province field has zero length");
-        } else {
-          setProvinceError(false);
         }
-        if (address === "") {
-          setAddressError(true);
+        if (state.address === "") {
+          dispatch({ type: "ADDRESS_ERR" });
           console.log("Province field has zero length");
-        } else {
-          setAddressError(false);
         }
-        if (city === "") {
-          setCityError(true);
+        if (state.city === "") {
+          dispatch({ type: "CITY_ERR" });
           console.log("Province field has zero length");
-        } else {
-          setCityError(false);
         }
-        if (postalCode === "") {
-          setPostalCodeError(true);
+        if (state.postalCode === "") {
+          dispatch({ type: "POSTALCODE_ERR" });
           console.log("Province field has zero length");
-        } else {
-          setPostalCodeError(false);
         }
       } else {
         try {
-          updateUserDetails(
-            name,
-            userName,
-            phoneNumber,
-            altPhoneNumber,
-            country,
-            city,
-            province,
-            address,
-            postalCode
-          );
-          setUpdatePressed(false);
-          navigation.goBack();
+          updateUserDetails(state);
         } catch (error) {
           Alert.alert(`error.message`);
         }
@@ -142,229 +164,177 @@ export default function OrderDetails({ navigation }) {
       height: 150,
       cropping: true,
       includeBase64: true,
-    }).then((image) => {
-      updateAvatar(image.data, image.mime);
-    });
+    }).then((image) => updateAvatar(image.data, image.mime));
 
   return (
-    <View style={universalStyles.page_container}>
-      <ImageBackground
-        source={require("../assets/home.jpeg")}
-        resizeMode="cover"
-        style={universalStyles.background_image}
-      >
-        <View style={[UniversalStyles.header]}>
-          <IonIcon
-            name="arrow-back-circle-outline"
-            size={28}
-            color="red"
-            onPress={() => navigation.goBack()}
-          />
-          <Text style={{ fontSize: 23 }}>Personal Details</Text>
-        </View>
-        <ScrollView>
-          <View style={universalStyles.avatar_container_settings_page}>
-            <Image
-              source={{
-                uri: `data:${personalDetails.imageForm};base64,${personalDetails.image}`,
-              }}
-              style={productCardStyles.avatarImage}
-            />
-            <View
+    <SafeAreaView style={UniversalStyles.page_container}>
+      <View style={UniversalStyles.page_container}>
+        <ImageBackground
+          source={require("../assets/home.jpeg")}
+          resizeMode="cover"
+          style={UniversalStyles.background_image}
+        >
+          <View style={UniversalStyles.header}>
+            <Pressable onPress={() => navigation.goBack()}>
+              <IonIcon name="arrow-back" size={30} color="grey" />
+            </Pressable>
+            <Animatable.View
+            // ref={(here) => {
+            //   elementRef[String(user._id) + "addToCartButton"] = here;
+            // }}
+            >
+              <Pressable
+                style={ButtonStyles.checkout_button}
+                onPress={() => onPressUpdate()}
+              >
+                <Text style={ButtonStyles.checkout_button_text}>Save</Text>
+              </Pressable>
+            </Animatable.View>
+          </View>
+
+          <ScrollView style={{ padding: 10 }}>
+            <View style={UniversalStyles.avatar_container_settings_page}>
+              <Image
+                source={{
+                  uri: `data:${personalDetails.imageForm};base64,${personalDetails.image}`,
+                }}
+                style={productCardStyles.avatarImage}
+              />
+              <Pressable
+                onPress={() => openImagePicker()}
+                style={[
+                  IconStyles.background3,
+                  { position: "absolute", right: "35%", top: "80%" },
+                ]}
+              >
+                <Icon name="edit" color={"#ffffff"} size={21} />
+              </Pressable>
+            </View>
+
+            {state.name === "" ? null : (
+              <Text style={{ marginBottom: 5 }}>Full Name</Text>
+            )}
+            <TextInput
+              defaultValue={state.name}
+              placeholder="Full Name"
               style={[
-                IconStyles.background3,
+                inputStyles.textInput,
                 {
-                  top: "85%",
-                  right: "35%",
-                  position: "absolute",
-                  alignSelf: "flex-end",
+                  backgroundColor: "#f6f8f9",
+                  borderColor: state.nameError ? "red" : "transparent",
                 },
               ]}
-            >
-              <Icon
-                name="edit"
-                color={"#ffffff"}
-                size={24}
-                onPress={() => openImagePicker()}
-              />
-            </View>
-          </View>
-          <View>
-            <View>
-              <Text style={{ marginLeft: 10 }}>
-                Full Name <Text style={{ color: "orange" }}>*</Text>
-              </Text>
-              <TextInput
-                defaultValue={personalDetails.name}
-                placeholder="Enter your Full Name"
-                style={[
-                  inputStyles.textInputUpdateDetails,
-                  { margin: 10, borderColor: nameError ? "red" : "black" },
-                ]}
-                onChangeText={(value) => {
-                  setName(value);
-                }}
-              ></TextInput>
-            </View>
-            <View>
-              <Text style={{ marginLeft: 10 }}>Username</Text>
-              <TextInput
-                defaultValue={
-                  personalDetails.userName ? personalDetails.userName : "User"
-                }
-                placeholder="Enter your UserName"
-                style={[inputStyles.textInputUpdateDetails, { margin: 10 }]}
-                onChangeText={(value) => {
-                  setUserName(value);
-                }}
-              ></TextInput>
-            </View>
-            <View>
-              <Text style={{ marginLeft: 10 }}>
-                Phone Number <Text style={{ color: "orange" }}>*</Text>
-              </Text>
-              <TextInput
-                defaultValue={personalDetails.phoneNumber}
-                placeholder="Enter your Phone Number"
-                onChangeText={(value) => {
-                  setPhoneNumber(value);
-                }}
-                style={[
-                  inputStyles.textInputUpdateDetails,
-                  {
-                    margin: 10,
-                    borderColor: phoneNumberError ? "red" : "black",
-                  },
-                ]}
-              ></TextInput>
-            </View>
-            <View>
-              <Text style={{ marginLeft: 10 }}>Alternate Phone Number</Text>
-              <TextInput
-                defaultValue={personalDetails.altPhoneNumber}
-                placeholder="Enter your Phone Number"
-                style={[inputStyles.textInputUpdateDetails, { margin: 10 }]}
-                onChangeText={(value) => {
-                  setAltPhoneNumber(value);
-                }}
-              ></TextInput>
-            </View>
-            <View>
-              <Text style={{ marginLeft: 10 }}>
-                Country<Text style={{ color: "orange" }}>*</Text>
-              </Text>
-              <TextInput
-                defaultValue={personalDetails.country}
-                placeholder="Enter your Country Name"
-                onChangeText={(value) => {
-                  setCountry(value);
-                }}
-                style={[
-                  inputStyles.textInputUpdateDetails,
-                  { margin: 10, borderColor: countryError ? "red" : "black" },
-                ]}
-              ></TextInput>
-            </View>
-            <View>
-              <Text style={{ marginLeft: 10 }}>
-                State/ Province<Text style={{ color: "orange" }}>*</Text>
-              </Text>
-              <TextInput
-                defaultValue={personalDetails.province}
-                placeholder="Enter your State/Province Name"
-                onChangeText={(value) => {
-                  setProvince(value);
-                }}
-                style={[
-                  inputStyles.textInputUpdateDetails,
-                  {
-                    margin: 10,
-                    borderColor: provinceError ? "red" : "black",
-                  },
-                ]}
-              ></TextInput>
-            </View>
-            <View>
-              <Text style={{ marginLeft: 10 }}>
-                City<Text style={{ color: "orange" }}>*</Text>
-              </Text>
-              <TextInput
-                defaultValue={personalDetails.city}
-                placeholder="Enter your City Name"
-                style={[
-                  inputStyles.textInputUpdateDetails,
-                  { margin: 10, borderColor: cityError ? "red" : "black" },
-                ]}
-                onChangeText={(value) => {
-                  setCity(value);
-                }}
-              ></TextInput>
-            </View>
-            <View>
-              <Text style={{ marginLeft: 10 }}>
-                Address Details<Text style={{ color: "orange" }}>*</Text>
-              </Text>
-              <TextInput
-                defaultValue={personalDetails.address}
-                placeholder="House#/ apartment# along with Area Name"
-                style={[
-                  inputStyles.textInputUpdateDetails,
-                  { margin: 10, borderColor: addressError ? "red" : "black" },
-                ]}
-                onChangeText={(value) => {
-                  setAddress(value);
-                }}
-              ></TextInput>
-            </View>
-            <View>
-              <Text style={{ marginLeft: 10 }}>
-                Postal Code<Text style={{ color: "orange" }}>*</Text>
-              </Text>
-              <TextInput
-                defaultValue={personalDetails.postalCode}
-                placeholder="Enter your Area's Postal Code"
-                style={[
-                  inputStyles.textInputUpdateDetails,
-                  {
-                    margin: 10,
-                    borderColor: postalCodeError ? "red" : "black",
-                  },
-                ]}
-                onChangeText={(value) => {
-                  setPostalCode(value);
-                }}
-              ></TextInput>
-            </View>
-          </View>
-        </ScrollView>
-        <View>
-          <Pressable
-            style={[
-              {
-                alignItems: "center",
-                justifyContent: "center",
-                height: 50,
-                backgroundColor: "#42C88F",
-              },
-            ]}
-            onPress={() => onPressUpdate()}
-          >
-            <Animatable.View
-              ref={(here) => {
-                elementRef["updateButton"] = here;
-              }}
-            >
-              {updatePressed ? (
-                <Icon name="check" size={28} color="white" />
-              ) : (
-                <Text style={[styles.s_button_text, { color: "white" }]}>
-                  Update
-                </Text>
-              )}
-            </Animatable.View>
-          </Pressable>
-        </View>
-      </ImageBackground>
-    </View>
+              onChangeText={(text) => dispatch({ type: "NAME", payload: text })}
+            />
+
+            {state.userName === "" ? null : (
+              <Text style={{ marginBottom: 5 }}>User Name</Text>
+            )}
+            <TextInput
+              defaultValue={state.userName}
+              placeholder="User Name"
+              style={[
+                inputStyles.textInput,
+                {
+                  backgroundColor: "#f6f8f9",
+                  borderColor: "transparent",
+                },
+              ]}
+              onChangeText={(text) =>
+                dispatch({ type: "USERNAME", payload: text })
+              }
+            />
+
+            {state.phoneNumber === "" ? null : (
+              <Text style={{ marginBottom: 5 }}>Phone Number</Text>
+            )}
+            <TextInput
+              defaultValue={state.phoneNumber}
+              placeholder="Phone Number"
+              style={[
+                inputStyles.textInput,
+                {
+                  backgroundColor: "#f6f8f9",
+                  borderColor: state.phoneNumberError ? "red" : "transparent",
+                },
+              ]}
+              onChangeText={(text) =>
+                dispatch({ type: "PHONE", payload: text })
+              }
+            />
+
+            {state.altPhoneNumber === "" ? null : (
+              <Text style={{ marginBottom: 5 }}>Alternate Phone Number</Text>
+            )}
+            <TextInput
+              defaultValue={state.altPhoneNumber}
+              placeholder="Alternate Phone Number"
+              style={[
+                inputStyles.textInput,
+                {
+                  backgroundColor: "#f6f8f9",
+                  borderColor: "transparent",
+                },
+              ]}
+              onChangeText={(text) =>
+                dispatch({ type: "ALTPHONE", payload: text })
+              }
+            />
+
+            {state.province === "" ? null : (
+              <Text style={{ marginBottom: 5 }}>Province/Sate</Text>
+            )}
+            <TextInput
+              defaultValue={state.province}
+              placeholder="Provice/Sate"
+              style={[
+                inputStyles.textInput,
+                {
+                  backgroundColor: "#f6f8f9",
+                  borderColor: state.provinceError ? "red" : "transparent",
+                },
+              ]}
+              onChangeText={(text) =>
+                dispatch({ type: "PROVINCE", payload: text })
+              }
+            />
+
+            {state.city === "" ? null : (
+              <Text style={{ marginBottom: 5 }}>City</Text>
+            )}
+            <TextInput
+              defaultValue={state.city}
+              placeholder="City"
+              style={[
+                inputStyles.textInput,
+                {
+                  backgroundColor: "#f6f8f9",
+                  borderColor: state.cityError ? "red" : "transparent",
+                },
+              ]}
+              onChangeText={(text) => dispatch({ type: "CITY", payload: text })}
+            />
+
+            {state.country === "" ? null : (
+              <Text style={{ marginBottom: 5 }}>Country</Text>
+            )}
+            <TextInput
+              defaultValue={state.country}
+              placeholder="Country"
+              style={[
+                inputStyles.textInput,
+                {
+                  backgroundColor: "#f6f8f9",
+                  borderColor: state.countryError ? "red" : "transparent",
+                },
+              ]}
+              onChangeText={(text) =>
+                dispatch({ type: "Country", payload: text })
+              }
+            />
+          </ScrollView>
+        </ImageBackground>
+      </View>
+    </SafeAreaView>
   );
 }

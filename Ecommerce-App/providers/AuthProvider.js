@@ -132,7 +132,6 @@ const AuthProvider = ({ children }) => {
       password,
     });
     console.log("user signed up");
-    // signIn(email, password);
   };
 
   const addToUserCart = (itemId, qty) => {
@@ -185,7 +184,6 @@ const AuthProvider = ({ children }) => {
     for (let i = 0; i < userCart.length; i++) {
       removeFromUserCart(userCart[i]["productId"]);
     }
-
     setUserCart([]);
   };
 
@@ -217,30 +215,20 @@ const AuthProvider = ({ children }) => {
     });
   };
 
-  const updateUserDetails = (
-    fullName,
-    userName,
-    phoneNumber,
-    altPhoneNumber,
-    country,
-    city,
-    province,
-    addressDetails,
-    postalCode
-  ) => {
+  const updateUserDetails = (state) => {
     console.log("Updating user details");
     const userRealm = realmRef.current;
     const user = userRealm.objects("User")[0];
     userRealm.write(() => {
-      user.details["name"] = fullName;
-      user.details["userName"] = userName;
-      user.details["phoneNumber"] = phoneNumber;
-      user.details["altPhoneNumber"] = altPhoneNumber;
-      user.details["country"] = country;
-      user.details["province"] = province;
-      user.details["city"] = city;
-      user.details["address"] = addressDetails;
-      user.details["postalCode"] = postalCode;
+      user.details["name"] = state.name;
+      user.details["userName"] = state.userName;
+      user.details["phoneNumber"] = state.phoneNumber;
+      user.details["altPhoneNumber"] = state.altPhoneNumber;
+      user.details["country"] = state.country;
+      user.details["province"] = state.province;
+      user.details["city"] = state.city;
+      user.details["address"] = state.addressDetails;
+      user.details["postalCode"] = state.postalCode;
     });
   };
 
