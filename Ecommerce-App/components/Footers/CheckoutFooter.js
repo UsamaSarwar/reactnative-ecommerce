@@ -18,7 +18,7 @@ import UniversalStyles from "../../styles/UniversalStyles.js";
 import ButtonStyles from "../../styles/ButtonStyles.js";
 
 export default function CheckoutFooter({ navigation }) {
-  const { user } = useAuth();
+  const { user, emptyUserCart } = useAuth();
   const { cartTotal } = useTasks();
   const { createOrder, orders } = useOrder();
 
@@ -35,12 +35,10 @@ export default function CheckoutFooter({ navigation }) {
       user.customData.details.postalCode === ""
     ) {
       setDetailsError(true);
-    } else {
-      setDetailsError(false);
-    }
-    if (!detailsError) {
+    } else if (!detailsError) {
       try {
         createOrder(user.customData["_id"], orders.length + 1, "COD");
+        emptyUserCart();
         Alert.alert("Order Placed");
         navigation.navigate("Homescreen");
       } catch (error) {

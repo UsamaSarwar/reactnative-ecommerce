@@ -179,6 +179,16 @@ const AuthProvider = ({ children }) => {
     setUserCart([...cart]);
   };
 
+  const emptyUserCart = () => {
+    console.log("Emptying cart");
+
+    for (let i = 0; i < userCart.length; i++) {
+      removeFromUserCart(userCart[i]["productId"]);
+    }
+
+    setUserCart([]);
+  };
+
   const updateQuantity = (itemId, bool) => {
     console.log("Updating Item quantity");
 
@@ -245,6 +255,7 @@ const AuthProvider = ({ children }) => {
         passResetEmail,
         addToUserCart,
         removeFromUserCart,
+        emptyUserCart,
         updateQuantity,
         updateAvatar,
         updateUserDetails,
