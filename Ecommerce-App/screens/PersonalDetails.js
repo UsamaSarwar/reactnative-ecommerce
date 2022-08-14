@@ -167,7 +167,7 @@ export default function PersonalDetails({ navigation }) {
         try {
           updateUserDetails(state);
         } catch (error) {
-          Alert.alert(`error.message`);
+          Alert.alert(error.message);
         }
       }
     }, animationTime);
