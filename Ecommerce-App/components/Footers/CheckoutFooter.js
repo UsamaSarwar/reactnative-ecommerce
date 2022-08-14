@@ -1,14 +1,15 @@
 //React
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 
 //React Components
-import { View, Text, Pressable } from "react-native";
+import { View, Text, Pressable, Alert } from "react-native";
 import NumberFormat from "react-number-format";
 
 //Providers
 import { useAuth } from "../../providers/AuthProvider.js";
 import { useTasks } from "../../providers/TasksProvider.js";
 import { useOrder } from "../../providers/OrderProvider.js";
+import { useGlobal } from "../../providers/GlobalProvider.js";
 
 //Styles
 import UniversalStyles from "../../styles/UniversalStyles.js";
@@ -18,23 +19,12 @@ export default function CheckoutFooter({ navigation }) {
   const { user, personalDetails, emptyUserCart } = useAuth();
   const { cartTotal } = useTasks();
   const { createOrder, orders } = useOrder();
+  const { detailsError, setDetailsError } = useGlobal();
 
-  const [detailsError, setDetailsError] = useState(false);
-
-  const onPressOrder = () => {
-    if (
-      personalDetails.name === "" ||
-      personalDetails.phoneNumber === "" ||
-      personalDetails.country === "" ||
-      personalDetails.province === "" ||
-      personalDetails.city === "" ||
-      personalDetails.address === "" ||
-      personalDetails.postalCode === ""
-    ) {
-      setDetailsError(true);
-    } else if (!detailsError) {
+  const onPressOrder = async () => {
+    if (!detailsError) {
       try {
-        createOrder(user.customData["_id"], orders.length + 1, "COD");
+        await createOrder(user.customData["_id"], orders.length + 1, "COD");
         emptyUserCart();
         Alert.alert("Order Placed");
         navigation.navigate("Homescreen");
@@ -62,7 +52,9 @@ export default function CheckoutFooter({ navigation }) {
             ? ButtonStyles.checkout_button_dis
             : ButtonStyles.checkout_button
         }
-        onPress={() => onPressOrder()}
+        onPress={() => {
+          onPressOrder();
+        }}
       >
         <Text
           style={

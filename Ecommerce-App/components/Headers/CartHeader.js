@@ -1,5 +1,5 @@
 //React
-import React from "react";
+import React, { useEffect } from "react";
 
 //React Components
 import { View, Text, Pressable } from "react-native";
@@ -7,6 +7,8 @@ import NumberFormat from "react-number-format";
 
 //Providers
 import { useTasks } from "../../providers/TasksProvider.js";
+import { useGlobal } from "../../providers/GlobalProvider.js";
+import { useAuth } from "../../providers/AuthProvider.js";
 
 //Icons
 import IonIcon from "react-native-vector-icons/Ionicons";
@@ -16,7 +18,31 @@ import UniversalStyles from "../../styles/UniversalStyles.js";
 import ButtonStyles from "../../styles/ButtonStyles.js";
 
 export default function CartHeader({ navigation }) {
+  const { personalDetails } = useAuth();
   const { cartTotal } = useTasks();
+  const { detailsError, setDetailsError } = useGlobal();
+
+  useEffect(() => {
+    if (detailsError) {
+      setDetailsError(true);
+    }
+  });
+  const checkDetailsError = async () => {
+    if (
+      personalDetails.name === null ||
+      personalDetails.phoneNumber === null ||
+      personalDetails.country === null ||
+      personalDetails.province === null ||
+      personalDetails.city === null ||
+      personalDetails.address === null ||
+      personalDetails.postalCode === null
+    ) {
+      await setDetailsError(true);
+      console.log(detailsError);
+    } else {
+      await setDetailsError(false);
+    }
+  };
 
   return (
     <View style={UniversalStyles.header}>
@@ -38,7 +64,10 @@ export default function CartHeader({ navigation }) {
             : ButtonStyles.checkout_button
         }
         disabled={cartTotal === 0 ? true : false}
-        onPress={() => navigation.navigate("Checkout")}
+        onPress={() => {
+          checkDetailsError();
+          navigation.navigate("Checkout");
+        }}
       >
         <Text
           style={[

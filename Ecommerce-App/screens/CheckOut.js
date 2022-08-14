@@ -11,6 +11,7 @@ import Icon from "react-native-vector-icons/AntDesign";
 import IonIcon from "react-native-vector-icons/Ionicons";
 
 import { useAuth } from "../providers/AuthProvider.js";
+import { useGlobal } from "../providers/GlobalProvider.js";
 
 import CheckoutHeader from "../components/Headers/CheckoutHeader.js";
 import CheckoutItem from "../components/Items/CheckoutItem.js";
@@ -21,6 +22,7 @@ import IconStyles from "../styles/IconStyles.js";
 
 export default function Checkout({ navigation }) {
   const { personalDetails } = useAuth();
+  const { detailsError } = useGlobal();
 
   const [payMethod, setPayMethod] = useState(false);
 
@@ -45,7 +47,13 @@ export default function Checkout({ navigation }) {
                 Shipping Details
               </Text>
               <Pressable
-                style={[IconStyles.background3, { marginLeft: 5 }]}
+                style={[
+                  IconStyles.background3,
+                  {
+                    marginLeft: 5,
+                    backgroundColor: detailsError ? "red" : "#42C88F",
+                  },
+                ]}
                 onPress={() => navigation.navigate("Personaldetails")}
               >
                 <Icon name="edit" size={18} color={"white"} />

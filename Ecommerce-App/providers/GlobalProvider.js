@@ -16,6 +16,8 @@ const GlobalProvider = ({ children }) => {
 
   const [cartUpdate, setCartUpdate] = useState(false);
 
+  const [detailsError, setDetailsError] = useState(false);
+
   //Searchbar on Homescreen
   const [searchText, setSearchText] = useState("");
 
@@ -58,6 +60,8 @@ const GlobalProvider = ({ children }) => {
         searchText,
         setSearchText,
         category,
+        setDetailsError,
+        detailsError,
       }}
     >
       {children}

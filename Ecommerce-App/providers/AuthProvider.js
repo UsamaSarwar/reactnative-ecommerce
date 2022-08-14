@@ -132,6 +132,7 @@ const AuthProvider = ({ children }) => {
       password,
     });
     console.log("user signed up");
+    checkDetailsError();
   };
 
   const addToUserCart = (itemId, qty) => {

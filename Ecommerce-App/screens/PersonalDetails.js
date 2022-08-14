@@ -288,6 +288,7 @@ export default function PersonalDetails({ navigation }) {
               />
 
               <TextInput
+                keyboardType="numeric"
                 defaultValue={state.phoneNumber}
                 placeholder="Phone Number"
                 style={[
@@ -335,6 +336,7 @@ export default function PersonalDetails({ navigation }) {
               />
 
               <TextInput
+                keyboardType="numeric"
                 defaultValue={state.altPhoneNumber}
                 placeholder="Alternate Phone Number"
                 style={[
@@ -412,6 +414,44 @@ export default function PersonalDetails({ navigation }) {
                   }
                 />
               </View>
+            </View>
+            <View style={{ flex: 1, marginLeft: 5 }}>
+              {state.address === "" ? null : (
+                <Text style={{ marginBottom: 5 }}>Address Details</Text>
+              )}
+              <TextInput
+                defaultValue={state.address}
+                placeholder="Address Details"
+                style={[
+                  inputStyles.textInput,
+                  {
+                    backgroundColor: "#f6f8f9",
+                    borderColor: state.addressError ? "red" : "transparent",
+                  },
+                ]}
+                onChangeText={(text) =>
+                  dispatch({ type: "Address", payload: text })
+                }
+              />
+            </View>
+            <View style={{ flex: 1, marginLeft: 5 }}>
+              {state.postalCode === "" ? null : (
+                <Text style={{ marginBottom: 5 }}>Postal Code</Text>
+              )}
+              <TextInput
+                defaultValue={state.postalCode}
+                placeholder="Postal Code of your area"
+                style={[
+                  inputStyles.textInput,
+                  {
+                    backgroundColor: "#f6f8f9",
+                    borderColor: state.postalCodeError ? "red" : "transparent",
+                  },
+                ]}
+                onChangeText={(text) =>
+                  dispatch({ type: "postalCode", payload: text })
+                }
+              />
             </View>
           </ScrollView>
         </ImageBackground>
