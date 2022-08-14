@@ -9,12 +9,12 @@ import Icon from "react-native-vector-icons/AntDesign";
 import * as Animatable from "react-native-animatable";
 
 //Providers
-import { useAuth } from "../providers/AuthProvider.js";
-import { useGlobal } from "../providers/GlobalProvider.js";
+import { useAuth } from "../../providers/AuthProvider.js";
+import { useGlobal } from "../../providers/GlobalProvider.js";
 
 //Styles
-import universalStyles from "../styles/UniversalStyles.js";
-import iconStyles from "../styles/IconStyles.js";
+import universalStyles from "../../styles/UniversalStyles.js";
+import iconStyles from "../../styles/IconStyles.js";
 
 export default function Footer({ navigation, route, elementRef }) {
   const { user, userCart } = useAuth();
@@ -63,38 +63,41 @@ export default function Footer({ navigation, route, elementRef }) {
   const userPanel = () => {
     return (
       <Animatable.View ref={(here) => (elementRef.cartIcon = here)}>
-        {userCart.length > 0 ? cartCount() : null}
-        <Icon
-          name="shoppingcart"
-          size={30}
-          color={
-            route.name === "Cart" || route.name === "Checkout"
-              ? "black"
-              : "grey"
-          }
-          onPress={() => navigation.navigate("Cart")}
-        />
+        <Pressable onPress={() => navigation.navigate("Cart")}>
+          {userCart.length > 0 ? cartCount() : null}
+          <Icon
+            name="shoppingcart"
+            size={30}
+            color={
+              route.name === "Cart" || route.name === "Checkout"
+                ? "black"
+                : "grey"
+            }
+          />
+        </Pressable>
       </Animatable.View>
     );
   };
 
   return (
     <View style={universalStyles.footer}>
-      <Icon
-        name="home"
-        size={30}
-        color={route.name === "Homescreen" ? "black" : "grey"}
-        onPress={() => navigation.navigate("Homescreen")}
-      />
+      <Pressable onPress={() => navigation.navigate("Homescreen")}>
+        <Icon
+          name="home"
+          size={30}
+          color={route.name === "Homescreen" ? "black" : "grey"}
+        />
+      </Pressable>
 
       {admin ? adminPanel() : userPanel()}
 
-      <Icon
-        name="user"
-        size={30}
-        color={route.name === "Setting" ? "black" : "grey"}
-        onPress={() => navigation.navigate("Setting")}
-      />
+      <Pressable onPress={() => navigation.navigate("Setting")}>
+        <Icon
+          name="user"
+          size={30}
+          color={route.name === "Setting" ? "black" : "grey"}
+        />
+      </Pressable>
     </View>
   );
 }

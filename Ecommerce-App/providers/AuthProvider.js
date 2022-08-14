@@ -135,13 +135,6 @@ const AuthProvider = ({ children }) => {
     // signIn(email, password);
   };
 
-  const setUsername = async (name) => {
-    const userRealm = realmRef.current;
-    const user = userRealm.objects("User")[0];
-
-    await userRealm.write(() => (user.name = name));
-  };
-
   const addToUserCart = (itemId, qty) => {
     console.log("Adding Item to cart");
 

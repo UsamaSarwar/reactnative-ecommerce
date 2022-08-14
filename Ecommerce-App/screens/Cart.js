@@ -11,7 +11,7 @@ import { useGlobal } from "../providers/GlobalProvider.js";
 //Components
 import CartHeader from "../components/Headers/CartHeader.js";
 import CarItem from "../components/Items/CartItem.js";
-import Footer from "../components/Footer.js";
+import Footer from "../components/Footers/Footer.js";
 import CartSlideUpCard from "../components/SlideUpCards/CartSlideUpCard.js";
 
 //Styles

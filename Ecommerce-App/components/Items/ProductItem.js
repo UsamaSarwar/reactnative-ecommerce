@@ -77,20 +77,18 @@ export default function ProductItem({ elementRef }) {
 
   const makeAddToCartButton = (item) => {
     return (
-      <View style={IconStyles.background3}>
-        <Animatable.View ref={(here) => (elementRef[item._id] = here)}>
-          <MatIcon
-            name="add-shopping-cart"
-            size={18}
-            color={"#FFFFFF"}
-            onPress={() => {
-              elementRef[item._id].rotate(1000);
-              elementRef.cartIcon.rubberBand(1000);
-              onPressAddtoCart(item);
-            }}
-          />
-        </Animatable.View>
-      </View>
+      <Animatable.View ref={(here) => (elementRef[item._id] = here)}>
+        <Pressable
+          style={IconStyles.background3}
+          onPress={() => {
+            elementRef[item._id].rotate(1000);
+            elementRef.cartIcon.rubberBand(1000);
+            onPressAddtoCart(item);
+          }}
+        >
+          <MatIcon name="add-shopping-cart" size={18} color={"#FFFFFF"} />
+        </Pressable>
+      </Animatable.View>
     );
   };
   const searchTasks = tasks.filter((item) => {

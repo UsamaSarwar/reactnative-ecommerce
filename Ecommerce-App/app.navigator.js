@@ -22,7 +22,7 @@ const Stack = createNativeStackNavigator();
 
 export default function AppNavigator() {
   const { user } = useAuth();
-  // console.log(user);
+
   if (user) {
     return (
       <TasksProvider user={user} projectPartition={`project=${user.id}`}>

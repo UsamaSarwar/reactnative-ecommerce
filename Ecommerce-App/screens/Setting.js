@@ -16,7 +16,7 @@ import SlidingUpPanel from "rn-sliding-up-panel";
 import styles from "../styles/Styles.js";
 import Updatepassword from "./UpdatePassword.js";
 import Deleteaccount from "./DeleteAccount.js";
-import Footer from "../components/Footer.js";
+import Footer from "../components/Footers/Footer.js";
 import AdminSlideUpCard from "../components/SlideUpCards/AdminUserSlideUpCard.js";
 
 import UniversalStyles from "../styles/UniversalStyles.js";

@@ -5,420 +5,141 @@ import {
   ImageBackground,
   Pressable,
   Image,
-  StyleSheet,
-  ScrollView,
-  Alert,
+  SafeAreaView,
 } from "react-native";
 import Icon from "react-native-vector-icons/AntDesign";
 import IonIcon from "react-native-vector-icons/Ionicons";
 
-import UniversalStyles from "../styles/UniversalStyles.js";
-import ButtonStyles from "../styles/ButtonStyles.js";
-
-import { useTasks } from "../providers/TasksProvider.js";
 import { useAuth } from "../providers/AuthProvider.js";
-import { useOrder } from "../providers/OrderProvider.js";
 
-import NumberFormat from "react-number-format";
+import CheckoutHeader from "../components/Headers/CheckoutHeader.js";
+import CheckoutItem from "../components/Items/CheckoutItem.js";
+import CheckoutFooter from "../components/Footers/CheckoutFooter.js";
 
-import Footer from "../components/Footer.js";
+import UniversalStyles from "../styles/UniversalStyles.js";
+import IconStyles from "../styles/IconStyles.js";
 
-export default function Setting({ navigation, route }) {
-  const { shoppingCart, cartTotal } = useTasks();
-  const { user, personalDetails, userCart } = useAuth();
-  const [payMethod, setPayMethod] = useState(true);
-  const elementRef = useRef();
-  const { createOrder, orders } = useOrder();
-  const [detailsError, setDetailsError] = useState(false);
+export default function Checkout({ navigation }) {
+  const { personalDetails } = useAuth();
 
-  const onPressOrder = () => {
-    if (
-      user.customData.details.name === "" ||
-      user.customData.details.phoneNumber === "" ||
-      user.customData.details.country === "" ||
-      user.customData.details.province === "" ||
-      user.customData.details.city === "" ||
-      user.customData.details.address === "" ||
-      user.customData.details.postalCode === ""
-    ) {
-      setDetailsError(true);
-    } else {
-      setDetailsError(false);
-    }
-    if (!detailsError) {
-      try {
-        createOrder(user.customData["_id"], orders.length + 1, "COD", userCart);
-        Alert.alert("Order Placed");
-        navigation.navigate("Homescreen");
-      } catch (error) {
-        console.error(error.message);
-      }
-    }
-  };
+  const [payMethod, setPayMethod] = useState(false);
 
   return (
-    <View style={UniversalStyles.page_container}>
-      <ImageBackground
-        source={require("../assets/home.jpeg")}
-        resizeMode="cover"
-        style={UniversalStyles.background_image}
-      >
-        <View style={UniversalStyles.header}>
-          <IonIcon
-            name="arrow-back-circle-outline"
-            size={28}
-            color="red"
-            onPress={() => navigation.goBack()}
-          />
-          <Text style={{ fontSize: 23 }}>Checkout</Text>
-        </View>
-        <ScrollView>
-          <View style={UniversalStyles.input_fields_container_1}>
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              <Text style={{ fontSize: 20 }}>Shipping Details</Text>
-              <View
-                style={{
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <Icon
-                  name="edit"
-                  color="#42C88F"
-                  size={24}
-                  onPress={() => {
-                    navigation.navigate("Personaldetails");
-                  }}
-                />
-              </View>
-            </View>
-            <View
-              style={{
-                borderBottomColor: "black",
-                borderBottomWidth: StyleSheet.hairlineWidth,
-              }}
-            />
-            <View>
-              <View
-                style={{
-                  marginTop: 10,
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                }}
-              >
-                <View style={{ flexDirection: "row" }}>
-                  <View style={{ marginRight: 5, justifyContent: "center" }}>
-                    <IonIcon
-                      name="location-outline"
-                      color="#42C88F"
-                      size={36}
-                    />
-                  </View>
-                  <View>
-                    <Text style={{ color: "grey", fontSize: 11 }}>
-                      Location
-                    </Text>
-                    <Text style={{ color: "black", fontSize: 15 }}>
-                      {personalDetails.city ? personalDetails.city : "-"} ,{" "}
-                      {personalDetails.province
-                        ? personalDetails.province
-                        : "-"}
-                      ,{" "}
-                      {personalDetails.country ? personalDetails.country : "-"}
-                    </Text>
-                  </View>
-                </View>
-                <View style={{ flexDirection: "row" }}>
-                  <View style={{ marginRight: 5, justifyContent: "center" }}>
-                    <IonIcon name="mail-outline" color="#42C88F" size={36} />
-                  </View>
-                  <View>
-                    <Text style={{ color: "grey", fontSize: 11 }}>
-                      Postal Code
-                    </Text>
-                    <Text style={{ color: "black", fontSize: 15 }}>
-                      {personalDetails.postalCode
-                        ? personalDetails.postalCode
-                        : "-"}
-                    </Text>
-                  </View>
-                </View>
-              </View>
-              <View
-                style={{
-                  marginTop: 15,
-                  flexDirection: "row",
-                }}
-              >
-                <IonIcon name="home-outline" color="#42C88F" size={36} />
-                <View style={{ marginLeft: 5 }}>
-                  <Text style={{ color: "grey", fontSize: 11 }}>Address</Text>
-                  <Text style={{ color: "black", fontSize: 15 }}>
-                    {personalDetails.address ? personalDetails.address : "-"}
-                  </Text>
-                </View>
-              </View>
+    <SafeAreaView style={UniversalStyles.page_container}>
+      <View style={UniversalStyles.page_container}>
+        <ImageBackground
+          source={require("../assets/home.jpeg")}
+          resizeMode="cover"
+          style={UniversalStyles.background_image}
+        >
+          <CheckoutHeader navigation={navigation} />
 
-              <View
-                style={{
-                  marginTop: 15,
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                }}
+          <View
+            style={[
+              UniversalStyles.input_fields_container_1,
+              { paddingBottom: 0 },
+            ]}
+          >
+            <View style={{ flexDirection: "row", marginBottom: 10 }}>
+              <Text style={{ fontWeight: "bold", fontSize: 20 }}>
+                Shipping Details
+              </Text>
+              <Pressable
+                style={[IconStyles.background3, { marginLeft: 5 }]}
+                onPress={() => navigation.navigate("Personaldetails")}
               >
-                <View style={{ flexDirection: "row" }}>
-                  <View style={{ marginRight: 5, justifyContent: "center" }}>
-                    <IonIcon
-                      name="phone-portrait-outline"
-                      color="#42C88F"
-                      size={36}
-                    />
-                  </View>
-                  <View>
-                    <Text style={{ color: "grey", fontSize: 11 }}>
-                      Phone Number
-                    </Text>
-                    <Text style={{ color: "black", fontSize: 15 }}>
-                      {personalDetails.phoneNumber
-                        ? personalDetails.phoneNumber
-                        : "-"}
-                    </Text>
-                  </View>
-                </View>
-                <View style={{ flexDirection: "row" }}>
-                  <View style={{ marginRight: 5, justifyContent: "center" }}>
-                    <IonIcon name="call-outline" color="#42C88F" size={36} />
-                  </View>
-                  <View>
-                    <Text style={{ color: "grey", fontSize: 11 }}>
-                      Alt. Number
-                    </Text>
-                    <Text style={{ color: "black", fontSize: 15 }}>
-                      {personalDetails.altPhoneNumber
-                        ? personalDetails.altPhoneNumber
-                        : "-"}
-                    </Text>
-                  </View>
-                </View>
-              </View>
+                <Icon name="edit" size={18} color={"white"} />
+              </Pressable>
             </View>
-          </View>
-          <View style={UniversalStyles.input_fields_container_1}>
-            <Text style={{ fontSize: 20 }}>Payment Method</Text>
-            <View
-              style={{
-                borderBottomColor: "black",
-                borderBottomWidth: StyleSheet.hairlineWidth,
-              }}
-            />
             <View
               style={{
                 flexDirection: "row",
-                justifyContent: "space-around",
                 alignItems: "center",
                 marginBottom: 10,
               }}
             >
-              <View
-                style={{
-                  marginTop: 10,
-                  width: 120,
-                  height: 120,
-                  borderWidth: !payMethod ? 1 : 0,
-                  borderColor: "grey",
-                  borderRadius: 60,
-
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <Pressable
-                  onPress={() => {
-                    setPayMethod(false);
-                  }}
-                >
-                  <Image
-                    source={require("../assets/credit-card.png")}
-                    style={{
-                      height: 80,
-                      width: 80,
-                      borderRadius: 10,
-                    }}
-                  />
-                </Pressable>
-              </View>
-              <View
-                style={{
-                  marginTop: 10,
-                  width: 120,
-                  height: 120,
-                  borderWidth: payMethod ? 1 : 0,
-                  borderColor: "grey",
-                  borderRadius: 60,
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <Pressable
-                  onPress={() => {
-                    setPayMethod(true);
-                  }}
-                >
-                  <Image
-                    source={require("../assets/cash-on-delivery.png")}
-                    style={{
-                      height: 80,
-                      width: 80,
-                      borderRadius: 10,
-                    }}
-                  />
-                </Pressable>
-              </View>
+              <IonIcon name="home-outline" color={"#42C88F"} size={27} />
+              <Text style={{ marginLeft: 7 }}>
+                {personalDetails.address} ({personalDetails.postalCode})
+              </Text>
             </View>
-            <Text style={{ fontSize: 20, marginTop: 10 }}>Order Summary</Text>
-            <View
-              style={{
-                borderBottomColor: "black",
-                borderBottomWidth: StyleSheet.hairlineWidth,
-              }}
-            />
-
-            {shoppingCart.map((item) => {
-              return (
-                <View
-                  key={item[0]._id}
-                  style={{
-                    backgroundColor: "white",
-                    opacity: 0.9,
-                    padding: 10,
-                    margin: 10,
-                    borderRadius: 10,
-                    flexDirection: "row",
-                    flex: 1,
-                    alignItems: "center",
-                  }}
-                >
-                  <View
-                    style={{
-                      width: 25,
-                      height: 25,
-                      borderWidth: 1,
-                      borderRadius: 12.5,
-                      justifyContent: "center",
-                      alignItems: "center",
-                      marginRight: 10,
-                    }}
-                  >
-                    <Text>{String(item[1])}</Text>
-                  </View>
-                  <View
-                    style={{
-                      borderWidth: 1,
-                      borderColor: "#f3f3f3",
-                      justifyContent: "center",
-                    }}
-                  >
-                    <Image
-                      source={{
-                        uri: `data:${item[0].imageForm};base64,${item[0].image}`,
-                      }}
-                      style={{
-                        height: 40,
-                        width: 40,
-                        borderRadius: 10,
-                      }}
-                    />
-                  </View>
-
-                  <View style={{ flex: 1, marginLeft: 10, marginRight: 5 }}>
-                    <Text style={{ fontSize: 13 }}>{item[0].name}</Text>
-                  </View>
-
-                  <NumberFormat
-                    value={parseInt(item[0].price * item[1])}
-                    displayType={"text"}
-                    thousandSeparator={true}
-                    prefix={"PKR "}
-                    renderText={(value) => (
-                      <Text
-                        style={{
-                          fontSize: 15,
-                          color: "green",
-                        }}
-                      >
-                        {value}
-                      </Text>
-                    )}
-                  />
-                </View>
-              );
-            })}
-            {/*AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA */}
-            <Text style={{ fontSize: 20, marginTop: 10 }}>Total</Text>
-            <View
-              style={{
-                borderBottomColor: "black",
-                borderBottomWidth: StyleSheet.hairlineWidth,
-              }}
-            />
             <View
               style={{
                 flexDirection: "row",
-                justifyContent: "space-between",
                 alignItems: "center",
-                marginTop: 10,
+                marginBottom: 10,
               }}
             >
-              <NumberFormat
-                value={String(cartTotal)}
-                displayType={"text"}
-                thousandSeparator={true}
-                prefix={"PKR "}
-                renderText={(value) => (
-                  <Text
-                    style={{
-                      fontWeight: "bold",
-                      fontSize: 25,
-                    }}
-                  >
-                    {value}
-                  </Text>
-                )}
-              />
+              <IonIcon name="location-outline" color={"#42C88F"} size={27} />
+              <Text style={{ marginLeft: 7 }}>
+                {personalDetails.city}, {personalDetails.province},
+                {personalDetails.country}
+              </Text>
             </View>
-            <View>
-              <Pressable
-                style={[
-                  ButtonStyles.p_button,
-                  { marginLeft: 5, marginTop: 30 },
-                ]}
-                onPress={() => {
-                  onPressOrder();
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <IonIcon name="call-outline" color={"#42C88F"} size={27} />
+              <Text style={{ marginLeft: 7 }}>
+                {personalDetails.phoneNumber}, {personalDetails.altPhoneNumber}
+              </Text>
+            </View>
+
+            <View
+              style={{ flexDirection: "row", marginBottom: 10, marginTop: 20 }}
+            >
+              <Text style={{ fontWeight: "bold", fontSize: 20 }}>
+                Payment Method
+              </Text>
+
+              <Text
+                style={{
+                  fontWeight: "100",
+                  fontStyle: "italic",
+                  fontSize: 20,
+                  marginLeft: 5,
                 }}
               >
-                <Text
-                  style={[
-                    ButtonStyles.p_button_text,
-                    {
-                      flex: 1,
-                    },
-                  ]}
-                >
-                  ORDER
-                </Text>
+                {payMethod ? "Card" : "COD"}
+              </Text>
+            </View>
+            <View
+              style={{ flexDirection: "row", justifyContent: "space-around" }}
+            >
+              <Pressable
+                style={{
+                  backgroundColor: payMethod ? "white" : null,
+                  padding: 30,
+                  borderRadius: 100,
+                }}
+                onPress={() => setPayMethod(!payMethod)}
+              >
+                <Image
+                  source={require("../assets/credit-card.png")}
+                  style={{ height: 50, width: 50 }}
+                />
+              </Pressable>
+              <Pressable
+                style={{
+                  backgroundColor: payMethod ? null : "white",
+                  padding: 30,
+                  borderRadius: 100,
+                }}
+                onPress={() => setPayMethod(!payMethod)}
+              >
+                <Image
+                  source={require("../assets/cash-on-delivery.png")}
+                  style={{ height: 50, width: 50 }}
+                />
               </Pressable>
             </View>
+            <Text style={{ fontWeight: "bold", fontSize: 20, marginTop: 10 }}>
+              Order Summary
+            </Text>
           </View>
-        </ScrollView>
-        <Footer navigation={navigation} route={route} elementRef={elementRef} />
-      </ImageBackground>
-    </View>
-    // </LinearGradient>
+          <CheckoutItem />
+
+          <CheckoutFooter navigation={navigation} />
+        </ImageBackground>
+      </View>
+    </SafeAreaView>
   );
 }

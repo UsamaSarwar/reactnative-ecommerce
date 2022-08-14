@@ -8,7 +8,7 @@ const OrderContext = React.createContext(null);
 
 const OrderProvider = ({ children, projectPartition }) => {
   const [orders, setOrders] = useState([]);
-  const { user } = useAuth();
+  const { user, userCart } = useAuth();
   // Use a Ref to store the realm rather than the state because it is not
   // directly rendered, so updating it should not trigger a re-render as using
   // state would.
@@ -49,7 +49,7 @@ const OrderProvider = ({ children, projectPartition }) => {
     };
   }, [user, projectPartition]);
 
-  const createOrder = (customerid, orderNumber, paymentMethod, userCart) => {
+  const createOrder = (customerid, orderNumber, paymentMethod) => {
     const projectRealm = realmRef.current;
     projectRealm.write(() => {
       // Create a new task in the same partition -- that is, in the same project.

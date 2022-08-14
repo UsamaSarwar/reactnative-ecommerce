@@ -24,7 +24,7 @@ import Stats from "../components/Stats_Homescreen.js";
 import ProductItem from "../components/Items/ProductItem.js";
 import AdminSlideUpCard from "../components/SlideUpCards/AdminUserSlideUpCard.js";
 import UserSlideUpCard from "../components/SlideUpCards/UserSlideUpCard.js";
-import Footer from "../components/Footer.js";
+import Footer from "../components/Footers/Footer.js";
 
 //Styles
 import universalStyles from "../styles/UniversalStyles.js";

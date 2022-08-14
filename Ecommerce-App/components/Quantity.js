@@ -1,6 +1,6 @@
 //React
 import React from "react";
-import { View, Text } from "react-native";
+import { View, Text, Pressable } from "react-native";
 import Icon from "react-native-vector-icons/AntDesign";
 
 //Animation-Component
@@ -19,16 +19,16 @@ export default function Quantity({ quantity, setQuantity, elementRef }) {
           elementRef["minusSlideUp"] = here;
         }}
       >
-        <Icon
-          name="minus"
-          size={21}
+        <Pressable
           onPress={() => {
             if (quantity > 1) {
               elementRef["minusSlideUp"].rubberBand(animationTime);
               setQuantity(quantity - 1);
             }
           }}
-        />
+        >
+          <Icon name="minus" size={18} />
+        </Pressable>
       </Animatable.View>
       <Text
         style={{
@@ -46,14 +46,14 @@ export default function Quantity({ quantity, setQuantity, elementRef }) {
           elementRef["plusSlideUp"] = here;
         }}
       >
-        <Icon
-          name="plus"
-          size={21}
+        <Pressable
           onPress={() => {
             elementRef["plusSlideUp"].rubberBand(animationTime);
             setQuantity((prevState) => prevState + 1);
           }}
-        />
+        >
+          <Icon name="plus" size={18} />
+        </Pressable>
       </Animatable.View>
     </View>
   );

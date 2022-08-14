@@ -1,5 +1,5 @@
 //React
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 //React Components
 import { Text, View, Pressable, Image, FlatList } from "react-native";
@@ -15,9 +15,6 @@ import Icon from "react-native-vector-icons/AntDesign";
 import { useAuth } from "../../providers/AuthProvider";
 import { useTasks } from "../../providers/TasksProvider";
 import { useGlobal } from "../../providers/GlobalProvider";
-
-//Components
-import Shimmer from "../Shimmer";
 
 //Styles
 import universalStyles from "../../styles/UniversalStyles";
@@ -64,14 +61,12 @@ export default function CarItem({ elementRef }) {
 
   const makeRemoveButton = (item) => {
     return (
-      <View style={[IconStyles.background2, { marginLeft: 3 }]}>
-        <Icon
-          name="delete"
-          color={"#ff6c70"}
-          size={21}
-          onPress={() => animateDelete(item)}
-        />
-      </View>
+      <Pressable
+        style={[IconStyles.background2, { marginLeft: 3 }]}
+        onPress={() => animateDelete(item)}
+      >
+        <Icon name="delete" color={"#ff6c70"} size={18} />
+      </Pressable>
     );
   };
 
@@ -84,6 +79,7 @@ export default function CarItem({ elementRef }) {
   return (
     <FlatList
       data={shoppingCart}
+      showsVerticalScrollIndicator={false}
       style={{ margin: 10, borderRadius: 15 }}
       renderItem={({ item }) => (
         <Pressable onPress={() => renderSlide(item[0])}>
@@ -99,18 +95,12 @@ export default function CarItem({ elementRef }) {
                 { backgroundColor: "white", padding: 10, borderRadius: 15 },
               ]}
             >
-              <Shimmer
-                autoRun={true}
-                visible={!loading}
+              <Image
+                source={{
+                  uri: `data:${item[0].imageForm};base64,${item[0].image}`,
+                }}
                 style={productCardStyles.product_image}
-              >
-                <Image
-                  source={{
-                    uri: `data:${item[0].imageForm};base64,${item[0].image}`,
-                  }}
-                  style={productCardStyles.product_image}
-                />
-              </Shimmer>
+              />
             </View>
 
             <View style={productCardStyles.textContainer}>
@@ -123,29 +113,15 @@ export default function CarItem({ elementRef }) {
                 <View
                   style={[universalStyles.row_f1_sb_c, { flexWrap: "wrap" }]}
                 >
-                  <Shimmer
-                    autoRun={true}
-                    visible={!loading}
-                    style={productCardStyles.nameText}
-                  >
-                    <Text style={productCardStyles.nameText}>
-                      {item[0].name}
-                    </Text>
-                  </Shimmer>
+                  <Text style={productCardStyles.nameText}>{item[0].name}</Text>
                 </View>
-                {!loading ? makeRemoveButton(item) : null}
+                {makeRemoveButton(item)}
               </View>
 
               <View style={productCardStyles.categoryContainer}>
-                <Shimmer
-                  autoRun={true}
-                  visible={!loading}
-                  style={productCardStyles.categoryText}
-                >
-                  <Text style={productCardStyles.categoryText}>
-                    {item[0].category}
-                  </Text>
-                </Shimmer>
+                <Text style={productCardStyles.categoryText}>
+                  {item[0].category}
+                </Text>
               </View>
 
               <View style={universalStyles.row_f1_sb_c}>
@@ -154,15 +130,7 @@ export default function CarItem({ elementRef }) {
                   displayType={"text"}
                   thousandSeparator={true}
                   prefix={"PKR "}
-                  renderText={(value) => (
-                    <Shimmer
-                      autoRun={true}
-                      visible={!loading}
-                      style={{ marginTop: 5 }}
-                    >
-                      <Text>{value}</Text>
-                    </Shimmer>
-                  )}
+                  renderText={(value) => <Text>{value}</Text>}
                 />
 
                 <View
@@ -181,15 +149,15 @@ export default function CarItem({ elementRef }) {
                       (elementRef[item[0]._id + "removeIcon"] = here)
                     }
                   >
-                    <Icon
-                      name="minus"
-                      size={21}
+                    <Pressable
                       onPress={() =>
                         item[1] === 1
                           ? animateDelete(item)
                           : onPressMinus(item[0])
                       }
-                    />
+                    >
+                      <Icon name="minus" size={18} />
+                    </Pressable>
                   </Animatable.View>
 
                   <Text
@@ -208,16 +176,16 @@ export default function CarItem({ elementRef }) {
                       (elementRef[item[0]._id + "plusIcon"] = here)
                     }
                   >
-                    <Icon
-                      name="plus"
-                      size={21}
+                    <Pressable
                       onPress={() => {
                         elementRef[item[0]._id + "plusIcon"].rubberBand(
                           animationTime
                         );
                         onPressPlus(item[0]);
                       }}
-                    />
+                    >
+                      <Icon name="plus" size={18} />
+                    </Pressable>
                   </Animatable.View>
                 </View>
               </View>
