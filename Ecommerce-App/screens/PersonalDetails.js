@@ -10,7 +10,6 @@ import {
   Pressable,
   ImageBackground,
   Image,
-  TouchableOpacity,
 } from "react-native";
 import Icon from "react-native-vector-icons/AntDesign";
 import IonIcon from "react-native-vector-icons/Ionicons";
@@ -37,6 +36,8 @@ const initStates = {
   city: "",
   province: "",
   country: "",
+  countryCode: "",
+  altCountryCode: "",
 
   nameError: false,
   userNameError: false,
@@ -80,6 +81,10 @@ const reducer = (state, action) => {
       return { ...state, provinceError: true };
     case "COUNTRY":
       return { ...state, country: action.payload, countryError: false };
+    case "COUNTRYCODE":
+      return { ...state, countryCode: action.payload, countryError: false };
+    case "ALTCOUNTRYCODE":
+      return { ...state, altCountryCode: action.payload, countryError: false };
     case "COUNTRY_ERR":
       return { ...state, countryError: true };
 
@@ -92,7 +97,7 @@ export default function PersonalDetails({ navigation }) {
   const { personalDetails, updateUserDetails, updateAvatar } = useAuth();
 
   const [show, setShow] = useState(false);
-  const [countryCode, setCountryCode] = useState("");
+  const [altShow, setAltShow] = useState(false);
 
   const [state, dispatch] = useReducer(reducer, initStates);
 
@@ -110,6 +115,11 @@ export default function PersonalDetails({ navigation }) {
     dispatch({ type: "CITY", payload: personalDetails.city });
     dispatch({ type: "PROVINCE", payload: personalDetails.province });
     dispatch({ type: "COUNTRY", payload: personalDetails.country });
+    dispatch({ type: "COUNTRYCODE", payload: personalDetails.countryCode });
+    dispatch({
+      type: "ALTCOUNTRYCODE",
+      payload: personalDetails.altCountryCode,
+    });
   }, []);
 
   const onPressUpdate = () => {
@@ -264,15 +274,15 @@ export default function PersonalDetails({ navigation }) {
                   },
                 ]}
               >
-                <Text>{countryCode}</Text>
+                <Text>{state.countryCode}</Text>
               </Pressable>
 
               <CountryPicker
                 show={show}
                 // when picker button press you will get the country object with dial code
                 pickerButtonOnPress={(item) => {
-                  setCountryCode(item.dial_code);
-                  console.log(item);
+                  dispatch({ type: "COUNTRYCODE", payload: item.dial_code });
+
                   setShow(false);
                 }}
               />
@@ -297,72 +307,112 @@ export default function PersonalDetails({ navigation }) {
             {state.altPhoneNumber === "" ? null : (
               <Text style={{ marginBottom: 5 }}>Alternate Phone Number</Text>
             )}
-            <TextInput
-              defaultValue={state.altPhoneNumber}
-              placeholder="Alternate Phone Number"
-              style={[
-                inputStyles.textInput,
-                {
-                  backgroundColor: "#f6f8f9",
-                  borderColor: "transparent",
-                },
-              ]}
-              onChangeText={(text) =>
-                dispatch({ type: "ALTPHONE", payload: text })
-              }
-            />
+            <View style={{ flexDirection: "row", flex: 1 }}>
+              <Pressable
+                onPress={() => setAltShow(true)}
+                style={[
+                  UniversalStyles.centered_container,
+                  inputStyles.textInput,
+                  {
+                    backgroundColor: "#f6f8f9",
+                    borderColor: "transparent",
+                    marginRight: 5,
+                    paddingLeft: 5,
+                    paddingRight: 5,
+                  },
+                ]}
+              >
+                <Text>{state.altCountryCode}</Text>
+              </Pressable>
 
-            {state.province === "" ? null : (
-              <Text style={{ marginBottom: 5 }}>Province/Sate</Text>
-            )}
-            <TextInput
-              defaultValue={state.province}
-              placeholder="Provice/Sate"
-              style={[
-                inputStyles.textInput,
-                {
-                  backgroundColor: "#f6f8f9",
-                  borderColor: state.provinceError ? "red" : "transparent",
-                },
-              ]}
-              onChangeText={(text) =>
-                dispatch({ type: "PROVINCE", payload: text })
-              }
-            />
+              <CountryPicker
+                show={altShow}
+                // when picker button press you will get the country object with dial code
+                pickerButtonOnPress={(item) => {
+                  dispatch({ type: "ALTCOUNTRYCODE", payload: item.dial_code });
+                  setAltShow(false);
+                }}
+              />
 
-            {state.city === "" ? null : (
-              <Text style={{ marginBottom: 5 }}>City</Text>
-            )}
-            <TextInput
-              defaultValue={state.city}
-              placeholder="City"
-              style={[
-                inputStyles.textInput,
-                {
-                  backgroundColor: "#f6f8f9",
-                  borderColor: state.cityError ? "red" : "transparent",
-                },
-              ]}
-              onChangeText={(text) => dispatch({ type: "CITY", payload: text })}
-            />
+              <TextInput
+                defaultValue={state.altPhoneNumber}
+                placeholder="Alternate Phone Number"
+                style={[
+                  inputStyles.textInput,
+                  {
+                    flex: 1,
+                    backgroundColor: "#f6f8f9",
+                    borderColor: state.altPhoneNumberError
+                      ? "red"
+                      : "transparent",
+                  },
+                ]}
+                onChangeText={(text) =>
+                  dispatch({ type: "ALTPHONE", payload: text })
+                }
+              />
+            </View>
+            <View style={UniversalStyles.row_f1_sb_c}>
+              <View style={{ flex: 1 }}>
+                {state.city === "" ? null : (
+                  <Text style={{ marginBottom: 5 }}>City</Text>
+                )}
+                <TextInput
+                  defaultValue={state.city}
+                  placeholder="City"
+                  style={[
+                    inputStyles.textInput,
+                    {
+                      backgroundColor: "#f6f8f9",
+                      borderColor: state.cityError ? "red" : "transparent",
+                    },
+                  ]}
+                  onChangeText={(text) =>
+                    dispatch({ type: "CITY", payload: text })
+                  }
+                />
+              </View>
 
-            {state.country === "" ? null : (
-              <Text style={{ marginBottom: 5 }}>Country</Text>
-            )}
-            <TextInput
-              defaultValue={state.country}
-              placeholder="Country"
-              style={[
-                inputStyles.textInput,
-                {
-                  backgroundColor: "#f6f8f9",
-                  borderColor: state.countryError ? "red" : "transparent",
-                },
-              ]}
-              onChangeText={(text) =>
-                dispatch({ type: "Country", payload: text })
-              }
-            />
+              <View style={{ flex: 1, marginLeft: 5 }}>
+                {state.province === "" ? null : (
+                  <Text style={{ marginBottom: 5 }}>Province</Text>
+                )}
+                <TextInput
+                  defaultValue={state.province}
+                  placeholder="Province"
+                  style={[
+                    inputStyles.textInput,
+                    {
+                      backgroundColor: "#f6f8f9",
+                      borderColor: state.cityError ? "red" : "transparent",
+                    },
+                  ]}
+                  onChangeText={(text) =>
+                    dispatch({ type: "PROVINCE", payload: text })
+                  }
+                />
+              </View>
+
+              <View style={{ flex: 1, marginLeft: 5 }}>
+                {state.country === "" ? null : (
+                  <Text style={{ marginBottom: 5 }}>Country</Text>
+                )}
+                <TextInput
+                  defaultValue={state.country}
+                  placeholder="Country"
+                  style={[
+                    inputStyles.textInput,
+                    {
+                      backgroundColor: "#f6f8f9",
+                      borderColor: state.countryError ? "red" : "transparent",
+                    },
+                  ]}
+                  onChangeText={(text) =>
+                    dispatch({ type: "Country", payload: text })
+                  }
+                />
+              </View>
+            </View>
           </ScrollView>
         </ImageBackground>
       </View>

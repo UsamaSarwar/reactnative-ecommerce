@@ -7,6 +7,7 @@ export class User {
     properties: {
       address: "string?",
       altPhoneNumber: "string?",
+      altCountryCode: "string?",
       city: "string?",
       country: "string?",
       image: "string?",
@@ -14,6 +15,7 @@ export class User {
       name: "string?",
       userName: "string?",
       phoneNumber: "string?",
+      countryCode: "string?",
       postalCode: "string?",
       province: "string?",
     },

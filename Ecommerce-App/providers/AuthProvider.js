@@ -223,7 +223,9 @@ const AuthProvider = ({ children }) => {
       user.details["name"] = state.name;
       user.details["userName"] = state.userName;
       user.details["phoneNumber"] = state.phoneNumber;
+      user.details["countryCode"] = state.countryCode;
       user.details["altPhoneNumber"] = state.altPhoneNumber;
+      user.details["altCountryCode"] = state.altCountryCode;
       user.details["country"] = state.country;
       user.details["province"] = state.province;
       user.details["city"] = state.city;
