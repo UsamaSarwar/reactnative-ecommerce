@@ -15,7 +15,7 @@ import UniversalStyles from "../../styles/UniversalStyles.js";
 import ButtonStyles from "../../styles/ButtonStyles.js";
 
 export default function CheckoutFooter({ navigation }) {
-  const { user, emptyUserCart } = useAuth();
+  const { user, personalDetails, emptyUserCart } = useAuth();
   const { cartTotal } = useTasks();
   const { createOrder, orders } = useOrder();
 
@@ -23,13 +23,13 @@ export default function CheckoutFooter({ navigation }) {
 
   const onPressOrder = () => {
     if (
-      user.customData.details.name === "" ||
-      user.customData.details.phoneNumber === "" ||
-      user.customData.details.country === "" ||
-      user.customData.details.province === "" ||
-      user.customData.details.city === "" ||
-      user.customData.details.address === "" ||
-      user.customData.details.postalCode === ""
+      personalDetails.name === "" ||
+      personalDetails.phoneNumber === "" ||
+      personalDetails.country === "" ||
+      personalDetails.province === "" ||
+      personalDetails.city === "" ||
+      personalDetails.address === "" ||
+      personalDetails.postalCode === ""
     ) {
       setDetailsError(true);
     } else if (!detailsError) {
@@ -57,10 +57,22 @@ export default function CheckoutFooter({ navigation }) {
         />
       </View>
       <Pressable
-        style={ButtonStyles.checkout_button}
+        style={
+          detailsError
+            ? ButtonStyles.checkout_button_dis
+            : ButtonStyles.checkout_button
+        }
         onPress={() => onPressOrder()}
       >
-        <Text style={ButtonStyles.checkout_button_text}>ORDER</Text>
+        <Text
+          style={
+            detailsError
+              ? ButtonStyles.checkout_button_text_dis
+              : ButtonStyles.checkout_button_text
+          }
+        >
+          ORDER
+        </Text>
       </Pressable>
     </View>
   );

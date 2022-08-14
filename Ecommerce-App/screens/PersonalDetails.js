@@ -1,5 +1,5 @@
 //React Components
-import React, { useEffect, useRef, useReducer } from "react";
+import React, { useEffect, useRef, useReducer, useState } from "react";
 import {
   Alert,
   Text,
@@ -10,10 +10,12 @@ import {
   Pressable,
   ImageBackground,
   Image,
+  TouchableOpacity,
 } from "react-native";
 import Icon from "react-native-vector-icons/AntDesign";
 import IonIcon from "react-native-vector-icons/Ionicons";
 import ImagePicker from "react-native-image-crop-picker";
+import CountryPicker from "react-native-country-codes-picker";
 import * as Animatable from "react-native-animatable";
 
 //Provides
@@ -88,6 +90,9 @@ const reducer = (state, action) => {
 
 export default function PersonalDetails({ navigation }) {
   const { personalDetails, updateUserDetails, updateAvatar } = useAuth();
+
+  const [show, setShow] = useState(false);
+  const [countryCode, setCountryCode] = useState("");
 
   const [state, dispatch] = useReducer(reducer, initStates);
 
@@ -178,11 +183,7 @@ export default function PersonalDetails({ navigation }) {
             <Pressable onPress={() => navigation.goBack()}>
               <IonIcon name="arrow-back" size={30} color="grey" />
             </Pressable>
-            <Animatable.View
-            // ref={(here) => {
-            //   elementRef[String(user._id) + "addToCartButton"] = here;
-            // }}
-            >
+            <Animatable.View>
               <Pressable
                 style={ButtonStyles.checkout_button}
                 onPress={() => onPressUpdate()}
@@ -248,20 +249,50 @@ export default function PersonalDetails({ navigation }) {
             {state.phoneNumber === "" ? null : (
               <Text style={{ marginBottom: 5 }}>Phone Number</Text>
             )}
-            <TextInput
-              defaultValue={state.phoneNumber}
-              placeholder="Phone Number"
-              style={[
-                inputStyles.textInput,
-                {
-                  backgroundColor: "#f6f8f9",
-                  borderColor: state.phoneNumberError ? "red" : "transparent",
-                },
-              ]}
-              onChangeText={(text) =>
-                dispatch({ type: "PHONE", payload: text })
-              }
-            />
+            <View style={{ flexDirection: "row", flex: 1 }}>
+              <Pressable
+                onPress={() => setShow(true)}
+                style={[
+                  UniversalStyles.centered_container,
+                  inputStyles.textInput,
+                  {
+                    backgroundColor: "#f6f8f9",
+                    borderColor: "transparent",
+                    marginRight: 5,
+                    paddingLeft: 5,
+                    paddingRight: 5,
+                  },
+                ]}
+              >
+                <Text>{countryCode}</Text>
+              </Pressable>
+
+              <CountryPicker
+                show={show}
+                // when picker button press you will get the country object with dial code
+                pickerButtonOnPress={(item) => {
+                  setCountryCode(item.dial_code);
+                  console.log(item);
+                  setShow(false);
+                }}
+              />
+
+              <TextInput
+                defaultValue={state.phoneNumber}
+                placeholder="Phone Number"
+                style={[
+                  inputStyles.textInput,
+                  {
+                    flex: 1,
+                    backgroundColor: "#f6f8f9",
+                    borderColor: state.phoneNumberError ? "red" : "transparent",
+                  },
+                ]}
+                onChangeText={(text) =>
+                  dispatch({ type: "PHONE", payload: text })
+                }
+              />
+            </View>
 
             {state.altPhoneNumber === "" ? null : (
               <Text style={{ marginBottom: 5 }}>Alternate Phone Number</Text>
