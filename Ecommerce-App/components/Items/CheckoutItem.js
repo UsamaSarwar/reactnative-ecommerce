@@ -35,7 +35,7 @@ export default function CheckoutItem({ elementRef }) {
       }}
       renderItem={({ item }) => (
         <Pressable
-          onPress={() => renderSlide(item[0])}
+          // onPress={() => renderSlide(item[0])}
           style={[
             universalStyles.row_f1_sb_c,
             {

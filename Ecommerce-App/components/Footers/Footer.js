@@ -4,7 +4,6 @@ import React from "react";
 //React Components
 import { View, Text, Pressable } from "react-native";
 import Icon from "react-native-vector-icons/AntDesign";
-import MatIcon from "react-native-vector-icons/MaterialCommunityIcons";
 
 //Animation-Component
 import * as Animatable from "react-native-animatable";

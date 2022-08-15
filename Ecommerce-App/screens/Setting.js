@@ -11,6 +11,7 @@ import {
   Image,
 } from "react-native";
 import IonIcon from "react-native-vector-icons/Ionicons";
+import MatIcon from "react-native-vector-icons/MaterialCommunityIcons";
 import SlidingUpPanel from "rn-sliding-up-panel";
 
 import styles from "../styles/Styles.js";
@@ -73,6 +74,19 @@ export default function Setting({ navigation, route }) {
                   Update Personal Detail
                 </Text>
               </View>
+            </Pressable>
+
+            <Pressable
+              style={ButtonStyles.p_button}
+              onPress={() => navigation.navigate("Myorders")}
+            >
+              <MatIcon
+                name="truck-fast-outline"
+                size={28}
+                color="white"
+                style={{ marginRight: 15 }}
+              />
+              <Text style={ButtonStyles.p_button_text}>My Orders</Text>
             </Pressable>
 
             <Pressable

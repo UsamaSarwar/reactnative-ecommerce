@@ -106,6 +106,9 @@ export class Order {
     orderNumber,
     paymentMethod,
     orderItems,
+    orderTime,
+    orderStatus,
+    total,
   }) {
     this._partition = partition;
     this._id = id;
@@ -113,6 +116,9 @@ export class Order {
     this.orderNumber = orderNumber;
     this.paymentMethod = paymentMethod;
     this.orderItems = orderItems;
+    this.orderTime = orderTime;
+    this.orderStatus = orderStatus;
+    this.total = total;
   }
 
   static schema = {
@@ -124,6 +130,9 @@ export class Order {
       orderItems: "Order_orderItems[]",
       orderNumber: "int",
       paymentMethod: "string",
+      orderStatus: "string",
+      orderTime: "string",
+      total: "int",
     },
     primaryKey: "_id",
   };

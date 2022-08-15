@@ -16,15 +16,20 @@ import UniversalStyles from "../../styles/UniversalStyles.js";
 import ButtonStyles from "../../styles/ButtonStyles.js";
 
 export default function CheckoutFooter({ navigation }) {
-  const { user, personalDetails, emptyUserCart } = useAuth();
+  const { user, emptyUserCart } = useAuth();
   const { cartTotal } = useTasks();
   const { createOrder, orders } = useOrder();
   const { detailsError, setDetailsError } = useGlobal();
-
+  // console.log(cartTotal);
   const onPressOrder = async () => {
     if (!detailsError) {
       try {
-        await createOrder(user.customData["_id"], orders.length + 1, "COD");
+        await createOrder(
+          user.customData["_id"],
+          orders.length + 1,
+          "COD",
+          cartTotal
+        );
         emptyUserCart();
         Alert.alert("Order Placed");
         navigation.navigate("Homescreen");
