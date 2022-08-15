@@ -12,6 +12,7 @@ import Setting from "./screens/Setting";
 import Cart from "./screens/Cart";
 import Checkout from "./screens/CheckOut";
 import PersonalDetails from "./screens/PersonalDetails";
+import MyOrders from "./screens/MyOrders";
 
 import { useAuth } from "./providers/AuthProvider";
 import { TasksProvider } from "./providers/TasksProvider";
@@ -44,6 +45,7 @@ export default function AppNavigator() {
                   component={Updatepassword}
                 />
                 <Stack.Screen name="Checkout" component={Checkout} />
+                <Stack.Screen name="Myorders" component={MyOrders} />
                 <Stack.Screen name="Deleteaccount" component={Deleteaccount} />
                 <Stack.Screen
                   name="Personaldetails"
@@ -71,6 +73,7 @@ export default function AppNavigator() {
           <Stack.Screen name="Checkout" component={Checkout} />
           <Stack.Screen name="Updatepassword" component={Updatepassword} />
           <Stack.Screen name="Deleteaccount" component={Deleteaccount} />
+          <Stack.Screen name="Myorders" component={MyOrders} />
           <Stack.Screen name="Personaldetails" component={PersonalDetails} />
         </Stack.Navigator>
       </NavigationContainer>
