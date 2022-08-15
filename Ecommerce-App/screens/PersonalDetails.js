@@ -180,7 +180,6 @@ export default function PersonalDetails({ navigation }) {
       cropping: true,
       includeBase64: true,
     }).then((image) => updateAvatar(image.data, image.mime));
-
   return (
     <SafeAreaView style={UniversalStyles.page_container}>
       <View style={UniversalStyles.page_container}>
@@ -369,7 +368,7 @@ export default function PersonalDetails({ navigation }) {
                   },
                 ]}
                 onChangeText={(text) =>
-                  dispatch({ type: "Address", payload: text })
+                  dispatch({ type: "ADDRESS", payload: text })
                 }
               />
             </View>
@@ -388,7 +387,7 @@ export default function PersonalDetails({ navigation }) {
                   },
                 ]}
                 onChangeText={(text) =>
-                  dispatch({ type: "postalCode", payload: text })
+                  dispatch({ type: "POSTALCODE", payload: text })
                 }
               />
             </View>
@@ -448,7 +447,7 @@ export default function PersonalDetails({ navigation }) {
                     },
                   ]}
                   onChangeText={(text) =>
-                    dispatch({ type: "Country", payload: text })
+                    dispatch({ type: "COUNTRY", payload: text })
                   }
                 />
               </View>
