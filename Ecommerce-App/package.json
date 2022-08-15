@@ -16,6 +16,7 @@
     "@realm/react": "^0.3.2",
     "apk-build": "^0.1.0",
     "assert": "^2.0.0",
+    "country-state-city": "^3.0.1",
     "expo": "^45.0.6",
     "expo-dev-client": "^1.0.1",
     "expo-splash-screen": "~0.15.1",
