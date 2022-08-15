@@ -16,7 +16,6 @@ import IonIcon from "react-native-vector-icons/Ionicons";
 import ImagePicker from "react-native-image-crop-picker";
 import CountryPicker from "react-native-country-codes-picker";
 import * as Animatable from "react-native-animatable";
-import { Country, State, City } from "country-state-city";
 
 //Provides
 import { useAuth } from "../providers/AuthProvider.js";
@@ -355,6 +354,44 @@ export default function PersonalDetails({ navigation }) {
                 }
               />
             </View>
+            <View style={{ flex: 1, marginLeft: 5 }}>
+              {state.address === "" ? null : (
+                <Text style={{ marginBottom: 5 }}>Address Details</Text>
+              )}
+              <TextInput
+                defaultValue={state.address}
+                placeholder="Address Details"
+                style={[
+                  inputStyles.textInput,
+                  {
+                    backgroundColor: "#f6f8f9",
+                    borderColor: state.addressError ? "red" : "transparent",
+                  },
+                ]}
+                onChangeText={(text) =>
+                  dispatch({ type: "Address", payload: text })
+                }
+              />
+            </View>
+            <View style={{ flex: 1, marginLeft: 5 }}>
+              {state.postalCode === "" ? null : (
+                <Text style={{ marginBottom: 5 }}>Postal Code</Text>
+              )}
+              <TextInput
+                defaultValue={state.postalCode}
+                placeholder="Postal Code of your area"
+                style={[
+                  inputStyles.textInput,
+                  {
+                    backgroundColor: "#f6f8f9",
+                    borderColor: state.postalCodeError ? "red" : "transparent",
+                  },
+                ]}
+                onChangeText={(text) =>
+                  dispatch({ type: "postalCode", payload: text })
+                }
+              />
+            </View>
             <View style={UniversalStyles.row_f1_sb_c}>
               <View style={{ flex: 1 }}>
                 {state.city === "" ? null : (
@@ -415,44 +452,6 @@ export default function PersonalDetails({ navigation }) {
                   }
                 />
               </View>
-            </View>
-            <View style={{ flex: 1, marginLeft: 5 }}>
-              {state.address === "" ? null : (
-                <Text style={{ marginBottom: 5 }}>Address Details</Text>
-              )}
-              <TextInput
-                defaultValue={state.address}
-                placeholder="Address Details"
-                style={[
-                  inputStyles.textInput,
-                  {
-                    backgroundColor: "#f6f8f9",
-                    borderColor: state.addressError ? "red" : "transparent",
-                  },
-                ]}
-                onChangeText={(text) =>
-                  dispatch({ type: "Address", payload: text })
-                }
-              />
-            </View>
-            <View style={{ flex: 1, marginLeft: 5 }}>
-              {state.postalCode === "" ? null : (
-                <Text style={{ marginBottom: 5 }}>Postal Code</Text>
-              )}
-              <TextInput
-                defaultValue={state.postalCode}
-                placeholder="Postal Code of your area"
-                style={[
-                  inputStyles.textInput,
-                  {
-                    backgroundColor: "#f6f8f9",
-                    borderColor: state.postalCodeError ? "red" : "transparent",
-                  },
-                ]}
-                onChangeText={(text) =>
-                  dispatch({ type: "postalCode", payload: text })
-                }
-              />
             </View>
           </ScrollView>
         </ImageBackground>
