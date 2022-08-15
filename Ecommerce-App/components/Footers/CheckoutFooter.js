@@ -52,6 +52,7 @@ export default function CheckoutFooter({ navigation }) {
             ? ButtonStyles.checkout_button_dis
             : ButtonStyles.checkout_button
         }
+        disabled={detailsError ? true : false}
         onPress={() => {
           onPressOrder();
         }}
