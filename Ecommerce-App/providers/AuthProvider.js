@@ -229,7 +229,7 @@ const AuthProvider = ({ children }) => {
       user.details["country"] = state.country;
       user.details["province"] = state.province;
       user.details["city"] = state.city;
-      user.details["address"] = state.addressDetails;
+      user.details["address"] = state.address;
       user.details["postalCode"] = state.postalCode;
     });
   };
