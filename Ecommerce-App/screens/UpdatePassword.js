@@ -76,12 +76,9 @@ export default function Updatepassword({ navigation }) {
           style={UniversalStyles.background_image}
         >
           <View style={[UniversalStyles.header]}>
-            <IonIcon
-              name="arrow-back-circle-outline"
-              size={28}
-              color="red"
-              onPress={() => navigation.goBack()}
-            />
+            <Pressable onPress={() => navigation.goBack()}>
+              <IonIcon name="arrow-back" size={30} color="grey" />
+            </Pressable>
             <Text style={{ fontSize: 23 }}>Update password</Text>
           </View>
           <View style={UniversalStyles.center}>
@@ -112,13 +109,6 @@ export default function Updatepassword({ navigation }) {
               onPress={() => onPressUpdatePass()}
             >
               <Text style={ButtonStyles.p_button_text}>Update Password</Text>
-            </Pressable>
-
-            <Pressable
-              style={ButtonStyles.s_button}
-              onPress={() => navigation.goBack()}
-            >
-              <Text style={ButtonStyles.s_button_text}>Go Back</Text>
             </Pressable>
           </View>
         </ImageBackground>

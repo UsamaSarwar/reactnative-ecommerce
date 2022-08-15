@@ -102,6 +102,7 @@ export default function PersonalDetails({ navigation }) {
   const [state, dispatch] = useReducer(reducer, initStates);
 
   const animationTime = 800;
+  const [savePressed, setSavePressed] = useState(false);
 
   const elementRef = useRef();
 
@@ -192,14 +193,40 @@ export default function PersonalDetails({ navigation }) {
             <Pressable onPress={() => navigation.goBack()}>
               <IonIcon name="arrow-back" size={30} color="grey" />
             </Pressable>
-            <Animatable.View>
+            <View>
               <Pressable
                 style={ButtonStyles.checkout_button}
-                onPress={() => onPressUpdate()}
+                onPress={() => {
+                  setSavePressed(true);
+                  elementRef["saveButton"].fadeInRight(animationTime);
+                  setTimeout(() => {
+                    onPressUpdate();
+                    setSavePressed(false);
+                    navigation.goBack();
+                  }, animationTime);
+                }}
               >
-                <Text style={ButtonStyles.checkout_button_text}>Save</Text>
+                <Animatable.View
+                  ref={(here) => {
+                    elementRef["saveButton"] = here;
+                  }}
+                >
+                  {!savePressed ? (
+                    <Text style={ButtonStyles.checkout_button_text}>Save</Text>
+                  ) : (
+                    <View
+                      style={{ width: 47, alignItems: "center", height: 28 }}
+                    >
+                      <IonIcon
+                        name="checkmark-circle-outline"
+                        color={"white"}
+                        size={27}
+                      />
+                    </View>
+                  )}
+                </Animatable.View>
               </Pressable>
-            </Animatable.View>
+            </View>
           </View>
 
           <ScrollView style={{ padding: 10 }}>
@@ -281,7 +308,7 @@ export default function PersonalDetails({ navigation }) {
                 // when picker button press you will get the country object with dial code
                 pickerButtonOnPress={(item) => {
                   dispatch({ type: "COUNTRYCODE", payload: item.dial_code });
-
+                  console.log(item);
                   setShow(false);
                 }}
               />

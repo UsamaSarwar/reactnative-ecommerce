@@ -35,12 +35,9 @@ export default function Deleteaccount({ navigation }) {
         style={UniversalStyles.background_image}
       >
         <View style={[UniversalStyles.header]}>
-          <IonIcon
-            name="arrow-back-circle-outline"
-            size={28}
-            color="red"
-            onPress={() => navigation.goBack()}
-          />
+          <Pressable onPress={() => navigation.goBack()}>
+            <IonIcon name="arrow-back" size={30} color="grey" />
+          </Pressable>
           <Text style={{ fontSize: 23 }}>Delete Account</Text>
         </View>
         <View style={UniversalStyles.fields}>

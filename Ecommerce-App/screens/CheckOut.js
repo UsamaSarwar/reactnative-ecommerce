@@ -23,7 +23,7 @@ import IconStyles from "../styles/IconStyles.js";
 export default function Checkout({ navigation }) {
   const { personalDetails } = useAuth();
   const { detailsError } = useGlobal();
-
+  const elementRef = useRef();
   const [payMethod, setPayMethod] = useState(false);
 
   return (
@@ -118,7 +118,7 @@ export default function Checkout({ navigation }) {
                   padding: 30,
                   borderRadius: 100,
                 }}
-                onPress={() => setPayMethod(!payMethod)}
+                onPress={() => setPayMethod(true)}
               >
                 <Image
                   source={require("../assets/credit-card.png")}
@@ -131,7 +131,7 @@ export default function Checkout({ navigation }) {
                   padding: 30,
                   borderRadius: 100,
                 }}
-                onPress={() => setPayMethod(!payMethod)}
+                onPress={() => setPayMethod(false)}
               >
                 <Image
                   source={require("../assets/cash-on-delivery.png")}
