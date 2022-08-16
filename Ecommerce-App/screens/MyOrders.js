@@ -101,7 +101,26 @@ export default function MyOrders({ navigation }) {
                     }}
                   >
                     <View>
-                      <Text>{item.paymentMethod}</Text>
+                      <View
+                        style={{
+                          flexDirection: "row",
+                          alignItems: "center",
+                          marginTop: 5,
+                          marginBottom: 5,
+                        }}
+                      >
+                        <Text style={{ fontSize: 12, fontStyle: "italic" }}>
+                          {item.paymentMethod}
+                        </Text>
+                        <Image
+                          source={
+                            item.paymentMethod === "Card"
+                              ? require("../assets/credit-card.png")
+                              : require("../assets/cash-on-delivery.png")
+                          }
+                          style={{ height: 15, width: 15, marginLeft: 5 }}
+                        />
+                      </View>
                       <View>
                         <Text>Placed on: {item.orderTime}</Text>
                       </View>

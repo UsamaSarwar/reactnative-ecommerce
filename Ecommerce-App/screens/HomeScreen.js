@@ -25,6 +25,7 @@ import ProductItem from "../components/Items/ProductItem.js";
 import AdminSlideUpCard from "../components/SlideUpCards/AdminUserSlideUpCard.js";
 import UserSlideUpCard from "../components/SlideUpCards/UserSlideUpCard.js";
 import Footer from "../components/Footers/Footer.js";
+import OrderItemAdmin from "../components/Items/OrderItemAdmin.js";
 
 //Styles
 import universalStyles from "../styles/UniversalStyles.js";
@@ -32,7 +33,7 @@ import universalStyles from "../styles/UniversalStyles.js";
 export default function Homescreen({ navigation, route }) {
   const { user } = useAuth();
   const { searchText } = useGlobal();
-
+  const [listType, setListType] = useState("Orders");
   const admin = user.customData["userType"] === "admin" ? true : false;
 
   const elementRef = useRef();
@@ -74,11 +75,20 @@ export default function Homescreen({ navigation, route }) {
         >
           <HomeHeader navigation={navigation} />
 
-          {admin ? <Stats /> : null}
+          {admin ? (
+            <Stats listType={listType} setListType={setListType} />
+          ) : null}
 
-          {searchText === "" ? <Category /> : null}
-
-          <ProductItem navigation={navigation} elementRef={elementRef} />
+          {listType === "Inventory" ? (
+            searchText === "" ? (
+              <Category />
+            ) : null
+          ) : null}
+          {listType === "Orders" ? (
+            <OrderItemAdmin navigation={navigation} elementRef={elementRef} />
+          ) : (
+            <ProductItem navigation={navigation} elementRef={elementRef} />
+          )}
 
           <Footer
             navigation={navigation}

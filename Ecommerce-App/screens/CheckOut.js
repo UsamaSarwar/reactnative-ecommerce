@@ -146,7 +146,7 @@ export default function Checkout({ navigation }) {
           </View>
           <CheckoutItem />
 
-          <CheckoutFooter navigation={navigation} />
+          <CheckoutFooter navigation={navigation} payMethod={payMethod} />
         </ImageBackground>
       </View>
     </SafeAreaView>

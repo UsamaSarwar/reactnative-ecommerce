@@ -9,14 +9,14 @@ import IonIcon from "react-native-vector-icons/Ionicons";
 
 //Providers
 import { useTasks } from "../providers/TasksProvider";
+import { useOrder } from "../providers/OrderProvider";
 
 //Styles
 import UniversalStyles from "../styles/UniversalStyles";
 
-export default function Stats() {
+export default function Stats({ listType, setListType }) {
   const { tasks } = useTasks();
-
-  const [listType, setListType] = useState("Inventory");
+  const { orders } = useOrder();
 
   return (
     <View
@@ -33,7 +33,13 @@ export default function Stats() {
           UniversalStyles.col_sb_conatiner,
           UniversalStyles.pressable_1,
           { flex: 1 },
+          listType === "Orders"
+            ? { backgroundColor: "silver" }
+            : { backgroundColor: "#f6f8f9" },
         ]}
+        onPress={() => {
+          setListType("Orders");
+        }}
       >
         <View style={{ flexDirection: "row", alignItems: "center" }}>
           <IonIcon name="boat-outline" size={23} />
@@ -47,14 +53,27 @@ export default function Stats() {
             Orders
           </Text>
         </View>
+        <Text
+          style={{
+            fontSize: 21,
+          }}
+        >
+          {orders.length} Orders
+        </Text>
       </Pressable>
 
-      <View
+      <Pressable
         style={[
           UniversalStyles.col_sb_conatiner,
           UniversalStyles.pressable_1,
           { flex: 1, marginLeft: 10 },
+          listType === "Inventory"
+            ? { backgroundColor: "silver" }
+            : { backgroundColor: "#f6f8f9" },
         ]}
+        onPress={() => {
+          setListType("Inventory");
+        }}
       >
         <View style={{ flexDirection: "row", alignItems: "center" }}>
           <IonIcon name="cube-outline" size={23} />
@@ -75,7 +94,7 @@ export default function Stats() {
         >
           {tasks.length} Products
         </Text>
-      </View>
+      </Pressable>
     </View>
   );
 }

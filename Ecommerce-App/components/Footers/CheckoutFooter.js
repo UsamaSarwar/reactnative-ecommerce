@@ -19,7 +19,7 @@ import ButtonStyles from "../../styles/ButtonStyles.js";
 //Animation-Component
 import * as Animatable from "react-native-animatable";
 
-export default function CheckoutFooter({ navigation }) {
+export default function CheckoutFooter({ navigation, payMethod }) {
   const { user, emptyUserCart } = useAuth();
   const { cartTotal } = useTasks();
   const { createOrder } = useOrder();
@@ -38,12 +38,21 @@ export default function CheckoutFooter({ navigation }) {
     );
   }
   const onPressOrder = async () => {
-    elementRef["orderAnimate"].lightSpeedOut(animationTime);
+    elementRef["orderAnimate"].slideInLeft(animationTime);
+    setTimeout(
+      () => elementRef["orderAnimate"].fadeOutRight(animationTime),
+      animationTime * 0.85
+    );
     setTimeout(async () => {
       if (!detailsError) {
         console.log("Here");
         try {
-          await createOrder(user.customData["_id"], uuid(), "COD", cartTotal);
+          await createOrder(
+            user.customData["_id"],
+            uuid(),
+            payMethod ? "Cash on Delivery" : "Card",
+            cartTotal
+          );
           emptyUserCart();
           Alert.alert("Your order has been placed");
           navigation.navigate("Homescreen");
@@ -51,7 +60,7 @@ export default function CheckoutFooter({ navigation }) {
           console.error(error.message);
         }
       }
-    }, animationTime);
+    }, animationTime * 2);
   };
 
   return (
