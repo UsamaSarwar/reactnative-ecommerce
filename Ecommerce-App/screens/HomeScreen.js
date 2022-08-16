@@ -33,7 +33,7 @@ import universalStyles from "../styles/UniversalStyles.js";
 export default function Homescreen({ navigation, route }) {
   const { user } = useAuth();
   const { searchText } = useGlobal();
-  const [listType, setListType] = useState("Orders");
+  const [listType, setListType] = useState("Inventory");
   const admin = user.customData["userType"] === "admin" ? true : false;
 
   const elementRef = useRef();
