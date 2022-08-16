@@ -50,7 +50,7 @@ export default function Stats({ listType, setListType }) {
               marginLeft: 5,
             }}
           >
-            Orders
+            Pending Orders
           </Text>
         </View>
         <Text
