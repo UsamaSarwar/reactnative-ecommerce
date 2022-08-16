@@ -20,29 +20,13 @@ import ButtonStyles from "../../styles/ButtonStyles.js";
 export default function CartHeader({ navigation }) {
   const { personalDetails } = useAuth();
   const { cartTotal } = useTasks();
-  const { detailsError, setDetailsError } = useGlobal();
+  const { detailsError, setDetailsError, checkDetailsError } = useGlobal();
 
   useEffect(() => {
     if (detailsError) {
       setDetailsError(true);
     }
   });
-  const checkDetailsError = async () => {
-    if (
-      personalDetails.name === null ||
-      personalDetails.phoneNumber === null ||
-      personalDetails.country === null ||
-      personalDetails.province === null ||
-      personalDetails.city === null ||
-      personalDetails.address === null ||
-      personalDetails.postalCode === null
-    ) {
-      await setDetailsError(true);
-      console.log(detailsError);
-    } else {
-      await setDetailsError(false);
-    }
-  };
 
   return (
     <View style={UniversalStyles.header}>

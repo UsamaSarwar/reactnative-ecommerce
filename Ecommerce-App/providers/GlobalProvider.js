@@ -1,4 +1,5 @@
 import React, { useContext, useState, useEffect, useRef } from "react";
+import { useAuth } from "./AuthProvider";
 
 const GlobalContext = React.createContext(null);
 
@@ -9,6 +10,8 @@ const GlobalProvider = ({ children }) => {
     price: "",
     description: "",
   });
+
+  const { personalDetails } = useAuth();
 
   const [listType, setListType] = useState("Inventory");
 
@@ -37,6 +40,23 @@ const GlobalProvider = ({ children }) => {
     "Webcams",
   ];
 
+  const checkDetailsError = async () => {
+    if (
+      personalDetails.name === null ||
+      personalDetails.phoneNumber === null ||
+      personalDetails.country === null ||
+      personalDetails.province === null ||
+      personalDetails.city === null ||
+      personalDetails.address === null ||
+      personalDetails.postalCode === null
+    ) {
+      await setDetailsError(true);
+      console.log(detailsError);
+    } else {
+      await setDetailsError(false);
+    }
+  };
+
   useEffect(() => {
     if (isNewProduct) {
       setProduct({
@@ -60,6 +80,7 @@ const GlobalProvider = ({ children }) => {
         searchText,
         setSearchText,
         category,
+        checkDetailsError,
         setDetailsError,
         detailsError,
       }}

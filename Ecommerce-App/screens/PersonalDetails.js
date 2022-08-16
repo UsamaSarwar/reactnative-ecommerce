@@ -19,6 +19,7 @@ import * as Animatable from "react-native-animatable";
 
 //Provides
 import { useAuth } from "../providers/AuthProvider.js";
+import { useGlobal } from "../providers/GlobalProvider.js";
 
 //Styles
 import UniversalStyles from "../styles/UniversalStyles";
@@ -103,6 +104,13 @@ export default function PersonalDetails({ navigation }) {
 
   const animationTime = 800;
   const [savePressed, setSavePressed] = useState(false);
+  const { detailsError, setDetailsError, checkDetailsError } = useGlobal();
+
+  useEffect(() => {
+    if (detailsError) {
+      setDetailsError(true);
+    }
+  });
 
   const elementRef = useRef();
 
@@ -200,6 +208,7 @@ export default function PersonalDetails({ navigation }) {
                   setSavePressed(true);
                   elementRef["saveButton"].fadeInRight(animationTime);
                   setTimeout(() => {
+                    checkDetailsError();
                     onPressUpdate();
                     setSavePressed(false);
                     navigation.goBack();
