@@ -1,9 +1,10 @@
 //React
-import React, { useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 //React Components
 import { View, Text, Pressable, Alert } from "react-native";
 import NumberFormat from "react-number-format";
+import MatIcon from "react-native-vector-icons/MaterialCommunityIcons";
 
 //Providers
 import { useAuth } from "../../providers/AuthProvider.js";
@@ -15,28 +16,42 @@ import { useGlobal } from "../../providers/GlobalProvider.js";
 import UniversalStyles from "../../styles/UniversalStyles.js";
 import ButtonStyles from "../../styles/ButtonStyles.js";
 
+//Animation-Component
+import * as Animatable from "react-native-animatable";
+
 export default function CheckoutFooter({ navigation }) {
   const { user, emptyUserCart } = useAuth();
   const { cartTotal } = useTasks();
-  const { createOrder, orders } = useOrder();
-  const { detailsError, setDetailsError } = useGlobal();
-  // console.log(cartTotal);
-  const onPressOrder = async () => {
-    if (!detailsError) {
-      try {
-        await createOrder(
-          user.customData["_id"],
-          orders.length + 1,
-          "COD",
-          cartTotal
-        );
-        emptyUserCart();
-        Alert.alert("Order Placed");
-        navigation.navigate("Homescreen");
-      } catch (error) {
-        console.error(error.message);
+  const { createOrder } = useOrder();
+  const { detailsError } = useGlobal();
+  const [orderPressed, setOrderPressed] = useState(false);
+  const elementRef = useRef();
+  const animationTime = 1000;
+  function uuid() {
+    return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(
+      /[xy]/g,
+      function (c) {
+        var r = (Math.random() * 16) | 0,
+          v = c == "x" ? r : (r & 0x3) | 0x8;
+        return v.toString(16);
       }
-    }
+    );
+  }
+  const onPressOrder = async () => {
+    elementRef["orderAnimate"].lightSpeedOut(animationTime);
+    setTimeout(async () => {
+      if (!detailsError) {
+        console.log("Here");
+        try {
+          await createOrder(user.customData["_id"], uuid(), "COD", cartTotal);
+          emptyUserCart();
+          Alert.alert("Your order has been placed");
+          navigation.navigate("Homescreen");
+        } catch (error) {
+          console.error(error.message);
+        }
+      }
+    }, animationTime);
   };
 
   return (
@@ -52,25 +67,53 @@ export default function CheckoutFooter({ navigation }) {
         />
       </View>
       <Pressable
-        style={
+        style={[
           detailsError
             ? ButtonStyles.checkout_button_dis
-            : ButtonStyles.checkout_button
-        }
+            : ButtonStyles.checkout_button,
+          { width: 150 },
+        ]}
         disabled={detailsError ? true : false}
         onPress={() => {
+          setOrderPressed(true);
           onPressOrder();
         }}
       >
-        <Text
-          style={
-            detailsError
-              ? ButtonStyles.checkout_button_text_dis
-              : ButtonStyles.checkout_button_text
-          }
+        <Animatable.View
+          ref={(here) => (elementRef["orderAnimate"] = here)}
+          style={{ flexDirection: "row" }}
         >
-          ORDER
-        </Text>
+          {orderPressed ? (
+            <MatIcon
+              name="weather-windy"
+              size={28}
+              color="white"
+              style={{ transform: [{ rotateY: "180deg" }] }}
+            />
+          ) : (
+            void 0
+          )}
+          <MatIcon
+            name="truck-fast-outline"
+            size={28}
+            color="white"
+            style={{ marginRight: 5 }}
+          />
+        </Animatable.View>
+
+        {!orderPressed ? (
+          <Text
+            style={
+              detailsError
+                ? ButtonStyles.checkout_button_text_dis
+                : ButtonStyles.checkout_button_text
+            }
+          >
+            ORDER
+          </Text>
+        ) : (
+          void 0
+        )}
       </Pressable>
     </View>
   );

@@ -22,9 +22,10 @@ import * as Animatable from "react-native-animatable";
 
 export default function MyOrders({ navigation }) {
   const { user } = useAuth();
-  const { orders, orderDetails } = useOrder();
+  const { orderDetails, userOrders } = useOrder();
+  const userOrderList = userOrders(user.customData._id);
   const [view, setView] = useState(
-    orders.reduce((obj, v) => {
+    userOrderList.reduce((obj, v) => {
       obj[v.orderNumber] = true;
       return obj;
     }, {})
@@ -32,7 +33,7 @@ export default function MyOrders({ navigation }) {
   const animationTime = 800;
   const [refresh, setRefresh] = useState(false);
   const elementRef = useRef();
-  // console.log(orders);
+
   const animateItems = (item) => {
     const allItems = orderDetails(item.orderItems);
     for (let x = 0; x < allItems.length; x++) {
@@ -63,7 +64,7 @@ export default function MyOrders({ navigation }) {
           </View>
 
           <FlatList
-            data={orders}
+            data={userOrderList}
             showsVerticalScrollIndicator={false}
             style={{ margin: 10, borderRadius: 15 }}
             renderItem={({ item }) => (
@@ -86,15 +87,25 @@ export default function MyOrders({ navigation }) {
                     <View
                       style={{ flexDirection: "row", alignItems: "center" }}
                     >
-                      <Text style={{ fontWeight: "bold", fontSize: 16 }}>
-                        Order #{item.orderNumber}
-                      </Text>
-
-                      <Text style={{ marginLeft: 12 }}>
-                        {item.paymentMethod}
+                      <Text style={{ fontWeight: "bold", fontSize: 14 }}>
+                        Order# {item.orderNumber}
                       </Text>
                     </View>
+                  </View>
 
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                    }}
+                  >
+                    <View>
+                      <Text>{item.paymentMethod}</Text>
+                      <View>
+                        <Text>Placed on: {item.orderTime}</Text>
+                      </View>
+                    </View>
                     <View
                       style={{
                         alignItems: "center",
@@ -105,13 +116,11 @@ export default function MyOrders({ navigation }) {
                         borderRadius: 10,
                         justifyContent: "center",
                         width: 80,
+                        height: 30,
                       }}
                     >
                       <Text style={{ fontSize: 12 }}>{item.orderStatus}</Text>
                     </View>
-                  </View>
-                  <View>
-                    <Text>Placed on: {item.orderTime}</Text>
                   </View>
 
                   <FlatList
@@ -224,6 +233,7 @@ export default function MyOrders({ navigation }) {
                     <Text style={{ fontWeight: "bold", fontSize: 22 }}>
                       Order Total
                     </Text>
+
                     <NumberFormat
                       value={item.total}
                       displayType={"text"}
@@ -234,6 +244,14 @@ export default function MyOrders({ navigation }) {
                       )}
                     />
                   </View>
+                </View>
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                  <View
+                    style={{ flex: 1, height: 1, backgroundColor: "black" }}
+                  />
+                  <View
+                    style={{ flex: 1, height: 1, backgroundColor: "black" }}
+                  />
                 </View>
               </View>
             )}

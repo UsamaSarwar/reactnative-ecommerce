@@ -97,6 +97,16 @@ const OrderProvider = ({ children, projectPartition }) => {
     return c;
   };
 
+  const userOrders = (userId) => {
+    let c = [];
+    for (let order = 0; order < orders.length; order++) {
+      if (orders[order].customerid === userId) {
+        c.push(orders[order]);
+      }
+    }
+    return c;
+  };
+
   // Render the children within the TaskContext's provider. The value contains
   // everything that should be made available to descendants that use the
   // useTasks hook.
@@ -105,6 +115,7 @@ const OrderProvider = ({ children, projectPartition }) => {
       value={{
         createOrder,
         orderDetails,
+        userOrders,
         orders,
       }}
     >

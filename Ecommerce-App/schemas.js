@@ -128,7 +128,7 @@ export class Order {
       _partition: "string",
       customerid: "string",
       orderItems: "Order_orderItems[]",
-      orderNumber: "int",
+      orderNumber: "string",
       paymentMethod: "string",
       orderStatus: "string",
       orderTime: "string",

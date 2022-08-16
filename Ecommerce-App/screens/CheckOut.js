@@ -24,6 +24,7 @@ export default function Checkout({ navigation }) {
   const { personalDetails } = useAuth();
   const { detailsError } = useGlobal();
   const elementRef = useRef();
+  console.log(Math.floor(Math.random() * 100000));
   const [payMethod, setPayMethod] = useState(false);
 
   return (
