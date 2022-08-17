@@ -1,15 +1,18 @@
 import React, { useContext, useState, useEffect, useRef } from "react";
+import app from "../realmApp";
 import Realm from "realm";
 import { Order } from "../schemas";
 import { useAuth } from "./AuthProvider";
 import { ObjectId } from "bson";
 import { useTasks } from "./TasksProvider";
+import { useGlobal } from "./GlobalProvider";
 
 const OrderContext = React.createContext(null);
 
 const OrderProvider = ({ children, projectPartition }) => {
   const [orders, setOrders] = useState([]);
   const { user, userCart } = useAuth();
+  const [customerDetails, setCustomerDetails] = useState({});
   const { tasks } = useTasks();
   // Use a Ref to store the realm rather than the state because it is not
   // directly rendered, so updating it should not trigger a re-render as using
@@ -51,7 +54,7 @@ const OrderProvider = ({ children, projectPartition }) => {
     };
   }, [user, projectPartition]);
 
-  const createOrder = (customerid, orderNumber, paymentMethod, total) => {
+  const createOrder = async (customerid, orderNumber, paymentMethod, total) => {
     const projectRealm = realmRef.current;
     let today = new Date();
     let date =
@@ -62,7 +65,7 @@ const OrderProvider = ({ children, projectPartition }) => {
       today.getDate();
     let time =
       today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-    projectRealm.write(() => {
+    await projectRealm.write(() => {
       // Create a new task in the same partition -- that is, in the same project.
       projectRealm.create(
         "Order",
@@ -79,8 +82,10 @@ const OrderProvider = ({ children, projectPartition }) => {
         })
       );
     });
-    const syncTasks = projectRealm.objects("Order");
-    setOrders([...syncTasks]);
+    // const syncTasks = projectRealm.objects("Order");
+    // setOrders([...syncTasks]);
+    // setCartUpdate(!cartUpdate);
+    console.log;
     console.log("Order Created");
   };
 
@@ -107,6 +112,29 @@ const OrderProvider = ({ children, projectPartition }) => {
     return c;
   };
 
+  const userDetails = async () => {
+    let customerList = [];
+    for (let order = 0; order < orders.length; order++) {
+      if (!customerList.includes(orders[order].customerid))
+        customerList.push(orders[order].customerid);
+    }
+
+    const mongo = app.currentUser.mongoClient("mongodb-atlas");
+    const collection = mongo.db("tracker").collection("User");
+    try {
+      const customerDetailsOb = await collection.find({
+        _id: { $in: customerList },
+      });
+      let customerObject = {};
+      customerDetailsOb.forEach((elem) => {
+        customerObject[elem._id] = elem;
+      });
+      setCustomerDetails({ ...customerObject });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   // Render the children within the TaskContext's provider. The value contains
   // everything that should be made available to descendants that use the
   // useTasks hook.
@@ -116,7 +144,9 @@ const OrderProvider = ({ children, projectPartition }) => {
         createOrder,
         orderDetails,
         userOrders,
+        userDetails,
         orders,
+        customerDetails,
       }}
     >
       {children}

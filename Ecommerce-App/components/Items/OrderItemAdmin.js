@@ -1,5 +1,5 @@
 //React
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 //React Components
 import {
@@ -12,6 +12,7 @@ import {
   Alert,
 } from "react-native";
 import NumberFormat from "react-number-format";
+import { ProgressBar } from "react-native-paper";
 
 //Animation-Component
 import * as Animatable from "react-native-animatable";
@@ -38,17 +39,26 @@ import UniversalStyles from "../../styles/UniversalStyles.js";
 
 export default function OrderItemAdmin({ elementRef }) {
   const { user } = useAuth();
-  const { orders, orderDetails, userOrders } = useOrder();
+  const { orders, orderDetails, userOrders, userDetails, customerDetails } =
+    useOrder();
+
+  useEffect(() => {
+    userDetails();
+  }, [orders]);
+
   const userOrderList = userOrders(user.customData._id);
+
   const animationTime = 800;
-  const [refresh, setRefresh] = useState(false);
+
   const [loading, setLoading] = useState(true);
+
   const [view, setView] = useState(
     userOrderList.reduce((obj, v) => {
       obj[v.orderNumber] = true;
       return obj;
     }, {})
   );
+
   const animateItems = (item) => {
     const allItems = orderDetails(item.orderItems);
     for (let x = 0; x < allItems.length; x++) {
@@ -85,18 +95,55 @@ export default function OrderItemAdmin({ elementRef }) {
                     justifyContent: "space-between",
                   }}
                 >
-                  <View style={{ flexDirection: "row", alignItems: "center" }}>
-                    <Text style={{ fontWeight: "bold", fontSize: 14 }}>
+                  <View>
+                    <Text
+                      style={{
+                        fontWeight: "bold",
+                        fontSize: 15,
+                      }}
+                    >
                       Order# {item.orderNumber}
                     </Text>
+
+                    {customerDetails[item.customerid] ? (
+                      <Text
+                        style={{
+                          fontSize: 16,
+                          marginTop: 5,
+                          marginBottom: 5,
+                          fontWeight: "bold",
+                          textShadowColor: "rgba(66, 200, 143, 0.7)",
+                          textShadowOffset: { width: -1, height: 1 },
+                          textShadowRadius: 10,
+                        }}
+                      >
+                        {customerDetails[item.customerid].details.name}
+                      </Text>
+                    ) : (
+                      <Shimmer
+                        autoRun={true}
+                        visible={false}
+                        style={{
+                          marginTop: 5,
+                          marginBottom: 5,
+                          borderRadius: 10,
+                          width: 150,
+                          height: 20,
+                          backgroundColor: "rgba(66, 200, 143, 0.7)",
+                        }}
+                      ></Shimmer>
+                    )}
                   </View>
                 </View>
-
+                <View>
+                  <Text>Placed on: {item.orderTime}</Text>
+                </View>
                 <View
                   style={{
                     flexDirection: "row",
                     justifyContent: "space-between",
                     alignItems: "center",
+                    marginBottom: 10,
                   }}
                 >
                   <View>
@@ -120,9 +167,6 @@ export default function OrderItemAdmin({ elementRef }) {
                         style={{ height: 15, width: 15, marginLeft: 5 }}
                       />
                     </View>
-                    <View>
-                      <Text>Placed on: {item.orderTime}</Text>
-                    </View>
                   </View>
                   <View
                     style={{
@@ -133,13 +177,14 @@ export default function OrderItemAdmin({ elementRef }) {
                       justifyContent: "center",
                       width: 80,
                       height: 30,
+                      flexBasis: 100,
                     }}
                   >
                     <Text style={{ fontSize: 12 }}>{item.orderStatus}</Text>
                   </View>
                 </View>
 
-                <FlatList
+                {/* <FlatList
                   data={orderDetails(item.orderItems)}
                   horizontal={view[item.orderNumber]}
                   showsHorizontalScrollIndicator={false}
@@ -237,8 +282,22 @@ export default function OrderItemAdmin({ elementRef }) {
                       </Pressable>
                     </Animatable.View>
                   )}
-                />
-
+                /> */}
+                <View style={{ flexDirection: "row" }}>
+                  <View style={{ flex: 1 }}></View>
+                  <View
+                    style={{
+                      width: "28.5%",
+                    }}
+                  >
+                    <ProgressBar
+                      progress={0.2}
+                      color={"rgba(66, 200, 143, 1)"}
+                      // indeterminate={true}
+                      style={{ height: 10, borderRadius: 10 }}
+                    />
+                  </View>
+                </View>
                 <View
                   style={{
                     flexDirection: "row",
@@ -261,7 +320,12 @@ export default function OrderItemAdmin({ elementRef }) {
                   />
                 </View>
               </View>
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                }}
+              >
                 <View
                   style={{ flex: 1, height: 1, backgroundColor: "black" }}
                 />

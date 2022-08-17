@@ -27,8 +27,8 @@ export default function AppNavigator() {
   if (user) {
     return (
       <TasksProvider user={user} projectPartition={`project=${user.id}`}>
-        <OrderProvider user={user} projectPartition={`project=${user.id}`}>
-          <GlobalProvider>
+        <GlobalProvider>
+          <OrderProvider user={user} projectPartition={`project=${user.id}`}>
             <NavigationContainer>
               <Stack.Navigator
                 screenOptions={{ headerShown: false }}
@@ -53,8 +53,8 @@ export default function AppNavigator() {
                 />
               </Stack.Navigator>
             </NavigationContainer>
-          </GlobalProvider>
-        </OrderProvider>
+          </OrderProvider>
+        </GlobalProvider>
       </TasksProvider>
     );
   } else {
