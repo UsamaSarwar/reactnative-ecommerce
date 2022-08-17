@@ -20,6 +20,7 @@ import { useGlobal } from "../providers/GlobalProvider.js";
 //Components
 import HomeHeader from "../components/Headers/HomeHeader.js";
 import Category from "../components/Category.js";
+import OrderType from "../components/OrderType.js";
 import Stats from "../components/Stats_Homescreen.js";
 import ProductItem from "../components/Items/ProductItem.js";
 import AdminSlideUpCard from "../components/SlideUpCards/AdminUserSlideUpCard.js";
@@ -85,7 +86,9 @@ export default function Homescreen({ navigation, route }) {
             searchText === "" ? (
               <Category />
             ) : null
-          ) : null}
+          ) : (
+            <OrderType />
+          )}
           {listType === "Orders" ? (
             <OrderItemAdmin navigation={navigation} elementRef={elementRef} />
           ) : (

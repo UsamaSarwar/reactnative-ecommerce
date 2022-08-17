@@ -40,6 +40,9 @@ const GlobalProvider = ({ children }) => {
     "Webcams",
   ];
 
+  //Order Status Types
+  const orderTypes = ["All", "Ongoing", "Completed"];
+
   const checkDetailsError = async () => {
     if (
       personalDetails.name === null ||
@@ -80,6 +83,7 @@ const GlobalProvider = ({ children }) => {
         searchText,
         setSearchText,
         category,
+        orderTypes,
         checkDetailsError,
         setDetailsError,
         detailsError,

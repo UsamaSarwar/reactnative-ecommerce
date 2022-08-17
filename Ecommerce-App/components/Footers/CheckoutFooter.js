@@ -50,7 +50,7 @@ export default function CheckoutFooter({ navigation, payMethod }) {
           await createOrder(
             user.customData["_id"],
             uuid(),
-            payMethod ? "Cash on Delivery" : "Card",
+            !payMethod ? "Cash on Delivery" : "Card",
             cartTotal
           );
           emptyUserCart();

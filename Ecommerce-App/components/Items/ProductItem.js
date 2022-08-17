@@ -105,7 +105,9 @@ export default function ProductItem({ elementRef }) {
       renderItem={({ item }) => (
         <Pressable onPress={() => renderSlide(item)}>
           <Animatable.View
-            animation="zoomInUp"
+            animation={
+              user.customData.userType === "admin" ? "fadeInRight" : "zoomInUp"
+            }
             duration={1500}
             style={productCardStyles.productCard}
           >
