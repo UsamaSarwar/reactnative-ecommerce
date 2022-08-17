@@ -28,7 +28,7 @@ export default function AppNavigator() {
     return (
       <TasksProvider user={user} projectPartition={`project=${user.id}`}>
         <GlobalProvider>
-          <OrderProvider user={user} projectPartition={`project=${user.id}`}>
+          <OrderProvider user={user}>
             <NavigationContainer>
               <Stack.Navigator
                 screenOptions={{ headerShown: false }}

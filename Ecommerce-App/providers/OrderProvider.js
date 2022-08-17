@@ -5,11 +5,10 @@ import { Order } from "../schemas";
 import { useAuth } from "./AuthProvider";
 import { ObjectId } from "bson";
 import { useTasks } from "./TasksProvider";
-import { useGlobal } from "./GlobalProvider";
 
 const OrderContext = React.createContext(null);
 
-const OrderProvider = ({ children, projectPartition }) => {
+const OrderProvider = ({ children }) => {
   const [orders, setOrders] = useState([]);
   const { user, userCart } = useAuth();
   const [customerDetails, setCustomerDetails] = useState({});
@@ -18,7 +17,7 @@ const OrderProvider = ({ children, projectPartition }) => {
   // directly rendered, so updating it should not trigger a re-render as using
   // state would.
   const realmRef = useRef(null);
-  //   console.log(user);
+
   useEffect(() => {
     console.log("Order Realm Opened");
     // Enables offline-first: opens a local realm immediately without waiting
@@ -36,10 +35,20 @@ const OrderProvider = ({ children, projectPartition }) => {
       },
     };
     // open a realm for this particular project
+
     Realm.open(config).then((projectRealm) => {
       realmRef.current = projectRealm;
-      const syncTasks = projectRealm.objects("Order");
-      setOrders([...syncTasks]);
+      let syncOrders = projectRealm.objects("Order");
+
+      if (user.customData.userType === "normal") {
+        syncOrders = syncOrders.filtered("customerid == $0", user.id);
+      }
+
+      setOrders([...syncOrders]);
+
+      syncOrders.addListener(() => {
+        setOrders([...syncOrders]);
+      });
     });
 
     return () => {
@@ -48,11 +57,11 @@ const OrderProvider = ({ children, projectPartition }) => {
       if (projectRealm) {
         projectRealm.close();
         realmRef.current = null;
-        // setOrders([]);
+        setOrders([]);
         console.log("Closing Order realm");
       }
     };
-  }, [user, projectPartition]);
+  }, [user]);
 
   const createOrder = async (customerid, orderNumber, paymentMethod, total) => {
     const projectRealm = realmRef.current;
@@ -66,7 +75,6 @@ const OrderProvider = ({ children, projectPartition }) => {
     let time =
       today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
     await projectRealm.write(() => {
-      // Create a new task in the same partition -- that is, in the same project.
       projectRealm.create(
         "Order",
         new Order({
@@ -82,9 +90,7 @@ const OrderProvider = ({ children, projectPartition }) => {
         })
       );
     });
-    // const syncTasks = projectRealm.objects("Order");
-    // setOrders([...syncTasks]);
-    // setCartUpdate(!cartUpdate);
+
     console.log;
     console.log("Order Created");
   };
@@ -98,16 +104,6 @@ const OrderProvider = ({ children, projectPartition }) => {
         })[0],
         orderItems[i].qty,
       ]);
-    }
-    return c;
-  };
-
-  const userOrders = (userId) => {
-    let c = [];
-    for (let order = 0; order < orders.length; order++) {
-      if (orders[order].customerid === userId) {
-        c.push(orders[order]);
-      }
     }
     return c;
   };
@@ -143,7 +139,6 @@ const OrderProvider = ({ children, projectPartition }) => {
       value={{
         createOrder,
         orderDetails,
-        userOrders,
         userDetails,
         orders,
         customerDetails,
