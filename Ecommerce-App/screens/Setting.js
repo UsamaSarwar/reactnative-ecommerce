@@ -75,20 +75,20 @@ export default function Setting({ navigation, route }) {
                 </Text>
               </View>
             </Pressable>
-
-            <Pressable
-              style={ButtonStyles.p_button}
-              onPress={() => navigation.navigate("Myorders")}
-            >
-              <MatIcon
-                name="truck-fast-outline"
-                size={28}
-                color="white"
-                style={{ marginRight: 15 }}
-              />
-              <Text style={ButtonStyles.p_button_text}>My Orders</Text>
-            </Pressable>
-
+            {user.customData.userType === "normal" ? (
+              <Pressable
+                style={ButtonStyles.p_button}
+                onPress={() => navigation.navigate("Myorders")}
+              >
+                <MatIcon
+                  name="truck-fast-outline"
+                  size={28}
+                  color="white"
+                  style={{ marginRight: 15 }}
+                />
+                <Text style={ButtonStyles.p_button_text}>My Orders</Text>
+              </Pressable>
+            ) : null}
             <Pressable
               style={ButtonStyles.p_button}
               onPress={() => navigation.navigate(Updatepassword)}

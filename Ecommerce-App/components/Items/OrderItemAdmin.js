@@ -60,7 +60,6 @@ export default function OrderItemAdmin({ elementRef }) {
               style={[
                 productCardStyles.productCard,
                 {
-                  justifyContent: "space-between",
                   flexDirection: "column",
                   borderWidth: 1,
                   borderColor: "green",
@@ -78,17 +77,16 @@ export default function OrderItemAdmin({ elementRef }) {
                     <Text
                       style={{
                         fontWeight: "bold",
-                        fontSize: 15,
+                        fontSize: 14,
                         marginBottom: 5,
                       }}
                     >
                       Order# {item.orderNumber}
                     </Text>
-
                     <View
                       style={{
-                        flexDirection: "row",
                         justifyContent: "space-between",
+                        flexDirection: "row",
                       }}
                     >
                       <View>
@@ -113,6 +111,7 @@ export default function OrderItemAdmin({ elementRef }) {
                                 style={{ marginRight: 2 }}
                               />
                               <Text
+                                numberOfLines={1}
                                 style={{
                                   fontSize: 18,
                                   marginTop: 5,
@@ -121,24 +120,28 @@ export default function OrderItemAdmin({ elementRef }) {
                                   textShadowColor: "rgba(66, 200, 143, 0.7)",
                                   textShadowOffset: { width: -1, height: 1 },
                                   textShadowRadius: 10,
+                                  width: 225,
+                                  paddingRight: 5,
                                 }}
                               >
                                 {customerDetails[item.customerid].details.name}
                               </Text>
                             </View>
                           ) : (
-                            <Shimmer
-                              autoRun={true}
-                              visible={false}
-                              style={{
-                                marginTop: 5,
-                                marginBottom: 5,
-                                borderRadius: 10,
-                                width: 150,
-                                height: 20,
-                                backgroundColor: "rgba(66, 200, 143, 0.7)",
-                              }}
-                            ></Shimmer>
+                            <View style={{ width: 247 }}>
+                              <Shimmer
+                                autoRun={true}
+                                visible={false}
+                                style={{
+                                  marginTop: 5,
+                                  marginBottom: 5,
+                                  borderRadius: 10,
+                                  width: 225,
+                                  height: 20,
+                                  backgroundColor: "rgba(66, 200, 143, 0.7)",
+                                }}
+                              ></Shimmer>
+                            </View>
                           )}
                         </View>
 
@@ -181,8 +184,10 @@ export default function OrderItemAdmin({ elementRef }) {
                           alignItems: "center",
                           backgroundColor:
                             item.orderStatus === "Processing"
-                              ? "silver"
-                              : "green",
+                              ? "#f69697"
+                              : item.orderStatus === "Dispatched"
+                              ? "#F9C70C"
+                              : "#87AB69",
                           borderRadius: 10,
                           paddingTop: 5,
                           paddingBottom: 5,
@@ -234,10 +239,18 @@ export default function OrderItemAdmin({ elementRef }) {
                   }}
                 >
                   <ProgressBar
-                    progress={0.2}
+                    progress={
+                      item.orderStatus === "Processing"
+                        ? 0.2
+                        : item.orderStatus === "Dispatched"
+                        ? 0.6
+                        : item.orderStatus === "Delivered"
+                        ? 1
+                        : 0
+                    }
                     color={"rgba(66, 200, 143, 1)"}
                     // indeterminate={true}
-                    style={{ height: 10, borderRadius: 10, marginRight: 8 }}
+                    style={{ height: 10, borderRadius: 10 }}
                   />
                 </View>
               </View>

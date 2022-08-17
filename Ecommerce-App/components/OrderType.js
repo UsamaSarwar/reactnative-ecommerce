@@ -7,13 +7,14 @@ import { Text, Pressable, FlatList, View } from "react-native";
 //Providers
 import { useTasks } from "../providers/TasksProvider.js";
 import { useGlobal } from "../providers/GlobalProvider.js";
+import { useOrder } from "../providers/OrderProvider.js";
 
 export default function OrderType() {
   const { orderTypes } = useGlobal();
-  const { categoryFilter, setCategoryFilter } = useTasks();
+  const { orderCategory, setOrderCategory } = useOrder();
 
   const onPressCategory = (item) => {
-    setCategoryFilter(item);
+    setOrderCategory(item);
   };
 
   return (
@@ -26,7 +27,7 @@ export default function OrderType() {
         renderItem={({ item }) => (
           <Pressable
             style={{
-              backgroundColor: categoryFilter === item ? "#42C88F" : "#f6f8f9",
+              backgroundColor: orderCategory === item ? "#42C88F" : "#f6f8f9",
               marginRight: 10,
               alignItems: "center",
               borderRadius: 20,
@@ -38,7 +39,7 @@ export default function OrderType() {
               style={{
                 textAlignVertical: "center",
                 textAlign: "center",
-                color: categoryFilter === item ? "white" : "grey",
+                color: orderCategory === item ? "white" : "grey",
               }}
             >
               {item}

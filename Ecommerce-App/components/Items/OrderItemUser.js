@@ -76,7 +76,11 @@ export default function OrderItemUser() {
                 style={{
                   alignItems: "center",
                   backgroundColor:
-                    item.orderStatus === "Processing" ? "silver" : "green",
+                    item.orderStatus === "Processing"
+                      ? "#f69697"
+                      : item.orderStatus === "Dispatched"
+                      ? "#F9C70C"
+                      : "#87AB69",
                   borderRadius: 10,
                   justifyContent: "center",
                   width: 80,

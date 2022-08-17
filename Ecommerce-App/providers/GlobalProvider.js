@@ -41,7 +41,7 @@ const GlobalProvider = ({ children }) => {
   ];
 
   //Order Status Types
-  const orderTypes = ["All", "Ongoing", "Completed"];
+  const orderTypes = ["All", "Processing", "Dispatched", "Delivered"];
 
   const checkDetailsError = async () => {
     if (

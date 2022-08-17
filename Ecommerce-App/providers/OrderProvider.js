@@ -12,6 +12,7 @@ const OrderProvider = ({ children }) => {
   const [orders, setOrders] = useState([]);
   const { user, userCart } = useAuth();
   const [customerDetails, setCustomerDetails] = useState({});
+  const [orderCategory, setOrderCategory] = useState("All");
   const { tasks } = useTasks();
   // Use a Ref to store the realm rather than the state because it is not
   // directly rendered, so updating it should not trigger a re-render as using
@@ -34,6 +35,7 @@ const OrderProvider = ({ children }) => {
         existingRealmFileBehavior: OpenRealmBehaviorConfiguration,
       },
     };
+
     // open a realm for this particular project
 
     Realm.open(config).then((projectRealm) => {
@@ -62,6 +64,23 @@ const OrderProvider = ({ children }) => {
       }
     };
   }, [user]);
+
+  useEffect(() => {
+    const projectRealm = realmRef.current;
+    if (projectRealm) {
+      let orders = projectRealm.objects("Order");
+      if (orderCategory !== "All") {
+        let filteredOrders = projectRealm.objects("Order").filter((item) => {
+          return item.orderStatus === orderCategory;
+        });
+        console.log(filteredOrders.length);
+        setOrders([...filteredOrders]);
+      } else {
+        orders = projectRealm.objects("Order");
+        setOrders([...orders]);
+      }
+    }
+  }, [orderCategory]);
 
   const createOrder = async (customerid, orderNumber, paymentMethod, total) => {
     const projectRealm = realmRef.current;
@@ -140,6 +159,8 @@ const OrderProvider = ({ children }) => {
         createOrder,
         orderDetails,
         userDetails,
+        setOrderCategory,
+        orderCategory,
         orders,
         customerDetails,
       }}
