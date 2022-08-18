@@ -55,6 +55,7 @@ export default function UserSlideUpCard({ elementRef }) {
           }}
         />
       </View>
+
       <View>
         <View style={{ marginBottom: 2 }}>
           <Text style={{ fontWeight: "bold", fontSize: 15 }}>
@@ -74,18 +75,18 @@ export default function UserSlideUpCard({ elementRef }) {
         </View>
       </View>
 
-      <View>
+      <ScrollView>
         <Text style={{ fontSize: 15 }}>{product.description}</Text>
-      </View>
+      </ScrollView>
 
       <View
-        style={[
-          UniversalStyles.row_f1_sb_c,
-          {
-            marginTop: 10,
-            marginBottom: 15,
-          },
-        ]}
+        style={{
+          marginTop: 10,
+          marginBottom: 15,
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
       >
         <NumberFormat
           value={parseInt(product.price)}
@@ -94,7 +95,6 @@ export default function UserSlideUpCard({ elementRef }) {
           prefix={"PKR "}
           renderText={(value) => <Text>{value}</Text>}
         />
-
         <Quantity
           quantity={quantity}
           setQuantity={setQuantity}

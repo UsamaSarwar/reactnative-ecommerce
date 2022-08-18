@@ -101,6 +101,7 @@ export default universalStyles = StyleSheet.create({
     backgroundColor: "white",
     borderRadius: 20,
     padding: 20,
+    justifyContent: "flex-end",
   },
 
   card_drag_container: {
@@ -127,7 +128,7 @@ export default universalStyles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#f3f3f3",
     justifyContent: "center",
-    height: "40%",
+    height: 250,
     marginBottom: 20,
   },
   center: {

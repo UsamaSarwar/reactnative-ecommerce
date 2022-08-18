@@ -85,6 +85,7 @@ export default function Homescreen({ navigation, route }) {
           ) : (
             <OrderType />
           )}
+
           {listType === "Orders" ? (
             <OrderItemAdmin navigation={navigation} elementRef={elementRef} />
           ) : (
@@ -111,6 +112,7 @@ export default function Homescreen({ navigation, route }) {
                   >
                     <View style={universalStyles.card_dragger} />
                   </View>
+
                   {admin ? (
                     <AdminSlideUpCard elementRef={elementRef} />
                   ) : (
