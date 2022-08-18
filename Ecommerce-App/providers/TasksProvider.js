@@ -15,18 +15,19 @@ const TasksProvider = ({ children }) => {
 
   const [categoryFilter, setCategoryFilter] = useState("All");
 
-  // const categoryDict = {
-  // "Accessories":"Accessories",
-  // "Casings",
-  // "Consoles",
-  // "Displays",
-  // "Earphones",
-  // "Headphones",
-  // "Keyboards",
-  // "Laptops",
-  // "Mouse",
-  // "Smartphones",
-  // "Webcams",}
+  const categoryDict = {
+    Accessories: "accessory",
+    Casings: "casing",
+    Consoles: "console",
+    Displays: "display",
+    Earphones: "earphone",
+    Headphones: "headphone",
+    Keyboards: "keyboard",
+    Laptops: "laptop",
+    Mouse: "mouse",
+    Smartphones: "smartphone",
+    Webcams: "webcame",
+  };
 
   // Use a Ref to store the realm rather than the state because it is not
   // directly rendered, so updating it should not trigger a re-render as using
@@ -80,7 +81,7 @@ const TasksProvider = ({ children }) => {
 
       if (categoryFilter !== "All") {
         products = products
-          .filtered("category == $0", categoryFilter)
+          .filtered("category == $0", categoryDict[categoryFilter])
           .sorted("name");
       } else products = projectRealm.objects("Task").sorted("name");
       setTasks([...products]);
