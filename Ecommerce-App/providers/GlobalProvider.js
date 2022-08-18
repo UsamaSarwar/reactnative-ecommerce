@@ -87,6 +87,8 @@ const GlobalProvider = ({ children }) => {
         checkDetailsError,
         setDetailsError,
         detailsError,
+        listType,
+        setListType,
       }}
     >
       {children}

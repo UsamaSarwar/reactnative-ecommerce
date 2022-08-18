@@ -33,9 +33,7 @@ import universalStyles from "../styles/UniversalStyles.js";
 
 export default function Homescreen({ navigation, route }) {
   const { user } = useAuth();
-  const { searchText } = useGlobal();
-
-  const [listType, setListType] = useState("Inventory");
+  const { searchText, listType } = useGlobal();
 
   const admin = user.customData["userType"] === "admin" ? true : false;
 
@@ -78,9 +76,7 @@ export default function Homescreen({ navigation, route }) {
         >
           <HomeHeader navigation={navigation} />
 
-          {admin ? (
-            <Stats listType={listType} setListType={setListType} />
-          ) : null}
+          {admin ? <Stats /> : null}
 
           {listType === "Inventory" ? (
             searchText === "" ? (
