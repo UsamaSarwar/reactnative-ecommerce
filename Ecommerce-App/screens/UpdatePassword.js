@@ -85,7 +85,7 @@ export default function Updatepassword({ navigation }) {
             <Text style={styles.error_message}>{errorMessage}</Text>
           </View>
 
-          <View style={UniversalStyles.fields}>
+          <View style={UniversalStyles.input_fields_container_1}>
             <TextInput
               style={[
                 InputStyles.textInput,
