@@ -77,9 +77,9 @@ export default function OrderItemUser() {
                   alignItems: "center",
                   backgroundColor:
                     item.orderStatus === "Processing"
-                      ? "#f69697"
+                      ? "#BC544B"
                       : item.orderStatus === "Dispatched"
-                      ? "#F9C70C"
+                      ? "#E3B104"
                       : "#87AB69",
                   borderRadius: 10,
                   justifyContent: "center",

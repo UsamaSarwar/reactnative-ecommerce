@@ -5,6 +5,7 @@ import { Order } from "../schemas";
 import { useAuth } from "./AuthProvider";
 import { ObjectId } from "bson";
 import { useTasks } from "./TasksProvider";
+import { useGlobal } from "./GlobalProvider";
 
 const OrderContext = React.createContext(null);
 
@@ -12,8 +13,10 @@ const OrderProvider = ({ children }) => {
   const [orders, setOrders] = useState([]);
   const { user, userCart } = useAuth();
   const [customerDetails, setCustomerDetails] = useState({});
+  // const [customer, setCustomer] = useState({});
   const [orderCategory, setOrderCategory] = useState("All");
   const { tasks } = useTasks();
+  const { customer, setCustomer } = useGlobal();
   // Use a Ref to store the realm rather than the state because it is not
   // directly rendered, so updating it should not trigger a re-render as using
   // state would.
@@ -114,6 +117,17 @@ const OrderProvider = ({ children }) => {
     console.log("Order Created");
   };
 
+  const updateStatus = (orderNumber, status) => {
+    console.log("Updating Status");
+    const orderRealm = realmRef.current;
+    const order = orderRealm
+      .objects("Order")
+      .filtered("orderNumber == $0", orderNumber)[0];
+    orderRealm.write(() => {
+      order.orderStatus = status;
+    });
+  };
+
   const orderDetails = (orderItems) => {
     let c = [];
     for (let i = 0; i < orderItems.length; i++) {
@@ -150,6 +164,21 @@ const OrderProvider = ({ children }) => {
     }
   };
 
+  const getCustomerDetails = async (customerId) => {
+    const mongo = app.currentUser.mongoClient("mongodb-atlas");
+    const collection = mongo.db("tracker").collection("User");
+    try {
+      const getCustomer = await collection.findOne({
+        _id: customerId,
+      });
+      setCustomer({ ...getCustomer });
+      // console.log(getCustomer.name, customer.name);
+      return getCustomer;
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   // Render the children within the TaskContext's provider. The value contains
   // everything that should be made available to descendants that use the
   // useTasks hook.
@@ -160,6 +189,10 @@ const OrderProvider = ({ children }) => {
         orderDetails,
         userDetails,
         setOrderCategory,
+        getCustomerDetails,
+        updateStatus,
+        setCustomer,
+        customer,
         orderCategory,
         orders,
         customerDetails,

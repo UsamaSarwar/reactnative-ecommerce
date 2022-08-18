@@ -11,11 +11,23 @@ const GlobalProvider = ({ children }) => {
     description: "",
   });
 
+  const [currOrder, setCurrOrder] = useState({
+    customerid: "",
+    orderNumber: "",
+    orderStatus: "",
+    orderTime: "",
+    paymentMethod: "",
+    total: 0,
+    orderItems: [],
+  });
+
   const { personalDetails } = useAuth();
 
   const [listType, setListType] = useState("Inventory");
 
   const [isNewProduct, setIsNewProduct] = useState(false);
+
+  const [customer, setCustomer] = useState({});
 
   const [cartUpdate, setCartUpdate] = useState(false);
 
@@ -76,8 +88,12 @@ const GlobalProvider = ({ children }) => {
       value={{
         product,
         setProduct,
+        currOrder,
+        setCurrOrder,
         isNewProduct,
         setIsNewProduct,
+        customer,
+        setCustomer,
         cartUpdate,
         setCartUpdate,
         searchText,

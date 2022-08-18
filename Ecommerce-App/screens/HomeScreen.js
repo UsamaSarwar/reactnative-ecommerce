@@ -30,12 +30,13 @@ import OrderItemAdmin from "../components/Items/OrderItemAdmin.js";
 
 //Styles
 import universalStyles from "../styles/UniversalStyles.js";
+import OrderSettingSlideUpCard from "../components/SlideUpCards/OrderSettingSlideUpCard.js";
 
 export default function Homescreen({ navigation, route }) {
   const { user } = useAuth();
   const { searchText, listType } = useGlobal();
-
   const admin = user.customData["userType"] === "admin" ? true : false;
+  const [slideLoading, setSlideLoading] = useState(false);
 
   const elementRef = useRef();
 
@@ -76,7 +77,7 @@ export default function Homescreen({ navigation, route }) {
         >
           <HomeHeader navigation={navigation} />
 
-          {admin ? <Stats /> : null}
+          {admin ? <Stats elementRef={elementRef} /> : null}
 
           {listType === "Inventory" ? (
             searchText === "" ? (
@@ -87,7 +88,11 @@ export default function Homescreen({ navigation, route }) {
           )}
 
           {listType === "Orders" ? (
-            <OrderItemAdmin navigation={navigation} elementRef={elementRef} />
+            <OrderItemAdmin
+              navigation={navigation}
+              elementRef={elementRef}
+              setSlideLoading={setSlideLoading}
+            />
           ) : (
             <ProductItem navigation={navigation} elementRef={elementRef} />
           )}
@@ -100,7 +105,6 @@ export default function Homescreen({ navigation, route }) {
 
           <SlidingUpPanel
             allowDragging={true}
-            allowMomentum={true}
             ref={(c) => (elementRef.current = c)}
           >
             {(dragHandler) => (
@@ -114,7 +118,15 @@ export default function Homescreen({ navigation, route }) {
                   </View>
 
                   {admin ? (
-                    <AdminSlideUpCard elementRef={elementRef} />
+                    listType === "Inventory" ? (
+                      <AdminSlideUpCard elementRef={elementRef} />
+                    ) : (
+                      <OrderSettingSlideUpCard
+                        elementRef={elementRef}
+                        slideLoading={slideLoading}
+                        setSlideLoading={setSlideLoading}
+                      />
+                    )
                   ) : (
                     <UserSlideUpCard elementRef={elementRef} />
                   )}

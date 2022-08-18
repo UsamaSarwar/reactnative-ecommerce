@@ -86,7 +86,7 @@ export default function HomeHeader({ navigation }) {
           {searchText !== "" ? (
             <IonIcon
               style={{ marginRight: 8 }}
-              color="red"
+              color="gray"
               name="close-circle-outline"
               size={32}
               onPress={() => setSearchText("")}

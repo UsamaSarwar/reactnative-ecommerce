@@ -16,12 +16,6 @@ export default function CheckoutItem({ elementRef }) {
   const { shoppingCart } = useTasks();
   const { setProduct, setIsNewProduct } = useGlobal();
 
-  const renderSlide = (item) => {
-    elementRef.current.show();
-    setProduct(item);
-    setIsNewProduct(false);
-  };
-
   return (
     <FlatList
       data={shoppingCart}
@@ -35,7 +29,6 @@ export default function CheckoutItem({ elementRef }) {
       }}
       renderItem={({ item }) => (
         <Pressable
-          // onPress={() => renderSlide(item[0])}
           style={[
             universalStyles.row_f1_sb_c,
             {
