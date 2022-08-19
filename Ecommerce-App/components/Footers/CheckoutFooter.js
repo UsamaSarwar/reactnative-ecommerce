@@ -1,5 +1,5 @@
 //React
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef } from "react";
 
 //React Components
 import { View, Text, Pressable, Alert } from "react-native";

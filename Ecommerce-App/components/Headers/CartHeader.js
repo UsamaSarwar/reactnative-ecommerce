@@ -22,12 +22,6 @@ export default function CartHeader({ navigation }) {
   const { cartTotal } = useTasks();
   const { detailsError, setDetailsError, checkDetailsError } = useGlobal();
 
-  useEffect(() => {
-    if (detailsError) {
-      setDetailsError(true);
-    }
-  });
-
   return (
     <View style={UniversalStyles.header}>
       <View style={{ flexDirection: "column" }}>

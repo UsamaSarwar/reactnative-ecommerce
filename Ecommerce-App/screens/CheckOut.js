@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   Text,
   View,
@@ -22,11 +22,12 @@ import IconStyles from "../styles/IconStyles.js";
 
 export default function Checkout({ navigation }) {
   const { personalDetails } = useAuth();
-  const { detailsError } = useGlobal();
+  const { detailsError, cartUpdate, checkDetailsError } = useGlobal();
   const elementRef = useRef();
   console.log(Math.floor(Math.random() * 100000));
   const [payMethod, setPayMethod] = useState(false);
 
+  useEffect(() => {});
   return (
     <SafeAreaView style={UniversalStyles.page_container}>
       <View style={UniversalStyles.page_container}>
@@ -55,7 +56,10 @@ export default function Checkout({ navigation }) {
                     backgroundColor: detailsError ? "red" : "#42C88F",
                   },
                 ]}
-                onPress={() => navigation.navigate("Personaldetails")}
+                onPress={() => {
+                  checkDetailsError();
+                  navigation.navigate("Personaldetails");
+                }}
               >
                 <Icon name="edit" size={18} color={"white"} />
               </Pressable>
