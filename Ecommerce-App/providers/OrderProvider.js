@@ -12,8 +12,6 @@ const OrderContext = React.createContext(null);
 const OrderProvider = ({ children }) => {
   const [orders, setOrders] = useState([]);
   const { user, userCart } = useAuth();
-  const [customerDetails, setCustomerDetails] = useState({});
-  // const [customer, setCustomer] = useState({});
   const [orderCategory, setOrderCategory] = useState("All");
   const { tasks } = useTasks();
   const { customer, setCustomer } = useGlobal();
@@ -85,7 +83,13 @@ const OrderProvider = ({ children }) => {
     }
   }, [orderCategory]);
 
-  const createOrder = async (customerid, orderNumber, paymentMethod, total) => {
+  const createOrder = async (
+    customerid,
+    customerName,
+    orderNumber,
+    paymentMethod,
+    total
+  ) => {
     const projectRealm = realmRef.current;
     let today = new Date();
     let date =
@@ -103,6 +107,7 @@ const OrderProvider = ({ children }) => {
           id: new ObjectId(),
           partition: "admin", //Public Partition
           customerid: customerid,
+          customerName: customerName,
           orderNumber: orderNumber,
           paymentMethod: paymentMethod,
           orderItems: userCart,
@@ -141,29 +146,6 @@ const OrderProvider = ({ children }) => {
     return c;
   };
 
-  const userDetails = async () => {
-    let customerList = [];
-    for (let order = 0; order < orders.length; order++) {
-      if (!customerList.includes(orders[order].customerid))
-        customerList.push(orders[order].customerid);
-    }
-
-    const mongo = app.currentUser.mongoClient("mongodb-atlas");
-    const collection = mongo.db("tracker").collection("User");
-    try {
-      const customerDetailsOb = await collection.find({
-        _id: { $in: customerList },
-      });
-      let customerObject = {};
-      customerDetailsOb.forEach((elem) => {
-        customerObject[elem._id] = elem;
-      });
-      setCustomerDetails({ ...customerObject });
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
   const getCustomerDetails = async (customerId) => {
     const mongo = app.currentUser.mongoClient("mongodb-atlas");
     const collection = mongo.db("tracker").collection("User");
@@ -187,7 +169,6 @@ const OrderProvider = ({ children }) => {
       value={{
         createOrder,
         orderDetails,
-        userDetails,
         setOrderCategory,
         getCustomerDetails,
         updateStatus,
@@ -195,7 +176,6 @@ const OrderProvider = ({ children }) => {
         customer,
         orderCategory,
         orders,
-        customerDetails,
       }}
     >
       {children}

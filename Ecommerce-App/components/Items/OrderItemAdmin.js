@@ -32,12 +32,9 @@ import UniversalStyles from "../../styles/UniversalStyles.js";
 import { useGlobal } from "../../providers/GlobalProvider";
 
 export default function OrderItemAdmin({ elementRef, setSlideLoading }) {
-  const { orders, userDetails, customerDetails, getCustomerDetails } =
-    useOrder();
-  const { currOrder, setCurrOrder, setCustomer } = useGlobal();
-  useEffect(() => {
-    userDetails();
-  }, [orders]);
+  const { orders, getCustomerDetails } = useOrder();
+  const { currOrder, setCurrOrder, setCustomer, searchText, listType } =
+    useGlobal();
 
   const animationTime = 1500;
 
@@ -68,11 +65,22 @@ export default function OrderItemAdmin({ elementRef, setSlideLoading }) {
     setSlideLoading(false);
   };
 
+  const searchOrders =
+    listType === "Orders"
+      ? orders.filter((item) => {
+          return (
+            item.orderNumber.toLowerCase().includes(searchText.toLowerCase()) ||
+            searchText === "" ||
+            item.customerName.toLowerCase().includes(searchText.toLowerCase())
+          );
+        })
+      : orders;
+
   return (
     <SafeAreaView style={UniversalStyles.page_container}>
       <View style={UniversalStyles.page_container}>
         <FlatList
-          data={orders}
+          data={searchOrders}
           showsVerticalScrollIndicator={false}
           style={{ margin: 10, borderRadius: 15 }}
           renderItem={({ item }) => (
@@ -119,55 +127,35 @@ export default function OrderItemAdmin({ elementRef, setSlideLoading }) {
                               alignItems: "center",
                             }}
                           >
-                            {customerDetails[item.customerid] ? (
-                              <View
+                            <View
+                              style={{
+                                flexDirection: "row",
+                                alignItems: "center",
+                              }}
+                            >
+                              <IonIcon
+                                name="person"
+                                size={20}
+                                color="rgba(66, 200, 143, 1)"
+                                style={{ marginRight: 2 }}
+                              />
+                              <Text
+                                numberOfLines={1}
                                 style={{
-                                  flexDirection: "row",
-                                  alignItems: "center",
+                                  fontSize: 18,
+                                  marginTop: 5,
+                                  bottom: 2.5,
+                                  fontWeight: "bold",
+                                  textShadowColor: "rgba(66, 200, 143, 0.7)",
+                                  textShadowOffset: { width: -1, height: 1 },
+                                  textShadowRadius: 10,
+                                  width: 225,
+                                  paddingRight: 5,
                                 }}
                               >
-                                <IonIcon
-                                  name="person"
-                                  size={20}
-                                  color="rgba(66, 200, 143, 1)"
-                                  style={{ marginRight: 2 }}
-                                />
-                                <Text
-                                  numberOfLines={1}
-                                  style={{
-                                    fontSize: 18,
-                                    marginTop: 5,
-                                    bottom: 2.5,
-                                    fontWeight: "bold",
-                                    textShadowColor: "rgba(66, 200, 143, 0.7)",
-                                    textShadowOffset: { width: -1, height: 1 },
-                                    textShadowRadius: 10,
-                                    width: 225,
-                                    paddingRight: 5,
-                                  }}
-                                >
-                                  {
-                                    customerDetails[item.customerid].details
-                                      .name
-                                  }
-                                </Text>
-                              </View>
-                            ) : (
-                              <View style={{ width: 247 }}>
-                                <Shimmer
-                                  autoRun={true}
-                                  visible={false}
-                                  style={{
-                                    marginTop: 5,
-                                    marginBottom: 5,
-                                    borderRadius: 10,
-                                    width: 225,
-                                    height: 20,
-                                    backgroundColor: "rgba(66, 200, 143, 0.7)",
-                                  }}
-                                ></Shimmer>
-                              </View>
-                            )}
+                                {item.customerName}
+                              </Text>
+                            </View>
                           </View>
 
                           <View

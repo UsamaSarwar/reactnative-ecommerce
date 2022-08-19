@@ -49,6 +49,7 @@ export default function CheckoutFooter({ navigation, payMethod }) {
         try {
           await createOrder(
             user.customData["_id"],
+            user.customData.details.name,
             uuid(),
             !payMethod ? "Cash on Delivery" : "Card",
             cartTotal

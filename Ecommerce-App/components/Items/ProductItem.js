@@ -28,7 +28,7 @@ import IconStyles from "../../styles/IconStyles";
 export default function ProductItem({ elementRef }) {
   const { user, addToUserCart } = useAuth();
   const { tasks, deleteTask } = useTasks();
-  const { setProduct, setIsNewProduct, searchText } = useGlobal();
+  const { setProduct, setIsNewProduct, searchText, listType } = useGlobal();
 
   const [loading, setLoading] = useState(true);
 
@@ -91,12 +91,16 @@ export default function ProductItem({ elementRef }) {
       </Animatable.View>
     );
   };
-  const searchTasks = tasks.filter((item) => {
-    return (
-      item.name.toLowerCase().includes(searchText.toLowerCase()) ||
-      searchText === ""
-    );
-  });
+
+  const searchTasks =
+    listType === "Inventory"
+      ? tasks.filter((item) => {
+          return (
+            item.name.toLowerCase().includes(searchText.toLowerCase()) ||
+            searchText === ""
+          );
+        })
+      : tasks;
   return (
     <FlatList
       data={!loading ? searchTasks : [1, 2, 3, 4, 5]}

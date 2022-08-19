@@ -103,6 +103,7 @@ export class Order {
     partition,
     id,
     customerid,
+    customerName,
     orderNumber,
     paymentMethod,
     orderItems,
@@ -113,6 +114,7 @@ export class Order {
     this._partition = partition;
     this._id = id;
     this.customerid = customerid;
+    this.customerName = customerName;
     this.orderNumber = orderNumber;
     this.paymentMethod = paymentMethod;
     this.orderItems = orderItems;
@@ -127,6 +129,7 @@ export class Order {
       _id: "objectId",
       _partition: "string",
       customerid: "string",
+      customerName: "string",
       orderItems: "Order_orderItems[]",
       orderNumber: "string",
       paymentMethod: "string",

@@ -34,11 +34,15 @@ import OrderSettingSlideUpCard from "../components/SlideUpCards/OrderSettingSlid
 
 export default function Homescreen({ navigation, route }) {
   const { user } = useAuth();
-  const { searchText, listType } = useGlobal();
+  const { searchText, listType, setSearchText } = useGlobal();
   const admin = user.customData["userType"] === "admin" ? true : false;
   const [slideLoading, setSlideLoading] = useState(false);
 
   const elementRef = useRef();
+
+  useEffect(() => {
+    setSearchText("");
+  }, [listType]);
 
   useEffect(() => {
     if (!user) {
