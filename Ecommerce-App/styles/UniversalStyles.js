@@ -45,9 +45,9 @@ export default universalStyles = StyleSheet.create({
   },
 
   logo: {
-    width: 125,
-    height: 125,
-    borderRadius: 100,
+    width: "90%",
+    height: 90,
+    marginTop: 15,
   },
 
   centered_container: {
