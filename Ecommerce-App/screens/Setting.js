@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Icon from "react-native-vector-icons/AntDesign";
 // import app from "../realmApp";
 import { useAuth } from "../providers/AuthProvider.js";
+import { useGlobal } from "../providers/GlobalProvider.js";
 import {
   Text,
   View,
@@ -27,6 +28,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Setting({ navigation, route }) {
   const { user, signOut, personalDetails } = useAuth();
+  const { checkDetailsError } = useGlobal();
 
   const elementRef = useRef();
   useEffect(() => {
@@ -60,6 +62,7 @@ export default function Setting({ navigation, route }) {
             <Pressable
               style={ButtonStyles.p_button}
               onPress={() => {
+                checkDetailsError();
                 navigation.navigate("Personaldetails");
               }}
             >

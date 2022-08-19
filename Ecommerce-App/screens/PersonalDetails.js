@@ -11,12 +11,13 @@ import {
   ImageBackground,
   Image,
 } from "react-native";
+import axios from "axios";
 import Icon from "react-native-vector-icons/AntDesign";
 import IonIcon from "react-native-vector-icons/Ionicons";
 import ImagePicker from "react-native-image-crop-picker";
-import CountryPicker from "react-native-country-codes-picker";
 import * as Animatable from "react-native-animatable";
 import Snackbar from "react-native-snackbar";
+import DropDownPicker from "react-native-dropdown-picker";
 
 //Provides
 import { useAuth } from "../providers/AuthProvider.js";
@@ -28,154 +29,223 @@ import inputStyles from "../styles/InputStyles";
 import IconStyles from "../styles/IconStyles.js";
 import ButtonStyles from "../styles/ButtonStyles.js";
 
-const initStates = {
-  name: "",
-  userName: "",
-  address: "",
-  postalCode: "",
-  phoneNumber: "",
-  altPhoneNumber: "",
-  city: "",
-  province: "",
-  country: "",
-  countryCode: "",
-  altCountryCode: "",
-
-  nameError: false,
-  userNameError: false,
-  addressError: false,
-  postalCodeError: false,
-  phoneNumberError: false,
-  cityError: false,
-  provinceError: false,
-  countryError: false,
-};
-
-const reducer = (state, action) => {
-  switch (action.type) {
-    case "NAME":
-      return { ...state, name: action.payload, nameError: false };
-    case "NAME_ERR":
-      return { ...state, nameError: true };
-    case "USERNAME":
-      return { ...state, userName: action.payload };
-    case "ADDRESS":
-      return { ...state, address: action.payload, addressError: false };
-    case "ADDRESS_ERR":
-      return { ...state, addressError: true };
-    case "POSTALCODE":
-      return { ...state, postalCode: action.payload, postalCodeError: false };
-    case "POSTALCODE_ERR":
-      return { ...state, postalCodeError: true };
-    case "PHONE":
-      return { ...state, phoneNumber: action.payload, phoneNumberError: false };
-    case "PHONE_ERR":
-      return { ...state, phoneNumberError: true };
-    case "ALTPHONE":
-      return { ...state, altPhoneNumber: action.payload };
-    case "CITY":
-      return { ...state, city: action.payload, cityError: false };
-    case "CITY_ERR":
-      return { ...state, cityError: true };
-    case "PROVINCE":
-      return { ...state, province: action.payload, provinceError: false };
-    case "PROVINCE_ERR":
-      return { ...state, provinceError: true };
-    case "COUNTRY":
-      return { ...state, country: action.payload, countryError: false };
-    case "COUNTRYCODE":
-      return { ...state, countryCode: action.payload, countryError: false };
-    case "ALTCOUNTRYCODE":
-      return { ...state, altCountryCode: action.payload, countryError: false };
-    case "COUNTRY_ERR":
-      return { ...state, countryError: true };
-
-    default:
-      return state;
-  }
-};
-
 export default function PersonalDetails({ navigation }) {
   const { personalDetails, updateUserDetails, updateAvatar } = useAuth();
-
-  const [show, setShow] = useState(false);
-  const [altShow, setAltShow] = useState(false);
-
-  const [state, dispatch] = useReducer(reducer, initStates);
+  const { detailsError, setDetailsError, checkDetailsError } = useGlobal();
 
   const animationTime = 800;
   const [savePressed, setSavePressed] = useState(false);
-  const { detailsError, setDetailsError, checkDetailsError } = useGlobal();
 
-  useEffect(() => {
-    if (detailsError) {
-      setDetailsError(true);
-    }
-  });
+  const [name, setName] = useState(personalDetails.name);
+  const [nameError, setNameError] = useState(false);
+
+  const [userName, setUserName] = useState(personalDetails.userName);
+  const [userNameError, setUserNameError] = useState(false);
+
+  const [phoneNumber, setPhoneNumber] = useState(personalDetails.phoneNumber);
+  const [phoneNumberError, setPhoneNumberError] = useState(false);
+
+  const [altPhoneNumber, setAltPhoneNumber] = useState(
+    personalDetails.altPhoneNumber
+  );
+  const [altPhoneNumberError, setAltPhoneNumberError] = useState(false);
+
+  const [address, setAddress] = useState(personalDetails.address);
+  const [addressError, setAddressError] = useState(false);
+
+  const [postalCode, setPostalCode] = useState(personalDetails.postalCode);
+  const [postalCodeError, setPostalCodeError] = useState(false);
+
+  const [cityName, setCityName] = useState(personalDetails.city);
+  const [cityError, setCityError] = useState(false);
+
+  const [provinceName, setProvinceName] = useState(personalDetails.province);
+  const [provinceError, setProvinceError] = useState(false);
+
+  const [countryName, setCountryName] = useState(personalDetails.country);
+  const [countryError, setCountryError] = useState(false);
+
+  const [error, setError] = useState(true);
 
   const elementRef = useRef();
 
+  const [countryAndProvincesData, setCountryAndProvincesData] = useState([]);
+  const [countryCodeData, setCountryCodeData] = useState([]);
+  const [countryPhoneCode, setCountryPhoneCode] = useState(
+    personalDetails.countryCode
+  );
+
+  const [openCountryDropDown, setOpenCountryDropDown] = useState(false);
+  const [openProvinceDropDown, setOpenProvinceDropDown] = useState(false);
+  const [openCityDropDown, setOpenCityDropDown] = useState(false);
+
   useEffect(() => {
-    dispatch({ type: "NAME", payload: personalDetails.name });
-    dispatch({ type: "USERNAME", payload: personalDetails.userName });
-    dispatch({ type: "ADDRESS", payload: personalDetails.address });
-    dispatch({ type: "POSTALCODE", payload: personalDetails.postalCode });
-    dispatch({ type: "PHONE", payload: personalDetails.phoneNumber });
-    dispatch({ type: "ALTPHONE", payload: personalDetails.altPhoneNumber });
-    dispatch({ type: "CITY", payload: personalDetails.city });
-    dispatch({ type: "PROVINCE", payload: personalDetails.province });
-    dispatch({ type: "COUNTRY", payload: personalDetails.country });
-    dispatch({ type: "COUNTRYCODE", payload: personalDetails.countryCode });
-    dispatch({
-      type: "ALTCOUNTRYCODE",
-      payload: personalDetails.altCountryCode,
-    });
+    // this api contains list of country names and their phone codes
+    axios
+      .get(
+        "https://gist.githubusercontent.com/anubhavshrimal/75f6183458db8c453306f93521e93d37/raw/f77e7598a8503f1f70528ae1cbf9f66755698a16/CountryCodes.json"
+      )
+      .then((res) => {
+        setCountryCodeData(res.data);
+      })
+      .catch((err) => console.error(err));
+    // this api contains list of countries their states and their cities
+    axios
+      .get(
+        "https://pkgstore.datahub.io/core/world-cities/world-cities_json/data/5b3dd46ad10990bca47b04b4739a02ba/world-cities_json.json"
+      )
+      .then((res) => {
+        setCountryAndProvincesData(res.data);
+      })
+      .catch((err) => console.error(err));
   }, []);
+
+  useEffect(() => {
+    getCountryCode();
+  }, [countryName]);
+
+  useEffect(() => {
+    checkError();
+  }, [
+    name,
+    userName,
+    phoneNumber,
+    altPhoneNumber,
+    countryName,
+    provinceName,
+    cityName,
+    address,
+    postalCode,
+  ]);
+
+  const getCountryCode = () => {
+    if (countryCodeData.length > 0) {
+      let phoneCodeArray = countryCodeData.filter(
+        (item) => item.name === countryName
+      );
+      let phoneCodeItem = phoneCodeArray.map((item) => item.dial_code);
+      const dial_code = phoneCodeItem[0];
+      setCountryPhoneCode(dial_code);
+    }
+  };
+
+  let countries = [
+    ...new Set(countryAndProvincesData.map((item) => item.country)),
+  ];
+  countries.sort().reverse();
+  let countryList = [];
+  for (let i = 0; i < countries.length; i++) {
+    countryList.push({ label: countries[i], value: countries[i] });
+  }
+
+  let countryItems = countryAndProvincesData.filter(
+    (item) => item.country === countryName
+  );
+  let provinces = [...new Set(countryItems.map((item) => item.subcountry))];
+  provinces.sort().reverse();
+  let provinceList = [];
+  for (let i = 0; i < provinces.length; i++) {
+    provinceList.push({ label: provinces[i], value: provinces[i] });
+  }
+
+  let provinceItems = countryAndProvincesData.filter(
+    (item) => item.subcountry === provinceName && item.country === countryName
+  );
+  let cities = [...new Set(provinceItems.map((item) => item.name))];
+  cities.sort().reverse();
+  let cityList = [];
+  for (let i = 0; i < cities.length; i++) {
+    cityList.push({ label: cities[i], value: cities[i] });
+  }
+
+  const checkError = async () => {
+    if (
+      !name ||
+      !phoneNumber ||
+      phoneNumber.length < 10 ||
+      altPhoneNumber.length < 10 ||
+      !countryName ||
+      !provinceName ||
+      !cityName ||
+      !address ||
+      !postalCode
+    ) {
+      setDetailsError(true); // global
+      if (!name) {
+        setNameError(true);
+      } else {
+        setNameError(false);
+      }
+      if (!phoneNumber) {
+        setPhoneNumberError(true);
+      } else {
+        setPhoneNumberError(false);
+      }
+      if (phoneNumber.length < 10) {
+        setPhoneNumberError(true);
+      } else {
+        setPhoneNumberError(false);
+      }
+      if (altPhoneNumber.length < 10) {
+        setAltPhoneNumberError(true);
+      } else {
+        setAltPhoneNumberError(false);
+      }
+      if (!countryName) {
+        setCountryError(true);
+      } else {
+        setCountryError(false);
+      }
+      if (!provinceName) {
+        setProvinceError(true);
+      } else {
+        setProvinceError(false);
+      }
+      if (!address) {
+        setAddressError(true);
+      } else {
+        setAddressError(false);
+      }
+      if (!cityName) {
+        setCityError(true);
+      } else {
+        setCityError(false);
+      }
+      if (!postalCode) {
+        setPostalCodeError(true);
+      } else {
+        setPostalCodeError(false);
+      }
+    } else {
+      setNameError(false);
+      setPhoneNumberError(false);
+      setAltPhoneNumberError(false);
+      setCountryError(false);
+      setProvinceError(false);
+      setAddressError(false);
+      setCityError(false);
+      setPostalCodeError(false);
+      setDetailsError(false);
+    }
+  };
 
   const onPressUpdate = () => {
     // elementRef.updateButton.bounceIn(animationTime);
     setTimeout(() => {
-      if (
-        state.name === "" ||
-        state.userName === "" ||
-        state.phoneNumber === "" ||
-        state.country === "" ||
-        state.province === "" ||
-        state.city === "" ||
-        state.address === "" ||
-        state.postalCode === ""
-      ) {
-        if (state.name === "") {
-          dispatch({ type: "NAME_ERR" });
-          console.log("Name field has zero length");
-        }
-        if (state.phoneNumber === "") {
-          dispatch({ type: "PHONE_ERR" });
-          console.log("Phone Number field has zero length");
-        }
-        if (state.country === "") {
-          dispatch({ type: "COUNTRY_ERR" });
-          console.log("Country field has zero length");
-        }
-        if (state.province === "") {
-          dispatch({ type: "PROVINCE_ERR" });
-          console.log("Province field has zero length");
-        }
-        if (state.address === "") {
-          dispatch({ type: "ADDRESS_ERR" });
-          console.log("Province field has zero length");
-        }
-        if (state.city === "") {
-          dispatch({ type: "CITY_ERR" });
-          console.log("Province field has zero length");
-        }
-        if (state.postalCode === "") {
-          dispatch({ type: "POSTALCODE_ERR" });
-          console.log("Province field has zero length");
-        }
-      } else {
+      if (!detailsError) {
         try {
-          updateUserDetails(state);
+          updateUserDetails(
+            name,
+            userName,
+            countryPhoneCode,
+            phoneNumber,
+            altPhoneNumber,
+            countryName,
+            provinceName,
+            cityName,
+            address,
+            postalCode
+          );
         } catch (error) {
           Alert.alert(error.message);
         }
@@ -204,7 +274,12 @@ export default function PersonalDetails({ navigation }) {
             </Pressable>
             <View>
               <Pressable
-                style={ButtonStyles.checkout_button}
+                disabled={detailsError ? true : false}
+                style={
+                  detailsError
+                    ? ButtonStyles.checkout_button_dis
+                    : ButtonStyles.checkout_button
+                }
                 onPress={() => {
                   setSavePressed(true);
                   elementRef["saveButton"].fadeInRight(animationTime);
@@ -226,7 +301,15 @@ export default function PersonalDetails({ navigation }) {
                   }}
                 >
                   {!savePressed ? (
-                    <Text style={ButtonStyles.checkout_button_text}>Save</Text>
+                    <Text
+                      style={
+                        detailsError
+                          ? ButtonStyles.checkout_button_text_dis
+                          : ButtonStyles.checkout_button_text
+                      }
+                    >
+                      Save
+                    </Text>
                   ) : (
                     <View
                       style={{ width: 47, alignItems: "center", height: 28 }}
@@ -243,7 +326,8 @@ export default function PersonalDetails({ navigation }) {
             </View>
           </View>
 
-          <ScrollView style={{ padding: 10 }}>
+          <ScrollView style={{ padding: 10 }} listMode="SCROLLVIEW">
+            {/* list mode set to SCROLLVIEW to avoid nested lists error */}
             <View style={UniversalStyles.avatar_container_settings_page}>
               <Image
                 source={{
@@ -261,238 +345,271 @@ export default function PersonalDetails({ navigation }) {
                 <Icon name="edit" color={"#ffffff"} size={21} />
               </Pressable>
             </View>
-
-            {state.name === "" ? null : (
-              <Text style={{ marginBottom: 5 }}>Full Name</Text>
-            )}
+            <Text style={{ marginBottom: 5 }}>
+              Full Name
+              {/* asterick */}
+              <Text
+                style={{
+                  color: "red",
+                  fontSize: 17,
+                  height: 13,
+                }}
+              >
+                *
+              </Text>
+            </Text>
             <TextInput
-              defaultValue={state.name}
+              defaultValue={personalDetails.name}
               placeholder="Full Name"
               style={[
                 inputStyles.textInput,
                 {
                   backgroundColor: "#f6f8f9",
-                  borderColor: state.nameError ? "red" : "transparent",
+                  borderColor: nameError ? "red" : "transparent",
                 },
               ]}
-              onChangeText={(text) => dispatch({ type: "NAME", payload: text })}
+              onChangeText={(text) => {
+                setName(text);
+              }}
             />
-
-            {state.userName === "" ? null : (
-              <Text style={{ marginBottom: 5 }}>User Name</Text>
-            )}
+            <Text style={{ marginBottom: 5 }}>UserName</Text>
             <TextInput
-              defaultValue={state.userName}
-              placeholder="User Name"
+              defaultValue={personalDetails.userName}
+              placeholder="UserName"
               style={[
                 inputStyles.textInput,
                 {
                   backgroundColor: "#f6f8f9",
-                  borderColor: "transparent",
+                  borderColor: userNameError ? "red" : "transparent",
                 },
               ]}
-              onChangeText={(text) =>
-                dispatch({ type: "USERNAME", payload: text })
-              }
+              onChangeText={(text) => {
+                setUserName(text);
+              }}
             />
 
-            {state.phoneNumber === "" ? null : (
-              <Text style={{ marginBottom: 5 }}>Phone Number</Text>
-            )}
-            <View style={{ flexDirection: "row", flex: 1 }}>
-              <Pressable
-                onPress={() => setShow(true)}
+            <Text style={{ marginBottom: 5 }}>
+              Select Country
+              {/* asterick */}
+              <Text
+                style={{
+                  color: "red",
+                  fontSize: 17,
+                  height: 13,
+                }}
+              >
+                *
+              </Text>
+            </Text>
+            <DropDownPicker
+              style={{
+                marginBottom: 24,
+                borderColor: countryError ? "red" : "black",
+              }}
+              placeholder="Select your country"
+              listMode="SCROLLVIEW"
+              dropDownDirection="TOP"
+              searchable={true}
+              value={countryName}
+              open={openCountryDropDown}
+              setOpen={setOpenCountryDropDown}
+              items={countryList}
+              setValue={setCountryName}
+            />
+
+            <Text style={{ marginBottom: 5 }}>
+              Select Province/ State
+              {/* asterick */}
+              <Text
+                style={{
+                  color: "red",
+                  fontSize: 17,
+                  height: 13,
+                }}
+              >
+                *
+              </Text>
+            </Text>
+            <DropDownPicker
+              style={{
+                marginBottom: 24,
+                borderColor: provinceError ? "red" : "black",
+              }}
+              listMode="SCROLLVIEW"
+              placeholder="Select your province/ State"
+              dropDownDirection="TOP"
+              searchable={true}
+              value={provinceName}
+              open={openProvinceDropDown}
+              setOpen={setOpenProvinceDropDown}
+              items={provinceList}
+              setValue={setProvinceName}
+            />
+
+            <Text style={{ marginBottom: 5 }}>
+              Select City
+              {/* asterick */}
+              <Text
+                style={{
+                  color: "red",
+                  fontSize: 17,
+                  height: 13,
+                }}
+              >
+                *
+              </Text>
+            </Text>
+            <DropDownPicker
+              style={{
+                marginBottom: 24,
+                borderColor: cityError ? "red" : "black",
+              }}
+              value={cityName}
+              listMode="SCROLLVIEW"
+              dropDownDirection="TOP"
+              searchable={true}
+              open={openCityDropDown}
+              setOpen={setOpenCityDropDown}
+              items={cityList}
+              setValue={setCityName}
+              placeholder="Select your City"
+            />
+
+            <Text style={{ marginBottom: 5 }}>
+              Phone Number
+              {/* asterick */}
+              <Text
+                style={{
+                  color: "red",
+                  fontSize: 17,
+                  height: 13,
+                }}
+              >
+                *
+              </Text>
+            </Text>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <TextInput
                 style={[
-                  UniversalStyles.centered_container,
                   inputStyles.textInput,
                   {
-                    backgroundColor: "#f6f8f9",
                     borderColor: "transparent",
-                    marginRight: 5,
-                    paddingLeft: 5,
-                    paddingRight: 5,
+                    backgroundColor: "#f6f8f9",
+                    flex: 0.13,
                   },
                 ]}
-              >
-                <Text>{state.countryCode}</Text>
-              </Pressable>
-
-              <CountryPicker
-                show={show}
-                // when picker button press you will get the country object with dial code
-                pickerButtonOnPress={(item) => {
-                  dispatch({ type: "COUNTRYCODE", payload: item.dial_code });
-                  console.log(item);
-                  setShow(false);
-                }}
+                defaultValue={countryPhoneCode}
+                editable={false}
+                selectTextOnFocus={false}
               />
-
               <TextInput
+                maxLength={10}
                 keyboardType="numeric"
-                defaultValue={state.phoneNumber}
+                defaultValue={personalDetails.phoneNumber}
                 placeholder="Phone Number"
                 style={[
                   inputStyles.textInput,
                   {
-                    flex: 1,
                     backgroundColor: "#f6f8f9",
-                    borderColor: state.phoneNumberError ? "red" : "transparent",
+                    borderColor: phoneNumberError ? "red" : "transparent",
+                    flex: 1,
                   },
                 ]}
-                onChangeText={(text) =>
-                  dispatch({ type: "PHONE", payload: text })
-                }
+                onChangeText={(text) => {
+                  setPhoneNumber(text);
+                }}
               />
             </View>
 
-            {state.altPhoneNumber === "" ? null : (
-              <Text style={{ marginBottom: 5 }}>Alternate Phone Number</Text>
-            )}
-            <View style={{ flexDirection: "row", flex: 1 }}>
-              <Pressable
-                onPress={() => setAltShow(true)}
+            <Text style={{ marginBottom: 5 }}>Alternate Phone Number</Text>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <TextInput
                 style={[
-                  UniversalStyles.centered_container,
                   inputStyles.textInput,
                   {
-                    backgroundColor: "#f6f8f9",
                     borderColor: "transparent",
-                    marginRight: 5,
-                    paddingLeft: 5,
-                    paddingRight: 5,
+                    backgroundColor: "#f6f8f9",
+                    flex: 0.13,
                   },
                 ]}
-              >
-                <Text>{state.altCountryCode}</Text>
-              </Pressable>
-
-              <CountryPicker
-                show={altShow}
-                // when picker button press you will get the country object with dial code
-                pickerButtonOnPress={(item) => {
-                  dispatch({ type: "ALTCOUNTRYCODE", payload: item.dial_code });
-                  setAltShow(false);
-                }}
+                defaultValue={countryPhoneCode}
+                editable={false}
+                selectTextOnFocus={false}
               />
-
               <TextInput
+                maxLength={10}
                 keyboardType="numeric"
-                defaultValue={state.altPhoneNumber}
+                defaultValue={personalDetails.altPhoneNumber}
                 placeholder="Alternate Phone Number"
                 style={[
                   inputStyles.textInput,
                   {
+                    backgroundColor: "#f6f8f9",
+                    borderColor: altPhoneNumberError ? "red" : "transparent",
                     flex: 1,
-                    backgroundColor: "#f6f8f9",
-                    borderColor: state.altPhoneNumberError
-                      ? "red"
-                      : "transparent",
                   },
                 ]}
-                onChangeText={(text) =>
-                  dispatch({ type: "ALTPHONE", payload: text })
-                }
+                onChangeText={(text) => {
+                  setAltPhoneNumber(text);
+                }}
               />
             </View>
-            <View style={{ flex: 1, marginLeft: 5 }}>
-              {state.address === "" ? null : (
-                <Text style={{ marginBottom: 5 }}>Address Details</Text>
-              )}
-              <TextInput
-                defaultValue={state.address}
-                placeholder="Address Details"
-                style={[
-                  inputStyles.textInput,
-                  {
-                    backgroundColor: "#f6f8f9",
-                    borderColor: state.addressError ? "red" : "transparent",
-                  },
-                ]}
-                onChangeText={(text) =>
-                  dispatch({ type: "ADDRESS", payload: text })
-                }
-              />
-            </View>
-            <View style={{ flex: 1, marginLeft: 5 }}>
-              {state.postalCode === "" ? null : (
-                <Text style={{ marginBottom: 5 }}>Postal Code</Text>
-              )}
-              <TextInput
-                defaultValue={state.postalCode}
-                placeholder="Postal Code of your area"
-                style={[
-                  inputStyles.textInput,
-                  {
-                    backgroundColor: "#f6f8f9",
-                    borderColor: state.postalCodeError ? "red" : "transparent",
-                  },
-                ]}
-                onChangeText={(text) =>
-                  dispatch({ type: "POSTALCODE", payload: text })
-                }
-              />
-            </View>
-            <View style={UniversalStyles.row_f1_sb_c}>
-              <View style={{ flex: 1 }}>
-                {state.city === "" ? null : (
-                  <Text style={{ marginBottom: 5 }}>City</Text>
-                )}
-                <TextInput
-                  defaultValue={state.city}
-                  placeholder="City"
-                  style={[
-                    inputStyles.textInput,
-                    {
-                      backgroundColor: "#f6f8f9",
-                      borderColor: state.cityError ? "red" : "transparent",
-                    },
-                  ]}
-                  onChangeText={(text) =>
-                    dispatch({ type: "CITY", payload: text })
-                  }
-                />
-              </View>
 
-              <View style={{ flex: 1, marginLeft: 5 }}>
-                {state.province === "" ? null : (
-                  <Text style={{ marginBottom: 5 }}>Province/State</Text>
-                )}
-                <TextInput
-                  defaultValue={state.province}
-                  placeholder="Province"
-                  style={[
-                    inputStyles.textInput,
-                    {
-                      backgroundColor: "#f6f8f9",
-                      borderColor: state.cityError ? "red" : "transparent",
-                    },
-                  ]}
-                  onChangeText={(text) =>
-                    dispatch({ type: "PROVINCE", payload: text })
-                  }
-                />
-              </View>
-
-              <View style={{ flex: 1, marginLeft: 5 }}>
-                {state.country === "" ? null : (
-                  <Text style={{ marginBottom: 5 }}>Country</Text>
-                )}
-                <TextInput
-                  defaultValue={state.country}
-                  placeholder="Country"
-                  style={[
-                    inputStyles.textInput,
-                    {
-                      backgroundColor: "#f6f8f9",
-                      borderColor: state.countryError ? "red" : "transparent",
-                    },
-                  ]}
-                  onChangeText={(text) =>
-                    dispatch({ type: "COUNTRY", payload: text })
-                  }
-                />
-              </View>
-            </View>
+            <Text style={{ marginBottom: 5 }}>
+              Address
+              {/* asterick */}
+              <Text
+                style={{
+                  color: "red",
+                  fontSize: 17,
+                  height: 13,
+                }}
+              >
+                *
+              </Text>
+            </Text>
+            <TextInput
+              defaultValue={personalDetails.address}
+              placeholder="Phone Number"
+              style={[
+                inputStyles.textInput,
+                {
+                  backgroundColor: "#f6f8f9",
+                  borderColor: addressError ? "red" : "transparent",
+                },
+              ]}
+              onChangeText={(text) => {
+                setAddress(text);
+              }}
+            />
+            <Text style={{ marginBottom: 5 }}>
+              Postal Code
+              {/* asterick */}
+              <Text
+                style={{
+                  color: "red",
+                  fontSize: 17,
+                  height: 13,
+                }}
+              >
+                *
+              </Text>
+            </Text>
+            <TextInput
+              keyboardType="numeric"
+              defaultValue={personalDetails.postalCode}
+              placeholder="Postal Code"
+              style={[
+                inputStyles.textInput,
+                {
+                  backgroundColor: "#f6f8f9",
+                  borderColor: postalCodeError ? "red" : "transparent",
+                },
+              ]}
+              onChangeText={(text) => {
+                setPostalCode(text);
+              }}
+            />
           </ScrollView>
         </ImageBackground>
       </View>

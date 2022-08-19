@@ -57,18 +57,18 @@ const GlobalProvider = ({ children }) => {
 
   const checkDetailsError = async () => {
     if (
-      personalDetails.name === null ||
-      personalDetails.phoneNumber === null ||
-      personalDetails.country === null ||
-      personalDetails.province === null ||
-      personalDetails.city === null ||
-      personalDetails.address === null ||
-      personalDetails.postalCode === null
+      !personalDetails.name ||
+      !personalDetails.phoneNumber ||
+      !personalDetails.country ||
+      !personalDetails.province ||
+      !personalDetails.city ||
+      !personalDetails.address ||
+      !personalDetails.postalCode
     ) {
-      await setDetailsError(true);
-      console.log(detailsError);
+      console.log("here123");
+      setDetailsError(true);
     } else {
-      await setDetailsError(false);
+      setDetailsError(false);
     }
   };
 

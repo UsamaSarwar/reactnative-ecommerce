@@ -213,22 +213,32 @@ const AuthProvider = ({ children }) => {
     });
   };
 
-  const updateUserDetails = (state) => {
+  const updateUserDetails = (
+    name,
+    userName,
+    phoneCode,
+    phoneNumber,
+    altPhoneNumber,
+    country,
+    province,
+    city,
+    address,
+    postalCode
+  ) => {
     console.log("Updating user details");
     const userRealm = realmRef.current;
     const user = userRealm.objects("User")[0];
     userRealm.write(() => {
-      user.details["name"] = state.name;
-      user.details["userName"] = state.userName;
-      user.details["phoneNumber"] = state.phoneNumber;
-      user.details["countryCode"] = state.countryCode;
-      user.details["altPhoneNumber"] = state.altPhoneNumber;
-      user.details["altCountryCode"] = state.altCountryCode;
-      user.details["country"] = state.country;
-      user.details["province"] = state.province;
-      user.details["city"] = state.city;
-      user.details["address"] = state.address;
-      user.details["postalCode"] = state.postalCode;
+      user.details["name"] = name;
+      user.details["userName"] = userName;
+      user.details["countryCode"] = phoneCode;
+      user.details["phoneNumber"] = phoneNumber;
+      user.details["altPhoneNumber"] = altPhoneNumber;
+      user.details["country"] = country;
+      user.details["province"] = province;
+      user.details["city"] = city;
+      user.details["address"] = address;
+      user.details["postalCode"] = postalCode;
     });
   };
 
