@@ -26,7 +26,7 @@ const TasksProvider = ({ children }) => {
     Laptops: "laptop",
     Mouse: "mouse",
     Smartphones: "smartphone",
-    Webcams: "webcame",
+    Webcams: "webcam",
   };
 
   // Use a Ref to store the realm rather than the state because it is not

@@ -16,6 +16,7 @@ import IonIcon from "react-native-vector-icons/Ionicons";
 import ImagePicker from "react-native-image-crop-picker";
 import CountryPicker from "react-native-country-codes-picker";
 import * as Animatable from "react-native-animatable";
+import Snackbar from "react-native-snackbar";
 
 //Provides
 import { useAuth } from "../providers/AuthProvider.js";
@@ -211,6 +212,10 @@ export default function PersonalDetails({ navigation }) {
                     checkDetailsError();
                     onPressUpdate();
                     setSavePressed(false);
+                    Snackbar.show({
+                      text: "Your Personal Details have been Updated 📝",
+                      duration: Snackbar.LENGTH_LONG,
+                    });
                     navigation.goBack();
                   }, animationTime);
                 }}

@@ -5,6 +5,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { View, Text, Pressable, Alert } from "react-native";
 import NumberFormat from "react-number-format";
 import MatIcon from "react-native-vector-icons/MaterialCommunityIcons";
+import Snackbar from "react-native-snackbar";
 
 //Providers
 import { useAuth } from "../../providers/AuthProvider.js";
@@ -20,7 +21,7 @@ import ButtonStyles from "../../styles/ButtonStyles.js";
 import * as Animatable from "react-native-animatable";
 
 export default function CheckoutFooter({ navigation, payMethod }) {
-  const { user, emptyUserCart } = useAuth();
+  const { user, emptyUserCart, personalDetails } = useAuth();
   const { cartTotal } = useTasks();
   const { createOrder } = useOrder();
   const { detailsError } = useGlobal();
@@ -49,14 +50,24 @@ export default function CheckoutFooter({ navigation, payMethod }) {
         try {
           await createOrder(
             user.customData["_id"],
-            user.customData.details.name,
+            personalDetails.name,
             uuid(),
             !payMethod ? "Cash on Delivery" : "Card",
             cartTotal
           );
           emptyUserCart();
-          Alert.alert("Your order has been placed");
           navigation.navigate("Homescreen");
+          Snackbar.show({
+            text: "Your order has been placed 🚛📦",
+            duration: Snackbar.LENGTH_LONG,
+            action: {
+              text: "Check",
+              textColor: "rgba(66, 200, 143, 1)",
+              onPress: () => {
+                console.log(navigation.navigate("Myorders"));
+              },
+            },
+          });
         } catch (error) {
           console.error(error.message);
         }

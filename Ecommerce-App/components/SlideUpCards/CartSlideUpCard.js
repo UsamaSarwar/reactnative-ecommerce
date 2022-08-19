@@ -1,5 +1,5 @@
 //React
-import React, { useState } from "react";
+import React from "react";
 import { Text, View, Image, ScrollView } from "react-native";
 import NumberFormat from "react-number-format";
 // import Snackbar from "react-native-snackbar";
