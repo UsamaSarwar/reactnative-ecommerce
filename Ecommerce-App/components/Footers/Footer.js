@@ -4,6 +4,7 @@ import React from "react";
 //React Components
 import { View, Text, Pressable } from "react-native";
 import Icon from "react-native-vector-icons/AntDesign";
+import MatIcon from "react-native-vector-icons/MaterialIcons";
 
 //Animation-Component
 import * as Animatable from "react-native-animatable";
@@ -86,6 +87,14 @@ export default function Footer({ navigation, route, elementRef }) {
           name="home"
           size={30}
           color={route.name === "Homescreen" ? "black" : "grey"}
+        />
+      </Pressable>
+
+      <Pressable onPress={() => navigation.navigate("WishlistScreen")}>
+        <MatIcon
+          name="favorite"
+          size={30}
+          color={route.name === "WishlistScreen" ? "black" : "grey"}
         />
       </Pressable>
 

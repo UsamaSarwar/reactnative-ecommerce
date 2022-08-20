@@ -30,6 +30,7 @@ const GlobalProvider = ({ children }) => {
   const [customer, setCustomer] = useState({});
 
   const [cartUpdate, setCartUpdate] = useState(false);
+  const [wishListUpdate, setWishListUpdate] = useState(false);
 
   const [detailsError, setDetailsError] = useState(false);
 
@@ -96,6 +97,8 @@ const GlobalProvider = ({ children }) => {
         setCustomer,
         cartUpdate,
         setCartUpdate,
+        wishListUpdate,
+        setWishListUpdate,
         searchText,
         setSearchText,
         category,

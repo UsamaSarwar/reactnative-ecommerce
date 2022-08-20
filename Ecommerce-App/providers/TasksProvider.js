@@ -7,10 +7,11 @@ import { ObjectId } from "bson";
 const TasksContext = React.createContext(null);
 
 const TasksProvider = ({ children }) => {
-  const { user, userCart } = useAuth();
+  const { user, userCart, userWishList } = useAuth();
 
   const [tasks, setTasks] = useState([]);
   const [shoppingCart, setShoppingCart] = useState([]);
+  const [wishList, setWishList] = useState([]);
   const [cartTotal, setCartTotal] = useState(0);
 
   const [categoryFilter, setCategoryFilter] = useState("All");
@@ -169,6 +170,16 @@ const TasksProvider = ({ children }) => {
     setCartTotal(newTotal);
   };
 
+  const wishListDetails = () => {
+    const products = realmRef.current.objects("Task");
+    const c = [];
+    for (let i = 0; i < userWishList.length; i++) {
+      const id = ObjectId(userWishList[i]["productId"]);
+      c.push([products.filtered("_id == $0", id)[0]]);
+    }
+    setWishList(c);
+  };
+
   // Render the children within the TaskContext's provider. The value contains
   // everything that should be made available to descendants that use the
   // useTasks hook.
@@ -179,7 +190,9 @@ const TasksProvider = ({ children }) => {
         deleteTask,
         updateTask,
         cartDetails,
+        wishListDetails,
         shoppingCart,
+        wishList,
         cartTotal,
         tasks,
         categoryFilter,

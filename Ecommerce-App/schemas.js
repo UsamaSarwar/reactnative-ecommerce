@@ -28,12 +28,22 @@ export class User {
       qty: "int?",
     },
   };
+
+  static User_wishListSchema = {
+    name: "User_wishList",
+    embedded: true,
+    properties: {
+      productId: "string?",
+    },
+  };
+
   static UserSchema = {
     name: "User",
     properties: {
       _id: "string",
       _partition: "string",
       cart: "User_cart[]",
+      wishList: "User_wishList[]",
       details: "User_details",
       email: "string",
       name: "string",

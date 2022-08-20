@@ -18,6 +18,12 @@ export default iconStyles = StyleSheet.create({
     padding: 4,
   },
 
+  fvrtIcon: {
+    backgroundColor: "#f6f8f9",
+    borderRadius: 100,
+    padding: 4,
+  },
+
   background4: {
     borderRadius: 100,
     backgroundColor: "rgba(66, 200, 143, 1)",

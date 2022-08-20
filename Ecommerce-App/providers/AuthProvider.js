@@ -24,6 +24,8 @@ const AuthProvider = ({ children }) => {
 
   const [userCart, setUserCart] = useState([]);
 
+  const [userWishList, setUserWishList] = useState([]);
+
   useEffect(() => {
     if (!user) {
       return;
@@ -38,7 +40,12 @@ const AuthProvider = ({ children }) => {
     // TODO: Open the user realm, which contains at most one user custom data object
     // for the logged-in user.
     const config = {
-      schema: [User.UserSchema, User.User_cartSchema, User.User_detailsSchema],
+      schema: [
+        User.UserSchema,
+        User.User_cartSchema,
+        User.User_detailsSchema,
+        User.User_wishListSchema,
+      ],
       sync: {
         user,
         partitionValue: `user=${user.id}`,
@@ -58,9 +65,10 @@ const AuthProvider = ({ children }) => {
         // the server side yet when a user is first registered.
 
         if (users.length !== 0) {
-          const { cart, details } = users[0];
+          const { cart, wishList, details } = users[0];
           setUserCart([...cart]); //To set cart of user on login
           setPersonalDetails(details);
+          setUserWishList([...wishList]);
         }
       });
     });
@@ -78,6 +86,7 @@ const AuthProvider = ({ children }) => {
         // setImage(null);
         // setImageForm(null);
         setPersonalDetails(null);
+        setUserWishList([]);
         console.log("Closing User realm");
       }
     };
@@ -151,6 +160,18 @@ const AuthProvider = ({ children }) => {
         });
       }
     });
+  };
+
+  const addToWishList = (itemId) => {
+    console.log("Adding Item to Wish List");
+    const userRealm = realmRef.current;
+    const user = userRealm.objects("User")[0];
+    userRealm.write(() => {
+      user.wishList.push({
+        productId: String(itemId),
+      });
+    });
+    setUserWishList(user.wishList);
   };
 
   const removeFromUserCart = (itemId) => {
@@ -257,8 +278,10 @@ const AuthProvider = ({ children }) => {
         updateQuantity,
         updateAvatar,
         updateUserDetails,
+        addToWishList,
         user,
         userCart,
+        userWishList,
         personalDetails,
       }}
     >

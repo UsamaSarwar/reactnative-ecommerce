@@ -26,7 +26,7 @@ import productCardStyles from "../../styles/ProductCardStyle";
 import IconStyles from "../../styles/IconStyles";
 
 export default function ProductItem({ elementRef }) {
-  const { user, addToUserCart } = useAuth();
+  const { user, addToUserCart, addToWishList } = useAuth();
   const { tasks, deleteTask } = useTasks();
   const { setProduct, setIsNewProduct, searchText, listType } = useGlobal();
 
@@ -46,6 +46,10 @@ export default function ProductItem({ elementRef }) {
 
   const onPressAddtoCart = (item) => {
     addToUserCart(item["_id"], 1);
+  };
+
+  const onPressAddtoWishList = (item) => {
+    addToWishList(item["_id"]);
   };
 
   const onPressDeleteProduct = (item) => {
@@ -92,6 +96,21 @@ export default function ProductItem({ elementRef }) {
     );
   };
 
+  const makeAddtoWishListButton = (item) => {
+    return (
+      <Animatable.View ref={(here) => (elementRef[item._id] = here)}>
+        <Pressable
+          style={IconStyles.fvrtIcon}
+          onPress={() => {
+            console.log("wish button pressed");
+            onPressAddtoWishList(item);
+          }}
+        >
+          <MatIcon name="favorite" size={24} color={"red"} />
+        </Pressable>
+      </Animatable.View>
+    );
+  };
   const searchTasks =
     listType === "Inventory"
       ? tasks.filter((item) => {
@@ -203,6 +222,13 @@ export default function ProductItem({ elementRef }) {
                   </View>
                 ) : !loading ? (
                   makeAddToCartButton(item)
+                ) : null}
+                {admin && !loading ? (
+                  <View style={IconStyles.fvrtIcon}>
+                    <Icon name="edit" color="white" size={18} />
+                  </View>
+                ) : !loading ? (
+                  makeAddtoWishListButton(item)
                 ) : null}
               </View>
             </View>

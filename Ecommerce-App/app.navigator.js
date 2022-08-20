@@ -13,6 +13,7 @@ import Cart from "./screens/Cart";
 import Checkout from "./screens/CheckOut";
 import PersonalDetails from "./screens/PersonalDetails";
 import MyOrders from "./screens/MyOrders";
+import WishListScreen from "./screens/WishListScreen";
 
 import { useAuth } from "./providers/AuthProvider";
 import { TasksProvider } from "./providers/TasksProvider";
@@ -48,6 +49,10 @@ export default function AppNavigator() {
                 <Stack.Screen name="Myorders" component={MyOrders} />
                 <Stack.Screen name="Deleteaccount" component={Deleteaccount} />
                 <Stack.Screen
+                  name="WishlistScreen"
+                  component={WishListScreen}
+                />
+                <Stack.Screen
                   name="Personaldetails"
                   component={PersonalDetails}
                 />
@@ -75,6 +80,7 @@ export default function AppNavigator() {
           <Stack.Screen name="Deleteaccount" component={Deleteaccount} />
           <Stack.Screen name="Myorders" component={MyOrders} />
           <Stack.Screen name="Personaldetails" component={PersonalDetails} />
+          <Stack.Screen name="WishlistScreen" component={WishListScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     );
