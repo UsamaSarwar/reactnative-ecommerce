@@ -1,5 +1,5 @@
 //React
-import React, { useState } from "react";
+import React from "react";
 
 //React Components
 import { Text, View, Pressable, Image, FlatList } from "react-native";

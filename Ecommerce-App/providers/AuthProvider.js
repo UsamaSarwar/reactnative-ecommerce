@@ -141,9 +141,8 @@ const AuthProvider = ({ children }) => {
     const user = userRealm.objects("User")[0];
 
     userRealm.write(() => {
-      const result = user.wishList.find((obj) => obj === String(itemId));
-
-      if (!result) {
+      const index = user.wishList.indexOf(String(itemId));
+      if (index == -1) {
         user.wishList.push(String(itemId));
       }
     });
@@ -156,9 +155,8 @@ const AuthProvider = ({ children }) => {
     const user = userRealm.objects("User")[0];
 
     userRealm.write(() => {
-      const result = user.wishList.find((obj) => obj === String(itemId));
-      if (result) {
-        const index = user.wishList.indexOf(result);
+      const index = user.wishList.indexOf(String(itemId));
+      if (index != -1) {
         user.wishList.splice(index, 1);
       }
     });
