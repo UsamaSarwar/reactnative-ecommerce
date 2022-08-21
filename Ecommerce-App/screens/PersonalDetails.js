@@ -65,7 +65,8 @@ export default function PersonalDetails({ navigation }) {
   const [countryName, setCountryName] = useState(personalDetails.country);
   const [countryError, setCountryError] = useState(false);
 
-  const [error, setError] = useState(true);
+  const [imageTemp, setImageTemp] = useState(personalDetails.image);
+  const [imageFormTemp, setImageFormTemp] = useState(personalDetails.imageForm);
 
   const elementRef = useRef();
 
@@ -230,7 +231,6 @@ export default function PersonalDetails({ navigation }) {
   };
 
   const onPressUpdate = () => {
-    // elementRef.updateButton.bounceIn(animationTime);
     setTimeout(() => {
       if (!detailsError) {
         try {
@@ -246,6 +246,7 @@ export default function PersonalDetails({ navigation }) {
             address,
             postalCode
           );
+          updateAvatar(imageTemp, imageFormTemp);
         } catch (error) {
           Alert.alert(error.message);
         }
@@ -259,7 +260,10 @@ export default function PersonalDetails({ navigation }) {
       height: 150,
       cropping: true,
       includeBase64: true,
-    }).then((image) => updateAvatar(image.data, image.mime));
+    }).then((image) => {
+      setImageTemp(image.data);
+      setImageFormTemp(image.mime);
+    });
   return (
     <SafeAreaView style={UniversalStyles.page_container}>
       <View style={UniversalStyles.page_container}>
@@ -325,291 +329,343 @@ export default function PersonalDetails({ navigation }) {
               </Pressable>
             </View>
           </View>
-
           <ScrollView style={{ padding: 10 }} listMode="SCROLLVIEW">
-            {/* list mode set to SCROLLVIEW to avoid nested lists error */}
-            <View style={UniversalStyles.avatar_container_settings_page}>
-              <Image
-                source={{
-                  uri: `data:${personalDetails.imageForm};base64,${personalDetails.image}`,
-                }}
-                style={productCardStyles.avatarImage}
-              />
-              <Pressable
-                onPress={() => openImagePicker()}
-                style={[
-                  IconStyles.background3,
-                  { position: "absolute", right: "35%", top: "80%" },
-                ]}
-              >
-                <Icon name="edit" color={"#ffffff"} size={21} />
-              </Pressable>
-            </View>
-            <Text style={{ marginBottom: 5 }}>
-              Full Name
-              {/* asterick */}
-              <Text
-                style={{
-                  color: "red",
-                  fontSize: 17,
-                  height: 13,
-                }}
-              >
-                *
-              </Text>
-            </Text>
-            <TextInput
-              defaultValue={personalDetails.name}
-              placeholder="Full Name"
-              style={[
-                inputStyles.textInput,
-                {
-                  backgroundColor: "#f6f8f9",
-                  borderColor: nameError ? "red" : "transparent",
-                },
-              ]}
-              onChangeText={(text) => {
-                setName(text);
+            <Pressable
+              onPress={() => {
+                //To close every dropdown
+                setOpenCountryDropDown(false);
+                setOpenCityDropDown(false);
+                setOpenProvinceDropDown(false);
               }}
-            />
-            <Text style={{ marginBottom: 5 }}>UserName</Text>
-            <TextInput
-              defaultValue={personalDetails.userName}
-              placeholder="UserName"
-              style={[
-                inputStyles.textInput,
-                {
-                  backgroundColor: "#f6f8f9",
-                  borderColor: userNameError ? "red" : "transparent",
-                },
-              ]}
-              onChangeText={(text) => {
-                setUserName(text);
-              }}
-            />
-
-            <Text style={{ marginBottom: 5 }}>
-              Select Country
-              {/* asterick */}
-              <Text
-                style={{
-                  color: "red",
-                  fontSize: 17,
-                  height: 13,
-                }}
-              >
-                *
+            >
+              {/* list mode set to SCROLLVIEW to avoid nested lists error */}
+              <View style={UniversalStyles.avatar_container_settings_page}>
+                <Image
+                  source={{
+                    uri: `data:${imageFormTemp};base64,${imageTemp}`,
+                  }}
+                  style={productCardStyles.avatarImage}
+                />
+                <Pressable
+                  onPress={() => openImagePicker()}
+                  style={[
+                    IconStyles.background3,
+                    { position: "absolute", right: "35%", top: "80%" },
+                  ]}
+                >
+                  <Icon name="edit" color={"#ffffff"} size={21} />
+                </Pressable>
+              </View>
+              <Text style={{ marginBottom: 5 }}>
+                Full Name
+                {/* asterick */}
+                <Text
+                  style={{
+                    color: "red",
+                    fontSize: 17,
+                    height: 13,
+                  }}
+                >
+                  *
+                </Text>
               </Text>
-            </Text>
-            <DropDownPicker
-              style={{
-                marginBottom: 24,
-                borderColor: countryError ? "red" : "black",
-              }}
-              placeholder="Select your country"
-              listMode="SCROLLVIEW"
-              dropDownDirection="TOP"
-              searchable={true}
-              value={countryName}
-              open={openCountryDropDown}
-              setOpen={setOpenCountryDropDown}
-              items={countryList}
-              setValue={setCountryName}
-            />
-
-            <Text style={{ marginBottom: 5 }}>
-              Select Province/ State
-              {/* asterick */}
-              <Text
-                style={{
-                  color: "red",
-                  fontSize: 17,
-                  height: 13,
-                }}
-              >
-                *
-              </Text>
-            </Text>
-            <DropDownPicker
-              style={{
-                marginBottom: 24,
-                borderColor: provinceError ? "red" : "black",
-              }}
-              listMode="SCROLLVIEW"
-              placeholder="Select your province/ State"
-              dropDownDirection="TOP"
-              searchable={true}
-              value={provinceName}
-              open={openProvinceDropDown}
-              setOpen={setOpenProvinceDropDown}
-              items={provinceList}
-              setValue={setProvinceName}
-            />
-
-            <Text style={{ marginBottom: 5 }}>
-              Select City
-              {/* asterick */}
-              <Text
-                style={{
-                  color: "red",
-                  fontSize: 17,
-                  height: 13,
-                }}
-              >
-                *
-              </Text>
-            </Text>
-            <DropDownPicker
-              style={{
-                marginBottom: 24,
-                borderColor: cityError ? "red" : "black",
-              }}
-              value={cityName}
-              listMode="SCROLLVIEW"
-              dropDownDirection="TOP"
-              searchable={true}
-              open={openCityDropDown}
-              setOpen={setOpenCityDropDown}
-              items={cityList}
-              setValue={setCityName}
-              placeholder="Select your City"
-            />
-
-            <Text style={{ marginBottom: 5 }}>
-              Phone Number
-              {/* asterick */}
-              <Text
-                style={{
-                  color: "red",
-                  fontSize: 17,
-                  height: 13,
-                }}
-              >
-                *
-              </Text>
-            </Text>
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
               <TextInput
-                style={[
-                  inputStyles.textInput,
-                  {
-                    borderColor: "transparent",
-                    backgroundColor: "#f6f8f9",
-                    flex: 0.13,
-                  },
-                ]}
-                defaultValue={countryPhoneCode}
-                editable={false}
-                selectTextOnFocus={false}
-              />
-              <TextInput
-                maxLength={10}
-                keyboardType="numeric"
-                defaultValue={personalDetails.phoneNumber}
-                placeholder="Phone Number"
+                defaultValue={personalDetails.name}
+                placeholder="Full Name"
                 style={[
                   inputStyles.textInput,
                   {
                     backgroundColor: "#f6f8f9",
-                    borderColor: phoneNumberError ? "red" : "transparent",
-                    flex: 1,
+                    borderColor: nameError ? "red" : "transparent",
                   },
                 ]}
                 onChangeText={(text) => {
-                  setPhoneNumber(text);
+                  setName(text);
                 }}
               />
-            </View>
+              <View style={{ zIndex: -1 }}>
+                <Text style={{ marginBottom: 5 }}>UserName</Text>
+                <TextInput
+                  defaultValue={personalDetails.userName}
+                  placeholder="UserName"
+                  style={[
+                    inputStyles.textInput,
+                    {
+                      backgroundColor: "#f6f8f9",
+                      borderColor: userNameError ? "red" : "transparent",
+                    },
+                  ]}
+                  onChangeText={(text) => {
+                    setUserName(text);
+                  }}
+                />
 
-            <Text style={{ marginBottom: 5 }}>Alternate Phone Number</Text>
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <TextInput
-                style={[
-                  inputStyles.textInput,
-                  {
-                    borderColor: "transparent",
+                <Text style={{ marginBottom: 5 }}>
+                  Select Country
+                  {/* asterick */}
+                  <Text
+                    style={{
+                      color: "red",
+                      fontSize: 17,
+                      height: 13,
+                    }}
+                  >
+                    *
+                  </Text>
+                </Text>
+                <DropDownPicker
+                  style={{
+                    marginBottom: 24,
+                    borderColor: countryError ? "red" : "transparent",
                     backgroundColor: "#f6f8f9",
-                    flex: 0.13,
-                  },
-                ]}
-                defaultValue={countryPhoneCode}
-                editable={false}
-                selectTextOnFocus={false}
-              />
-              <TextInput
-                maxLength={10}
-                keyboardType="numeric"
-                defaultValue={personalDetails.altPhoneNumber}
-                placeholder="Alternate Phone Number"
-                style={[
-                  inputStyles.textInput,
-                  {
+                  }}
+                  placeholder="Select your country"
+                  listMode="SCROLLVIEW"
+                  dropDownDirection="BOTTOM"
+                  searchable={true}
+                  dropDownContainerStyle={{
                     backgroundColor: "#f6f8f9",
-                    borderColor: altPhoneNumberError ? "red" : "transparent",
-                    flex: 1,
-                  },
-                ]}
-                onChangeText={(text) => {
-                  setAltPhoneNumber(text);
-                }}
-              />
-            </View>
+                    borderColor: "#6D6D6D",
+                    borderRadius: 12,
+                  }}
+                  searchContainerStyle={{
+                    backgroundColor: "#f6f8f9",
+                    borderColor: "#6D6D6D",
+                    borderRadius: 12,
+                  }}
+                  searchPlaceholder={"Search Country Here..."}
+                  value={countryName}
+                  open={openCountryDropDown}
+                  setOpen={setOpenCountryDropDown}
+                  items={countryList}
+                  setValue={setCountryName}
+                />
+              </View>
+              <View style={{ zIndex: -2 }}>
+                <Text style={{ marginBottom: 5 }}>
+                  Select Province/ State
+                  {/* asterick */}
+                  <Text
+                    style={{
+                      color: "red",
+                      fontSize: 17,
+                      height: 13,
+                    }}
+                  >
+                    *
+                  </Text>
+                </Text>
+                <DropDownPicker
+                  style={{
+                    marginBottom: 24,
+                    borderColor: provinceError ? "red" : "transparent",
+                    backgroundColor: "#f6f8f9",
+                  }}
+                  listMode="SCROLLVIEW"
+                  dropDownContainerStyle={{
+                    backgroundColor: "#f6f8f9",
+                    borderColor: "#6D6D6D",
+                    borderRadius: 12,
+                  }}
+                  searchContainerStyle={{
+                    backgroundColor: "#f6f8f9",
+                    borderColor: "#6D6D6D",
+                    borderRadius: 12,
+                  }}
+                  searchPlaceholder={"Search Country Here..."}
+                  placeholder="Select your province/ State"
+                  dropDownDirection="BOTTOM"
+                  searchable={true}
+                  value={provinceName}
+                  open={openProvinceDropDown}
+                  setOpen={setOpenProvinceDropDown}
+                  items={provinceList}
+                  setValue={setProvinceName}
+                />
+                <View style={{ zIndex: 999 }}>
+                  <Text style={{ marginBottom: 5 }}>
+                    Select City
+                    {/* asterick */}
+                    <Text
+                      style={{
+                        color: "red",
+                        fontSize: 17,
+                        height: 13,
+                      }}
+                    >
+                      *
+                    </Text>
+                  </Text>
+                  <DropDownPicker
+                    style={{
+                      marginBottom: 24,
+                      borderColor: cityError ? "red" : "transparent",
+                      backgroundColor: "#f6f8f9",
+                    }}
+                    value={cityName}
+                    listMode="SCROLLVIEW"
+                    dropDownContainerStyle={{
+                      backgroundColor: "#f6f8f9",
+                      borderColor: "#6D6D6D",
+                      borderRadius: 12,
+                    }}
+                    searchContainerStyle={{
+                      backgroundColor: "#f6f8f9",
+                      borderColor: "#6D6D6D",
+                      borderRadius: 12,
+                    }}
+                    searchPlaceholder={"Search Country Here..."}
+                    dropDownDirection="BOTTOM"
+                    searchable={true}
+                    open={openCityDropDown}
+                    setOpen={setOpenCityDropDown}
+                    items={cityList}
+                    setValue={setCityName}
+                    placeholder="Select your City"
+                  />
+                </View>
 
-            <Text style={{ marginBottom: 5 }}>
-              Address
-              {/* asterick */}
-              <Text
-                style={{
-                  color: "red",
-                  fontSize: 17,
-                  height: 13,
-                }}
-              >
-                *
-              </Text>
-            </Text>
-            <TextInput
-              defaultValue={personalDetails.address}
-              placeholder="Phone Number"
-              style={[
-                inputStyles.textInput,
-                {
-                  backgroundColor: "#f6f8f9",
-                  borderColor: addressError ? "red" : "transparent",
-                },
-              ]}
-              onChangeText={(text) => {
-                setAddress(text);
-              }}
-            />
-            <Text style={{ marginBottom: 5 }}>
-              Postal Code
-              {/* asterick */}
-              <Text
-                style={{
-                  color: "red",
-                  fontSize: 17,
-                  height: 13,
-                }}
-              >
-                *
-              </Text>
-            </Text>
-            <TextInput
-              keyboardType="numeric"
-              defaultValue={personalDetails.postalCode}
-              placeholder="Postal Code"
-              style={[
-                inputStyles.textInput,
-                {
-                  backgroundColor: "#f6f8f9",
-                  borderColor: postalCodeError ? "red" : "transparent",
-                },
-              ]}
-              onChangeText={(text) => {
-                setPostalCode(text);
-              }}
-            />
+                <View style={{ zIndex: -5 }}></View>
+
+                <Text style={{ marginBottom: 5 }}>
+                  Phone Number
+                  {/* asterick */}
+                  <Text
+                    style={{
+                      color: "red",
+                      fontSize: 17,
+                      height: 13,
+                    }}
+                  >
+                    *
+                  </Text>
+                </Text>
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                  <TextInput
+                    style={[
+                      inputStyles.textInput,
+                      {
+                        borderColor: "transparent",
+                        backgroundColor: "#f6f8f9",
+                        flex: 0.13,
+                      },
+                    ]}
+                    defaultValue={countryPhoneCode}
+                    editable={false}
+                    selectTextOnFocus={false}
+                  />
+                  <TextInput
+                    maxLength={10}
+                    keyboardType="numeric"
+                    defaultValue={personalDetails.phoneNumber}
+                    placeholder="Phone Number"
+                    style={[
+                      inputStyles.textInput,
+                      {
+                        backgroundColor: "#f6f8f9",
+                        borderColor: phoneNumberError ? "red" : "transparent",
+                        flex: 1,
+                      },
+                    ]}
+                    onChangeText={(text) => {
+                      setPhoneNumber(text);
+                    }}
+                  />
+                </View>
+
+                <Text style={{ marginBottom: 5 }}>Alternate Phone Number</Text>
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                  <TextInput
+                    style={[
+                      inputStyles.textInput,
+                      {
+                        borderColor: "transparent",
+                        backgroundColor: "#f6f8f9",
+                        flex: 0.13,
+                      },
+                    ]}
+                    defaultValue={countryPhoneCode}
+                    editable={false}
+                    selectTextOnFocus={false}
+                  />
+                  <TextInput
+                    maxLength={10}
+                    keyboardType="numeric"
+                    defaultValue={personalDetails.altPhoneNumber}
+                    placeholder="Alternate Phone Number"
+                    style={[
+                      inputStyles.textInput,
+                      {
+                        backgroundColor: "#f6f8f9",
+                        borderColor: altPhoneNumberError
+                          ? "red"
+                          : "transparent",
+                        flex: 1,
+                      },
+                    ]}
+                    onChangeText={(text) => {
+                      setAltPhoneNumber(text);
+                    }}
+                  />
+                </View>
+
+                <Text style={{ marginBottom: 5 }}>
+                  Address
+                  {/* asterick */}
+                  <Text
+                    style={{
+                      color: "red",
+                      fontSize: 17,
+                      height: 13,
+                    }}
+                  >
+                    *
+                  </Text>
+                </Text>
+                <TextInput
+                  defaultValue={personalDetails.address}
+                  placeholder="Phone Number"
+                  style={[
+                    inputStyles.textInput,
+                    {
+                      backgroundColor: "#f6f8f9",
+                      borderColor: addressError ? "red" : "transparent",
+                    },
+                  ]}
+                  onChangeText={(text) => {
+                    setAddress(text);
+                  }}
+                />
+                <Text style={{ marginBottom: 5 }}>
+                  Postal Code
+                  {/* asterick */}
+                  <Text
+                    style={{
+                      color: "red",
+                      fontSize: 17,
+                      height: 13,
+                    }}
+                  >
+                    *
+                  </Text>
+                </Text>
+                <TextInput
+                  keyboardType="numeric"
+                  defaultValue={personalDetails.postalCode}
+                  placeholder="Postal Code"
+                  style={[
+                    inputStyles.textInput,
+                    {
+                      backgroundColor: "#f6f8f9",
+                      borderColor: postalCodeError ? "red" : "transparent",
+                    },
+                  ]}
+                  onChangeText={(text) => {
+                    setPostalCode(text);
+                  }}
+                />
+              </View>
+            </Pressable>
           </ScrollView>
         </ImageBackground>
       </View>

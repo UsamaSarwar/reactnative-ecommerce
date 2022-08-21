@@ -19,7 +19,7 @@ export default function OrderItemUser() {
 
   return (
     <FlatList
-      data={orders}
+      data={orders.reverse()}
       showsVerticalScrollIndicator={false}
       style={{ margin: 10, borderRadius: 15 }}
       renderItem={({ item }) => (
