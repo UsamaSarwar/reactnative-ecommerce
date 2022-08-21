@@ -63,20 +63,29 @@ export default function Footer({ navigation, route, elementRef }) {
 
   const userPanel = () => {
     return (
-      <Animatable.View ref={(here) => (elementRef.cartIcon = here)}>
-        <Pressable onPress={() => navigation.navigate("Cart")}>
-          {userCart.length > 0 ? cartCount() : null}
-          <Icon
-            name="shoppingcart"
+      <>
+        <Pressable onPress={() => navigation.navigate("WishlistScreen")}>
+          <MatIcon
+            name="favorite-outline"
             size={30}
-            color={
-              route.name === "Cart" || route.name === "Checkout"
-                ? "black"
-                : "grey"
-            }
+            color={route.name === "WishlistScreen" ? "black" : "grey"}
           />
         </Pressable>
-      </Animatable.View>
+        <Animatable.View ref={(here) => (elementRef.cartIcon = here)}>
+          <Pressable onPress={() => navigation.navigate("Cart")}>
+            {userCart.length > 0 ? cartCount() : null}
+            <Icon
+              name="shoppingcart"
+              size={30}
+              color={
+                route.name === "Cart" || route.name === "Checkout"
+                  ? "black"
+                  : "grey"
+              }
+            />
+          </Pressable>
+        </Animatable.View>
+      </>
     );
   };
 
@@ -87,14 +96,6 @@ export default function Footer({ navigation, route, elementRef }) {
           name="home"
           size={30}
           color={route.name === "Homescreen" ? "black" : "grey"}
-        />
-      </Pressable>
-
-      <Pressable onPress={() => navigation.navigate("WishlistScreen")}>
-        <MatIcon
-          name="favorite"
-          size={30}
-          color={route.name === "WishlistScreen" ? "black" : "grey"}
         />
       </Pressable>
 
