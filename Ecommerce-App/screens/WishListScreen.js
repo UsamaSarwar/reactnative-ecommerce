@@ -10,26 +10,23 @@ import { useGlobal } from "../providers/GlobalProvider.js";
 import { useAuth } from "../providers/AuthProvider.js";
 
 //Components
-import CartHeader from "../components/Headers/CartHeader.js";
-import CarItem from "../components/Items/CartItem.js";
 import WishListItem from "../components/Items/WishListItem.js";
-import Footer from "../components/Footers/Footer.js";
 import CartSlideUpCard from "../components/SlideUpCards/CartSlideUpCard.js";
+import Footer from "../components/Footers/Footer.js";
 
 //Styles
 import UniversalStyles from "../styles/UniversalStyles.js";
 
 export default function WishListScreen({ navigation, route }) {
-  const { shoppingCart, cartDetails } = useTasks();
-  const { wishList, wishListDetails } = useTasks();
-  const { cartUpdate } = useGlobal();
-  const { user, userWishList } = useAuth();
+  const { userWishList } = useAuth();
+  const { wishListDetails } = useTasks();
+  const { update } = useGlobal();
 
   const elementRef = useRef();
 
   useEffect(() => {
     wishListDetails();
-  }, [cartUpdate]);
+  }, [update]);
 
   return (
     <SafeAreaView style={UniversalStyles.page_container}>
@@ -39,8 +36,6 @@ export default function WishListScreen({ navigation, route }) {
           resizeMode="cover"
           style={UniversalStyles.background_image}
         >
-          <CartHeader navigation={navigation} />
-
           {userWishList ? (
             <WishListItem elementRef={elementRef} />
           ) : (

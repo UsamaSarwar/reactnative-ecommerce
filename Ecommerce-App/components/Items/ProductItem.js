@@ -26,7 +26,7 @@ import productCardStyles from "../../styles/ProductCardStyle";
 import IconStyles from "../../styles/IconStyles";
 
 export default function ProductItem({ elementRef }) {
-  const { user, addToUserCart, addToWishList } = useAuth();
+  const { user, addToUserCart, addToUserWishList } = useAuth();
   const { tasks, deleteTask } = useTasks();
   const { setProduct, setIsNewProduct, searchText, listType } = useGlobal();
 
@@ -49,7 +49,7 @@ export default function ProductItem({ elementRef }) {
   };
 
   const onPressAddtoWishList = (item) => {
-    addToWishList(item["_id"]);
+    addToUserWishList(item["_id"]);
   };
 
   const onPressDeleteProduct = (item) => {
@@ -100,13 +100,10 @@ export default function ProductItem({ elementRef }) {
     return (
       <Animatable.View ref={(here) => (elementRef[item._id] = here)}>
         <Pressable
-          style={IconStyles.fvrtIcon}
-          onPress={() => {
-            console.log("wish button pressed");
-            onPressAddtoWishList(item);
-          }}
+          // style={IconStyles.fvrtIcon}
+          onPress={() => onPressAddtoWishList(item)}
         >
-          <MatIcon name="favorite" size={24} color={"red"} />
+          <MatIcon name="favorite" size={24} color={"#eeeeee"} />
         </Pressable>
       </Animatable.View>
     );
@@ -120,6 +117,7 @@ export default function ProductItem({ elementRef }) {
           );
         })
       : tasks;
+
   return (
     <FlatList
       data={!loading ? searchTasks : [1, 2, 3, 4, 5]}
@@ -172,7 +170,9 @@ export default function ProductItem({ elementRef }) {
                     <Text style={productCardStyles.nameText}>{item.name}</Text>
                   </Shimmer>
                 </View>
-                {admin && !loading ? makeRemoveButton(item) : null}
+                {admin && !loading
+                  ? makeRemoveButton(item)
+                  : makeAddtoWishListButton(item)}
               </View>
 
               <View style={productCardStyles.categoryContainer}>
@@ -222,13 +222,6 @@ export default function ProductItem({ elementRef }) {
                   </View>
                 ) : !loading ? (
                   makeAddToCartButton(item)
-                ) : null}
-                {admin && !loading ? (
-                  <View style={IconStyles.fvrtIcon}>
-                    <Icon name="edit" color="white" size={18} />
-                  </View>
-                ) : !loading ? (
-                  makeAddtoWishListButton(item)
                 ) : null}
               </View>
             </View>

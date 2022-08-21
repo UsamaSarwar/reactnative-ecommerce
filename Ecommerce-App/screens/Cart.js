@@ -19,13 +19,13 @@ import UniversalStyles from "../styles/UniversalStyles.js";
 
 export default function Cart({ navigation, route }) {
   const { shoppingCart, cartDetails } = useTasks();
-  const { cartUpdate } = useGlobal();
+  const { update } = useGlobal();
 
   const elementRef = useRef();
 
   useEffect(() => {
     cartDetails();
-  }, [cartUpdate]);
+  }, [update]);
 
   return (
     <SafeAreaView style={UniversalStyles.page_container}>

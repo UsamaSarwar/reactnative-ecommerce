@@ -40,12 +40,7 @@ const AuthProvider = ({ children }) => {
     // TODO: Open the user realm, which contains at most one user custom data object
     // for the logged-in user.
     const config = {
-      schema: [
-        User.UserSchema,
-        User.User_cartSchema,
-        User.User_detailsSchema,
-        User.User_wishListSchema,
-      ],
+      schema: [User.UserSchema, User.User_cartSchema, User.User_detailsSchema],
       sync: {
         user,
         partitionValue: `user=${user.id}`,
@@ -83,8 +78,6 @@ const AuthProvider = ({ children }) => {
         realmRef.current = null;
 
         setUserCart([]); // set project data to an empty array (this prevents the array from staying in state on logout)
-        // setImage(null);
-        // setImageForm(null);
         setPersonalDetails(null);
         setUserWishList([]);
         console.log("Closing User realm");
@@ -141,6 +134,39 @@ const AuthProvider = ({ children }) => {
     console.log("user signed up");
   };
 
+  const addToUserWishList = (itemId) => {
+    console.log("Adding Item to wishlist");
+
+    const userRealm = realmRef.current;
+    const user = userRealm.objects("User")[0];
+
+    userRealm.write(() => {
+      const result = user.wishList.find((obj) => obj === String(itemId));
+
+      if (!result) {
+        user.wishList.push(String(itemId));
+      }
+    });
+  };
+
+  const removeFromUserWishList = (itemId) => {
+    console.log("Removing Item from wishlist");
+
+    const userRealm = realmRef.current;
+    const user = userRealm.objects("User")[0];
+
+    userRealm.write(() => {
+      const result = user.wishList.find((obj) => obj === String(itemId));
+      if (result) {
+        const index = user.wishList.indexOf(result);
+        user.wishList.splice(index, 1);
+      }
+    });
+
+    const { wishList } = user;
+    setUserWishList([...wishList]);
+  };
+
   const addToUserCart = (itemId, qty) => {
     console.log("Adding Item to cart");
 
@@ -162,31 +188,14 @@ const AuthProvider = ({ children }) => {
     });
   };
 
-  const addToWishList = (itemId) => {
-    console.log("Adding Item to Wish List");
-    const userRealm = realmRef.current;
-    const user = userRealm.objects("User")[0];
-    userRealm.write(() => {
-      user.wishList.push({
-        productId: String(itemId),
-      });
-    });
-    setUserWishList(user.wishList);
-  };
-
   const removeFromUserCart = (itemId) => {
     console.log("Removing Item from cart");
 
     const userRealm = realmRef.current;
     const user = userRealm.objects("User")[0];
 
-    console.log("Item ID", itemId);
-
     userRealm.write(() => {
       const result = user.cart.find((obj) => obj.productId === String(itemId));
-
-      console.log("Result:", result);
-
       if (result) {
         const index = user.cart.indexOf(result);
         user.cart.splice(index, 1);
@@ -278,7 +287,8 @@ const AuthProvider = ({ children }) => {
         updateQuantity,
         updateAvatar,
         updateUserDetails,
-        addToWishList,
+        addToUserWishList,
+        removeFromUserWishList,
         user,
         userCart,
         userWishList,

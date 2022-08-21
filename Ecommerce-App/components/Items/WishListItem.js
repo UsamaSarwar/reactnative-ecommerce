@@ -9,7 +9,7 @@ import NumberFormat from "react-number-format";
 import * as Animatable from "react-native-animatable";
 
 //Icons
-import Icon from "react-native-vector-icons/AntDesign";
+import MatIcon from "react-native-vector-icons/MaterialIcons";
 
 //Providers
 import { useAuth } from "../../providers/AuthProvider";
@@ -22,57 +22,49 @@ import productCardStyles from "../../styles/ProductCardStyle";
 import IconStyles from "../../styles/IconStyles";
 
 export default function WishListItem({ elementRef }) {
-  const { user, removeFromUserCart, updateQuantity, userWishList } = useAuth();
-  const { shoppingCart, wishList } = useTasks();
-  const { setProduct, setIsNewProduct, cartUpdate, setCartUpdate } =
-    useGlobal();
-  const [loading, setLoading] = useState(false);
+  const { addToUserCart, removeFromUserWishList } = useAuth();
+  const { wishList } = useTasks();
+  const { update, setUpdate } = useGlobal();
 
-  const animationTime = 700;
-
-  const onPressMinus = (item) => {
-    elementRef[item._id + "removeIcon"].rubberBand(animationTime);
-    updateQuantity(item["_id"], false);
-    setCartUpdate(!cartUpdate);
+  const onPressAddtoCart = (item) => {
+    addToUserCart(item["_id"], 1);
+    removeFromUserWishList(item["_id"]);
+    setUpdate(!update);
   };
 
-  const onPressPlus = (item) => {
-    updateQuantity(item["_id"], true);
-    setCartUpdate(!cartUpdate);
+  const onPressRemoveFromWishList = (item) => {
+    removeFromUserWishList(item["_id"]);
+    setUpdate(!update);
   };
 
-  const onPressDelete = (item) => {
-    removeFromUserCart(item["_id"]);
-    setCartUpdate(!cartUpdate);
-  };
-
-  const animateDelete = (item) => {
-    elementRef[String(item[0]._id) + "deleteButton"].fadeOutLeft(animationTime);
-    setTimeout(() => onPressDelete(item[0]), animationTime);
-    setTimeout(
-      () =>
-        elementRef[String(item[0]._id) + "deleteButton"].fadeInRight(
-          animationTime
-        ),
-      animationTime
-    );
-  };
-
-  const makeRemoveButton = (item) => {
+  const makeAddToCartButton = (item) => {
     return (
-      <Pressable
-        style={[IconStyles.background2, { marginLeft: 3 }]}
-        onPress={() => animateDelete(item)}
-      >
-        <Icon name="delete" color={"#ff6c70"} size={18} />
-      </Pressable>
+      <Animatable.View ref={(here) => (elementRef[item._id] = here)}>
+        <Pressable
+          style={IconStyles.background3}
+          onPress={() => {
+            elementRef[item._id].rotate(1000);
+            elementRef.cartIcon.rubberBand(1000);
+            onPressAddtoCart(item);
+          }}
+        >
+          <MatIcon name="add-shopping-cart" size={18} color={"#FFFFFF"} />
+        </Pressable>
+      </Animatable.View>
     );
   };
 
-  const renderSlide = (item) => {
-    elementRef.current.show();
-    setProduct(item);
-    setIsNewProduct(false);
+  const makeRemoveFromWishList = (item) => {
+    return (
+      <Animatable.View ref={(here) => (elementRef[item._id] = here)}>
+        <Pressable
+          // style={IconStyles.background2}
+          onPress={() => onPressRemoveFromWishList(item)}
+        >
+          <MatIcon name="favorite" size={24} color={"#EEEEEE"} />
+        </Pressable>
+      </Animatable.View>
+    );
   };
 
   return (
@@ -81,12 +73,11 @@ export default function WishListItem({ elementRef }) {
       showsVerticalScrollIndicator={false}
       style={{ margin: 10, borderRadius: 15 }}
       renderItem={({ item }) => (
-        <Pressable onPress={() => renderSlide(item[0])}>
+        <Pressable onPress={() => renderSlide(item)}>
           <Animatable.View
+            animation={"zoomInUp"}
+            duration={1500}
             style={productCardStyles.productCard}
-            ref={(here) => {
-              elementRef[String(item[0]._id) + "deleteButton"] = here;
-            }}
           >
             <View
               style={[
@@ -96,7 +87,7 @@ export default function WishListItem({ elementRef }) {
             >
               <Image
                 source={{
-                  uri: `data:${item[0].imageForm};base64,${item[0].image}`,
+                  uri: `data:${item.imageForm};base64,${item.image}`,
                 }}
                 style={productCardStyles.product_image}
               />
@@ -112,81 +103,30 @@ export default function WishListItem({ elementRef }) {
                 <View
                   style={[universalStyles.row_f1_sb_c, { flexWrap: "wrap" }]}
                 >
-                  <Text style={productCardStyles.nameText}>{item[0].name}</Text>
+                  <Text style={productCardStyles.nameText}>{item.name}</Text>
                 </View>
-                {makeRemoveButton(item)}
+                {makeRemoveFromWishList(item)}
               </View>
 
               <View style={productCardStyles.categoryContainer}>
                 <Text style={productCardStyles.categoryText}>
-                  {item[0].category}
+                  {item.category}
                 </Text>
               </View>
 
+              <Text numberOfLines={2} style={productCardStyles.descriptionText}>
+                {item.description}
+              </Text>
+
               <View style={universalStyles.row_f1_sb_c}>
                 <NumberFormat
-                  value={parseInt(item[0].price)}
+                  value={parseInt(item.price)}
                   displayType={"text"}
                   thousandSeparator={true}
                   prefix={"PKR "}
                   renderText={(value) => <Text>{value}</Text>}
                 />
-
-                <View
-                  style={{
-                    flexDirection: "row",
-                    alignItems: "center",
-                  }}
-                >
-                  <Animatable.View
-                    style={
-                      item[1] === 1
-                        ? IconStyles.background5
-                        : IconStyles.background2
-                    }
-                    ref={(here) =>
-                      (elementRef[item[0]._id + "removeIcon"] = here)
-                    }
-                  >
-                    <Pressable
-                      onPress={() =>
-                        item[1] === 1
-                          ? animateDelete(item)
-                          : onPressMinus(item[0])
-                      }
-                    >
-                      <Icon name="minus" size={18} />
-                    </Pressable>
-                  </Animatable.View>
-
-                  <Text
-                    style={{
-                      marginLeft: 10,
-                      marginRight: 10,
-                      fontSize: 21,
-                    }}
-                  >
-                    {item[1]}
-                  </Text>
-
-                  <Animatable.View
-                    style={IconStyles.background2}
-                    ref={(here) =>
-                      (elementRef[item[0]._id + "plusIcon"] = here)
-                    }
-                  >
-                    <Pressable
-                      onPress={() => {
-                        elementRef[item[0]._id + "plusIcon"].rubberBand(
-                          animationTime
-                        );
-                        onPressPlus(item[0]);
-                      }}
-                    >
-                      <Icon name="plus" size={18} />
-                    </Pressable>
-                  </Animatable.View>
-                </View>
+                {makeAddToCartButton(item)}
               </View>
             </View>
           </Animatable.View>

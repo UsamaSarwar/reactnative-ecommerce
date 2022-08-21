@@ -24,27 +24,24 @@ import IconStyles from "../../styles/IconStyles";
 export default function CarItem({ elementRef }) {
   const { removeFromUserCart, updateQuantity } = useAuth();
   const { shoppingCart } = useTasks();
-  const { setProduct, setIsNewProduct, cartUpdate, setCartUpdate } =
-    useGlobal();
-
-  const [loading, setLoading] = useState(false);
+  const { setProduct, setIsNewProduct, update, setUpdate } = useGlobal();
 
   const animationTime = 700;
 
   const onPressMinus = (item) => {
     elementRef[item._id + "removeIcon"].rubberBand(animationTime);
     updateQuantity(item["_id"], false);
-    setCartUpdate(!cartUpdate);
+    setUpdate(!update);
   };
 
   const onPressPlus = (item) => {
     updateQuantity(item["_id"], true);
-    setCartUpdate(!cartUpdate);
+    setUpdate(!update);
   };
 
   const onPressDelete = (item) => {
     removeFromUserCart(item["_id"]);
-    setCartUpdate(!cartUpdate);
+    setUpdate(!update);
   };
 
   const animateDelete = (item) => {

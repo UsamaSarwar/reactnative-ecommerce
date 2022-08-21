@@ -174,8 +174,8 @@ const TasksProvider = ({ children }) => {
     const products = realmRef.current.objects("Task");
     const c = [];
     for (let i = 0; i < userWishList.length; i++) {
-      const id = ObjectId(userWishList[i]["productId"]);
-      c.push([products.filtered("_id == $0", id)[0]]);
+      const id = ObjectId(userWishList[i]);
+      c.push(products.filtered("_id == $0", id)[0]);
     }
     setWishList(c);
   };
