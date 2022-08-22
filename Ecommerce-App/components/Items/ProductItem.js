@@ -11,6 +11,7 @@ import * as Animatable from "react-native-animatable";
 //Icons
 import Icon from "react-native-vector-icons/AntDesign";
 import MatIcon from "react-native-vector-icons/MaterialIcons";
+import IonIcon from "react-native-vector-icons/Ionicons";
 
 //Providers
 import { useTasks } from "../../providers/TasksProvider";
@@ -26,9 +27,24 @@ import productCardStyles from "../../styles/ProductCardStyle";
 import IconStyles from "../../styles/IconStyles";
 
 export default function ProductItem({ elementRef }) {
-  const { user, addToUserCart, addToUserWishList } = useAuth();
-  const { tasks, deleteTask } = useTasks();
-  const { setProduct, setIsNewProduct, searchText, listType } = useGlobal();
+  const {
+    user,
+    addToUserCart,
+    addToUserWishList,
+    userWishList,
+    removeFromUserWishList,
+  } = useAuth();
+  const { tasks, deleteTask, wishListDetails } = useTasks();
+  const {
+    setProduct,
+    setIsNewProduct,
+    searchText,
+    listType,
+    update,
+    setUpdate,
+  } = useGlobal();
+
+  // console.log(userWishList.length);
 
   const [loading, setLoading] = useState(true);
 
@@ -42,6 +58,11 @@ export default function ProductItem({ elementRef }) {
     elementRef.current.show();
     setProduct(item);
     setIsNewProduct(false);
+  };
+
+  const onPressRemoveFromWishList = (item) => {
+    removeFromUserWishList(item["_id"]);
+    setUpdate(!update);
   };
 
   const onPressAddtoCart = (item) => {
@@ -98,12 +119,27 @@ export default function ProductItem({ elementRef }) {
 
   const makeAddtoWishListButton = (item) => {
     return (
-      <Animatable.View ref={(here) => (elementRef[item._id] = here)}>
+      <Animatable.View
+        ref={(here) => (elementRef[String(item._id) + "favorite"] = here)}
+      >
         <Pressable
-          // style={IconStyles.fvrtIcon}
-          onPress={() => onPressAddtoWishList(item)}
+          onPress={() => {
+            if (userWishList.includes(String(item._id))) {
+              elementRef[String(item._id) + "favorite"].pulse(1000);
+              onPressRemoveFromWishList(item);
+            } else {
+              elementRef[String(item._id) + "favorite"].tada(1000);
+              onPressAddtoWishList(item);
+            }
+          }}
         >
-          <MatIcon name="favorite" size={24} color={"#eeeeee"} />
+          <IonIcon
+            name="heart"
+            size={24}
+            color={
+              userWishList.includes(String(item._id)) ? "#BC544B" : "#BBBBBB"
+            }
+          />
         </Pressable>
       </Animatable.View>
     );

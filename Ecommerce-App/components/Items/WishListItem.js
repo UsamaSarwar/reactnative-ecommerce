@@ -10,6 +10,7 @@ import * as Animatable from "react-native-animatable";
 
 //Icons
 import MatIcon from "react-native-vector-icons/MaterialIcons";
+import IonIcon from "react-native-vector-icons/Ionicons";
 
 //Providers
 import { useAuth } from "../../providers/AuthProvider";
@@ -22,13 +23,19 @@ import productCardStyles from "../../styles/ProductCardStyle";
 import IconStyles from "../../styles/IconStyles";
 
 export default function WishListItem({ elementRef }) {
-  const { addToUserCart, removeFromUserWishList } = useAuth();
+  const { addToUserCart, removeFromUserWishList, userWishList } = useAuth();
   const { wishList } = useTasks();
-  const { update, setUpdate } = useGlobal();
+  const { setProduct, setIsNewProduct, update, setUpdate, searchText } =
+    useGlobal();
+
+  const renderSlide = (item) => {
+    elementRef.current.show();
+    setProduct(item);
+    setIsNewProduct(false);
+  };
 
   const onPressAddtoCart = (item) => {
     addToUserCart(item["_id"], 1);
-    removeFromUserWishList(item["_id"]);
     setUpdate(!update);
   };
 
@@ -57,26 +64,36 @@ export default function WishListItem({ elementRef }) {
   const makeRemoveFromWishList = (item) => {
     return (
       <Animatable.View ref={(here) => (elementRef[item._id] = here)}>
-        <Pressable
-          // style={IconStyles.background2}
-          onPress={() => onPressRemoveFromWishList(item)}
-        >
-          <MatIcon name="favorite" size={24} color={"#EEEEEE"} />
+        <Pressable onPress={() => onPressRemoveFromWishList(item)}>
+          <IonIcon
+            name="heart"
+            size={24}
+            color={
+              userWishList.includes(String(item._id)) ? "#BC544B" : "#BBBBBB"
+            }
+          />
         </Pressable>
       </Animatable.View>
     );
   };
 
+  const searchWishList = wishList.filter((item) => {
+    return (
+      item.name.toLowerCase().includes(searchText.toLowerCase()) ||
+      searchText === ""
+    );
+  });
+
   return (
     <FlatList
-      data={wishList}
+      data={searchWishList}
       showsVerticalScrollIndicator={false}
       style={{ margin: 10, borderRadius: 15 }}
       renderItem={({ item }) => (
         <Pressable onPress={() => renderSlide(item)}>
           <Animatable.View
-            animation={"zoomInUp"}
-            duration={1500}
+            animation={"flipInX"}
+            duration={1000}
             style={productCardStyles.productCard}
           >
             <View

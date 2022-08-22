@@ -51,7 +51,7 @@ export default function MyOrders({ navigation }) {
                 }}
               />
               <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <Text style={{ fontSize: 20 }}>There are no orders yet.</Text>
+                <Text style={{ fontSize: 20 }}>There are no orders yet</Text>
                 <MatIcon
                   style={{ marginLeft: 3 }}
                   name="emoticon-sad-outline"

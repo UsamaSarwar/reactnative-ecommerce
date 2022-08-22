@@ -67,13 +67,18 @@ export default function OrderItemAdmin({ elementRef, setSlideLoading }) {
 
   const searchOrders =
     listType === "Orders"
-      ? orders.filter((item) => {
-          return (
-            item.orderNumber.toLowerCase().includes(searchText.toLowerCase()) ||
-            searchText === "" ||
-            item.customerName.toLowerCase().includes(searchText.toLowerCase())
-          );
-        })
+      ? orders
+          .slice()
+          .reverse()
+          .filter((item) => {
+            return (
+              item.orderNumber
+                .toLowerCase()
+                .includes(searchText.toLowerCase()) ||
+              searchText === "" ||
+              item.customerName.toLowerCase().includes(searchText.toLowerCase())
+            );
+          })
       : orders;
 
   return (

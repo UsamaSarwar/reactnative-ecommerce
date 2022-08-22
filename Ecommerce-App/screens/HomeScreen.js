@@ -9,7 +9,6 @@ import {
   ImageBackground,
   Alert,
   BackHandler,
-  FlatList,
 } from "react-native";
 import SlidingUpPanel from "rn-sliding-up-panel";
 

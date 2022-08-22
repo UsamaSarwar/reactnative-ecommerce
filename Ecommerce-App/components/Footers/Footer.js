@@ -19,7 +19,7 @@ import iconStyles from "../../styles/IconStyles.js";
 
 export default function Footer({ navigation, route, elementRef }) {
   const { user, userCart } = useAuth();
-  const { setIsNewProduct } = useGlobal();
+  const { setIsNewProduct, listType } = useGlobal();
 
   const admin = user.customData["userType"] === "admin" ? true : false;
 
@@ -31,9 +31,11 @@ export default function Footer({ navigation, route, elementRef }) {
   const adminPanel = () => {
     return (
       <Pressable
-        onPress={() => renderSlide()}
+        onPress={() => {
+          listType === "Orders" ? null : renderSlide();
+        }}
         style={{
-          backgroundColor: "#42C88F",
+          backgroundColor: listType === "Orders" ? "gray" : "#42C88F",
           borderRadius: 10,
         }}
       >
