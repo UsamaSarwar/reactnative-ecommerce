@@ -60,7 +60,6 @@ export default function Deleteaccount({ navigation }) {
                     text: "Yes, Delete Account",
                     style: "destructive",
                     onPress: () => {
-                      console.log("Deleting Account");
                       if (text === "DELETE ACCOUNT") {
                         deleteUser(user);
                         signOut(); //To locally signout the user

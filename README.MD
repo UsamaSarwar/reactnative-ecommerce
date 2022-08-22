@@ -22,6 +22,15 @@ yarn android
 
 ## 📝 Patch Notes Of Releases
 
+v22.08.22
+
+- [x] Added Favorites screen and functionality
+- [x] Order Placing and tracking functionality
+- [x] Updated Icon, Animations, and UI
+- [x] Updated Admin Access for Order Status Configuration
+
+Demonstration of application at this version can be found [here](https://www.youtube.com/watch?v=NOKwE5M9Ebk)
+
 v12.08.22
 
 - [x] Add Search bar for products
@@ -32,7 +41,7 @@ v12.08.22
 - [x] Added Animations
 - [ ] Order Placing and tracking functionality
 
-Demonstration of application at this version will be uploaded soon
+Demonstration of application at this version is not available.
 
 v01.08.22
 

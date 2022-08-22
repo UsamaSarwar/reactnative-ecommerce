@@ -30,11 +30,9 @@ export default function Updatepassword({ navigation }) {
   const [errorMessage, setErrorMessage] = useState("");
 
   const onPressUpdatePass = async () => {
-    console.log("Pressed Update Password");
     if (confirmNewPass === "") {
       setErrorMessage("New password is empty");
     } else if (confirmNewPass !== newPass) {
-      console.log("here");
       setErrorMessage("New passwords does not match.");
     } else if (newPass.length < 6 || newPass.length > 128) {
       setErrorMessage("Password must be between 6 and 128 characters");
@@ -44,7 +42,6 @@ export default function Updatepassword({ navigation }) {
           text: "Confirm",
           style: "destructive",
           onPress: () => {
-            console.log("Updating Password");
             resetPass(user.customData["name"], newPass);
           },
         },

@@ -46,7 +46,6 @@ export default function CheckoutFooter({ navigation, payMethod }) {
     );
     setTimeout(async () => {
       if (!detailsError) {
-        console.log("Here");
         try {
           await createOrder(
             user.customData["_id"],
@@ -64,7 +63,7 @@ export default function CheckoutFooter({ navigation, payMethod }) {
               text: "Check",
               textColor: "rgba(66, 200, 143, 1)",
               onPress: () => {
-                console.log(navigation.navigate("Myorders"));
+                navigation.navigate("Myorders");
               },
             },
           });
@@ -94,7 +93,7 @@ export default function CheckoutFooter({ navigation, payMethod }) {
             : ButtonStyles.checkout_button,
           { width: 150 },
         ]}
-        disabled={detailsError ? true : false}
+        disabled={detailsError}
         onPress={() => {
           setOrderPressed(true);
           onPressOrder();

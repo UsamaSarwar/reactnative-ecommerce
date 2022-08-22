@@ -65,7 +65,6 @@ const GlobalProvider = ({ children }) => {
       !personalDetails.address ||
       !personalDetails.postalCode
     ) {
-      console.log("here123");
       setDetailsError(true);
     } else {
       setDetailsError(false);

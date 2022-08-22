@@ -34,7 +34,7 @@ export default function ProductItem({ elementRef }) {
     userWishList,
     removeFromUserWishList,
   } = useAuth();
-  const { tasks, deleteTask, wishListDetails } = useTasks();
+  const { tasks, deleteTask } = useTasks();
   const {
     setProduct,
     setIsNewProduct,
@@ -79,7 +79,6 @@ export default function ProductItem({ elementRef }) {
         text: "Yes, Delete",
         style: "destructive",
         onPress: () => {
-          console.log("deleting item");
           deleteTask(item);
         },
       },
@@ -122,25 +121,31 @@ export default function ProductItem({ elementRef }) {
       <Animatable.View
         ref={(here) => (elementRef[String(item._id) + "favorite"] = here)}
       >
-        <Pressable
-          onPress={() => {
-            if (userWishList.includes(String(item._id))) {
-              elementRef[String(item._id) + "favorite"].pulse(1000);
-              onPressRemoveFromWishList(item);
-            } else {
-              elementRef[String(item._id) + "favorite"].tada(1000);
-              onPressAddtoWishList(item);
-            }
-          }}
+        <Shimmer
+          autoRun={true}
+          visible={!loading}
+          style={{ marginLeft: 5, width: 24, height: 24, borderRadius: 12 }}
         >
-          <IonIcon
-            name="heart"
-            size={24}
-            color={
-              userWishList.includes(String(item._id)) ? "#BC544B" : "#BBBBBB"
-            }
-          />
-        </Pressable>
+          <Pressable
+            onPress={() => {
+              if (userWishList.includes(String(item._id))) {
+                elementRef[String(item._id) + "favorite"].pulse(1000);
+                onPressRemoveFromWishList(item);
+              } else {
+                elementRef[String(item._id) + "favorite"].tada(1000);
+                onPressAddtoWishList(item);
+              }
+            }}
+          >
+            <IonIcon
+              name="heart"
+              size={24}
+              color={
+                userWishList.includes(String(item._id)) ? "#BC544B" : "#BBBBBB"
+              }
+            />
+          </Pressable>
+        </Shimmer>
       </Animatable.View>
     );
   };

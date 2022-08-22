@@ -22,12 +22,30 @@ import IconStyles from "../styles/IconStyles.js";
 
 export default function Checkout({ navigation }) {
   const { personalDetails } = useAuth();
-  const { detailsError, cartUpdate, checkDetailsError } = useGlobal();
-  const elementRef = useRef();
-  console.log(Math.floor(Math.random() * 100000));
+  const { detailsError, checkDetailsError, setDetailsError } = useGlobal();
   const [payMethod, setPayMethod] = useState(false);
 
-  useEffect(() => {});
+  const [addressError, setAddressError] = useState(false);
+  const [locationError, setLocationError] = useState(false);
+  const [numberError, setNumberError] = useState(false);
+  useEffect(() => {
+    setAddressError(
+      personalDetails.address && personalDetails.postalCode ? false : true
+    );
+    setLocationError(
+      personalDetails.city &&
+        personalDetails.province &&
+        personalDetails.country
+        ? false
+        : true
+    );
+    setNumberError(
+      personalDetails.phoneNumber && personalDetails.altPhoneNumber
+        ? false
+        : true
+    );
+    checkDetailsError();
+  }, [personalDetails]);
   return (
     <SafeAreaView style={UniversalStyles.page_container}>
       <View style={UniversalStyles.page_container}>
@@ -52,8 +70,8 @@ export default function Checkout({ navigation }) {
                 style={[
                   IconStyles.background3,
                   {
-                    marginLeft: 5,
-                    backgroundColor: detailsError ? "red" : "#42C88F",
+                    marginLeft: 10,
+                    backgroundColor: "#42C88F",
                   },
                 ]}
                 onPress={() => {
@@ -71,10 +89,34 @@ export default function Checkout({ navigation }) {
                 marginBottom: 10,
               }}
             >
-              <IonIcon name="home-outline" color={"#42C88F"} size={27} />
-              <Text style={{ marginLeft: 7 }}>
-                {personalDetails.address} ({personalDetails.postalCode})
-              </Text>
+              <IonIcon
+                name="home-outline"
+                color={addressError ? "#BC544B" : "#42C88F"}
+                size={27}
+              />
+              <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
+                <Text
+                  style={{
+                    marginLeft: 7,
+                    fontStyle: personalDetails.address ? "normal" : "italic",
+                    color: personalDetails.address ? "black" : "gray",
+                  }}
+                >
+                  {personalDetails.address
+                    ? personalDetails.address
+                    : "(Address Missing)"}
+                </Text>
+                <Text
+                  style={{
+                    fontStyle: personalDetails.postalCode ? "normal" : "italic",
+                    color: personalDetails.postalCode ? "black" : "gray",
+                  }}
+                >
+                  {personalDetails.postalCode
+                    ? " (" + personalDetails.postalCode + ")"
+                    : ", (PostalCode Missing)"}
+                </Text>
+              </View>
             </View>
             <View
               style={{
@@ -83,17 +125,79 @@ export default function Checkout({ navigation }) {
                 marginBottom: 10,
               }}
             >
-              <IonIcon name="location-outline" color={"#42C88F"} size={27} />
-              <Text style={{ marginLeft: 7 }}>
-                {personalDetails.city}, {personalDetails.province},
-                {personalDetails.country}
-              </Text>
+              <IonIcon
+                name="location-outline"
+                color={locationError ? "#BC544B" : "#42C88F"}
+                size={27}
+              />
+              <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
+                <Text
+                  style={{
+                    marginLeft: 7,
+                    fontStyle: personalDetails.city ? "normal" : "italic",
+                    color: personalDetails.city ? "black" : "gray",
+                  }}
+                >
+                  {personalDetails.city
+                    ? personalDetails.city + ", "
+                    : "(City Missing)"}
+                </Text>
+                <Text
+                  style={{
+                    fontStyle: personalDetails.province ? "normal" : "italic",
+                    color: personalDetails.province ? "black" : "gray",
+                  }}
+                >
+                  {personalDetails.province
+                    ? personalDetails.province + ", "
+                    : ", (Province Missing)"}
+                </Text>
+                <Text
+                  style={{
+                    fontStyle: personalDetails.country ? "normal" : "italic",
+                    color: personalDetails.country ? "black" : "gray",
+                  }}
+                >
+                  {personalDetails.country
+                    ? personalDetails.country
+                    : ", (Country Missing)"}
+                </Text>
+              </View>
             </View>
             <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <IonIcon name="call-outline" color={"#42C88F"} size={27} />
-              <Text style={{ marginLeft: 7 }}>
-                {personalDetails.phoneNumber}, {personalDetails.altPhoneNumber}
-              </Text>
+              <IonIcon
+                name="call-outline"
+                color={numberError ? "#BC544B" : "#42C88F"}
+                size={27}
+              />
+
+              <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
+                <Text
+                  style={{
+                    marginLeft: 7,
+                    fontStyle: personalDetails.phoneNumber
+                      ? "normal"
+                      : "italic",
+                    color: personalDetails.phoneNumber ? "black" : "gray",
+                  }}
+                >
+                  {personalDetails.phoneNumber
+                    ? personalDetails.phoneNumber
+                    : "(Phone# Missing)"}
+                </Text>
+                <Text
+                  style={{
+                    fontStyle: personalDetails.altPhoneNumber
+                      ? "normal"
+                      : "italic",
+                    color: personalDetails.altPhoneNumber ? "black" : "gray",
+                  }}
+                >
+                  {personalDetails.altPhoneNumber
+                    ? ", " + personalDetails.altPhoneNumber
+                    : ", (AltPhone# Missing)"}
+                </Text>
+              </View>
             </View>
 
             <View

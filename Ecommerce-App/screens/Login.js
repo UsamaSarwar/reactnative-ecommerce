@@ -75,14 +75,10 @@ export default function Login({ navigation }) {
 
     if (state.pass.length === 0) {
       dispatch({ type: "PASSWORD_ERROR", payload: true });
-      console.log("password length zero");
     }
     if (state.addr.length === 0) {
       dispatch({ type: "ADDRESS_ERROR", payload: true });
-      console.log("email address length zero");
     }
-
-    console.log(state.passError, state.addrError);
 
     if (!state.passError && !state.addrError) {
       setLoggingIn(true);

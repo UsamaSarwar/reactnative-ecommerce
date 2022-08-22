@@ -163,8 +163,8 @@ export default function PersonalDetails({ navigation }) {
     if (
       !name ||
       !phoneNumber ||
-      phoneNumber.length < 10 ||
-      altPhoneNumber.length < 10 ||
+      phoneNumber?.length < 10 ||
+      altPhoneNumber?.length < 10 ||
       !countryName ||
       !provinceName ||
       !cityName ||
@@ -182,12 +182,12 @@ export default function PersonalDetails({ navigation }) {
       } else {
         setPhoneNumberError(false);
       }
-      if (phoneNumber.length < 10) {
+      if (phoneNumber?.length < 10) {
         setPhoneNumberError(true);
       } else {
         setPhoneNumberError(false);
       }
-      if (altPhoneNumber.length < 10) {
+      if (altPhoneNumber?.length < 10) {
         setAltPhoneNumberError(true);
       } else {
         setAltPhoneNumberError(false);
@@ -232,24 +232,22 @@ export default function PersonalDetails({ navigation }) {
 
   const onPressUpdate = () => {
     setTimeout(() => {
-      if (!detailsError) {
-        try {
-          updateUserDetails(
-            name,
-            userName,
-            countryPhoneCode,
-            phoneNumber,
-            altPhoneNumber,
-            countryName,
-            provinceName,
-            cityName,
-            address,
-            postalCode
-          );
-          updateAvatar(imageTemp, imageFormTemp);
-        } catch (error) {
-          Alert.alert(error.message);
-        }
+      try {
+        updateUserDetails(
+          name,
+          userName,
+          countryPhoneCode,
+          phoneNumber,
+          altPhoneNumber,
+          countryName,
+          provinceName,
+          cityName,
+          address,
+          postalCode
+        );
+        updateAvatar(imageTemp, imageFormTemp);
+      } catch (error) {
+        Alert.alert(error.message);
       }
     }, animationTime);
   };
@@ -278,12 +276,7 @@ export default function PersonalDetails({ navigation }) {
             </Pressable>
             <View>
               <Pressable
-                disabled={detailsError ? true : false}
-                style={
-                  detailsError
-                    ? ButtonStyles.checkout_button_dis
-                    : ButtonStyles.checkout_button
-                }
+                style={ButtonStyles.checkout_button}
                 onPress={() => {
                   setSavePressed(true);
                   elementRef["saveButton"].fadeInRight(animationTime);
@@ -305,15 +298,7 @@ export default function PersonalDetails({ navigation }) {
                   }}
                 >
                   {!savePressed ? (
-                    <Text
-                      style={
-                        detailsError
-                          ? ButtonStyles.checkout_button_text_dis
-                          : ButtonStyles.checkout_button_text
-                      }
-                    >
-                      Save
-                    </Text>
+                    <Text style={ButtonStyles.checkout_button_text}>Save</Text>
                   ) : (
                     <View
                       style={{ width: 47, alignItems: "center", height: 28 }}

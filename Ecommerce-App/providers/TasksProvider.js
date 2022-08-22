@@ -142,7 +142,6 @@ const TasksProvider = ({ children }) => {
   // Define the function for deleting a task.
   const deleteTask = (task) => {
     try {
-      console.log("here");
       const projectRealm = realmRef.current;
       projectRealm.write(() => {
         projectRealm.delete(task);

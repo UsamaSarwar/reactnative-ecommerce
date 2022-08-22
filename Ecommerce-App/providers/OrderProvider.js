@@ -154,7 +154,6 @@ const OrderProvider = ({ children }) => {
         _id: customerId,
       });
       setCustomer({ ...getCustomer });
-      // console.log(getCustomer.name, customer.name);
       return getCustomer;
     } catch (e) {
       console.log(e);
