@@ -37,25 +37,33 @@ export default function PersonalDetails({ navigation }) {
   const [savePressed, setSavePressed] = useState(false);
 
   const [name, setName] = useState(personalDetails.name);
+  const [nameError, setNameError] = useState(false);
 
   const [userName, setUserName] = useState(personalDetails.userName);
+  const [userNameError, setUserNameError] = useState(false);
 
   const [phoneNumber, setPhoneNumber] = useState(personalDetails.phoneNumber);
+  const [phoneNumberError, setPhoneNumberError] = useState(false);
 
   const [altPhoneNumber, setAltPhoneNumber] = useState(
     personalDetails.altPhoneNumber
   );
+  const [altPhoneNumberError, setAltPhoneNumberError] = useState(false);
 
   const [address, setAddress] = useState(personalDetails.address);
+  const [addressError, setAddressError] = useState(false);
 
   const [postalCode, setPostalCode] = useState(personalDetails.postalCode);
   const [postalCodeError, setPostalCodeError] = useState(false);
 
   const [cityName, setCityName] = useState(personalDetails.city);
+  const [cityError, setCityError] = useState(false);
 
   const [provinceName, setProvinceName] = useState(personalDetails.province);
+  const [provinceError, setProvinceError] = useState(false);
 
   const [countryName, setCountryName] = useState(personalDetails.country);
+  const [countryError, setCountryError] = useState(false);
 
   const [imageTemp, setImageTemp] = useState(personalDetails.image);
   const [imageFormTemp, setImageFormTemp] = useState(personalDetails.imageForm);
@@ -97,6 +105,20 @@ export default function PersonalDetails({ navigation }) {
     getCountryCode();
   }, [countryName]);
 
+  useEffect(() => {
+    checkError();
+  }, [
+    name,
+    userName,
+    phoneNumber,
+    altPhoneNumber,
+    countryName,
+    provinceName,
+    cityName,
+    address,
+    postalCode,
+  ]);
+
   const getCountryCode = () => {
     if (countryCodeData.length > 0) {
       let phoneCodeArray = countryCodeData.filter(
@@ -136,6 +158,77 @@ export default function PersonalDetails({ navigation }) {
   for (let i = 0; i < cities.length; i++) {
     cityList.push({ label: cities[i], value: cities[i] });
   }
+
+  const checkError = async () => {
+    if (
+      !name ||
+      !phoneNumber ||
+      phoneNumber?.length < 10 ||
+      altPhoneNumber?.length < 10 ||
+      !countryName ||
+      !provinceName ||
+      !cityName ||
+      !address ||
+      !postalCode
+    ) {
+      setDetailsError(true); // global
+      if (!name) {
+        setNameError(true);
+      } else {
+        setNameError(false);
+      }
+      if (!phoneNumber) {
+        setPhoneNumberError(true);
+      } else {
+        setPhoneNumberError(false);
+      }
+      if (phoneNumber?.length < 10) {
+        setPhoneNumberError(true);
+      } else {
+        setPhoneNumberError(false);
+      }
+      if (altPhoneNumber?.length < 10) {
+        setAltPhoneNumberError(true);
+      } else {
+        setAltPhoneNumberError(false);
+      }
+      if (!countryName) {
+        setCountryError(true);
+      } else {
+        setCountryError(false);
+      }
+      if (!provinceName) {
+        setProvinceError(true);
+      } else {
+        setProvinceError(false);
+      }
+      if (!address) {
+        setAddressError(true);
+      } else {
+        setAddressError(false);
+      }
+      if (!cityName) {
+        setCityError(true);
+      } else {
+        setCityError(false);
+      }
+      if (!postalCode) {
+        setPostalCodeError(true);
+      } else {
+        setPostalCodeError(false);
+      }
+    } else {
+      setNameError(false);
+      setPhoneNumberError(false);
+      setAltPhoneNumberError(false);
+      setCountryError(false);
+      setProvinceError(false);
+      setAddressError(false);
+      setCityError(false);
+      setPostalCodeError(false);
+      setDetailsError(false);
+    }
+  };
 
   const onPressUpdate = () => {
     setTimeout(() => {
@@ -221,10 +314,10 @@ export default function PersonalDetails({ navigation }) {
               </Pressable>
             </View>
           </View>
-
           <ScrollView style={{ padding: 10 }} listMode="SCROLLVIEW">
             <Pressable
               onPress={() => {
+                //To close every dropdown
                 setOpenCountryDropDown(false);
                 setOpenCityDropDown(false);
                 setOpenProvinceDropDown(false);
@@ -268,7 +361,7 @@ export default function PersonalDetails({ navigation }) {
                   inputStyles.textInput,
                   {
                     backgroundColor: "#f6f8f9",
-                    borderColor: "transparent",
+                    borderColor: nameError ? "red" : "transparent",
                   },
                 ]}
                 onChangeText={(text) => {
@@ -284,7 +377,7 @@ export default function PersonalDetails({ navigation }) {
                     inputStyles.textInput,
                     {
                       backgroundColor: "#f6f8f9",
-                      borderColor: "transparent",
+                      borderColor: userNameError ? "red" : "transparent",
                     },
                   ]}
                   onChangeText={(text) => {
@@ -294,6 +387,7 @@ export default function PersonalDetails({ navigation }) {
 
                 <Text style={{ marginBottom: 5 }}>
                   Select Country
+                  {/* asterick */}
                   <Text
                     style={{
                       color: "red",
@@ -307,7 +401,7 @@ export default function PersonalDetails({ navigation }) {
                 <DropDownPicker
                   style={{
                     marginBottom: 24,
-                    borderColor: "transparent",
+                    borderColor: countryError ? "red" : "transparent",
                     backgroundColor: "#f6f8f9",
                   }}
                   placeholder="Select your country"
@@ -349,7 +443,7 @@ export default function PersonalDetails({ navigation }) {
                 <DropDownPicker
                   style={{
                     marginBottom: 24,
-                    borderColor: "transparent",
+                    borderColor: provinceError ? "red" : "transparent",
                     backgroundColor: "#f6f8f9",
                   }}
                   listMode="SCROLLVIEW"
@@ -390,7 +484,7 @@ export default function PersonalDetails({ navigation }) {
                   <DropDownPicker
                     style={{
                       marginBottom: 24,
-                      borderColor: "transparent",
+                      borderColor: cityError ? "red" : "transparent",
                       backgroundColor: "#f6f8f9",
                     }}
                     value={cityName}
@@ -454,7 +548,7 @@ export default function PersonalDetails({ navigation }) {
                       inputStyles.textInput,
                       {
                         backgroundColor: "#f6f8f9",
-                        borderColor: "transparent",
+                        borderColor: phoneNumberError ? "red" : "transparent",
                         flex: 1,
                       },
                     ]}
@@ -488,7 +582,9 @@ export default function PersonalDetails({ navigation }) {
                       inputStyles.textInput,
                       {
                         backgroundColor: "#f6f8f9",
-                        borderColor: "transparent",
+                        borderColor: altPhoneNumberError
+                          ? "red"
+                          : "transparent",
                         flex: 1,
                       },
                     ]}
@@ -518,7 +614,7 @@ export default function PersonalDetails({ navigation }) {
                     inputStyles.textInput,
                     {
                       backgroundColor: "#f6f8f9",
-                      borderColor: "transparent",
+                      borderColor: addressError ? "red" : "transparent",
                     },
                   ]}
                   onChangeText={(text) => {
@@ -546,7 +642,7 @@ export default function PersonalDetails({ navigation }) {
                     inputStyles.textInput,
                     {
                       backgroundColor: "#f6f8f9",
-                      borderColor: "transparent",
+                      borderColor: postalCodeError ? "red" : "transparent",
                     },
                   ]}
                   onChangeText={(text) => {
