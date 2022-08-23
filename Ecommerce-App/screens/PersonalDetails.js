@@ -70,7 +70,7 @@ export default function PersonalDetails({ navigation }) {
   const [openCountryDropDown, setOpenCountryDropDown] = useState(false);
   const [openProvinceDropDown, setOpenProvinceDropDown] = useState(false);
   const [openCityDropDown, setOpenCityDropDown] = useState(false);
-  console.log(countryName, provinceName, cityName);
+
   useEffect(() => {
     // this api contains list of country names and their phone codes
     axios
@@ -177,7 +177,11 @@ export default function PersonalDetails({ navigation }) {
           style={UniversalStyles.background_image}
         >
           <View style={UniversalStyles.header}>
-            <Pressable onPress={() => navigation.goBack()}>
+            <Pressable
+              onPress={() => {
+                navigation.goBack();
+              }}
+            >
               <IonIcon name="arrow-back" size={30} color="grey" />
             </Pressable>
             <View>
@@ -293,55 +297,6 @@ export default function PersonalDetails({ navigation }) {
 
                 <Text style={{ marginBottom: 5 }}>
                   Address
-                  <Text
-                    style={{
-                      color: "red",
-                      fontSize: 17,
-                      height: 13,
-                    }}
-                  >
-                    *
-                  </Text>
-                </Text>
-
-                <DropDownPicker
-                  style={{
-                    marginBottom: 24,
-                    borderColor: "transparent",
-                    backgroundColor: "#f6f8f9",
-                  }}
-                  placeholder="Select your country"
-                  listMode="SCROLLVIEW"
-                  dropDownDirection="BOTTOM"
-                  searchable={true}
-                  dropDownContainerStyle={{
-                    backgroundColor: "#f6f8f9",
-                    borderColor: "#6D6D6D",
-                    borderRadius: 12,
-                  }}
-                  searchContainerStyle={{
-                    backgroundColor: "#f6f8f9",
-                    borderColor: "#6D6D6D",
-                    borderRadius: 12,
-                  }}
-                />
-                <TextInput
-                  defaultValue={personalDetails.address}
-                  placeholder="Phone Number"
-                  style={[
-                    inputStyles.textInput,
-                    {
-                      backgroundColor: "#f6f8f9",
-                      borderColor: "transparent",
-                    },
-                  ]}
-                  onChangeText={(text) => {
-                    setAddress(text);
-                  }}
-                />
-
-                <Text style={{ marginBottom: 5 }}>
-                  Address Select Country
                   {/* asterick */}
                   <Text
                     style={{
@@ -354,31 +309,6 @@ export default function PersonalDetails({ navigation }) {
                   </Text>
                 </Text>
 
-                <DropDownPicker
-                  style={{
-                    marginBottom: 24,
-                    borderColor: "transparent",
-                    backgroundColor: "#f6f8f9",
-                  }}
-                  placeholder="Select your country"
-                  listMode="SCROLLVIEW"
-                  dropDownDirection="BOTTOM"
-                  searchable={true}
-                  onOpen={() => {
-                    setOpenCityDropDown(false);
-                    setOpenProvinceDropDown(false);
-                  }}
-                  dropDownContainerStyle={{
-                    backgroundColor: "#f6f8f9",
-                    borderColor: "#6D6D6D",
-                    borderRadius: 12,
-                  }}
-                  searchContainerStyle={{
-                    backgroundColor: "#f6f8f9",
-                    borderColor: "#6D6D6D",
-                    borderRadius: 12,
-                  }}
-                />
                 <TextInput
                   defaultValue={personalDetails.address}
                   placeholder="Phone Number"
