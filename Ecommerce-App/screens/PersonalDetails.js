@@ -143,7 +143,7 @@ export default function PersonalDetails({ navigation }) {
     (item) => item.country === countryName
   );
   let provinces = [...new Set(countryItems.map((item) => item.subcountry))];
-  provinces.sort().reverse();
+  provinces.sort();
   let provinceList = [];
   for (let i = 0; i < provinces.length; i++) {
     provinceList.push({ label: provinces[i], value: provinces[i] });
@@ -153,7 +153,7 @@ export default function PersonalDetails({ navigation }) {
     (item) => item.subcountry === provinceName && item.country === countryName
   );
   let cities = [...new Set(provinceItems.map((item) => item.name))];
-  cities.sort().reverse();
+  cities.sort();
   let cityList = [];
   for (let i = 0; i < cities.length; i++) {
     cityList.push({ label: cities[i], value: cities[i] });
