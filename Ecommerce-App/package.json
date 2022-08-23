@@ -1,5 +1,5 @@
 {
-  "name": "ecommerce-app",
+  "name": "CreditCart",
   "version": "1.0.0",
   "scripts": {
     "start": "expo start --dev-client",

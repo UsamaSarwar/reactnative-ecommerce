@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Ecommerce-App",
-    "slug": "Ecommerce-App",
+    "name": "CreditCart",
+    "slug": "CreditCart",
     "version": "22.7.29",
     "orientation": "portrait",
     "icon": "./assets/logo.png",

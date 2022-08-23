@@ -31,7 +31,7 @@ import ButtonStyles from "../styles/ButtonStyles.js";
 
 export default function PersonalDetails({ navigation }) {
   const { personalDetails, updateUserDetails, updateAvatar } = useAuth();
-  const { detailsError, setDetailsError, checkDetailsError } = useGlobal();
+  const { setDetailsError, checkDetailsError } = useGlobal();
 
   const animationTime = 800;
   const [savePressed, setSavePressed] = useState(false);
@@ -71,7 +71,7 @@ export default function PersonalDetails({ navigation }) {
   const [openCountryDropDown, setOpenCountryDropDown] = useState(false);
   const [openProvinceDropDown, setOpenProvinceDropDown] = useState(false);
   const [openCityDropDown, setOpenCityDropDown] = useState(false);
-
+  console.log(countryName, provinceName, cityName);
   useEffect(() => {
     // this api contains list of country names and their phone codes
     axios
@@ -111,7 +111,7 @@ export default function PersonalDetails({ navigation }) {
   let countries = [
     ...new Set(countryAndProvincesData.map((item) => item.country)),
   ];
-  countries.sort().reverse();
+  countries.sort();
   let countryList = [];
   for (let i = 0; i < countries.length; i++) {
     countryList.push({ label: countries[i], value: countries[i] });
@@ -171,7 +171,7 @@ export default function PersonalDetails({ navigation }) {
     });
   return (
     <SafeAreaView style={UniversalStyles.page_container}>
-      <View style={UniversalStyles.page_container}>
+      <View style={[UniversalStyles.page_container]}>
         <ImageBackground
           source={require("../assets/home.jpeg")}
           resizeMode="cover"
@@ -231,7 +231,7 @@ export default function PersonalDetails({ navigation }) {
               }}
             >
               {/* list mode set to SCROLLVIEW to avoid nested lists error */}
-              <View style={UniversalStyles.avatar_container_settings_page}>
+              <View style={[UniversalStyles.avatar_container_settings_page]}>
                 <Image
                   source={{
                     uri: `data:${imageFormTemp};base64,${imageTemp}`,
@@ -275,6 +275,7 @@ export default function PersonalDetails({ navigation }) {
                   setName(text);
                 }}
               />
+
               <View style={{ zIndex: 5 }}>
                 <Text style={{ marginBottom: 5 }}>UserName</Text>
                 <TextInput
@@ -293,7 +294,7 @@ export default function PersonalDetails({ navigation }) {
                 />
 
                 <Text style={{ marginBottom: 5 }}>
-                  Select Country
+                  Address
                   <Text
                     style={{
                       color: "red",
@@ -304,6 +305,7 @@ export default function PersonalDetails({ navigation }) {
                     *
                   </Text>
                 </Text>
+
                 <DropDownPicker
                   style={{
                     marginBottom: 24,
@@ -324,17 +326,24 @@ export default function PersonalDetails({ navigation }) {
                     borderColor: "#6D6D6D",
                     borderRadius: 12,
                   }}
-                  searchPlaceholder={"Search Country Here..."}
-                  value={countryName}
-                  open={openCountryDropDown}
-                  setOpen={setOpenCountryDropDown}
-                  items={countryList}
-                  setValue={setCountryName}
                 />
-              </View>
-              <View style={{ zIndex: -999 }}>
+                <TextInput
+                  defaultValue={personalDetails.address}
+                  placeholder="Phone Number"
+                  style={[
+                    inputStyles.textInput,
+                    {
+                      backgroundColor: "#f6f8f9",
+                      borderColor: addressError ? "red" : "transparent",
+                    },
+                  ]}
+                  onChangeText={(text) => {
+                    setAddress(text);
+                  }}
+                />
+
                 <Text style={{ marginBottom: 5 }}>
-                  Select Province/State
+                  Select Country
                   {/* asterick */}
                   <Text
                     style={{
@@ -352,7 +361,14 @@ export default function PersonalDetails({ navigation }) {
                     borderColor: "transparent",
                     backgroundColor: "#f6f8f9",
                   }}
+                  placeholder="Select your country"
                   listMode="SCROLLVIEW"
+                  dropDownDirection="BOTTOM"
+                  searchable={true}
+                  onOpen={() => {
+                    setOpenCityDropDown(false);
+                    setOpenProvinceDropDown(false);
+                  }}
                   dropDownContainerStyle={{
                     backgroundColor: "#f6f8f9",
                     borderColor: "#6D6D6D",
@@ -363,20 +379,78 @@ export default function PersonalDetails({ navigation }) {
                     borderColor: "#6D6D6D",
                     borderRadius: 12,
                   }}
-                  searchPlaceholder={"Search Province/State Here..."}
-                  placeholder="Select your province/ State"
-                  dropDownDirection="BOTTOM"
-                  searchable={true}
-                  value={provinceName}
-                  open={openProvinceDropDown}
-                  setOpen={setOpenProvinceDropDown}
-                  items={provinceList}
-                  setValue={setProvinceName}
+                  searchPlaceholder={"Search Country Here..."}
+                  value={countryName}
+                  searchTextInputProps={{ autoFocus: true }}
+                  open={openCountryDropDown}
+                  setOpen={setOpenCountryDropDown}
+                  items={countryList}
+                  setValue={(text) => {
+                    setCountryName(text);
+                    setProvinceName("");
+                    setCityName("");
+                  }}
                 />
-                <View style={{ zIndex: 3 }}>
+              </View>
+              <View>
+                <View style={{ zIndex: 4, opacity: countryName ? 1 : 0.5 }}>
+                  <Text style={{ marginBottom: 5 }}>
+                    Select Province/State
+                    <Text
+                      style={{
+                        color: "red",
+                        fontSize: 17,
+                        height: 13,
+                      }}
+                    >
+                      *
+                    </Text>
+                  </Text>
+                  <DropDownPicker
+                    style={{
+                      marginBottom: 24,
+                      borderColor: "transparent",
+                      backgroundColor: "#f6f8f9",
+                    }}
+                    listMode="SCROLLVIEW"
+                    dropDownContainerStyle={{
+                      backgroundColor: "#f6f8f9",
+                      borderColor: "#6D6D6D",
+                      borderRadius: 12,
+                    }}
+                    searchContainerStyle={{
+                      backgroundColor: "#f6f8f9",
+                      borderColor: "#6D6D6D",
+                      borderRadius: 12,
+                    }}
+                    searchPlaceholder={"Search Province/State Here..."}
+                    placeholder="Select your province/ State"
+                    dropDownDirection="BOTTOM"
+                    searchable={true}
+                    onOpen={() => {
+                      setOpenCountryDropDown(false);
+                      setOpenCityDropDown(false);
+                    }}
+                    value={provinceName}
+                    open={openProvinceDropDown}
+                    setOpen={setOpenProvinceDropDown}
+                    items={provinceList}
+                    disabled={countryName ? false : true}
+                    searchTextInputProps={{ autoFocus: true }}
+                    setValue={(text) => {
+                      setProvinceName(text);
+                      setCityName("");
+                    }}
+                  />
+                </View>
+                <View
+                  style={{
+                    zIndex: 3,
+                    opacity: countryName && provinceName ? 1 : 0.5,
+                  }}
+                >
                   <Text style={{ marginBottom: 5 }}>
                     Select City
-                    {/* asterick */}
                     <Text
                       style={{
                         color: "red",
@@ -409,8 +483,14 @@ export default function PersonalDetails({ navigation }) {
                     dropDownDirection="BOTTOM"
                     searchable={true}
                     open={openCityDropDown}
+                    onOpen={() => {
+                      setOpenCountryDropDown(false);
+                      setOpenProvinceDropDown(false);
+                    }}
                     setOpen={setOpenCityDropDown}
                     items={cityList}
+                    disabled={countryName && provinceName ? false : true}
+                    searchTextInputProps={{ autoFocus: true }}
                     setValue={setCityName}
                     placeholder="Select your City"
                   />
@@ -498,33 +578,6 @@ export default function PersonalDetails({ navigation }) {
                   />
                 </View>
 
-                <Text style={{ marginBottom: 5 }}>
-                  Address
-                  {/* asterick */}
-                  <Text
-                    style={{
-                      color: "red",
-                      fontSize: 17,
-                      height: 13,
-                    }}
-                  >
-                    *
-                  </Text>
-                </Text>
-                <TextInput
-                  defaultValue={personalDetails.address}
-                  placeholder="Phone Number"
-                  style={[
-                    inputStyles.textInput,
-                    {
-                      backgroundColor: "#f6f8f9",
-                      borderColor: "transparent",
-                    },
-                  ]}
-                  onChangeText={(text) => {
-                    setAddress(text);
-                  }}
-                />
                 <Text style={{ marginBottom: 5 }}>
                   Postal Code
                   {/* asterick */}
