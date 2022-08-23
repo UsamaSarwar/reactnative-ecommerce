@@ -20,6 +20,7 @@ import { useAuth } from "../providers/AuthProvider.js";
 import universalStyles from "../styles/UniversalStyles";
 import inputStyles from "../styles/InputStyles";
 import buttonStyles from "../styles/ButtonStyles";
+import { useGlobal } from "../providers/GlobalProvider.js";
 
 const initialStates = {
   addr: "",
@@ -63,6 +64,8 @@ export default function Signup({ navigation }) {
   const [state, dispatch] = useReducer(reducer, initialStates);
 
   const [signingUp, setSigningUp] = useState(false);
+
+  const { isKeyboardVisible } = useGlobal();
 
   const onPressSignUp = async () => {
     if (
@@ -123,7 +126,11 @@ export default function Signup({ navigation }) {
         <View style={universalStyles.logo_container}>
           <Image
             source={require("../assets/logo.png")}
-            style={universalStyles.logo}
+            style={
+              isKeyboardVisible
+                ? universalStyles.logoKeyboardVisible
+                : universalStyles.logo
+            }
           ></Image>
         </View>
 

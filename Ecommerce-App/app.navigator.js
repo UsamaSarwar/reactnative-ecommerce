@@ -65,23 +65,25 @@ export default function AppNavigator() {
   } else {
     return (
       <NavigationContainer>
-        <Stack.Navigator
-          screenOptions={{ headerShown: false }}
-          initialRouteName="Login"
-        >
-          <Stack.Screen name="Login" component={Login} />
-          <Stack.Screen name="Signup" component={Signup} />
-          <Stack.Screen name="Forgotpass" component={Forgotpass} />
-          <Stack.Screen name="Homescreen" component={Homescreen} />
-          <Stack.Screen name="Setting" component={Setting} />
-          <Stack.Screen name="Cart" component={Cart} />
-          <Stack.Screen name="Checkout" component={Checkout} />
-          <Stack.Screen name="Updatepassword" component={Updatepassword} />
-          <Stack.Screen name="Deleteaccount" component={Deleteaccount} />
-          <Stack.Screen name="Myorders" component={MyOrders} />
-          <Stack.Screen name="Personaldetails" component={PersonalDetails} />
-          <Stack.Screen name="WishlistScreen" component={WishListScreen} />
-        </Stack.Navigator>
+        <GlobalProvider>
+          <Stack.Navigator
+            screenOptions={{ headerShown: false }}
+            initialRouteName="Login"
+          >
+            <Stack.Screen name="Login" component={Login} />
+            <Stack.Screen name="Signup" component={Signup} />
+            <Stack.Screen name="Forgotpass" component={Forgotpass} />
+            <Stack.Screen name="Homescreen" component={Homescreen} />
+            <Stack.Screen name="Setting" component={Setting} />
+            <Stack.Screen name="Cart" component={Cart} />
+            <Stack.Screen name="Checkout" component={Checkout} />
+            <Stack.Screen name="Updatepassword" component={Updatepassword} />
+            <Stack.Screen name="Deleteaccount" component={Deleteaccount} />
+            <Stack.Screen name="Myorders" component={MyOrders} />
+            <Stack.Screen name="Personaldetails" component={PersonalDetails} />
+            <Stack.Screen name="WishlistScreen" component={WishListScreen} />
+          </Stack.Navigator>
+        </GlobalProvider>
       </NavigationContainer>
     );
   }

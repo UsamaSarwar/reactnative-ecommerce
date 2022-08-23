@@ -17,39 +17,10 @@ import universalStyles from "../../styles/UniversalStyles.js";
 
 export default function HomeHeader({ navigation }) {
   const { personalDetails } = useAuth();
-  const { searchText, setSearchText } = useGlobal();
+  const { searchText, setSearchText, isKeyboardVisible } = useGlobal();
 
   const [searchState, setSearchState] = useState(false);
   const [spinnerState, setSpinnerState] = useState(true);
-
-  const [isKeyboardVisible, setKeyboardVisible] = useState(false);
-
-  useEffect(() => {
-    if (!isKeyboardVisible) {
-      setSearchState(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    const keyboardDidShowListener = Keyboard.addListener(
-      "keyboardDidShow",
-      () => {
-        setKeyboardVisible(true); // or some other action
-      }
-    );
-
-    const keyboardDidHideListener = Keyboard.addListener(
-      "keyboardDidHide",
-      () => {
-        setKeyboardVisible(false); // or some other action
-      }
-    );
-
-    return () => {
-      keyboardDidHideListener.remove();
-      keyboardDidShowListener.remove();
-    };
-  }, []);
 
   const renderSearchBar = () => {
     return (
@@ -97,7 +68,6 @@ export default function HomeHeader({ navigation }) {
             size={30}
             onPress={() => {
               setSearchState(true);
-              setKeyboardVisible(true);
             }}
           />
         </View>

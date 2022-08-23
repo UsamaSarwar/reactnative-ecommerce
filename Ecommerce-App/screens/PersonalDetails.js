@@ -368,7 +368,7 @@ export default function PersonalDetails({ navigation }) {
                   setName(text);
                 }}
               />
-              <View style={{ zIndex: -1 }}>
+              <View style={{ zIndex: 5 }}>
                 <Text style={{ marginBottom: 5 }}>UserName</Text>
                 <TextInput
                   defaultValue={personalDetails.userName}
@@ -426,9 +426,9 @@ export default function PersonalDetails({ navigation }) {
                   setValue={setCountryName}
                 />
               </View>
-              <View style={{ zIndex: -2 }}>
+              <View style={{ zIndex: -999 }}>
                 <Text style={{ marginBottom: 5 }}>
-                  Select Province/ State
+                  Select Province/State
                   {/* asterick */}
                   <Text
                     style={{
@@ -457,7 +457,7 @@ export default function PersonalDetails({ navigation }) {
                     borderColor: "#6D6D6D",
                     borderRadius: 12,
                   }}
-                  searchPlaceholder={"Search Country Here..."}
+                  searchPlaceholder={"Search Province/State Here..."}
                   placeholder="Select your province/ State"
                   dropDownDirection="BOTTOM"
                   searchable={true}
@@ -467,7 +467,7 @@ export default function PersonalDetails({ navigation }) {
                   items={provinceList}
                   setValue={setProvinceName}
                 />
-                <View style={{ zIndex: 999 }}>
+                <View style={{ zIndex: 3 }}>
                   <Text style={{ marginBottom: 5 }}>
                     Select City
                     {/* asterick */}
@@ -499,7 +499,7 @@ export default function PersonalDetails({ navigation }) {
                       borderColor: "#6D6D6D",
                       borderRadius: 12,
                     }}
-                    searchPlaceholder={"Search Country Here..."}
+                    searchPlaceholder={"Search City Here..."}
                     dropDownDirection="BOTTOM"
                     searchable={true}
                     open={openCityDropDown}
@@ -510,7 +510,7 @@ export default function PersonalDetails({ navigation }) {
                   />
                 </View>
 
-                <View style={{ zIndex: -5 }}></View>
+                <View style={{ zIndex: 2 }}></View>
 
                 <Text style={{ marginBottom: 5 }}>
                   Phone Number

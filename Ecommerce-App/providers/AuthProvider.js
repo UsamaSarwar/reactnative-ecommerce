@@ -1,5 +1,6 @@
 //React
 import React, { useContext, useState, useEffect, useRef } from "react";
+import Snackbar from "react-native-snackbar";
 
 //Realm
 import Realm from "realm";
@@ -94,7 +95,10 @@ const AuthProvider = ({ children }) => {
         email,
         password,
       });
-      // await app.emailPasswordAuth.resetPassword(token, tokenId);
+      Snackbar.show({
+        text: "Your Password has been changed. Please re-login",
+        duration: Snackbar.LENGTH_LONG,
+      });
     } catch (err) {
       console.log(err);
     }

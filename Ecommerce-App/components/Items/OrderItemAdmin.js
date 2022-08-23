@@ -11,7 +11,6 @@ import {
   FlatList,
 } from "react-native";
 import NumberFormat from "react-number-format";
-import { ProgressBar } from "react-native-paper";
 
 //Animation-Component
 import * as Animatable from "react-native-animatable";
@@ -107,116 +106,119 @@ export default function OrderItemAdmin({ elementRef, setSlideLoading }) {
                     justifyContent: "space-between",
                   }}
                 >
-                  <View>
-                    <View>
-                      <Text
-                        style={{
-                          fontWeight: "bold",
-                          fontSize: 14,
-                          marginBottom: 5,
-                        }}
-                      >
-                        Order# {item.orderNumber}
-                      </Text>
+                  <View style={{ flex: 1 }}>
+                    <Text
+                      style={{
+                        fontWeight: "bold",
+                        fontSize: 14,
+                        marginBottom: 5,
+                      }}
+                    >
+                      Order# {item.orderNumber}
+                    </Text>
+
+                    <View //Container of name and processing tab
+                      style={{
+                        justifyContent: "space-between",
+                        flexDirection: "row",
+                        flex: 1,
+                      }}
+                    >
                       <View
-                        style={{
-                          justifyContent: "space-between",
-                          flexDirection: "row",
-                        }}
+                        style={{ flex: 3 }} //Container of name, item and calender components
                       >
-                        <View>
-                          <View
-                            style={{
-                              flexDirection: "row",
-                              justifyContent: "space-between",
-                              alignItems: "center",
-                            }}
-                          >
-                            <View
-                              style={{
-                                flexDirection: "row",
-                                alignItems: "center",
-                              }}
-                            >
-                              <IonIcon
-                                name="person"
-                                size={20}
-                                color="rgba(66, 200, 143, 1)"
-                                style={{ marginRight: 2 }}
-                              />
-                              <Text
-                                numberOfLines={1}
-                                style={{
-                                  fontSize: 18,
-                                  marginTop: 5,
-                                  bottom: 2.5,
-                                  fontWeight: "bold",
-                                  textShadowColor: "rgba(66, 200, 143, 0.7)",
-                                  textShadowOffset: { width: -1, height: 1 },
-                                  textShadowRadius: 10,
-                                  width: 225,
-                                  paddingRight: 5,
-                                }}
-                              >
-                                {item.customerName}
-                              </Text>
-                            </View>
-                          </View>
-
+                        <View
+                          style={{
+                            flexDirection: "row",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                          }}
+                        >
                           <View
                             style={{
                               flexDirection: "row",
                               alignItems: "center",
-                              justifyContent: "space-between",
                             }}
                           >
-                            <View style={{ flexDirection: "row" }}>
-                              <IonIcon
-                                name="cart"
-                                size={20}
-                                color="rgba(66, 200, 143, 1)"
-                                style={{ marginRight: 2 }}
-                              />
-                              <Text>Items: </Text>
-
-                              <Text style={{ fontWeight: "bold" }}>
-                                {item.orderItems.length}
-                              </Text>
-                            </View>
-                          </View>
-                          <View style={{ flexDirection: "row" }}>
                             <IonIcon
-                              name="calendar-outline"
-                              size={18}
+                              name="person"
+                              size={20}
                               color="rgba(66, 200, 143, 1)"
                               style={{ marginRight: 2 }}
                             />
-                            <Text>Placed On: </Text>
-                            <Text style={{ fontWeight: "bold" }}>
-                              {item.orderTime}
+                            <Text
+                              numberOfLines={1}
+                              style={{
+                                fontSize: 18,
+                                marginTop: 5,
+                                bottom: 2.5,
+                                fontWeight: "bold",
+                                textShadowColor: "rgba(66, 200, 143, 0.7)",
+                                textShadowOffset: { width: -1, height: 1 },
+                                textShadowRadius: 10,
+                                width: 225,
+                                paddingRight: 5,
+                              }}
+                            >
+                              {item.customerName}
                             </Text>
                           </View>
                         </View>
+
                         <View
                           style={{
+                            flexDirection: "row",
                             alignItems: "center",
-                            backgroundColor:
-                              item.orderStatus === "Processing"
-                                ? "#BC544B"
-                                : item.orderStatus === "Dispatched"
-                                ? "#E3B104"
-                                : "#87AB69",
-                            borderRadius: 10,
-                            paddingTop: 5,
-                            paddingBottom: 5,
-                            width: 100,
-                            justifyContent: "center",
+                            justifyContent: "space-between",
                           }}
                         >
-                          <Text style={{ fontSize: 14, fontWeight: "bold" }}>
-                            {item.orderStatus}
+                          <View style={{ flexDirection: "row" }}>
+                            <IonIcon
+                              name="cart"
+                              size={20}
+                              color="rgba(66, 200, 143, 1)"
+                              style={{ marginRight: 2 }}
+                            />
+                            <Text>Items: </Text>
+
+                            <Text style={{ fontWeight: "bold" }}>
+                              {item.orderItems.length}
+                            </Text>
+                          </View>
+                        </View>
+                        <View style={{ flexDirection: "row" }}>
+                          <IonIcon
+                            name="calendar-outline"
+                            size={18}
+                            color="rgba(66, 200, 143, 1)"
+                            style={{ marginRight: 2 }}
+                          />
+                          <Text>Placed On: </Text>
+                          <Text style={{ fontWeight: "bold" }}>
+                            {item.orderTime}
                           </Text>
                         </View>
+                      </View>
+                      <View
+                        style={{
+                          borderWidth: 0.5,
+                          alignItems: "center",
+                          backgroundColor:
+                            item.orderStatus === "Processing"
+                              ? "#BC544B"
+                              : item.orderStatus === "Dispatched"
+                              ? "#E3B104"
+                              : "#87AB69",
+                          borderRadius: 10,
+                          paddingTop: 5,
+                          paddingBottom: 5,
+                          flex: 1.1,
+                          justifyContent: "center",
+                        }}
+                      >
+                        <Text style={{ fontSize: 14, fontWeight: "bold" }}>
+                          {item.orderStatus}
+                        </Text>
                       </View>
                     </View>
                   </View>

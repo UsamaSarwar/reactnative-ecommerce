@@ -43,24 +43,11 @@ export default function Updatepassword({ navigation }) {
           style: "destructive",
           onPress: () => {
             resetPass(user.customData["name"], newPass);
+            signOut();
           },
         },
         { text: "Cancel", style: "cancel" },
       ]);
-
-      Alert.alert(
-        "Password changed successfully. Please login to your account again.",
-        null,
-        [
-          {
-            text: "Ok, great!",
-            onPress: () => {
-              signOut();
-              navigation.navigate("Login");
-            },
-          },
-        ]
-      );
     }
   };
 

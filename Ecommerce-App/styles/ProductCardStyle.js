@@ -30,6 +30,7 @@ export default productCardStyles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
+    // backgroundColor: "transparent",
   },
 
   textContainer: {

@@ -19,6 +19,7 @@ import universalStyles from "../styles/UniversalStyles";
 import inputStyles from "../styles/InputStyles";
 import buttonStyles from "../styles/ButtonStyles";
 import TextStyles from "../styles/TextStyles.js";
+import { useGlobal } from "../providers/GlobalProvider.js";
 
 const initialStates = {
   addr: "",
@@ -49,6 +50,8 @@ export default function Forgotpass({ navigation }) {
 
   const [state, dispatch] = useReducer(reducer, initialStates);
 
+  const { isKeyboardVisible } = useGlobal();
+
   const onPressReset = async () => {
     if (state.addr.length === 0) {
       dispatch({ type: "ADDRESS_ERROR", payload: true });
@@ -77,7 +80,11 @@ export default function Forgotpass({ navigation }) {
         <View style={universalStyles.logo_container}>
           <Image
             source={require("../assets/logo.png")}
-            style={universalStyles.logo}
+            style={
+              isKeyboardVisible
+                ? universalStyles.logoKeyboardVisible
+                : universalStyles.logo
+            }
           ></Image>
         </View>
 

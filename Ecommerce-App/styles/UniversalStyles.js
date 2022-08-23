@@ -46,10 +46,14 @@ export default universalStyles = StyleSheet.create({
 
   logo: {
     width: "90%",
-    height: 90,
+    height: "35%",
     marginTop: 15,
   },
-
+  logoKeyboardVisible: {
+    width: "75%",
+    height: "40%",
+    marginTop: 15,
+  },
   centered_container: {
     justifyContent: "center",
     alignItems: "center",

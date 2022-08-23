@@ -14,9 +14,7 @@ import { TextInput } from "react-native-paper";
 
 //Providers
 import { useAuth } from "../providers/AuthProvider.js";
-
-//Icons
-import Icon from "react-native-vector-icons/AntDesign";
+import { useGlobal } from "../providers/GlobalProvider.js";
 
 //Styles
 import universalStyles from "../styles/UniversalStyles";
@@ -62,6 +60,8 @@ export default function Login({ navigation }) {
 
   const [state, dispatch] = useReducer(reducer, initialStates);
 
+  const { isKeyboardVisible } = useGlobal();
+
   useEffect(() => {
     if (user) {
       navigation.navigate("Homescreen");
@@ -101,7 +101,11 @@ export default function Login({ navigation }) {
         <View style={universalStyles.logo_container}>
           <Image
             source={require("../assets/logo.png")}
-            style={universalStyles.logo}
+            style={
+              isKeyboardVisible
+                ? universalStyles.logoKeyboardVisible
+                : universalStyles.logo
+            }
           ></Image>
         </View>
 
@@ -121,7 +125,9 @@ export default function Login({ navigation }) {
               dispatch({ type: "ADDRESS", payload: text })
             }
             onFocus={() => dispatch({ type: "ADDRESS_ERROR", payload: false })}
-            right={<TextInput.Icon color="#42C88F" name="account" />}
+            // right={
+            //   <TextInput.Icon disabled="true" color="#42C88F" name="account" />
+            // }
             theme={{ roundness: 15 }}
             underlineColor="transparent"
             activeUnderlineColor="#42C88F"

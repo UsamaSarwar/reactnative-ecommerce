@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect, useRef } from "react";
 import { useAuth } from "./AuthProvider";
 
+import { Keyboard } from "react-native";
 const GlobalContext = React.createContext(null);
 
 const GlobalProvider = ({ children }) => {
@@ -35,6 +36,28 @@ const GlobalProvider = ({ children }) => {
 
   //Searchbar on Homescreen
   const [searchText, setSearchText] = useState("");
+
+  const [isKeyboardVisible, setKeyboardVisible] = useState(false);
+
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      "keyboardDidShow",
+      () => {
+        setKeyboardVisible(true); // or some other action
+      }
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      "keyboardDidHide",
+      () => {
+        setKeyboardVisible(false); // or some other action
+      }
+    );
+
+    return () => {
+      keyboardDidHideListener.remove();
+      keyboardDidShowListener.remove();
+    };
+  }, []);
 
   //Categories in homscreen
   const category = [
@@ -95,7 +118,7 @@ const GlobalProvider = ({ children }) => {
         setCustomer,
         update,
         setUpdate,
-
+        isKeyboardVisible,
         searchText,
         setSearchText,
         category,
