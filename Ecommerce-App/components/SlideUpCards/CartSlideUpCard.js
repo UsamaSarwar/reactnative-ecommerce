@@ -2,7 +2,6 @@
 import React from "react";
 import { Text, View, Image, ScrollView } from "react-native";
 import NumberFormat from "react-number-format";
-// import Snackbar from "react-native-snackbar";
 
 //Providers
 import { useGlobal } from "../../providers/GlobalProvider";
@@ -45,7 +44,7 @@ export default function CartSlideUpCard() {
           </Text>
         </View>
       </View>
-      <ScrollView style={{ height: 60 }}>
+      <ScrollView>
         <View>
           <Text style={{ fontSize: 15 }}>{product.description}</Text>
         </View>

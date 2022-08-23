@@ -2,7 +2,15 @@
 import React, { useState } from "react";
 
 //React Components
-import { Text, View, Pressable, Image, FlatList, Alert } from "react-native";
+import {
+  Text,
+  View,
+  Pressable,
+  Image,
+  FlatList,
+  Alert,
+  ScrollView,
+} from "react-native";
 import NumberFormat from "react-number-format";
 
 //Animation-Component
@@ -227,19 +235,20 @@ export default function ProductItem({ elementRef }) {
                   </Text>
                 </Shimmer>
               </View>
-
-              <Shimmer
-                autoRun={true}
-                visible={!loading}
-                style={productCardStyles.descriptionText}
-              >
-                <Text
-                  numberOfLines={2}
+              <ScrollView>
+                <Shimmer
+                  autoRun={true}
+                  visible={!loading}
                   style={productCardStyles.descriptionText}
                 >
-                  {item.description}
-                </Text>
-              </Shimmer>
+                  <Text
+                    numberOfLines={2}
+                    style={productCardStyles.descriptionText}
+                  >
+                    {item.description}
+                  </Text>
+                </Shimmer>
+              </ScrollView>
 
               <View style={universalStyles.row_f1_sb_c}>
                 <NumberFormat

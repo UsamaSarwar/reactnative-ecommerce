@@ -121,10 +121,6 @@ export default function UserSlideUpCard({ elementRef }) {
           )}
         </Animatable.View>
       </Pressable>
-
-      <Pressable style={buttonStyles.s_button}>
-        <Text style={buttonStyles.s_button_text}>Checkout Now</Text>
-      </Pressable>
     </View>
   );
 }
