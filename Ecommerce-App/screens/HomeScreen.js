@@ -36,7 +36,6 @@ import OrderSettingSlideUpCard from "../components/SlideUpCards/OrderSettingSlid
 
 export default function Homescreen({ navigation, route }) {
   const { user } = useAuth();
-  const { categoryFilter } = useTasks();
   const { searchText, listType, setSearchText } = useGlobal();
   const admin = user.customData["userType"] === "admin" ? true : false;
   const [slideLoading, setSlideLoading] = useState(false);
@@ -92,41 +91,21 @@ export default function Homescreen({ navigation, route }) {
           ) : (
             <OrderType />
           )}
-          {!admin ? (
-            <ScrollView>
-              {searchText === "" && categoryFilter == "All" ? (
-                <CarouselBanner key={"Carousel"} />
-              ) : null}
-              {listType === "Orders" ? (
-                <OrderItemAdmin
-                  key={"OrderItemsAdmin"}
-                  navigation={navigation}
-                  elementRef={elementRef}
-                  setSlideLoading={setSlideLoading}
-                />
-              ) : (
-                <ProductItem
-                  navigation={navigation}
-                  elementRef={elementRef}
-                  key={"ProductItems"}
-                />
-              )}
-            </ScrollView>
-          ) : listType === "Orders" ? (
+
+          {listType === "Orders" ? (
             <OrderItemAdmin
               navigation={navigation}
               elementRef={elementRef}
               setSlideLoading={setSlideLoading}
             />
           ) : (
-            <ScrollView>
-              <ProductItem
-                navigation={navigation}
-                elementRef={elementRef}
-                key={"ProductItems"}
-              />
-            </ScrollView>
+            <ProductItem
+              navigation={navigation}
+              elementRef={elementRef}
+              key={"ProductItems"}
+            />
           )}
+
           <Footer
             navigation={navigation}
             route={route}

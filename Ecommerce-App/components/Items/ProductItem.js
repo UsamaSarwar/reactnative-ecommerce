@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 
 //React Components
-import { Text, View, Pressable, Image, Alert } from "react-native";
+import { Text, View, Pressable, Image, Alert, FlatList } from "react-native";
 import NumberFormat from "react-number-format";
 
 //Animation-Component
@@ -26,6 +26,9 @@ import universalStyles from "../../styles/UniversalStyles";
 import productCardStyles from "../../styles/ProductCardStyle";
 import IconStyles from "../../styles/IconStyles";
 
+//Components
+import CarouselBanner from "./CarouselBanner";
+
 export default function ProductItem({ elementRef }) {
   const {
     user,
@@ -34,7 +37,7 @@ export default function ProductItem({ elementRef }) {
     userWishList,
     removeFromUserWishList,
   } = useAuth();
-  const { tasks, deleteTask } = useTasks();
+  const { tasks, deleteTask, categoryFilter } = useTasks();
   const {
     setProduct,
     setIsNewProduct,
@@ -169,154 +172,157 @@ export default function ProductItem({ elementRef }) {
         })
       : tasks;
 
-  const data = !loading ? searchTasks : [1, 2, 3, 4, 5];
-
   return (
-    <View style={{ margin: 10, borderRadius: 15 }} key={"Main_View"}>
-      {data.map((item) => {
-        return (
-          <Pressable onPress={() => renderSlide(item)} key={item.name}>
-            <Animatable.View
-              animation={
-                user.customData.userType === "admin" ? "fadeInRight" : "fadeIn"
-              }
-              duration={1000}
-              key={item.name + "Big"}
-              style={productCardStyles.productCard}
+    <FlatList
+      data={!loading ? searchTasks : [1, 2, 3, 4, 5]}
+      ListHeaderComponent={
+        !admin && searchText === "" && categoryFilter == "All"
+          ? CarouselBanner
+          : null
+      }
+      showsVerticalScrollIndicator={false}
+      ListHeaderComponentStyle={{ marginBottom: 10 }}
+      style={{ borderRadius: 15 }}
+      renderItem={({ item }) => (
+        <Pressable onPress={() => renderSlide(item)} key={item.name}>
+          <Animatable.View
+            animation={"fadeInRight"}
+            duration={1000}
+            key={item.name + "Big"}
+            style={[productCardStyles.productCard, { margin: 10 }]}
+          >
+            <View
+              style={[
+                universalStyles.centered_container,
+                { backgroundColor: "white", padding: 10, borderRadius: 15 },
+              ]}
+              key={item.name + "View1"}
+            >
+              <Shimmer
+                autoRun={true}
+                visible={!loading}
+                style={productCardStyles.product_image}
+                key={item.name + "shimmer"}
+              >
+                <Image
+                  source={{
+                    uri: `data:${item.imageForm};base64,${item.image}`,
+                  }}
+                  key={item.name + "Image"}
+                  style={productCardStyles.product_image}
+                />
+              </Shimmer>
+            </View>
+
+            <View
+              style={productCardStyles.textContainer}
+              key={item.name + "View2"}
             >
               <View
                 style={[
-                  universalStyles.centered_container,
-                  { backgroundColor: "white", padding: 10, borderRadius: 15 },
+                  universalStyles.row_f1_sb_c,
+                  { alignItems: "flex-start" },
                 ]}
-                key={item.name + "View1"}
-              >
-                <Shimmer
-                  autoRun={true}
-                  visible={!loading}
-                  style={productCardStyles.product_image}
-                  key={item.name + "shimmer"}
-                >
-                  <Image
-                    source={{
-                      uri: `data:${item.imageForm};base64,${item.image}`,
-                    }}
-                    key={item.name + "Image"}
-                    style={productCardStyles.product_image}
-                  />
-                </Shimmer>
-              </View>
-
-              <View
-                style={productCardStyles.textContainer}
-                key={item.name + "View2"}
+                key={item.name + "View3"}
               >
                 <View
-                  style={[
-                    universalStyles.row_f1_sb_c,
-                    { alignItems: "flex-start" },
-                  ]}
-                  key={item.name + "View3"}
-                >
-                  <View
-                    style={[universalStyles.row_f1_sb_c, { flexWrap: "wrap" }]}
-                    key={item.name + "View4"}
-                  >
-                    <Shimmer
-                      autoRun={true}
-                      visible={!loading}
-                      style={productCardStyles.nameText}
-                      key={item.name + "shimmer2"}
-                    >
-                      <Text
-                        style={productCardStyles.nameText}
-                        key={item.name + "Text1"}
-                      >
-                        {item.name}
-                      </Text>
-                    </Shimmer>
-                  </View>
-                  {admin && !loading
-                    ? makeRemoveButton(item)
-                    : makeAddtoWishListButton(item)}
-                </View>
-
-                <View
-                  style={productCardStyles.categoryContainer}
-                  key={item.name + "View5"}
+                  style={[universalStyles.row_f1_sb_c, { flexWrap: "wrap" }]}
+                  key={item.name + "View4"}
                 >
                   <Shimmer
                     autoRun={true}
                     visible={!loading}
-                    style={productCardStyles.categoryText}
-                    key={item.name + "Shimmer3"}
+                    style={productCardStyles.nameText}
+                    key={item.name + "shimmer2"}
                   >
                     <Text
-                      style={productCardStyles.categoryText}
-                      key={item.name + "Text2"}
+                      style={productCardStyles.nameText}
+                      key={item.name + "Text1"}
                     >
-                      {item.category}
+                      {item.name}
                     </Text>
                   </Shimmer>
                 </View>
+                {admin && !loading
+                  ? makeRemoveButton(item)
+                  : makeAddtoWishListButton(item)}
+              </View>
 
+              <View
+                style={productCardStyles.categoryContainer}
+                key={item.name + "View5"}
+              >
                 <Shimmer
                   autoRun={true}
                   visible={!loading}
-                  style={productCardStyles.descriptionText}
-                  key={item.name + "Shimmer4"}
+                  style={productCardStyles.categoryText}
+                  key={item.name + "Shimmer3"}
                 >
                   <Text
-                    numberOfLines={2}
-                    style={productCardStyles.descriptionText}
-                    key={item.name + "Text3"}
+                    style={productCardStyles.categoryText}
+                    key={item.name + "Text2"}
                   >
-                    {item.description}
+                    {item.category}
                   </Text>
                 </Shimmer>
-
-                <View
-                  style={universalStyles.row_f1_sb_c}
-                  key={item.name + "View6"}
-                >
-                  <NumberFormat
-                    value={parseInt(item.price)}
-                    displayType={"text"}
-                    thousandSeparator={true}
-                    key={item.name + "Number"}
-                    prefix={"PKR "}
-                    renderText={(value) => (
-                      <Shimmer
-                        autoRun={true}
-                        visible={!loading}
-                        style={{ marginTop: 5 }}
-                        key={item.name + "Shimmer11"}
-                      >
-                        <Text key={item.name + "Text11"}>{value}</Text>
-                      </Shimmer>
-                    )}
-                  />
-                  {admin && !loading ? (
-                    <View
-                      style={IconStyles.background3}
-                      key={item.name + "View12"}
-                    >
-                      <Icon
-                        name="edit"
-                        color="white"
-                        size={18}
-                        key={item.name + "Icon1"}
-                      />
-                    </View>
-                  ) : !loading ? (
-                    makeAddToCartButton(item)
-                  ) : null}
-                </View>
               </View>
-            </Animatable.View>
-          </Pressable>
-        );
-      })}
-    </View>
+
+              <Shimmer
+                autoRun={true}
+                visible={!loading}
+                style={productCardStyles.descriptionText}
+                key={item.name + "Shimmer4"}
+              >
+                <Text
+                  numberOfLines={2}
+                  style={productCardStyles.descriptionText}
+                  key={item.name + "Text3"}
+                >
+                  {item.description}
+                </Text>
+              </Shimmer>
+
+              <View
+                style={universalStyles.row_f1_sb_c}
+                key={item.name + "View6"}
+              >
+                <NumberFormat
+                  value={parseInt(item.price)}
+                  displayType={"text"}
+                  thousandSeparator={true}
+                  key={item.name + "Number"}
+                  prefix={"PKR "}
+                  renderText={(value) => (
+                    <Shimmer
+                      autoRun={true}
+                      visible={!loading}
+                      style={{ marginTop: 5 }}
+                      key={item.name + "Shimmer11"}
+                    >
+                      <Text key={item.name + "Text11"}>{value}</Text>
+                    </Shimmer>
+                  )}
+                />
+                {admin && !loading ? (
+                  <View
+                    style={IconStyles.background3}
+                    key={item.name + "View12"}
+                  >
+                    <Icon
+                      name="edit"
+                      color="white"
+                      size={18}
+                      key={item.name + "Icon1"}
+                    />
+                  </View>
+                ) : !loading ? (
+                  makeAddToCartButton(item)
+                ) : null}
+              </View>
+            </View>
+          </Animatable.View>
+        </Pressable>
+      )}
+    />
   );
 }

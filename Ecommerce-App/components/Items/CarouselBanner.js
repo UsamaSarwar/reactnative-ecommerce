@@ -18,7 +18,7 @@ export default function CarouselBanner() {
   const isCarousel = useRef(null);
   return (
     <Animatable.View
-      animation={"fadeIn"}
+      animation={"fadeInRight"}
       duration={1000}
       key={"Carousal" + "View"}
     >
