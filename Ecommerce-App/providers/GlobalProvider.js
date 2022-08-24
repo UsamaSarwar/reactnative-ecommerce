@@ -61,22 +61,34 @@ const GlobalProvider = ({ children }) => {
 
   //Categories in homscreen
   const category = [
-    "All",
-    "Accessories",
-    "Casings",
-    "Consoles",
-    "Displays",
-    "Earphones",
-    "Headphones",
-    "Keyboards",
-    "Laptops",
-    "Mouse",
-    "Smartphones",
-    "Webcams",
+    ["All", "all-inclusive"],
+    ["Accessories", "desktop-classic"],
+    ["Casings", "bag-suitcase"],
+    ["Consoles", "controller-classic"],
+    ["Displays", "monitor"],
+    ["Earphones", "earbuds"],
+    ["Headphones", "headphones"],
+    ["Keyboards", "keyboard"],
+    ["Laptops", "laptop"],
+    ["Mouse", "mouse"],
+    ["Smartphones", "cellphone"],
+    ["Webcams", "webcam"],
+  ];
+
+  //Carousel Links
+  const carouselData = [
+    "https://www.slashgear.com/img/gallery/watch-sonys-first-playstation-5-tv-ad-talk-dualsense-and-3d-audio/intro-import.jpg",
+    "https://i.ytimg.com/vi/7pVYBaS9dpM/maxresdefault.jpg",
+    "https://www.asus.com/media/Odin/Websites/global/ProductLine/20210702104734.jpg",
   ];
 
   //Order Status Types
-  const orderTypes = ["All", "Processing", "Dispatched", "Delivered"];
+  const orderTypes = [
+    ["All", "all-inclusive"],
+    ["Processing", "cog"],
+    ["Dispatched", "car"],
+    ["Delivered", "check-all"],
+  ];
 
   const checkDetailsError = async () => {
     if (
@@ -128,6 +140,7 @@ const GlobalProvider = ({ children }) => {
         detailsError,
         listType,
         setListType,
+        carouselData,
       }}
     >
       {children}

@@ -21,7 +21,7 @@ import UniversalStyles from "../styles/UniversalStyles";
 export default function Stats({ elementRef }) {
   const { tasks } = useTasks();
   const { orders } = useOrder();
-  const animationTime = 1500;
+  const animationTime = 1000;
   const { listType, setListType } = useGlobal();
 
   return (
@@ -29,8 +29,10 @@ export default function Stats({ elementRef }) {
       style={[
         UniversalStyles.row_sb_conatiner,
         {
-          height: 100,
+          height: "8%",
           margin: 10,
+          marginTop: 0,
+          marginBottom: 0,
         },
       ]}
     >
@@ -66,31 +68,39 @@ export default function Stats({ elementRef }) {
             }
           }}
         >
-          <View style={{ flexDirection: "row", alignItems: "center" }}>
-            <IonIcon name="boat-outline" size={23} />
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <IonIcon name="boat-outline" size={23} />
 
+              {listType === "Orders" ? (
+                <Text
+                  style={{
+                    fontSize: 23,
+                    fontWeight: "normal",
+                    marginLeft: 5,
+                  }}
+                >
+                  Orders
+                </Text>
+              ) : null}
+            </View>
             {listType === "Orders" ? (
               <Text
                 style={{
-                  fontSize: 23,
-                  fontWeight: "normal",
-                  marginLeft: 5,
+                  fontSize: 18,
+                  marginRight: 5,
                 }}
               >
-                Orders
+                {orders.length} Orders
               </Text>
             ) : null}
           </View>
-
-          {listType === "Orders" ? (
-            <Text
-              style={{
-                fontSize: 18,
-              }}
-            >
-              {orders.length} Orders
-            </Text>
-          ) : null}
         </Pressable>
       </Animatable.View>
 
@@ -129,29 +139,43 @@ export default function Stats({ elementRef }) {
             }
           }}
         >
-          <View style={{ flexDirection: "row", alignItems: "center" }}>
-            <IonIcon name="cube-outline" size={23} />
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+              }}
+            >
+              <IonIcon name="cube-outline" size={23} />
+              {listType === "Inventory" ? (
+                <Text
+                  style={{
+                    fontSize: 23,
+                    fontWeight: "normal",
+                    marginLeft: 5,
+                  }}
+                >
+                  Inventory
+                </Text>
+              ) : null}
+            </View>
             {listType === "Inventory" ? (
               <Text
                 style={{
-                  fontSize: 23,
-                  fontWeight: "normal",
-                  marginLeft: 5,
+                  fontSize: 18,
+                  marginRight: 5,
                 }}
               >
-                Inventory
+                {tasks.length} Products
               </Text>
             ) : null}
           </View>
-          {listType === "Inventory" ? (
-            <Text
-              style={{
-                fontSize: 18,
-              }}
-            >
-              {tasks.length} Products
-            </Text>
-          ) : null}
         </Pressable>
       </Animatable.View>
     </View>

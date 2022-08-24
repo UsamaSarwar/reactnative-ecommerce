@@ -4,17 +4,19 @@ import React, { useRef, useEffect, useState } from "react";
 //React Components
 import {
   View,
-  Text,
   SafeAreaView,
   ImageBackground,
   Alert,
   BackHandler,
+  ScrollView,
 } from "react-native";
 import SlidingUpPanel from "rn-sliding-up-panel";
+import Snackbar from "react-native-snackbar";
 
 //Providers
 import { useAuth } from "../providers/AuthProvider.js";
 import { useGlobal } from "../providers/GlobalProvider.js";
+import { useTasks } from "../providers/TasksProvider.js";
 
 //Components
 import HomeHeader from "../components/Headers/HomeHeader.js";
@@ -26,6 +28,7 @@ import AdminSlideUpCard from "../components/SlideUpCards/AdminUserSlideUpCard.js
 import UserSlideUpCard from "../components/SlideUpCards/UserSlideUpCard.js";
 import Footer from "../components/Footers/Footer.js";
 import OrderItemAdmin from "../components/Items/OrderItemAdmin.js";
+import CarouselBanner from "../components/Items/CarouselBanner.js";
 
 //Styles
 import universalStyles from "../styles/UniversalStyles.js";
@@ -33,10 +36,10 @@ import OrderSettingSlideUpCard from "../components/SlideUpCards/OrderSettingSlid
 
 export default function Homescreen({ navigation, route }) {
   const { user } = useAuth();
+  const { categoryFilter } = useTasks();
   const { searchText, listType, setSearchText } = useGlobal();
   const admin = user.customData["userType"] === "admin" ? true : false;
   const [slideLoading, setSlideLoading] = useState(false);
-
   const elementRef = useRef();
 
   useEffect(() => {
@@ -89,17 +92,41 @@ export default function Homescreen({ navigation, route }) {
           ) : (
             <OrderType />
           )}
-
-          {listType === "Orders" ? (
+          {!admin ? (
+            <ScrollView>
+              {searchText === "" && categoryFilter == "All" ? (
+                <CarouselBanner key={"Carousel"} />
+              ) : null}
+              {listType === "Orders" ? (
+                <OrderItemAdmin
+                  key={"OrderItemsAdmin"}
+                  navigation={navigation}
+                  elementRef={elementRef}
+                  setSlideLoading={setSlideLoading}
+                />
+              ) : (
+                <ProductItem
+                  navigation={navigation}
+                  elementRef={elementRef}
+                  key={"ProductItems"}
+                />
+              )}
+            </ScrollView>
+          ) : listType === "Orders" ? (
             <OrderItemAdmin
               navigation={navigation}
               elementRef={elementRef}
               setSlideLoading={setSlideLoading}
             />
           ) : (
-            <ProductItem navigation={navigation} elementRef={elementRef} />
+            <ScrollView>
+              <ProductItem
+                navigation={navigation}
+                elementRef={elementRef}
+                key={"ProductItems"}
+              />
+            </ScrollView>
           )}
-
           <Footer
             navigation={navigation}
             route={route}

@@ -18,11 +18,10 @@ import universalStyles from "../../styles/UniversalStyles.js";
 import iconStyles from "../../styles/IconStyles.js";
 
 export default function Footer({ navigation, route, elementRef }) {
-  const { user, userCart } = useAuth();
+  const { personalDetails, user, userCart } = useAuth();
   const { setIsNewProduct, listType } = useGlobal();
 
   const admin = user.customData["userType"] === "admin" ? true : false;
-
   const renderSlide = () => {
     elementRef.current.show();
     setIsNewProduct(true);
@@ -32,10 +31,16 @@ export default function Footer({ navigation, route, elementRef }) {
     return (
       <Pressable
         onPress={() => {
-          listType === "Orders" ? null : renderSlide();
+          listType === "Orders" || route.name === "Settings"
+            ? null
+            : renderSlide();
         }}
+        disabled={personalDetails ? false : true}
         style={{
-          backgroundColor: listType === "Orders" ? "gray" : "#42C88F",
+          backgroundColor:
+            listType === "Orders" || route.name === "Setting"
+              ? "gray"
+              : "#42C88F",
           borderRadius: 10,
         }}
       >
@@ -66,7 +71,10 @@ export default function Footer({ navigation, route, elementRef }) {
   const userPanel = () => {
     return (
       <>
-        <Pressable onPress={() => navigation.navigate("WishlistScreen")}>
+        <Pressable
+          onPress={() => navigation.navigate("WishlistScreen")}
+          disabled={personalDetails ? false : true}
+        >
           <MatIcon
             name="favorite-outline"
             size={30}
@@ -74,7 +82,10 @@ export default function Footer({ navigation, route, elementRef }) {
           />
         </Pressable>
         <Animatable.View ref={(here) => (elementRef.cartIcon = here)}>
-          <Pressable onPress={() => navigation.navigate("Cart")}>
+          <Pressable
+            onPress={() => navigation.navigate("Cart")}
+            disabled={personalDetails ? false : true}
+          >
             {userCart.length > 0 ? cartCount() : null}
             <Icon
               name="shoppingcart"
@@ -93,7 +104,10 @@ export default function Footer({ navigation, route, elementRef }) {
 
   return (
     <View style={universalStyles.footer}>
-      <Pressable onPress={() => navigation.navigate("Homescreen")}>
+      <Pressable
+        onPress={() => navigation.navigate("Homescreen")}
+        disabled={personalDetails ? false : true}
+      >
         <Icon
           name="home"
           size={30}
@@ -103,7 +117,10 @@ export default function Footer({ navigation, route, elementRef }) {
 
       {admin ? adminPanel() : userPanel()}
 
-      <Pressable onPress={() => navigation.navigate("Setting")}>
+      <Pressable
+        onPress={() => navigation.navigate("Setting")}
+        disabled={personalDetails ? false : true}
+      >
         <Icon
           name="user"
           size={30}

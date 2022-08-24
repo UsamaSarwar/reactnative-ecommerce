@@ -40,7 +40,6 @@ export default universalStyles = StyleSheet.create({
   logo_container: {
     alignItems: "center",
     marginTop: 50,
-    marginBottom: 50,
     padding: 10,
   },
 
@@ -49,9 +48,12 @@ export default universalStyles = StyleSheet.create({
     height: "35%",
     marginTop: 15,
   },
+  errorInputContainer: {
+    top: -30,
+  },
   logoKeyboardVisible: {
-    width: "75%",
-    height: "40%",
+    width: "90%",
+    height: "42%",
     marginTop: 15,
   },
   centered_container: {

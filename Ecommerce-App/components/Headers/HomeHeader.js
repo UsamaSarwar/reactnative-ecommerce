@@ -5,6 +5,9 @@ import React, { useState, useEffect } from "react";
 import { View, Text, Image, Keyboard, Pressable } from "react-native";
 import SearchBar from "react-native-dynamic-search-bar";
 
+//Components
+import Shimmer from "../Shimmer";
+
 //Providers
 import { useAuth } from "../../providers/AuthProvider.js";
 import { useGlobal } from "../../providers/GlobalProvider.js";
@@ -17,7 +20,7 @@ import universalStyles from "../../styles/UniversalStyles.js";
 
 export default function HomeHeader({ navigation }) {
   const { personalDetails } = useAuth();
-  const { searchText, setSearchText, isKeyboardVisible } = useGlobal();
+  const { searchText, setSearchText } = useGlobal();
 
   const [searchState, setSearchState] = useState(false);
   const [spinnerState, setSpinnerState] = useState(true);
@@ -36,18 +39,23 @@ export default function HomeHeader({ navigation }) {
       />
     );
   };
-
   const renderWelcome = () => {
     return (
       <>
         <View style={productCardStyles.homeImageView}>
           <Pressable onPress={() => navigation.navigate("Personaldetails")}>
-            <Image
-              source={{
-                uri: `data:${personalDetails?.imageForm};base64,${personalDetails?.image}`,
-              }}
+            <Shimmer
+              autoRun={true}
+              visible={personalDetails ? true : false}
               style={productCardStyles.homeImage}
-            />
+            >
+              <Image
+                source={{
+                  uri: `data:${personalDetails?.imageForm};base64,${personalDetails?.image}`,
+                }}
+                style={productCardStyles.homeImage}
+              />
+            </Shimmer>
           </Pressable>
           <Text style={{ fontSize: 23, marginLeft: 10 }}>
             {personalDetails?.userName ? personalDetails?.userName : "User"}

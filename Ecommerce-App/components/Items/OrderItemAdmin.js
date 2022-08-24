@@ -21,9 +21,6 @@ import IonIcon from "react-native-vector-icons/Ionicons";
 //Providers
 import { useOrder } from "../../providers/OrderProvider";
 
-//Components
-import Shimmer from "../Shimmer";
-
 //Styles
 
 import productCardStyles from "../../styles/ProductCardStyle";
@@ -35,7 +32,7 @@ export default function OrderItemAdmin({ elementRef, setSlideLoading }) {
   const { currOrder, setCurrOrder, setCustomer, searchText, listType } =
     useGlobal();
 
-  const animationTime = 1500;
+  const animationTime = 1000;
 
   const [loading, setLoading] = useState(true);
 
@@ -257,22 +254,7 @@ export default function OrderItemAdmin({ elementRef, setSlideLoading }) {
                     style={{
                       width: "30%",
                     }}
-                  >
-                    {/* <ProgressBar
-                      progress={
-                        item.orderStatus === "Processing"
-                          ? 0.2
-                          : item.orderStatus === "Dispatched"
-                          ? 0.6
-                          : item.orderStatus === "Delivered"
-                          ? 1
-                          : 0
-                      }
-                      color={"rgba(66, 200, 143, 1)"}
-                      // indeterminate={true}
-                      style={{ height: 10, borderRadius: 10 }}
-                    /> */}
-                  </View>
+                  ></View>
                 </View>
                 <View style={{ flexDirection: "row" }}>
                   <View style={{ flex: 1 }}></View>

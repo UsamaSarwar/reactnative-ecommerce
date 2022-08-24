@@ -94,7 +94,7 @@ Demonstration of application at this version can be found [here](https://youtu.b
 
 <!-- Copy-paste in your Readme.md file -->
 
-## ❤️ Project Contributors
+## ❤️ Contributors
 
 <a href="https://github.com/UsamaSarwar/reactnative-ecommerce-alpha/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=UsamaSarwar/reactnative-ecommerce-alpha" />

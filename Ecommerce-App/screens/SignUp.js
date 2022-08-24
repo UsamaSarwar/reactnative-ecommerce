@@ -133,83 +133,88 @@ export default function Signup({ navigation }) {
             }
           ></Image>
         </View>
+        <View style={universalStyles.errorInputContainer}>
+          <View style={universalStyles.centered_container}>
+            <Text style={styles.error_message}>{state.errorMessage}</Text>
+          </View>
 
-        <View style={universalStyles.centered_container}>
-          <Text style={styles.error_message}>{state.errorMessage}</Text>
-        </View>
-
-        <View style={universalStyles.input_fields_container_1}>
-          {state.addr === "" ? null : (
-            <Text style={{ marginBottom: 5 }}>Email Address</Text>
-          )}
-          <TextInput
-            placeholder="Email Address"
-            autoCapitalize="none"
-            onChangeText={(text) =>
-              dispatch({ type: "ADDRESS", payload: text })
-            }
-            onFocus={() => dispatch({ type: "ADDRESS_ERROR", payload: false })}
-            style={[
-              inputStyles.signup_input,
-              { borderColor: state.addrError ? "red" : "transparent" },
-            ]}
-          />
-
-          {state.pass === "" ? null : (
-            <Text style={{ marginBottom: 5 }}>Password</Text>
-          )}
-          <TextInput
-            placeholder="Password"
-            autoCapitalize="none"
-            secureTextEntry={true}
-            onChangeText={(text) =>
-              dispatch({ type: "PASSWORD", payload: text })
-            }
-            onFocus={() => dispatch({ type: "PASSWORD_ERROR", payload: false })}
-            style={[
-              inputStyles.signup_input,
-              { borderColor: state.passError ? "red" : "transparent" },
-            ]}
-          />
-
-          {state.confirmPass === "" ? null : (
-            <Text style={{ marginBottom: 5 }}>Confirm Password</Text>
-          )}
-          <TextInput
-            placeholder="Confirm Password"
-            autoCapitalize="none"
-            secureTextEntry={true}
-            onChangeText={(text) =>
-              dispatch({ type: "CONF_PASSWORD", payload: text })
-            }
-            onFocus={() =>
-              dispatch({ type: "CONF_PASSWORD_ERROR", payload: false })
-            }
-            style={[
-              inputStyles.signup_input,
-              { borderColor: state.confirmPassError ? "red" : "transparent" },
-            ]}
-          />
-
-          <Pressable
-            style={buttonStyles.p_button_login}
-            onPress={onPressSignUp}
-          >
-            {signingUp ? (
-              <ActivityIndicator color="#ffffff" size={24} />
-            ) : (
-              <Text style={buttonStyles.p_button_text}>Sign Up</Text>
+          <View style={universalStyles.input_fields_container_1}>
+            {state.addr === "" ? null : (
+              <Text style={{ marginBottom: 5 }}>Email Address</Text>
             )}
-          </Pressable>
+            <TextInput
+              placeholder="Email Address"
+              autoCapitalize="none"
+              onChangeText={(text) =>
+                dispatch({ type: "ADDRESS", payload: text })
+              }
+              onFocus={() =>
+                dispatch({ type: "ADDRESS_ERROR", payload: false })
+              }
+              style={[
+                inputStyles.signup_input,
+                { borderColor: state.addrError ? "red" : "transparent" },
+              ]}
+            />
 
-          <Pressable style={buttonStyles.s_button}>
-            <Text
-              style={buttonStyles.s_button_text}
-              onPress={() => navigation.navigate("Login")}
+            {state.pass === "" ? null : (
+              <Text style={{ marginBottom: 5 }}>Password</Text>
+            )}
+            <TextInput
+              placeholder="Password"
+              autoCapitalize="none"
+              secureTextEntry={true}
+              onChangeText={(text) =>
+                dispatch({ type: "PASSWORD", payload: text })
+              }
+              onFocus={() =>
+                dispatch({ type: "PASSWORD_ERROR", payload: false })
+              }
+              style={[
+                inputStyles.signup_input,
+                { borderColor: state.passError ? "red" : "transparent" },
+              ]}
+            />
+
+            {state.confirmPass === "" ? null : (
+              <Text style={{ marginBottom: 5 }}>Confirm Password</Text>
+            )}
+            <TextInput
+              placeholder="Confirm Password"
+              autoCapitalize="none"
+              secureTextEntry={true}
+              onChangeText={(text) =>
+                dispatch({ type: "CONF_PASSWORD", payload: text })
+              }
+              onFocus={() =>
+                dispatch({ type: "CONF_PASSWORD_ERROR", payload: false })
+              }
+              style={[
+                inputStyles.signup_input,
+                { borderColor: state.confirmPassError ? "red" : "transparent" },
+              ]}
+            />
+
+            <Pressable
+              style={buttonStyles.p_button_login}
+              onPress={onPressSignUp}
             >
-              Go Back
-            </Text>
-          </Pressable>
+              {signingUp ? (
+                <ActivityIndicator color="#ffffff" size={24} />
+              ) : (
+                <Text style={buttonStyles.p_button_text}>Sign Up</Text>
+              )}
+            </Pressable>
+
+            <Pressable style={buttonStyles.s_button}>
+              <Text
+                style={buttonStyles.s_button_text}
+                onPress={() => navigation.navigate("Login")}
+              >
+                Go Back
+              </Text>
+            </Pressable>
+          </View>
         </View>
       </ImageBackground>
     </View>
