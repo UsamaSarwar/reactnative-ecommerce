@@ -108,101 +108,109 @@ export default function Login({ navigation }) {
             }
           ></Image>
         </View>
+        <View style={universalStyles.errorInputContainer}>
+          <View style={universalStyles.centered_container}>
+            <Text style={TextStyles.error_message}>{state.errorMessage}</Text>
+          </View>
 
-        <View style={universalStyles.centered_container}>
-          <Text style={TextStyles.error_message}>{state.errorMessage}</Text>
-        </View>
-
-        <View style={universalStyles.input_fields_container_1}>
-          {state.addr === "" ? null : (
-            <Text style={{ marginBottom: 5 }}>Email Address</Text>
-          )}
-          <TextInput
-            value={state.addr}
-            placeholder="Email Address"
-            autoCapitalize="none"
-            onChangeText={(text) =>
-              dispatch({ type: "ADDRESS", payload: text })
-            }
-            onFocus={() => dispatch({ type: "ADDRESS_ERROR", payload: false })}
-            // right={
-            //   <TextInput.Icon disabled="true" color="#42C88F" name="account" />
-            // }
-            theme={{ roundness: 15 }}
-            underlineColor="transparent"
-            activeUnderlineColor="#42C88F"
-            style={[
-              inputStyles.login_input,
-              {
-                borderColor: state.addrError ? "red" : "transparent",
-                underlineColor: "transparent",
-                activeUnderlineColor: "transparent",
-              },
-            ]}
-          />
-
-          {state.pass === "" ? null : (
-            <Text style={{ marginBottom: 5 }}>Password</Text>
-          )}
-          <TextInput
-            value={state.pass}
-            placeholder="Password"
-            autoCapitalize="none"
-            secureTextEntry={!state.showPass}
-            onChangeText={(text) =>
-              dispatch({ type: "PASSWORD", payload: text })
-            }
-            onFocus={() => dispatch({ type: "PASSWORD_ERROR", payload: false })}
-            right={
-              <TextInput.Icon
-                color="#42C88F"
-                name={state.showPass ? "eye-off" : "eye"}
-                onPress={() =>
-                  dispatch({ type: "SHOW_PASSWORD", payload: !state.showPass })
-                }
-              />
-            }
-            activeUnderlineColor="#42C88F"
-            underlineColor="transparent"
-            theme={{ roundness: 15 }}
-            style={[
-              inputStyles.login_input,
-              {
-                borderColor: state.passError ? "red" : "transparent",
-                underlineColor: "transparent",
-                activeUnderlineColor: "transparent",
-                marginBottom: 5,
-              },
-            ]}
-          />
-          <Pressable style={buttonStyles.s_button_fp}>
-            <Text
-              style={buttonStyles.s_button_text}
-              onPress={() => navigation.navigate("Forgotpass")}
-            >
-              Forgot Password?
-            </Text>
-          </Pressable>
-
-          <Pressable
-            style={buttonStyles.p_button_login}
-            onPress={() => onPressLogIn()}
-          >
-            {loggingIn ? (
-              <ActivityIndicator color="#ffffff" size={24} />
-            ) : (
-              <Text style={buttonStyles.p_button_text}>Log In</Text>
+          <View style={universalStyles.input_fields_container_1}>
+            {state.addr === "" ? null : (
+              <Text style={{ marginBottom: 5 }}>Email Address</Text>
             )}
-          </Pressable>
+            <TextInput
+              value={state.addr}
+              placeholder="Email Address"
+              autoCapitalize="none"
+              onChangeText={(text) =>
+                dispatch({ type: "ADDRESS", payload: text })
+              }
+              onFocus={() =>
+                dispatch({ type: "ADDRESS_ERROR", payload: false })
+              }
+              // right={
+              //   <TextInput.Icon disabled="true" color="#42C88F" name="account" />
+              // }
+              theme={{ roundness: 15 }}
+              underlineColor="transparent"
+              activeUnderlineColor="#42C88F"
+              style={[
+                inputStyles.login_input,
+                {
+                  borderColor: state.addrError ? "red" : "transparent",
+                  underlineColor: "transparent",
+                  activeUnderlineColor: "transparent",
+                },
+              ]}
+            />
 
-          <Pressable style={buttonStyles.s_button}>
-            <Text
-              style={buttonStyles.s_button_text}
-              onPress={() => navigation.navigate("Signup")}
+            {state.pass === "" ? null : (
+              <Text style={{ marginBottom: 5 }}>Password</Text>
+            )}
+            <TextInput
+              value={state.pass}
+              placeholder="Password"
+              autoCapitalize="none"
+              secureTextEntry={!state.showPass}
+              onChangeText={(text) =>
+                dispatch({ type: "PASSWORD", payload: text })
+              }
+              onFocus={() =>
+                dispatch({ type: "PASSWORD_ERROR", payload: false })
+              }
+              right={
+                <TextInput.Icon
+                  color="#42C88F"
+                  name={state.showPass ? "eye-off" : "eye"}
+                  onPress={() =>
+                    dispatch({
+                      type: "SHOW_PASSWORD",
+                      payload: !state.showPass,
+                    })
+                  }
+                />
+              }
+              activeUnderlineColor="#42C88F"
+              underlineColor="transparent"
+              theme={{ roundness: 15 }}
+              style={[
+                inputStyles.login_input,
+                {
+                  borderColor: state.passError ? "red" : "transparent",
+                  underlineColor: "transparent",
+                  activeUnderlineColor: "transparent",
+                  marginBottom: 5,
+                },
+              ]}
+            />
+            <Pressable style={buttonStyles.s_button_fp}>
+              <Text
+                style={buttonStyles.s_button_text}
+                onPress={() => navigation.navigate("Forgotpass")}
+              >
+                Forgot Password?
+              </Text>
+            </Pressable>
+
+            <Pressable
+              style={buttonStyles.p_button_login}
+              onPress={() => onPressLogIn()}
             >
-              Sign Up
-            </Text>
-          </Pressable>
+              {loggingIn ? (
+                <ActivityIndicator color="#ffffff" size={24} />
+              ) : (
+                <Text style={buttonStyles.p_button_text}>Log In</Text>
+              )}
+            </Pressable>
+
+            <Pressable style={buttonStyles.s_button}>
+              <Text
+                style={buttonStyles.s_button_text}
+                onPress={() => navigation.navigate("Signup")}
+              >
+                Sign Up
+              </Text>
+            </Pressable>
+          </View>
         </View>
       </ImageBackground>
     </View>
