@@ -2,23 +2,23 @@ import * as React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-import Login from "./screens/Login";
-import Signup from "./screens/SignUp";
-import Forgotpass from "./screens/ForgetPassword";
-import Homescreen from "./screens/HomeScreen";
-import Updatepassword from "./screens/UpdatePassword";
-import Deleteaccount from "./screens/DeleteAccount";
-import Setting from "./screens/Setting";
-import Cart from "./screens/Cart";
-import Checkout from "./screens/CheckOut";
-import PersonalDetails from "./screens/PersonalDetails";
-import MyOrders from "./screens/MyOrders";
-import WishListScreen from "./screens/WishListScreen";
+import Login from "./src/screens/Login";
+import Signup from "./src/screens/SignUp";
+import Forgotpass from "./src/screens/ForgetPassword";
+import Homescreen from "./src/screens/HomeScreen";
+import Updatepassword from "./src/screens/UpdatePassword";
+import Deleteaccount from "./src/screens/DeleteAccount";
+import Setting from "./src/screens/Setting";
+import Cart from "./src/screens/Cart";
+import Checkout from "./src/screens/CheckOut";
+import PersonalDetails from "./src/screens/PersonalDetails";
+import MyOrders from "./src/screens/MyOrders";
+import WishListScreen from "./src/screens/WishListScreen";
 
-import { useAuth } from "./providers/AuthProvider";
-import { TasksProvider } from "./providers/TasksProvider";
-import { GlobalProvider } from "./providers/GlobalProvider";
-import { OrderProvider } from "./providers/OrderProvider";
+import { useAuth } from "./src/providers/AuthProvider";
+import { TasksProvider } from "./src/providers/TasksProvider";
+import { GlobalProvider } from "./src/providers/GlobalProvider";
+import { OrderProvider } from "./src/providers/OrderProvider";
 
 const Stack = createNativeStackNavigator();
 
