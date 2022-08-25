@@ -24,6 +24,13 @@ yarn android
 
 v22.08.22
 
+- [x] Final Version Roll Out
+- [x] Optimized app size
+
+Demonstration of application at this version can be found [here](https://www.youtube.com/watch?v=ttSYE6WdZbU)
+
+v22.08.22
+
 - [x] Added Favorites screen and functionality
 - [x] Order Placing and tracking functionality
 - [x] Updated Icon, Animations, and UI
