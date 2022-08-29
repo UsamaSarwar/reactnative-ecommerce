@@ -21,6 +21,8 @@ import TextStyles from "../../styles/TextStyles.js";
 //Animation-Component
 import * as Animatable from "react-native-animatable";
 
+//This footer only appears in the checkout screen for the user to place order and see the total amount of the order.
+
 export default function CheckoutFooter({ navigation, payMethod }) {
   const { user, emptyUserCart, personalDetails } = useAuth();
   const { cartTotal } = useTasks();

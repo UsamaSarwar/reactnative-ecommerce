@@ -16,6 +16,8 @@ import productCardStyles from "../../styles/ProductCardStyle";
 import OrderStyles from "../../styles/OrderStyles";
 import TextStyles from "../../styles/TextStyles";
 
+//Loads the orders at the user side which were placed by them only.
+
 export default function OrderItemUser() {
   const { orders } = useOrder();
 

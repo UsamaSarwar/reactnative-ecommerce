@@ -13,6 +13,8 @@ import UniversalStyles from "../../styles/UniversalStyles.js";
 import CheckoutStyles from "../../styles/CheckoutStyles";
 import TextStyles from "../../styles/TextStyles.js";
 
+// Loads the order summary item at the checkout screen
+
 export default function CheckoutItem() {
   const { shoppingCart } = useTasks();
 

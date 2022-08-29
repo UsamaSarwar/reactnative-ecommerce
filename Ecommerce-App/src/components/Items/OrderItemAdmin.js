@@ -28,6 +28,9 @@ import UniversalStyles from "../../styles/UniversalStyles.js";
 import OrderStyles from "../../styles/OrderStyles";
 import TextStyles from "../../styles/TextStyles";
 
+//This load the items at the my orders screen from the admin side such that the admin
+//is able to see all the orders that were placed by the users
+
 export default function OrderItemAdmin({ elementRef, setSlideLoading }) {
   const { orders, getCustomerDetails } = useOrder();
   const { currOrder, setCurrOrder, setCustomer, searchText, listType } =

@@ -18,6 +18,9 @@ import universalStyles from "../../styles/UniversalStyles.js";
 import iconStyles from "../../styles/IconStyles.js";
 import TextStyles from "../../styles/TextStyles.js";
 
+//This is the footer component that is used for the user to provide navigation to certain screens. It helps the user in quickly
+//getting across the app and makes the application much more traversable overall.
+
 export default function Footer({ navigation, route, elementRef }) {
   const { personalDetails, user, userCart } = useAuth();
   const { setIsNewProduct, listType } = useGlobal();

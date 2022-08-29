@@ -9,6 +9,7 @@ import UniversalStyles from "../../styles/UniversalStyles";
 export const SLIDER_WIDTH = Dimensions.get("window").width;
 export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.9);
 
+//These are the individual items of the carousel i.e., the images that appear on the carousel
 export default function CarouselCardItem({ item, index }) {
   return (
     <View style={UniversalStyles.carousel_card} key={String(index) + "View"}>

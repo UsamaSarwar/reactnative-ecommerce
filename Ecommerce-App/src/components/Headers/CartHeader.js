@@ -17,6 +17,9 @@ import UniversalStyles from "../../styles/UniversalStyles.js";
 import ButtonStyles from "../../styles/ButtonStyles.js";
 import TextStyles from "../../styles/TextStyles.js";
 
+//Cart header file so user can view the total amount of the products inside the cart and besides that, sees the
+//button to navigate towards the checkout screen
+
 export default function CartHeader({ navigation }) {
   const { cartTotal } = useTasks();
   const { checkDetailsError } = useGlobal();

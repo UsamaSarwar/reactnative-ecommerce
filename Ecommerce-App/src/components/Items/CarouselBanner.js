@@ -12,6 +12,7 @@ import * as Animatable from "react-native-animatable";
 import CarouselCardItem, { SLIDER_WIDTH, ITEM_WIDTH } from "./CarouselCardItem";
 import UniversalStyles from "../../styles/UniversalStyles";
 
+//This loads the carousel at the homescreen when it is being called. It also provides the pagination display.
 export default function CarouselBanner() {
   const { carouselData } = useGlobal();
   const [index, setIndex] = useState(0);

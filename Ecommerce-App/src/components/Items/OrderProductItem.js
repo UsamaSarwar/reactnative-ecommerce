@@ -15,6 +15,8 @@ import UniversalStyles from "../../styles/UniversalStyles";
 import OrderStyles from "../../styles/OrderStyles";
 import TextStyles from "../../styles/TextStyles";
 
+//Loads the product list at the orders screen of the user side within each of the respective order.
+
 export default function OrderProductItem({ orderItems, orderNumber }) {
   const { orders, orderDetails } = useOrder();
 

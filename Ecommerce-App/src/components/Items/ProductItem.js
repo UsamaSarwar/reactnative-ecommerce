@@ -29,6 +29,7 @@ import IconStyles from "../../styles/IconStyles";
 //Components
 import CarouselBanner from "./CarouselBanner";
 
+//This loads the products at the homescreen and also handles the slideupPanel and search functionality if applied by the user.
 export default function ProductItem({ elementRef }) {
   const {
     user,

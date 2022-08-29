@@ -19,6 +19,9 @@ import IonIcon from "react-native-vector-icons/Ionicons";
 import universalStyles from "../../styles/UniversalStyles.js";
 import TextStyles from "../../styles/TextStyles";
 
+//Homescreen header so that the user can see it's name and avatar for aesthetics alongside the searchbar
+// for certain operations
+
 export default function HomeHeader({ navigation }) {
   const { personalDetails } = useAuth();
   const { searchText, setSearchText } = useGlobal();

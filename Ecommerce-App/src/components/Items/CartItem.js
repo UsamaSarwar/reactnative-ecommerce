@@ -21,6 +21,8 @@ import productCardStyles from "../../styles/ProductCardStyle";
 import IconStyles from "../../styles/IconStyles";
 import UniversalStyles from "../../styles/UniversalStyles";
 
+//This loads the items at the cart screen such that it also loads the icons/functionality with them.
+
 export default function CarItem({ elementRef }) {
   const { removeFromUserCart, updateQuantity } = useAuth();
   const { shoppingCart } = useTasks();
